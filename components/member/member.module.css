@@ -90,7 +90,7 @@
   margin-bottom: 5px;
 }
 
-.main .loginContent .aBtn {
+.main .loginContent .notice {
   color: var(--info-orange, #ff4f4f);
   text-decoration: none;
 }
@@ -357,7 +357,7 @@
   margin-bottom: 30px;
 }
 
-.main .registerContent .btnBack a {
+.main .registerContent .btnBack .notice {
   color: var(--primary_color-purple_light);
   text-decoration: none;
 }
@@ -450,7 +450,7 @@
     margin-bottom: 5px;
 }
 
-.loginContent a {
+.loginContent .notice {
     color: var(--info-orange, #FF4F4F);
     text-decoration: none;
 }
@@ -686,13 +686,20 @@
     margin-bottom: 30px;
 }
 
+
+
 .btnBack {
     margin-top: -20px;
-    margin-left: 45%;
+    margin-left: 25%;
     margin-bottom: 30px;
 }
 
-.btnBack a {
-    color: var(--primary_color-purple_light);
-    text-decoration: none;
+.red{
+  color: var(--info-orange, #ff4f4f);
+  text-decoration: none;
+}
+
+.btnBack Link .notice {
+  color: var(--info-orange, #ff4f4f);
+  text-decoration: none;
 }
