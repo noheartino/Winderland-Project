@@ -1,0 +1,175 @@
+@media (max-width: 1920px) {
+
+    .shop-port {
+        display: none;
+    }
+
+    .shop-fliterSearch-m {
+        display: none;
+    }
+
+    .shop-fliterSearch {
+        padding-block: 25px;
+        margin-bottom: 35px;
+        height: 50px;
+        align-items: center;
+        text-align: end;
+    }
+
+    .shop-fliter {
+
+        & select:focus {
+            outline: none;
+        }
+
+        & select {
+            /* 取消瀏覽器默認箭頭 */
+            appearance: none;
+            background-image: url(/shop_images/fliter-arrow.svg);
+            background-repeat: no-repeat;
+            background-position: 90% center;
+            font-size: 12px;
+            color: var(--purple_light);
+            width: 142px;
+            height: 35px;
+            border: 1px solid var(--purple_light);
+            border-radius: 44px;
+            padding-left: 18px;
+            position: relative;
+        }
+
+    }
+
+    .shop-search {
+        position: relative;
+
+
+        & input {
+            padding-left: 20px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            color: var(--purple_light);
+            width: 100%;
+            height: 35px;
+            border: 1px solid var(--purple_light);
+            border-radius: 44px;
+        }
+
+        & button {
+            font-size: 13px;
+            border: none;
+            background: none;
+            position: absolute;
+            right: 20px;
+            top: 7px;
+            color: var(--purple_light);
+        }
+
+        & input::placeholder {
+            color: var(--purple_light);
+        }
+
+        & input:focus {
+            color: var(--purple_light);
+            outline: none;
+        }
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .shop-fliterSearch {
+        display: none;
+    }
+
+    .shop-fliterSearch-m {
+        height: auto;
+        position: relative;
+        display: flex;
+        margin-block: 5%;
+
+        & .shop-search-m input {
+            width: 100%;
+            height: 35px;
+            border-radius: 20px;
+            border: none;
+            background-color: #F1F1F1;
+            color: #9A9A9A;
+            padding-left: 7%;
+            letter-spacing: 2px;
+        }
+
+        & .search-icon {
+            position: absolute;
+            top: 22%;
+            left: 3%;
+            color: #7C7C7C;
+            font-size: 20px;
+        }
+
+        & input:focus {
+            outline: none;
+        }
+
+        & .fliter-icon {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--light);
+
+            & img {
+                width: 90%;
+            }
+        }
+    }
+
+    .shop-port {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+        align-items: center;
+        justify-content: space-around;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--orange);
+        margin-bottom: 20px;
+        padding-bottom: 3px;
+        border-bottom: 2px solid var(--light);
+        text-wrap: nowrap;
+
+        & .port-hr {
+            font-size: 10px;
+            margin: 0;
+            color: var(--wine_light);
+        }
+
+        & div {
+            margin-inline: 5%;
+        }
+
+        & .port-new,
+        .port-sales,
+        .port-price {
+            width: 64px;
+        }
+    }
+
+}
+
+@media screen and (max-width: 767px) {
+    .shop-fliterSearch-m {
+
+        & .shop-search-m input {
+            padding-left: 11%;
+            font-size: 14px;
+        }
+
+        & .search-icon {
+            font-size: 15px;
+            padding-left: 3%;
+            padding-top: 3px;
+        }
+    }
+
+}
