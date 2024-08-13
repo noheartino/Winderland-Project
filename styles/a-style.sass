@@ -1,0 +1,249 @@
+.a-banner
+  height: 250px
+  background: url(/images/article/banner.jpeg) center center no-repeat
+  background-size: cover
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  color: var(--light)
+  font-weight: 500
+  margin-bottom: 45px
+  h2
+    font-size: 32px
+    letter-spacing: 14.4px
+
+  h3
+    font-size: 20px
+    letter-spacing: 6px
+
+/* 最上面那一列 */
+.a-function
+  text-wrap: nowrap
+  justify-content: flex-end
+  align-items: center
+  color: var(--purple_light)
+  font-size: 12px
+  font-weight: 400
+  letter-spacing: 1.2px
+  /* 排序 */
+  .a-dropdown
+    justify-content: flex-end
+    .a-sort-btn
+      width: 80%
+      background-color: transparent
+      color: var(--purple_light)
+      font-size: 12px
+      margin: 0
+      display: flex
+      justify-content: space-between
+      align-items: center
+      border: 1px solid var(--purple_light)
+      border-radius: 44px
+
+    .a-dropdown-menu
+      border: 1px solid var(--purple_light)
+
+      a
+        font-size: 12px
+        color: var(--purple_light)
+        text-align: center
+
+  /* 搜尋 */
+  .a-search-block
+    position: relative
+    .a-search
+      width: 100%
+      border: 1px solid var(--purple_light)
+      border-radius: 44px
+      color: var(--purple_light)
+
+    i
+      font-size: 14px
+      position: absolute
+      right: 23px
+      top: 10px
+
+  /* 搜尋列小 */
+  .a-search-sm-block
+    position: relative
+    i
+      font-size: 14px
+      position: absolute
+      left: 23px
+      top: 10px
+      color: #7c7c7c
+
+    .a-search-sm
+      width: 100%
+      background-color: #f1f1f1
+      border-radius: 44px
+      border: 0px
+
+  /* 手機側邊欄 */
+  .a-sidebar-sm
+    display: flex
+    justify-content: center
+    .smside-topbtn
+      padding: 0
+      background-color: var(--wine_light)
+
+    .a-offcanvas
+      .a-offcanvas-header
+        height: 60px
+        background-color: var(--primary)
+        color: #fff
+        .a-offcanvas-title
+          display: flex
+          align-items: center
+
+    .a-offcanvas-body
+      .a-sort-btn-sm
+        width: 100%
+        background-color: transparent
+        color: var(--purple_light)
+        font-size: 12px
+        margin: 0
+        display: flex
+        justify-content: space-between
+        align-items: center
+        border: 1px solid var(--purple_light)
+        border-radius: 44px
+
+      .a-dropdown-menu
+        border: 1px solid var(--purple_light)
+
+        a
+          font-size: 12px
+          color: var(--purple_light)
+          text-align: center
+
+      .a-smside-bottombtn
+        background-color: var(--light)
+        color: var(--purple_light)
+        width: 100%
+.a-contentmain
+  justify-content: space-between
+  .a-sidebar
+    margin-top: 1rem
+    // padding-right: 100px
+    ul
+      padding: 0
+      color: var(--primary)
+      font-size: 12px
+      font-weight: 700
+      letter-spacing: 1.2px
+      line-height: 30px
+      border-top: 1px solid #e1e1e1
+      li
+        font-weight: 400
+        list-style-type: none
+        border-radius: 3px
+        &:hover
+          background-color: var(--light)
+
+        a
+          text-decoration: none
+          color: var(--text_primary)
+          padding-left: 5px
+
+    .a-btn-select
+      background-color: var(--primary)
+      color: #fff
+      width: 100%
+      height: 70px
+
+  /* 文章一格格 */
+  .a-content
+    margin: 0
+    /* 文章頭條 */
+    .a-title
+      height: 350px
+      background: url(/images/article/titlePic.jpeg) center center no-repeat
+      background-size: cover
+      padding: 50px
+      display: flex
+      align-items: flex-end
+
+      h3
+        color: var(--light)
+        text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
+        font-size: 24px
+        font-weight: 700
+        letter-spacing: 2.4px
+
+    /* 收藏 */
+    .a-collection
+      height: 350px
+      background: url(/images/article/collectionMark.jpeg) center center no-repeat
+      background-color: rgba(67, 1, 1, 0.5)
+      background-blend-mode: darken
+      display: flex
+      flex-direction: column
+      justify-content: center
+      align-items: center
+
+      h3
+        color: var(--light)
+        font-size: 24px
+        font-weight: 700
+        letter-spacing: 4.8px
+
+    /* 文章區塊大&小 */
+    .a-box
+      display: flex
+      height: 200px
+      border: 1px solid var(--purple_light)
+      .a-box-img
+        width: 45%
+        height: 200px
+        img
+          width: 100%
+          height: 100%
+          object-fit: cover
+
+      .a-box-content
+        padding: 25px
+        p
+          color: var(--purple_light)
+          font-size: 12px
+          font-weight: 400
+          letter-spacing: 1.2px
+
+        h4
+          color: var(--text_dark)
+          font-size: 16px
+          font-weight: 400
+          letter-spacing: 1.6px
+
+        h5
+          color: var(--text_dark)
+          font-size: 12px
+          font-weight: 400
+          letter-spacing: 1.2px
+
+    .a-readmore
+      display: flex
+      justify-content: flex-end
+      .a-btn-content
+        background-color: var(--text_primary)
+        color: #fff
+        &:hover
+          background-color: var(--purple_light)
+          color: #fff
+
+/* 日期 */
+.a-date
+  justify-content: space-between
+  align-items: center
+  color: var(--text_primary)
+  font-size: 12px
+  font-weight: 400
+  letter-spacing: 1.2px
+  .a-date-block
+    .a-date-input
+      text-align: center
+      width: 100%
+      border: 1px solid var(--purple_light)
+      border-radius: 44px
+      color: var(--purple_light)
