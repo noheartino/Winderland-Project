@@ -1,0 +1,698 @@
+/* desk */
+/* 登入login */
+.main .bg {
+  background: var(--primary_color-light, #f4ebeb);
+  overflow: hidden;
+}
+
+.main .loginBox {
+  width: 500px;
+  height: 100%;
+  background: #fffdfd;
+  box-shadow: 0px 0px 11.6px 0px rgba(0, 0, 0, 0.25);
+  padding: 20px;
+  padding-left: 50px;
+  position: relative;
+  margin: auto;
+  top: 100px;
+  margin-bottom: 200px;
+}
+
+.navTabs{
+  width: 100%;
+  font-size: medium;
+  margin-bottom: 20px;
+  /* margin-top: 8%; */
+  border-bottom: 5px solid var(--primary_color-light);
+  /* justify-content: space-around; */
+}
+.main .navLink {
+    color: var(--primary_color-purple);
+    border: none;
+    background: none;
+    margin: 0;
+    position: relative;
+    display: inline-block;
+    font-size: large;
+    width: 100%;
+  }
+  
+  .main .navLink::after {
+    content: '';
+    position: absolute;
+    left: 25%;
+    bottom: -5px;
+    height: 2px;
+    width: 50%;
+    background-color: transparent;
+    transition: background-color 0.3s;
+  }
+  
+  .main .navLink:hover::after,
+  .main .navLink.active::after {
+    background-color: var(--primary_color-purple);
+    width:10%;
+    height: 5px;
+    left: -10;
+    bottom: -1;
+  }
+  
+
+.main .tabContent {
+  color: var(--primary_color-purple_light, #a66e7b);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 1.4px;
+  margin-right: -25px;
+}
+
+.main .loginContent .label {
+  color: var(--primary_color-purple_light, #a66e7b);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+}
+
+.main .loginContent .loginInput {
+  width: 80%;
+  border: none;
+  border-bottom: 2px solid var(--primary_color-purple_light, #a66e7b);
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-size: x-large;
+  color: var(--info-dark_blue);
+  outline: none;
+}
+
+.main .loginContent .span {
+  color: var(--info-orange, #ff4f4f);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.main .loginContent .aBtn {
+  color: var(--info-orange, #ff4f4f);
+  text-decoration: none;
+}
+
+.main .loginContent .pwdNotice {
+  margin-right: 20%;
+}
+
+/* 隱藏預設的 checkbox 樣式 */
+.main .loginContent .pwdNotice .formCheck .formCheckInput {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #ccc;
+  border-radius: 0px;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+}
+
+/* 自定義 checkbox 選中狀態 */
+.main .loginContent .pwdNotice .formCheck .formCheckInput:checked {
+  background-color: #9a5b69;
+  border-color: #ccc;
+}
+
+/* 偽元素來表示選中狀態的外觀 */
+.main .loginContent .pwdNotice .formCheck .formCheckInput:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background-color: #9a5b69;
+  border-radius: 2px;
+}
+
+.main .loginContent .forgetPwd {
+  margin-right: 20%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+/* 隱藏預設的 checkbox 樣式 */
+.main .loginContent .forgetPwd .formCheck .formCheckInput {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #ccc;
+  border-radius: 0px;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+}
+
+/* 自定義 checkbox 選中狀態 */
+.main .loginContent .forgetPwd .formCheck .formCheckInput:checked {
+  background-color: #9a5b69;
+  border-color: #ccc;
+}
+
+/* 偽元素來表示選中狀態的外觀 */
+.main .loginContent .forgetPwd .formCheck .formCheckInput:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background-color: #9a5b69;
+  border-radius: 2px;
+}
+
+.main .loginContent .noAccount {
+  margin-right: 20%;
+  margin-top: 10px;
+}
+
+.main .loginContent .button {
+  width: 80%;
+  height: 60px;
+  border-radius: 4px;
+  background: var(--primary_color-purple, #9a5b69);
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+  border: none;
+  color: var(--primary_color-light, #f4ebeb);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 8px;
+  margin-top: 10px;
+}
+
+.main .loginContent .fastLogin {
+  width: 80%;
+}
+
+.main .loginContent .fastLogin .hr {
+  color: var(--text_color-text_primary);
+  border: 0;
+  font-size: 12px;
+  padding: 10px 0;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.main .loginContent .fastLogin .hr::before {
+  content: '快速登入';
+  position: absolute;
+  padding: 0 10px;
+  line-height: 1px;
+  border: solid var(--text_color-text_primary);
+  border-width: 0 100vw;
+  white-space: nowrap;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.main .loginContent .fastLogin .buttonGruop {
+  margin-bottom: 50px;
+}
+
+.main .loginContent .fastLogin .buttonGruop .googleLogin {
+  width: 100%;
+  font-size: 16px;
+  background-color: var(--primary_color-primary);
+  margin-bottom: 30px;
+  white-space: nowrap;
+  height: 60px;
+  border-radius: 4px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+  border: none;
+  color: var(--primary_color-light, #f4ebeb);
+  font-weight: 400;
+  letter-spacing: 8px;
+  margin-top: 10px;
+}
+
+.main .loginContent .fastLogin .buttonGruop .googleLogin .img {
+  object-fit: scale-down;
+}
+.main .loginContent .fastLogin .buttonGruop .lineLogin {
+  width: 100%;
+  font-size: 16px;
+  background-color: #06c755;
+  height: 60px;
+  border-radius: 4px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+  border: none;
+  color: var(--primary_color-light, #f4ebeb);
+  font-weight: 400;
+  letter-spacing: 8px;
+  margin-top: 10px;
+}
+
+/* 註冊register */
+.main .registerContent {
+  width: 100%;
+}
+
+.main .registerContent .label {
+  color: var(--primary_color-purple_light, #a66e7b);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  margin-top: 15px;
+}
+
+.main .registerContent .span {
+  color: var(--info-orange, #ff4f4f);
+  display: block;
+  margin-right: 80px;
+  margin-top: 7px;
+}
+
+.main .registerContent .registerInput {
+  width: 80%;
+  border: none;
+  border-bottom: 2px solid var(--primary_color-purple_light, #a66e7b);
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-size: x-large;
+  color: var(--info-dark_blue);
+  outline: none;
+}
+
+.main .registerContent .rRegisterInput::placeholder {
+  color: var(--info-dark_blue);
+  font-size: large;
+}
+
+.main .registerContent .registerInput::placeholder {
+  color: var(--info-dark_blue);
+  font-size: large;
+}
+
+.main .registerContent .labelName {
+  margin-right: 35%;
+}
+
+.main .registerContent .labelTel {
+  margin-left: -30px;
+}
+
+.main .registerContent .labelGender {
+  margin-left: -10px;
+}
+
+.main .registerContent .registerInput2 {
+  width: 37%;
+  border: none;
+  border-bottom: 2px solid var(--primary_color-purple_light, #a66e7b);
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-size: x-large;
+  color: var(--info-dark_blue);
+  outline: none;
+}
+
+.main .registerContent .registerInput2.rRegisterInput {
+  display: inline-block;
+  margin-left: -30px;
+}
+
+.main .registerContent input[type='date'] {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.main .registerContent select {
+  width: 170%;
+  border-radius: 0%;
+  border: none;
+  font-size: large;
+  color: var(--info-dark_blue);
+  border-bottom: 2px solid #a66e7b;
+  margin-top: 10px;
+  margin-left: -35px;
+}
+
+.main .registerContent .button {
+  width: 80%;
+  height: 60px;
+  border-radius: 4px;
+  background: var(--primary_color-purple, #9a5b69);
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+  border: none;
+  color: var(--primary_color-light, #f4ebeb);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 8px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.main .registerContent .btnBack {
+  margin-top: -20px;
+  margin-left: 45%;
+  margin-bottom: 30px;
+}
+
+.main .registerContent .btnBack a {
+  color: var(--primary_color-purple_light);
+  text-decoration: none;
+}
+
+/* rwd */
+/* .navTabs {
+    width: 80%;
+    margin-bottom: 20px;
+    margin-top: 8%;
+    border-bottom: 5px solid var(--primary_color-light);
+    justify-content: space-around;
+}
+
+.navItem {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24.2px;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    color: var(--primary_color-purple);
+}
+
+.navLink {
+    color: var(--primary_color-purple);
+    border: none;
+    background: none;
+    position: relative;
+    display: inline-block;
+    font-size: large;
+}
+
+.navLink.active {
+    color: var(--primary_color-purple);
+}
+
+.navLink:hover {
+    color: var(--primary_color-purple);
+}
+
+.navLink::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    height: 2px;
+    width: 100%;
+    background-color: transparent;
+    transition: background-color 0.3s;
+    color: var(--primary_color-purple);
+}
+
+.navLink:hover::after,
+.navLink.active::after {
+    background-color: var(--primary_color-purple);
+    width: 165%;
+    height: 5px;
+    left: -35%;
+    bottom: -1px;
+} */
+
+.tabContent {
+    color: var(--primary_color-purple_light, #A66E7B);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1.4px;
+    margin-right: -25px;
+}
+
+.loginContent label {
+    color: var(--primary_color-purple_light, #A66E7B);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+}
+
+.loginContent .loginInput {
+    width: 80%;
+    border: none;
+    border-bottom: 2px solid var(--primary_color-purple_light, #A66E7B);
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: x-large;
+    color: var(--info-dark_blue);
+    outline: none;
+}
+
+.loginContent span {
+    color: var(--info-orange, #FF4F4F);
+    display: block;
+    margin-bottom: 5px;
+}
+
+.loginContent a {
+    color: var(--info-orange, #FF4F4F);
+    text-decoration: none;
+}
+
+.formCheckLabel {
+    font-size: smaller;
+    margin-top: 3px;
+}
+
+.pwdNotice {
+    margin-right: 20%;
+}
+
+.formCheck input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+}
+
+.formCheck input[type="checkbox"]:checked {
+    background-color: #9A5B69;
+    border-color: #ccc;
+}
+
+.formCheck input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background-color: #9A5B69;
+    border-radius: 2px;
+}
+
+.forgetPwd {
+    margin-right: 20%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.noAccount {
+    margin-right: 20%;
+    margin-top: 10px;
+}
+
+.loginButton {
+    width: 80%;
+    height: 60px;
+    border-radius: 4px;
+    background: var(--primary_color-purple, #9A5B69);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+    border: none;
+    color: var(--primary_color-light, #F4EBEB);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 8px;
+    margin-top: 10px;
+}
+
+.fastLogin {
+    width: 80%;
+}
+
+.fastLogin hr {
+    color: var(--text_color-text_primary);
+    border: 0;
+    font-size: 12px;
+    padding: 10px 0;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.fastLogin hr::before {
+    content: "快速登入";
+    position: absolute;
+    padding: 0 10px;
+    line-height: 1px;
+    border: solid var(--text_color-text_primary);
+    border-width: 0 100vw;
+    white-space: nowrap;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.buttonGroup {
+    margin-bottom: 50px;
+}
+
+.buttonGroup button {
+    width: 100%;
+    font-size: 16px;
+    width: 100%;
+  font-size: 16px;
+  white-space: nowrap;
+  height: 60px;
+  border-radius: 4px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+  border: none;
+  color: var(--primary_color-light, #f4ebeb);
+  font-weight: 400;
+  margin-top: 10px;
+}
+
+.googleLogin {
+    width: 100%;
+  font-size: 16px;
+  background-color: var(--primary_color-primary);
+  margin-bottom: 30px;
+  white-space: nowrap;
+  height: 60px;
+  border-radius: 4px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+  border: none;
+  color: var(--primary_color-light, #f4ebeb);
+  font-weight: 400;
+  letter-spacing: 8px;
+  margin-top: 10px;
+}
+
+.googleLogin img,
+.lineLogin img {
+    object-fit: scale-down;
+    width: 10%;
+    height: 100%;
+}
+
+.lineLogin {
+    background-color: #06c755;
+}
+
+/* rwd-register*/
+.registerContent {
+    width: 100%;
+    white-space: nowrap;
+}
+
+.registerContent label {
+    color: var(--primary_color-purple_light, #A66E7B);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    margin-top: 15px;
+}
+
+.registerContent span {
+    color: var(--info-orange, #FF4F4F);
+    display: block;
+    margin-right: 80px;
+    margin-top: 15px;
+}
+
+.registerInput {
+    width: 80%;
+    border: none;
+    border-bottom: 2px solid var(--primary_color-purple_light, #A66E7B);
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: x-large;
+    color: var(--info-dark_blue);
+    outline: none;
+}
+
+.registerInput::placeholder {
+    color: var(--info-dark_blue);
+    font-size: small;
+}
+
+.labelName {
+    margin-right: 35%;
+}
+
+.labelTel {
+    margin-left: -30px;
+}
+
+.labelGender {
+    margin-left: -10px;
+}
+
+.registerInput2 {
+    width: 37%;
+    border: none;
+    border-bottom: 2px solid var(--primary_color-purple_light, #A66E7B);
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: x-large;
+    color: var(--info-dark_blue);
+    outline: none;
+}
+
+.registerInput2.rRegisterInput {
+    display: inline-block;
+    margin-left: -30px;
+}
+
+.registerContent input[type="date"] {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.registerContent select {
+    width: 80%;
+    border-radius: 0%;
+    border: none;
+    font-size: large;
+    color: var(--info-dark_blue);
+    border-bottom: 2px solid #A66E7B;
+    margin-top: 10px;
+    margin-left: -35px;
+}
+
+.registerButton {
+    width: 80%;
+    height: 60px;
+    border-radius: 4px;
+    background: var(--primary_color-purple, #9A5B69);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+    border: none;
+    color: var(--primary_color-light, #F4EBEB);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 8px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.btnBack {
+    margin-top: -20px;
+    margin-left: 45%;
+    margin-bottom: 30px;
+}
+
+.btnBack a {
+    color: var(--primary_color-purple_light);
+    text-decoration: none;
+}
