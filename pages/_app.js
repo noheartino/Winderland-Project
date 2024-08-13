@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 // 這邊可以import大家的css檔
-
+import '@/styles/_member.css'
 
 import { useEffect } from "react";
 
