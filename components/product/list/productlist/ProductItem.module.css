@@ -1,0 +1,42 @@
+@media (max-width: 1920px) {
+    .shop-card {
+        padding-inline: 0;
+        padding-left: 8px;
+        margin-bottom: 40px;
+    }
+
+    .shop-card-photo {
+        width: 100%;
+        height: auto;
+        border: 2px solid #F2E6E6;
+        margin-bottom: 10px;
+    }
+
+    .photo {
+        width: 100%;
+        height: 100%;
+    }
+
+    .shop-card-country {
+        margin-block: 10px;
+    }
+
+    .shop-card-money {
+        display: flex;
+        font-weight: 700;
+    }
+
+    .shop-card-price-sale {
+        margin-left: 5%;
+        color: var(--wine_light);
+        text-decoration: line-through;
+    }
+
+    .shop-card-price {
+        color: var(--orange);
+    }
+}
+
+@media screen and (max-width: 992px) {}
+
+@media screen and (max-width: 767px) {}
