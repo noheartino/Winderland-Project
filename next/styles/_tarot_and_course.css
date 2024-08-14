@@ -10,7 +10,7 @@
     }
   /* ↓ course */
     & .course-homepage-nav {
-        background: linear-gradient(to right, #6F444Ecc, #6F444Ecc), url(./images/slide01.png) center center/cover no-repeat;
+        background: linear-gradient(to right, #6F444Ecc, #6F444Ecc), url(/images/course_and_tarot/slide01.png) center center/cover no-repeat;
         padding-block: 80px;
         & .nav-tag {
             letter-spacing: 7px;
@@ -178,7 +178,7 @@
         }
     }
     & .teacher-detail-banner{
-        background: linear-gradient( rgba(256,256,256,.2), rgba(256,256,256,.2)), url(./images/Rectangle\ 115.png) top center/cover no-repeat;
+        background: linear-gradient( rgba(256,256,256,.2), rgba(256,256,256,.2)), url(/images/course_and_tarot/Rectangle\ 115.png) top center/cover no-repeat;
         height: 650px;
         position: relative;
         &::before{
@@ -265,7 +265,7 @@
         }
     }
     & .tarot-area {
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.00) 37%, rgba(0, 0, 0, 0.00) 67%, rgba(0, 0, 0, 0.60) 100%), url(./images/tarot.jpg) lightgray 50% / cover no-repeat;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.00) 37%, rgba(0, 0, 0, 0.00) 67%, rgba(0, 0, 0, 0.60) 100%), url(/images/course_and_tarot/tarot.jpg) lightgray 50% / cover no-repeat;
         min-height: 75vh;
         overflow-x: hidden;
         overflow-y: hidden;
