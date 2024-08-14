@@ -4,14 +4,15 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import DashboardProfile from '@/components/member/dashboard/profile'
 import DashboardOrder from '@/components/member/dashboard/order'
 import DashboardFavorite from '@/components/member/dashboard/favorite'
+import JSXStyle from 'styled-jsx/style'
 
 export default function MemberIndex() {
   return (
     <>
       {/* nav */}
 
-      <main>
-        <div className="container">
+      <div className='main-m'>
+        <div className="container-m">
           <div className="u-title d-none d-lg-block">會員中心</div>
           <div className="u-title-rwd d-block d-lg-none">會員中心</div>
 
@@ -77,9 +78,30 @@ export default function MemberIndex() {
             </Tabs>
           </div>
         </div>
-      </main>
+      </div>
 
-      {/* footer */}
+      <style jsx>
+        {`
+          * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        text-decoration: none;
+        box-sizing: border-box;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+            font-family: Inter;
+        }
+
+        .noline {
+            outline: none;
+        }
+                `}
+      </style>
+
     </>
   )
 }
