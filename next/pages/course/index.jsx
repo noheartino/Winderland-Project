@@ -10,27 +10,6 @@ export default function Course() {
     name="viewport"
     content="width=device-width, initial-scale=1, shrink-to-fit=no"
   />
-  {/* Bootstrap CSS v5.2.1 */}
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-    crossOrigin="anonymous"
-  />
-  <link rel="stylesheet" href="./style-for-tarot-and-course.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-    crossOrigin="anonymous"
-    referrerPolicy="no-referrer"
-  />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@100..900&display=swap"
-    rel="stylesheet"
-  />
   <div className="course_wrap">
     <header />
     {/* course-nav start */}
@@ -105,11 +84,11 @@ export default function Course() {
                   <strong>我的課程</strong>
                   <div
                     className="d-flex d-md-none ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark align-items-center justify-content-center"
-                    style={{ width: 20, height: 20 }}
+                    style={{ width: '20px', height: '20px' }}
                   >
                     <i
                       className="fa-solid fa-chevron-right text-sec-orange"
-                      style={{ fontSize: 9 }}
+                      style={{ fontSize: '0.562rem' }}
                     />
                   </div>
                 </a>
@@ -141,7 +120,7 @@ export default function Course() {
                   </div>
                   <div className="course-body d-none d-md-block">
                     <span className="underline-tag">實體</span>
-                    <span className="h5 spac-1" style={{ lineHeight: 35 }}>
+                    <span className="h5 spac-1" style={{ lineHeight: '35px' }}>
                       迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                     </span>
                     <div
@@ -151,7 +130,7 @@ export default function Course() {
                       aria-valuenow={75}
                       aria-valuemin={0}
                       aria-valuemax={100}
-                      style={{ height: 5 }}
+                      style={{ height: '5px' }}
                     >
                       <div
                         className="progress-bar bg-sec-blue-dark"
@@ -167,11 +146,11 @@ export default function Course() {
                   <div className="spac-2 text-prim-dark h6">查看更多</div>
                   <div
                     className="ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark d-flex align-items-center justify-content-center"
-                    style={{ width: 20, height: 20 }}
+                    style={{ width: '20px', height: '20px' }}
                   >
                     <i
                       className="fa-solid fa-chevron-right text-sec-orange"
-                      style={{ fontSize: 9 }}
+                      style={{ fontSize: '9px' }}
                     />
                   </div>
                 </a>
@@ -192,11 +171,11 @@ export default function Course() {
                   <strong>我的課程</strong>
                   <div
                     className="d-flex d-md-none ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark align-items-center justify-content-center"
-                    style={{ width: 20, height: 20 }}
+                    style={{ width: '20px', height: '20px' }}
                   >
                     <i
                       className="fa-solid fa-chevron-right text-sec-orange"
-                      style={{ fontSize: 9 }}
+                      style={{ fontSize: '9px' }}
                     />
                   </div>
                 </a>
@@ -228,7 +207,7 @@ export default function Course() {
                   </div>
                   <div className="course-body d-none d-md-block">
                     <span className="online-tag">線上</span>
-                    <span className="h5 spac-1" style={{ lineHeight: 35 }}>
+                    <span className="h5 spac-1" style={{ lineHeight: '35px' }}>
                       迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                     </span>
                   </div>
@@ -240,11 +219,11 @@ export default function Course() {
                   <div className="spac-2 text-prim-dark h6">查看更多</div>
                   <div
                     className="ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark d-flex align-items-center justify-content-center"
-                    style={{ width: 20, height: 20 }}
+                    style={{ width: '20px', height: '20px' }}
                   >
                     <i
                       className="fa-solid fa-chevron-right text-sec-orange"
-                      style={{ fontSize: 9 }}
+                      style={{ fontSize: '9px' }}
                     />
                   </div>
                 </a>
@@ -267,11 +246,11 @@ export default function Course() {
                   <strong>我的課程</strong>
                   <div
                     className="d-flex d-md-none ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark align-items-center justify-content-center"
-                    style={{ width: 20, height: 20 }}
+                    style={{ width: '20px', height: '20px' }}
                   >
                     <i
                       className="fa-solid fa-chevron-right text-sec-orange"
-                      style={{ fontSize: 9 }}
+                      style={{ fontSize: '9px' }}
                     />
                   </div>
                 </a>
@@ -303,7 +282,7 @@ export default function Course() {
                   </div>
                   <div className="course-body d-none d-md-block">
                     <span className="underline-tag">實體</span>
-                    <span className="h5 spac-1" style={{ lineHeight: 35 }}>
+                    <span className="h5 spac-1" style={{ lineHeight: '35px' }}>
                       迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                     </span>
                     <div
@@ -313,7 +292,7 @@ export default function Course() {
                       aria-valuenow={75}
                       aria-valuemin={0}
                       aria-valuemax={100}
-                      style={{ height: 5 }}
+                      style={{ height: '5px' }}
                     >
                       <div
                         className="progress-bar bg-sec-blue-dark"
@@ -329,11 +308,11 @@ export default function Course() {
                   <div className="spac-2 text-prim-dark h6">查看更多</div>
                   <div
                     className="ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark d-flex align-items-center justify-content-center"
-                    style={{ width: 20, height: 20 }}
+                    style={{ width: '20px', height: '20px' }}
                   >
                     <i
                       className="fa-solid fa-chevron-right text-sec-orange"
-                      style={{ fontSize: 9 }}
+                      style={{ fontSize: '9px' }}
                     />
                   </div>
                 </a>
@@ -354,11 +333,11 @@ export default function Course() {
                   <strong>我的課程</strong>
                   <div
                     className="d-flex d-md-none ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark align-items-center justify-content-center"
-                    style={{ width: 20, height: 20 }}
+                    style={{ width: '20px', height: '20px' }}
                   >
                     <i
                       className="fa-solid fa-chevron-right text-sec-orange"
-                      style={{ fontSize: 9 }}
+                      style={{ fontSize: '9px' }}
                     />
                   </div>
                 </a>
@@ -390,7 +369,7 @@ export default function Course() {
                   </div>
                   <div className="course-body d-none d-md-block">
                     <span className="online-tag">線上</span>
-                    <span className="h5 spac-1" style={{ lineHeight: 35 }}>
+                    <span className="h5 spac-1" style={{ lineHeight: '35px' }}>
                       迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                     </span>
                   </div>
@@ -402,11 +381,11 @@ export default function Course() {
                   <div className="spac-2 text-prim-dark h6">查看更多</div>
                   <div
                     className="ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark d-flex align-items-center justify-content-center"
-                    style={{ width: 20, height: 20 }}
+                    style={{ width: '20px', height: '20px' }}
                   >
                     <i
                       className="fa-solid fa-chevron-right text-sec-orange"
-                      style={{ fontSize: 9 }}
+                      style={{ fontSize: '9px' }}
                     />
                   </div>
                 </a>
@@ -458,7 +437,7 @@ export default function Course() {
                     </span>
                     <span
                       className="h5 spac-1 text-justify"
-                      style={{ lineHeight: 35 }}
+                      style={{ lineHeight: '35px' }}
                     >
                       迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                     </span>
@@ -517,7 +496,7 @@ export default function Course() {
                   aria-valuenow={75}
                   aria-valuemin={0}
                   aria-valuemax={100}
-                  style={{ height: 5 }}
+                  style={{ height: '5px' }}
                 >
                   <div
                     className="progress-bar bg-sec-blue-dark"
@@ -549,7 +528,7 @@ export default function Course() {
                     </span>
                     <span
                       className="h5 spac-1 text-justify"
-                      style={{ lineHeight: 35 }}
+                      style={{ lineHeight: '35px' }}
                     >
                       迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                     </span>
@@ -595,7 +574,7 @@ export default function Course() {
                   aria-valuenow={75}
                   aria-valuemin={0}
                   aria-valuemax={100}
-                  style={{ height: 5 }}
+                  style={{ height: '5px' }}
                 >
                   <div
                     className="progress-bar bg-sec-blue-dark"
@@ -671,7 +650,7 @@ export default function Course() {
                   </span>
                   <span
                     className="h5 spac-1 text-justify"
-                    style={{ lineHeight: 35 }}
+                    style={{ lineHeight: '35px' }}
                   >
                     迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                   </span>
@@ -728,7 +707,7 @@ export default function Course() {
                 aria-valuenow={75}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                style={{ height: 5 }}
+                style={{ height: '5px' }}
               >
                 <div
                   className="progress-bar bg-sec-blue-dark"
@@ -760,7 +739,7 @@ export default function Course() {
                   </span>
                   <span
                     className="h5 spac-1 text-justify"
-                    style={{ lineHeight: 35 }}
+                    style={{ lineHeight: '35px' }}
                   >
                     迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                   </span>
@@ -806,7 +785,7 @@ export default function Course() {
                 aria-valuenow={75}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                style={{ height: 5 }}
+                style={{ height: '5px' }}
               >
                 <div
                   className="progress-bar bg-sec-blue-dark"
@@ -841,7 +820,7 @@ export default function Course() {
           <div className="container-fluid p-0 d-none d-md-block">
             <div
               className="row md-screen-show d-none d-md-flex"
-              style={{ paddingBottom: 280 }}
+              style={{ paddingBottom: '280px' }}
             >
               <div className="col-8 px-10px">
                 <div className="course-body d-flex align-items-center w-100">
@@ -877,7 +856,7 @@ export default function Course() {
                         aria-valuenow={0}
                         aria-valuemin={0}
                         aria-valuemax={100}
-                        style={{ height: 5 }}
+                        style={{ height: '5px' }}
                       >
                         <div
                           className="progress-bar bg-sec-blue-dark"
@@ -1007,7 +986,7 @@ export default function Course() {
                         <h1 className="spac-2">4.8</h1>
                         <i
                           className="fa-solid fa-star fa-star-style"
-                          style={{ fontSize: 50, marginBlock: 15 }}
+                          style={{ fontSize: '3.125rem', marginBlock: '15px' }}
                         />
                         <p>教師平均評分</p>
                       </div>
@@ -1080,7 +1059,7 @@ export default function Course() {
                   aria-valuenow={0}
                   aria-valuemin={0}
                   aria-valuemax={100}
-                  style={{ height: 8 }}
+                  style={{ height: '8px' }}
                 >
                   <div
                     className="progress-bar bg-sec-blue-dark"
@@ -1336,7 +1315,7 @@ export default function Course() {
                           </span>
                           <span
                             className="h5 spac-1 text-justify"
-                            style={{ lineHeight: 35 }}
+                            style={{ lineHeight: '35px' }}
                           >
                             迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                           </span>
@@ -1397,7 +1376,7 @@ export default function Course() {
                         aria-valuenow={75}
                         aria-valuemin={0}
                         aria-valuemax={100}
-                        style={{ height: 5 }}
+                        style={{ height: '5px' }}
                       >
                         <div
                           className="progress-bar bg-sec-blue-dark"
@@ -1429,7 +1408,7 @@ export default function Course() {
                           </span>
                           <span
                             className="h5 spac-1 text-justify"
-                            style={{ lineHeight: 35 }}
+                            style={{ lineHeight: '35px' }}
                           >
                             迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                           </span>
@@ -1479,7 +1458,7 @@ export default function Course() {
                         aria-valuenow={75}
                         aria-valuemin={0}
                         aria-valuemax={100}
-                        style={{ height: 5 }}
+                        style={{ height: '5px' }}
                       >
                         <div
                           className="progress-bar bg-sec-blue-dark"
@@ -1502,7 +1481,7 @@ export default function Course() {
       {/* page-nav-bar start */}
       <div
         className="container-fluid p-0"
-        style={{ height: 100, backgroundColor: "pink" }}
+        style={{ height: '100px', backgroundColor: "pink" }}
       >
         <div className="container-sm p-0 pb-3">這邊放page-nav</div>
       </div>
