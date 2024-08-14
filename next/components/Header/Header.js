@@ -55,7 +55,7 @@ export default function Nav() {
 
       const col4_img = document.querySelectorAll('.navShop .col-4 .img')
 
-      const canvas = document.querySelectorAll('.progressCircle')
+      const canvas = document.querySelectorAll('.Header_ProgressCircle')
 
       const slider = document.querySelectorAll('.progressSlider')
 
@@ -263,7 +263,7 @@ export default function Nav() {
                     alt=""
                     width={45}
                   />
-                  <canvas className="progressCircle" width={100} height={100} />
+                  <canvas className="Header_ProgressCircle" width={100} height={100} />
                   <input
                     type="range"
                     className="progressSlider"
@@ -283,7 +283,7 @@ export default function Nav() {
                 <div className="img img2" />
                 <div className="navShopBox_b d-flex align-items-center">
                   <img src="/nav-footer/navarr.png" alt="" width={45} />
-                  <canvas className="progressCircle" width={100} height={100} />
+                  <canvas className="Header_ProgressCircle" width={100} height={100} />
                   <input
                     type="range"
                     className="progressSlider"
@@ -303,7 +303,7 @@ export default function Nav() {
                 <div className="img img3" />
                 <div className="navShopBox_b d-flex align-items-center">
                   <img src="/nav-footer/navarr.png" alt="" width={45} />
-                  <canvas className="progressCircle" width={100} height={100} />
+                  <canvas className="Header_ProgressCircle" width={100} height={100} />
                   <input
                     type="range"
                     className="progressSlider"
