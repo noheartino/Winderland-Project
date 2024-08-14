@@ -1,0 +1,146 @@
+/* cartMoney.module.css */
+.cartMoneyTotal2 {
+    margin: 150px 0 30px 0;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(119, 119, 119, 0.2);
+}
+
+.cartMoneyTotalTitle2 {
+    height: 75px;
+    background-color: #851931;
+    font-size: 20px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+}
+
+.cartMoneyTotalContent2 {
+    padding: 30px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 20px;
+    color: #60464c;
+    background-color: #fcfcfc;
+}
+
+.cartContent2 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cartContentCoupon2 {
+    color: #ff4f4f;
+}
+
+.cartContentTotal1-2 {
+    padding-top: 10px;
+}
+
+.cartContentTotal2 {
+    font-size: 32px;
+    color: #851931;
+}
+
+/* 媒體查詢 */
+@media screen and (max-width: 1200px) and (min-width: 992px) {
+    .cartMoneyTotalTitle2 {
+        font-size: 16px;
+    }
+
+    .cartMoneyTotalContent2 {
+        font-size: 16px;
+    }
+
+    .cartContentTotal2 {
+        font-size: 28px;
+    }
+}
+
+
+/* cartMoney.module.css */
+.cartTotalM2 {
+    width: 100%;
+    background-color: #d4c0c0;
+    height: 150px;
+    padding: 5px;
+    position: fixed; /* 固定在視口 */
+    bottom: 0; /* 在底部 */
+    left: 0;
+    z-index: 1000;
+}
+
+.cartTotalMROW2 {
+    padding-top: 10px;
+    width: 100%;
+}
+
+.cartTotalML2 {
+    padding-top: 15px;
+    padding-left: 30px;
+    font-size: 18px;
+}
+
+.cartTotalML1 {
+    display: flex;
+    justify-content: space-between;
+    color: #60464c;
+    margin: 10px 0;
+}
+
+.cartTotalML2 {
+    display: flex;
+    justify-content: space-between;
+    color: #60464c;
+    margin: 10px 0;
+}
+
+.cartTotalML3 {
+    display: flex;
+    justify-content: space-between;
+    color: #a66e7b;
+    margin: 10px 0;
+}
+
+.cartTotalML3Detail {
+    color: #b99090;
+    font-size: 10px;
+}
+
+.cartTotalMR2 {
+    padding: 0;
+    height: 110px;
+    display: grid;
+    place-items: center;
+}
+
+.cartTotalMRTitle2 {
+    margin-left: -40px;
+    color: #60464c;
+}
+
+.cartTotalMRMoney2 {
+    color: #ff4f4f;
+    font-size: 20px;
+}
+
+.cartTotalMRBTN2 {
+    margin-left: -15px;
+    width: 100px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 1px solid transparent;
+    background-color: #ff4f4f;
+    color: #d4c0c0;
+}
+
+/* 媒體查詢 */
+@media screen and (max-width: 768px) {
+    .cartTotalML2 {
+        font-size: 14px;
+    }
+}
