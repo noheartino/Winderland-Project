@@ -1,53 +1,9 @@
-/* --- 全域css --- */
-:root {
-    --primary_color-primary: #851931;
-    --primary_color-purple: #9A5B69;
-    --primary_color-purple_light: #A66E7B;
-    --primary_color-light: #F4EBEB;
-    --primary_color-wine_light: #D4C0C0;
-
-    --text_color-text_primary: #60464C;
-    --text_color-text_dark: #3F3034;
-
-    --info-orange: #FF4F4F;
-    --info-blue: #A5D1DF;
-    --info-dark_blue: #5B839A;
-
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    text-decoration: none;
-    box-sizing: border-box;
-}
+/* member-css */
 
 
-html {
-    width: 100%;
-    height: 100%;
-    font-family: Inter;
-}
-
-.noline {
-    outline: none;
-}
-
-/* --- nav --- */
-nav {
-    box-sizing: border-box;
-    height: 90px;
-    flex-shrink: 0;
-    background: var(--primary_color-primary);
-
-}
 
 /* --- main --- */
-main {
+.main-m {
     width: 100%;
     height: 100%;
     color: var(--text_color-text_primary, #60464C);
@@ -55,7 +11,7 @@ main {
     font-weight: 400;
     line-height: normal;
 
-    .container {
+    .container-m {
         /* width: 1440px; */
         /* height: 1420px;
         background-color: #fff; */
@@ -2319,8 +2275,3 @@ main {
     }
 }
 
-/* --- footer --- */
-footer {
-
-    background: var(--primary_color-primary);
-}
