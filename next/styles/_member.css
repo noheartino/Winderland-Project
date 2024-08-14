@@ -10,6 +10,7 @@
     font-size: 24px;
     font-weight: 400;
     line-height: normal;
+    
 
     .container-m {
         /* width: 1440px; */
@@ -19,12 +20,13 @@
         /* margin-left: 244px; */
 
         .u-title {
+            /* margin-left: 24%; */
             font-size: 32px;
             font-weight: 700;
             line-height: 38.73px;
             text-align: left;
             color: var(--text_color-text_primary);
-            margin-top: 40px;
+            margin-top: 10%;
             margin-bottom: 30px;
         }
 
@@ -40,70 +42,80 @@
 
     }
 
-
-    .nav-tabs {
-        /* text-align:center;  */
+    #dashboard-tabs{
+        border: none;
         width: 100%;
-        margin-bottom: 20px;
-        margin-top: 8%;
         /* padding: 15px; */
-        border-bottom: 5px solid var(--primary_color-light);
-        justify-content: space-around;
-
-        .nav-item {
-            font-size: 20px;
-            font-weight: 700;
-            line-height: 24.2px;
-            letter-spacing: 0.1em;
-            /* text-align: left; */
-            white-space: nowrap;
-            /* margin-right: 88px; */
-
-        }
-
-        .nav-link {
-
-            color: var(--primary_color-purple) !important;
-            border: none;
-
-            /* 移除预设样式 */
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            border: none;
-            background: none;
-            /* padding: 0.5rem 1rem; */
-            margin: 0;
-            position: relative;
-            display: inline-block;
-            font-size: 1rem;
-
-        }
-
+        justify-content: start;
+        color: var(--purple);
+        border-bottom: 10px solid var(--light);
+        white-space: nowrap;
+    }
+    #dashboard-tabs-rwd{
+        border-bottom: 10px solid var(--light);
         .nav-link::after {
+            width: 100%;
             content: '';
             position: absolute;
-            left: -100px;
-            bottom: -5px;
-            height: 2px;
+            left: 0;
+            bottom: -20px;
+            /* height: 2px; */
             /* width: 120%; */
             background-color: transparent;
             transition: background-color 0.3s;
         }
-
-        .nav-link:hover::after,
-        .nav-link.active::after {
-            border-bottom: 5px solid var(--primary_color-purple);
-            /* width: 190px; */
-            /* height: 5px; 更改底线高度 */
-            left: -100px;
-            /* right: -90px;  */
-
-            width: 300%;
-        }
     }
 
+    .nav-link{
+        /* padding: 15px; */
 
+        /* 移除预设样式 */
+        width: 100%;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border: none;
+        background: none;
+        margin: 0;
+        position: relative;
+        display: inline-block;
+        font-size: 15px;
+        margin-top: 10px;
+      
+        /* border-bottom: 10px solid var(--light); */
+
+        color: var(--purple);
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+    .nav-link::after {
+        
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -10px;
+        /* height: 2px; */
+        /* width: 120%; */
+        background-color: transparent;
+        transition: background-color 0.3s;
+    }
+    .nav-link:hover,
+    .nav-link.active {
+        color: var(--purple); 
+    }
+  
+    .nav-link:hover::after,
+    .nav-link.active::after {
+        color: var(--purple);
+        border-bottom: 10px solid var(--purple);
+        /* width: 190px; */
+        /* height: 5px; 更改底线高度 */
+        /* left: -100px; */
+        /* right: -90px;  */
+
+        width: 100%;
+    }
+  
 
     .nav-tabs-rwd {
         width: 100%;
@@ -172,9 +184,7 @@
 
     }
 
-    .name {
-        /* width: 600px; */
-    }
+   
 
     .userName {
         letter-spacing: 6px;
@@ -1473,58 +1483,6 @@
     }
 }
 
-/* .wpoint-content {
-    width: 1440px;
-
-    .point {
-        width: 70%;
-        color: var(--text_color-text_primary, #60464C);
-        font-size: 48px;
-        font-weight: 700;
-        letter-spacing: 4.8px;
-
-        .point-img {
-            width: 250px;
-            height: 250px;
-            background: url(/img/wpoint.png);
-            background-repeat: no-repeat;
-            background-size: cover;
-            margin-right: 85px;
-        }
-
-        .point-text {
-            margin-top: 45px;
-        }
-
-        span {
-            color: var(--info-orange, #FF4F4F);
-            font-size: 96px;
-            letter-spacing: 9.6px;
-        }
-    }
-
-    .point-detail {
-        color: var(--info-dark_blue, #5B839A);
-        font-size: 20px;
-        font-weight: 400;
-        letter-spacing: 4.8px;
-
-        .membership {
-            width: 130px;
-            height: 50px;
-            border-radius: 13.153px;
-            background: linear-gradient(180deg, #FBE09B 0%, #FFF1CF 47.5%, #E5C369 100%);
-            color: var(--text_color-text_primary, #60464C);
-            font-size: 20px;
-            letter-spacing: 2px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-left: 140px;
-        }
-    }
-
-} */
 
 .favorite-content {
     /* width: 1440px; */

@@ -4,24 +4,28 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import DashboardProfile from '@/components/member/dashboard/profile'
 import DashboardOrder from '@/components/member/dashboard/order'
 import DashboardFavorite from '@/components/member/dashboard/favorite'
-import JSXStyle from 'styled-jsx/style'
+import DashboardTitle from '@/components/member/dashboard/dashboardTitle'
+import Nav from '@/components/Header/Header'
 
 export default function MemberIndex() {
   return (
     <>
       {/* nav */}
+      <Nav />
 
-      <div className='main-m'>
+      {/* main */}
+      <div className='main-m '>
         <div className="container-m">
-          <div className="u-title d-none d-lg-block">會員中心</div>
-          <div className="u-title-rwd d-block d-lg-none">會員中心</div>
+          {/* <div className="u-title d-none d-lg-block">會員中心</div>
+          <div className="u-title-rwd d-block d-lg-none">會員中心</div> */}
+          <DashboardTitle />
 
           {/* desk */}
           <div>
             <Tabs
               defaultActiveKey="dashboard"
               id="dashboard-tabs"
-              className="mb-3 nav-tabs d-lg-flex d-none d-lg-block"
+              className="mb-3 d-lg-flex d-none d-lg-block container"
             >
               <Tab eventKey="profile" title="個人資料">
                 {/* tab內容 */}
@@ -29,6 +33,7 @@ export default function MemberIndex() {
                   <DashboardProfile />
                 </div>
               </Tab>
+
               <Tab eventKey="order" title="訂單查詢">
                 {/* tab內容 */}
                 <div className="tab-pane active order-content">
@@ -51,18 +56,18 @@ export default function MemberIndex() {
           <div>
             <Tabs
               defaultActiveKey="dashboard"
-              id="dashboard-tabs"
+              id="dashboard-tabs-rwd"
               className="mb-3 nav-rwd nav-tabs-rwd d-flex d-block d-lg-none"
             >
               <Tab eventKey="profile" title="個人資料">
                 {/* tab內容 */}
-                <div className="tab-pane active account-content">
+                <div className="tab-pane  account-content">
                   <DashboardProfile />
                 </div>
               </Tab>
               <Tab eventKey="order" title="訂單查詢">
                 {/* tab內容 */}
-                <div className="tab-pane active order-content">
+                <div className="tab-pane  order-content">
                   <DashboardOrder />
                 </div>
               </Tab>
@@ -71,7 +76,7 @@ export default function MemberIndex() {
               </Tab>
               <Tab eventKey="favorite" title="經典收藏">
                 {/* tab內容 */}
-                <div className="tab-pane active favorite-content">
+                <div className="tab-pane  favorite-content">
                   <DashboardFavorite />
                 </div>
               </Tab>
@@ -80,6 +85,7 @@ export default function MemberIndex() {
         </div>
       </div>
 
+      {/* footer */}
       <style jsx>
         {`
           * {
