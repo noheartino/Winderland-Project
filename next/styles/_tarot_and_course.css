@@ -1,0 +1,663 @@
+html{
+    min-width: 390px;
+  /* ↓ 全域顏色變數 */
+    --primary: #851931;
+    --wine: #BA435D;
+    --purple: #9A5B69;
+    --course_purple_light: #A66E7B;
+    --wine_light: #D4C0C0;
+    --light: #F4EBEB;
+    --text_primary: #60464C;
+    --text_dark: #3F3034;
+    --text_gray: #6A6A6A;
+    --orange: #FF4F4F;
+    --yellow: #FFF177;
+    --blue: #A5D1DF;
+    --blue_dark: #5B839A;
+    --green: #9CD8D5;
+    --green_dark: #619C91;
+  /* ↑ 全域顏色變數 */
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  /* ↓ 預設字 (1rem規範) */
+    color: var(--text_dark);
+    font-size: 16px;
+    font-family: Noto Sans HK, sans-serif;
+  /* font-family: Inter; */
+    font-weight: 300;
+    text-decoration: none;
+    /* ↑ 預設字 */
+}
+@media screen and (max-width: 768px) {
+    html{
+        font-size: 10px;
+    }
+    
+}
+html>*{
+    list-style: none;
+    border: none;
+    & h1, & h2, & h3, & h4, & h5, & h6, & p, & .h1, & .h2, & .h3, & .h4, & .h5, & .h6, & .p{
+        font-weight: 400;
+        margin: 0;
+        padding: 0;
+        color: var(--text_dark);
+    }
+    & button, & .btn, & .btn:active{
+        display: inline-block;
+        background-color: transparent;
+        width: auto;
+        border: none;
+    }
+}
+
+.course_wrap, .tarot_wrap{
+    --course_purple_light: #db738a;
+    --course_yellow_hover: #ffc831;
+    --course_gray_more_light: #F7F9F9;
+    --text_gray_light: #CBCBCB;
+    --tarot_white_hover: #dddddd;
+    & .caontainer-fluid, & .container-sm, & .container-md, & .container-lg, & .container-xl, & .container-xxl{
+        padding: 0;
+    }
+  /* ↓ course */
+    & .course-homepage-nav {
+        background: linear-gradient(to right, #6F444Ecc, #6F444Ecc), url(./images/slide01.png) center center/cover no-repeat;
+        padding-block: 80px;
+        & .nav-tag {
+            letter-spacing: 7px;
+            color: #ffffff;
+            margin-inline: 17px;
+            margin-block: 8px;
+            text-decoration: none;
+            text-wrap: nowrap;
+            text-align: center;
+        }
+    }
+    & .favorite-and-mycourse-area{
+        margin-bottom: 80px;
+    }
+    @media screen and (max-width: 768px) {
+        & .favorite-and-mycourse-area{
+            margin-bottom: 5px;
+        }
+    }
+    & .course-search-input{
+        text-align: left;
+        color: var(--course_purple_light);
+        padding-inline: 20px;
+        width: 35%;
+        &::placeholder {
+            color: var(--course_purple_light);
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+    };
+    @media screen and (max-width: 768px){
+        & .course-search-input{
+            text-align: center;
+            color: var(--text_gray_light);
+            width: 300px;
+            &::placeholder {
+                color: var(--text_gray_light);
+                font-size: 0.9rem;
+                letter-spacing: 2px;
+            }
+        }
+    }
+    & .course-card-header{
+        padding: 45px 0 45px 0;
+    }
+    @media screen and (max-width: 768px){
+        & .course-card-header{
+            padding: 30px 0 30px 0;
+        }
+    }
+    & .course-card-header-page2{
+        padding: 20px 0 20px 0;
+    }
+    @media screen and (max-width: 768px){
+        & .course-card-header-page2{
+            padding: 10px 0 10px 0;
+        }
+    }
+    & .course-video-video{
+        border-radius: 0.5rem;
+        margin: 0 0 20px 0;
+    }
+    @media screen and (max-width: 768px){
+        & .course-video-video{
+            border-radius: 0.35rem;
+            margin: 0 0 0 0;
+        }
+        & .rounded-md-0{
+            border-radius: 0;
+        }
+    }
+    & .fa-star-style {
+        color: var(--yellow);
+        font-size: 18px;
+        margin-right: 5px;
+    }
+    & .course-mycourse{
+        & .course-more, & .course-no-content{
+            background: linear-gradient(to bottom, var(--course_gray_more_light) 0%, var(--green) 50%, var(--green_dark) 100%);
+        }
+    }
+    & .course-mycourse-box{
+        padding: 0 0 24px 0;
+    }
+    @media screen and (max-width: 768px) {
+        & .course-mycourse-box{
+            padding: 0 0 0 0;
+        } 
+    }
+    & .course-myfavorite-course{
+        & .course-more, & .course-no-content{
+            background: linear-gradient(to bottom, var(--course_gray_more_light) 0%, var(--blue) 50%, var(--blue_dark) 100%);
+        }
+    }
+    & .card-md-body{
+        padding: 0 0 0 0;
+    }
+    @media screen and (max-width: 768px){
+        & .card-md-body{
+            padding: 0 0 0 10px;
+        }
+    }
+    & .online-tag{
+        padding: 3px 11px;
+        background-color: var(--blue);
+        color: var(--blue_dark);
+        border-radius: 8px;
+        letter-spacing: 2px;
+        margin-right: 8px;
+    }
+    & .underline-tag{
+        padding: 3px 11px;
+        background-color: var(--green);
+        color: var(--green_dark);
+        border-radius: 8px;
+        letter-spacing: 2px;
+        margin-right: 8px;
+    }
+    & .course-detail-player{
+        font-size: 5.31rem;
+    }
+    & .teacher-head{
+        width: 200px;
+        height: 200px;
+    }
+    @media screen and (max-width: 768px){
+        & .course-detail-player{
+            font-size: 3.51rem;
+        }
+        & .teacher-head{
+            width: 115px;
+            height: 115px;
+        }
+    }
+    & .teacher-head{
+        border-radius: 50%;
+        overflow: hidden;
+        & img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+        }
+    }
+    & .fourth-page-wrap{
+        background-color: var(--light);
+    }
+    & .teacher-intro-card-text{
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        line-clamp: 4;
+        -webkit-line-clamp: 4;
+    }
+    & .teacher-detail-head{
+        border-radius: 50%;
+        overflow: hidden;
+        width: 200px;
+        height: 200px;
+        & img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+        }
+    }
+    & .teacher-detail-banner{
+        background: linear-gradient( rgba(256,256,256,.2), rgba(256,256,256,.2)), url(./images/Rectangle\ 115.png) top center/cover no-repeat;
+        height: 650px;
+        position: relative;
+        &::before{
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(256, 256, 256, .1);
+        }
+    }
+    & .teacher-detail-contentBox-margin-minus-control{
+        margin-top: -100px;
+    }
+    & .teacher-detail-content-box{
+        background-color: #ffffff;
+        padding: 50px 75px;
+    }
+    & .teacher-detail-suggest-course{
+        padding: 25px 75px;
+    }
+    @media screen and (max-width: 768px) {
+        & .fourth-page-wrap{
+            background-color: transparent;
+        }
+        & .teacher-detail-head{
+            width: 100px;
+            height: 100px;
+        }
+        & .teacher-detail-banner{
+            height: 250px;
+            position: relative;
+            &::before{
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(256, 256, 256, .1);
+            }
+        }
+        & .teacher-detail-content-box{
+            background-color: transparent;
+            padding: 20px 15px;
+        }
+        & .teacher-detail-contentBox-margin-minus-control{
+            margin-top: 0px;
+        }
+        & .teacher-detail-suggest-course{
+            padding: 10px 10px;
+        }
+    }
+    & .course-detail-content-text{
+        padding: 300px 0 150px 0;
+        background-color: var(--light);
+    }
+    & .course-detail-content-text-widthControl{
+        width: 80%;
+    }
+    @media screen and (max-width: 768px) {
+        & .course-detail-content-text{
+            padding: 30px 10px 150px 10px;
+            background-color: transparent;
+        }
+        & .course-detail-content-text-widthControl{
+            width: 100%;
+        }
+    }
+  /* ↑ course */
+  /* ↓ tarot */
+    & .tarot-quest-area {
+        color: var(--text_dark);
+        & #tarot-quest-inner {
+            width: 840px;
+            height: fit-content;
+            border: 13px solid #ffffff;
+            box-shadow: 0 0 0 4px var(--text_dark) inset;
+            & #tarot-quest-label {
+                top: -10px;
+                left: 64px;
+            }
+        }
+    }
+    & .tarot-area {
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.60) 0%, rgba(0, 0, 0, 0.00) 37%, rgba(0, 0, 0, 0.00) 67%, rgba(0, 0, 0, 0.60) 100%), url(./images/tarot.jpg) lightgray 50% / cover no-repeat;
+        min-height: 75vh;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        & .tarot_card_back {
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.50);
+            cursor: pointer;
+            transition: .5s;
+            height: 412px;
+            width: 218px;
+        }
+        & .result-tarot-area{
+            column-gap: 40px;
+            height: 500px;
+        }
+        & .card-3-test{
+            bottom: -150px;
+            left: calc(50vw - 116px);
+            transform: rotate(5deg) translateX(20px) translateY(20px);
+        }
+        & .tarot_card_front {
+            overflow: hidden;
+            border-radius: 15px;
+            background-color: white;
+            padding: 7px;
+            box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.50);
+        }
+        & .tarot_card_div {
+            width: fit-content;
+            position: relative;
+            padding: 0;
+            margin: 0;
+            & img {
+                position: relative;
+                z-index: 0;
+            }
+            &.card_active {
+                & img {
+                    height: 412px;
+                    width: 218px;
+                    transform: scale(106%);
+                    transform-origin: top center;
+                }
+            }
+            &.card_unactive {
+                padding: 0;
+                margin: 15px 0 0 0;
+                & img {
+                    height: 412px;
+                    width: 218px;
+                }
+    
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.5);
+                    z-index: 999;
+                    border-radius: 15px;
+                }
+            }
+        }
+    }
+    & .result-card{
+        background-color: white;
+        box-shadow: 2px 5px 12px rgba(0, 0, 0, 0.50);
+    }
+    & .tarot-anlz-area {
+        & .result_cardfront_md {
+            max-width: 135px;
+            max-height: 254px;
+            & img {
+                width: 100%;
+                object-fit: contain;
+                background-color: white;
+                border-radius: 10px;
+                padding: 5px;
+                box-shadow: 2px 5px 12px rgba(0, 0, 0, 0.50);
+            }
+        }
+        & .result_cardfront_lg {
+            max-width: 233px;
+            max-height: 440px;
+            & img {
+                width: 100%;
+                object-fit: contain;
+                background-color: white;
+                border-radius: 10px;
+                padding: 5px;
+                box-shadow: 2px 5px 12px rgba(0, 0, 0, 0.50);
+            }
+        }   
+    }
+    & .result2-img-area{
+        height: 280px;
+        & img{
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+    & .result2-text-area{
+        & p, & h4{
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            line-clamp: 1;
+            -webkit-line-clamp: 1;
+        }
+    }
+  /* ↑ tarot */
+    /* ↓ course & tarot 通用 */
+    & .absolute-t0-l0{
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    & h7, & .h7{
+        font-size: 0.8rem;
+    }
+    & .row{
+        margin: 0;
+        padding: 0;
+    }
+    & a, & a:active, & a:visited{
+        color: var(--text_dark);
+        text-decoration: none;
+    }
+    & header{
+        height: 100px;
+        background-color: #57021e;
+    }
+    & footer{
+        height: 300px;
+        background-color: #57021e;
+    }
+    & .w-80{
+        width: 80%;
+    }
+    & .fw-thin{
+        font-weight: 300;
+    }
+    & .text-justify{
+        text-align: justify;
+    }
+    & .spac-1 {
+        letter-spacing: 0.125rem;
+    }
+    & .spac-2 {
+        letter-spacing: 0.215rem;
+    }
+    & .spac-3 {
+        letter-spacing: 0.45rem;
+    }
+    & .spac-4 {
+        letter-spacing: 0.9rem;
+    }
+    & .spac-5 {
+        letter-spacing: 1.88rem;
+    }
+    & .btn-sec-y {
+        background-color: var(--yellow);
+        color: var(--text_dark) !important;
+        &:hover {
+            background-color: var(--course_yellow_hover) !important;
+        }
+    }
+    & .btn-sec-orange {
+        background-color: var(--orange);
+        color: var(--light) !important;
+        &:hover {
+            background-color: var(--course_yellow_hover);
+            color: #ffffff !important;
+        }
+    }
+    & .btn-prim-wine {
+        background-color: var(--primary);
+        color: var(--light) !important;
+        &:hover {
+            background-color: var(--light);
+            color: var(--primary) !important;
+        }
+    }
+    & .btn-light-to-prim {
+        background-color: var(--light);
+        color: var(--primary) !important;
+        &:hover {
+            background-color: var(--primary);
+            color: var(--light) !important;
+        }
+    }
+    & .btn-prim-prim {
+        background-color: var(--primary);
+        color: #ffffff !important;
+        &:hover {
+            background-color: var(--course_purple_light);
+            color: #ffffff !important;
+        }
+    }
+    & .btn-sec-blue {
+        background-color: var(--blue);
+        color: var(--text_dark) !important;
+        &:hover {
+            background-color: var(--blue_dark);
+            color: #ffffff !important;
+        }
+    }
+    & .btn-white {
+        background-color: #ffffff;
+        color: var(--text_dark) !important;
+        &:hover {
+            background-color: var(--light);
+        }
+    }
+    & .btn-white-to-wine{
+        background-color: #ffffff;
+        color: var(--wine) !important;
+        &:hover {
+            background-color: var(--wine) !important;
+            color: #ffffff !important;
+        }
+    }
+    & .bg-prim {
+        background-color: var(--primary);
+    }
+    & .bg-prim-wine {
+        background-color: var(--wine);
+    }
+    & .bg-text-dark {
+        background-color: var(--text_dark);
+    }
+    & .bg-sec-yellow {
+        background-color: var(--yellow);
+    }
+    
+    & .bg-sec-blue {
+        background-color: var(--blue)
+    }
+    
+    & .bg-sec-blue-dark {
+        background-color: var(--blue_dark);
+    }
+    
+    & .bg-prim-light, &.bg-prim-light{
+        background-color: var(--light);
+    }
+    & .bg-light-gray{
+        background-color: var(--course_gray_more_light);
+    }
+    & .text-prim-dark {
+        color: var(--text_dark);
+    }
+    & .text-prim-wine {
+        color: var(--wine);
+    }
+    & .text-gray {
+        color: var(--text_gray_light);
+    }
+    & .text-sec-dark-blue {
+        color: var(--blue_dark);
+    }
+    & .text-sec-blue {
+        color: var(--blue);
+    }
+    & .text-prim-text-prim {
+        color: var(--text_primary);
+    }
+    & .text-sec-orange{
+        color: var(--orange);
+    }
+    & .border-gray {
+        border-color: var(--text_gray_light);
+    }
+    & .border-prim-dark{
+        border-color: var(--text_dark);
+    }
+    & .w-30 {
+        width: 30%;
+    }
+    & .w-40{
+        width: 40%;
+    }
+    & .w-60{
+        width: 60%;
+    }
+    .w-for-tarot-result{
+        width: 40%;
+    }
+    @media screen and (max-width: 768px){
+        .w-for-tarot-result{
+            width: 100%;
+        }
+    }
+    & .emmit1 {
+        font-size: 0.8rem;
+    }
+    & .emmit2 {
+        font-size: 0.6rem;
+    }
+    & .px-10px{
+        padding-inline: 10px;
+    }
+    & .px-20px{
+        padding-inline: 20px;
+    }
+    & .lh-15{
+        line-height: 1.5em;
+    }
+    & .lh-20{
+        line-height: 2em;
+    }
+    & .lh-25{
+        line-height: 2.5em;
+    }
+    & .text-justify{
+        text-align: justify;
+    }
+    & img.w100-y100 {
+        width: 100%;
+        height: 100%;
+    }
+    & .course-img21 {
+        aspect-ratio: 2/1;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    @media screen and (max-width: 768px) {
+        & .course-img21 {
+            aspect-ratio: 4/3;
+        } 
+    }
+  /* ↑ course & tarot 通用 */
+}
+
+/* 預設-sm(可以不要有sm)-md-lg(可以不要有lg) */
+/* 0px > 395px > 768px > 995px */
