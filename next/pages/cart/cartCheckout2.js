@@ -14,7 +14,7 @@ import CartMoneyM from "@/components/cart/cart1/cartMoneyM";
 export default function CartCheckout2() {
   return (
     <>
-      <title>Cart2</title>
+      <title>Cart3</title>
       {/* Required meta tags */}
       <meta charSet="utf-8" />
       <meta
