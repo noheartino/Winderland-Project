@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import ArticleSearchbar from "@/components/article/article-searchbar";
 import ArticleSortdropdown from "@/components/article/article-sortdropdown";
@@ -8,6 +9,7 @@ import ArticleList from "@/components/article/article-list";
 import ArticlePagination from "@/components/article/article-pagination";
 
 export default function Index() {
+
   return (
     <>
       <title>Title</title>

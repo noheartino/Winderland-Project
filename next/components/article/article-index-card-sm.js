@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 
-export default function ArticleIndexCard({ article }) {
+export default function ArticleIndexCardSm({ article }) {
   const router = useRouter();
   const handleClick = () => {
     if (article && article.id) {
@@ -11,7 +11,7 @@ export default function ArticleIndexCard({ article }) {
 
   return (
     <>
-      <div className="col-12 col-lg-12">
+      <div className="col-12 col-lg-6">
         <div className="a-box">
           <div className="a-box-img">
             <img src="./images/article/content-pic.jpeg" alt="" />

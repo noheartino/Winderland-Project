@@ -1,8 +1,34 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import ArticleSidebar from "@/components/article/article-sidebar";
-import ArticleCard from "@/components/article/article-index-card";
+import ArticleIndexCard from "@/components/article/article-index-card";
+import ArticleIndexCardSm from "./article-index-card-sm";
 
-export default function ArticleList() {
+export default function ArticleIndexList() {
+  const [articles, setArticles] = useState([]);
+  const [firstTwoArticles, setFirstTwoArticles] = useState([]);
+  const [remainArticles, setRemainArticles] = useState([]);
+
+  useEffect(() => {
+    // 當組件掛載時執行 fetch 請求
+    fetch("http://localhost:3005/api/article")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setArticles(data);
+        setFirstTwoArticles(data.slice(0, 2));
+        setRemainArticles(data.slice(2));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  console.log(firstTwoArticles);
+
   return (
     <>
       {/* 側邊欄 */}
@@ -12,7 +38,7 @@ export default function ArticleList() {
         {/* 文章頭條 */}
         <div className="col-9 col-lg-8">
           <div className="a-title">
-            <h3>一分鐘認識橡木桶：增添葡萄酒香氣的幕後功臣</h3>
+            <h3>aaa</h3>
           </div>
         </div>
         {/* 收藏 */}
@@ -24,15 +50,22 @@ export default function ArticleList() {
           </div>
         </div>
         {/* 文章區塊大 */}
-        <ArticleCard />
-        <ArticleCard />
+          {firstTwoArticles.length > 0 ? (
+            firstTwoArticles.map((article) => (
+              <ArticleIndexCard key={article.id} article={article} />
+            ))
+          ) : (
+            <p>沒有可顯示的文章</p>
+          )}
+
         {/* 文章區塊小 */}
-        <div className="col-12 col-lg-6">
-          <ArticleCard />
-        </div>
-        <div className="col-12 col-lg-6">
-          <ArticleCard />
-        </div>
+        {remainArticles.length > 0 ? (
+            remainArticles.map((article) => (
+              <ArticleIndexCardSm key={article.id} article={article} />
+            ))
+          ) : (
+            <p>沒有可顯示的文章</p>
+          )}
       </div>
     </>
   );
