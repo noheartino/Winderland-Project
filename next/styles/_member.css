@@ -204,7 +204,7 @@
         width: 115px;
         height: 115px;
         border-radius: 115px;
-        background: url(/public/images/member/user.jpg) lightgray 50% / cover no-repeat;
+        background: url(/images/member/user.jpg) lightgray 50% / cover no-repeat;
     }
 
     .membership {
@@ -431,7 +431,7 @@
         width: 115px;
         height: 115px;
         border-radius: 115px;
-        background: url(/public/images/member/user.jpg) lightgray 50% / cover no-repeat;
+        background: url(/images/member/user.jpg) lightgray 50% / cover no-repeat;
         position: relative;
         left: 20%;
         /* top: 90%; */
@@ -632,7 +632,7 @@
             width: 18%;
             height: 150px;
             border: 1px solid var(--primary_color-wine_light, #D4C0C0);
-            background: url(/public/images/member/order-p1.png);
+            background: url(/images/member/order-p1.png);
             background-repeat: no-repeat;
             background-size: cover;
         }
@@ -763,7 +763,7 @@
                         min-width: 150px;
                         min-height: 150px;
                         border: 1px solid var(--primary_color-wine_light, #D4C0C0);
-                        background: url(/public/images/member/order-p1.png);
+                        background: url(/images/member/order-p1.png);
                         background-repeat: no-repeat;
                         background-size: cover;
                     }
@@ -859,7 +859,7 @@
                     .point-img {
                         min-width: 72px;
                         min-height: 72px;
-                        background: url(/public/images/member/wpoint-used.jpg);
+                        background: url(/images/member/wpoint-used.jpg);
                         background-repeat: no-repeat;
                         background-size: cover;
                         margin-left: 70%;
@@ -897,7 +897,7 @@
                     .point-img {
                         width: 72px;
                         height: 72px;
-                        background: url(/public/images/member/wpoint.png);
+                        background: url(/images/member/wpoint.png);
                         background-repeat: no-repeat;
                         background-size: cover;
                         margin-left: 50px;
@@ -1169,7 +1169,7 @@
             width: 97px;
             height: 97px;
             border: 1px solid var(--primary_color-wine_light, #D4C0C0);
-            background: url(/public/images/member/order-p1.png);
+            background: url(/images/member/order-p1.png);
             background-repeat: no-repeat;
             background-size: cover;
             position: absolute;
@@ -1434,7 +1434,7 @@
         .point-img {
             width: 250px;
             height: 250px;
-            background: url(/public/images/member/wpoint.png);
+            background: url(/images/member/wpoint.png);
             background-repeat: no-repeat;
             background-size: cover;
             margin-right: 85px;
@@ -1623,7 +1623,7 @@
                     width: 100%;
                     height: 269px;
                     border: 1.192px solid #F2E6E6;
-                    background: url(/public/images/member/fav-p1.jpg) lightgray 50% / cover no-repeat;
+                    background: url(/images/member/fav-p1.jpg) lightgray 50% / cover no-repeat;
                     margin-bottom: 10px;
                     position: relative;
 
@@ -1658,7 +1658,7 @@
                     width: 100%;
                     height: 165.197px;
                     border-radius: 4.747px;
-                    background: url(/public/images/member/fav-c1.jpg) lightgray 50% / cover no-repeat;
+                    background: url(/images/member/fav-c1.jpg) lightgray 50% / cover no-repeat;
                     position: relative;
 
                     .svg-bookmark {
@@ -1767,7 +1767,7 @@
                     /* 268px */
                     height: 138px;
                     border-radius: 4.75px;
-                    background: url(/public/images/member/fav-a1.jpeg) lightgray 50% / cover no-repeat;
+                    background: url(/images/member/fav-a1.jpeg) lightgray 50% / cover no-repeat;
                     position: relative;
 
                     .svg-bookmark {
@@ -1956,7 +1956,7 @@
             width: 97px;
             height: 97px;
             border: 1px solid var(--primary_color-wine_light, #D4C0C0);
-            background: url(/public/images/member/order-p1.png);
+            background: url(/images/member/order-p1.png);
             background-repeat: no-repeat;
             background-size: cover;
             position: absolute;
@@ -2071,7 +2071,7 @@
                     width: 173.022px;
                     height: 173.022px;
                     border: 1.192px solid #F2E6E6;
-                    background: url(/public/images/member/fav-p1.jpg) lightgray 50% / cover no-repeat;
+                    background: url(/images/member/fav-p1.jpg) lightgray 50% / cover no-repeat;
                     margin-bottom: 5px;
                     /* margin-left: 5px; */
                     position: relative;
@@ -2115,7 +2115,7 @@
                     width: 55%;
                     height: 105px;
                     border-radius: 5.947px;
-                    background: url(/public/images/member/fav-c1.jpg) lightgray 50% / cover no-repeat;
+                    background: url(/images/member/fav-c1.jpg) lightgray 50% / cover no-repeat;
                     position: relative;
 
                     /* .svg-bookmark {
@@ -2227,7 +2227,7 @@
                 .favorite-a-img {
                     width: 90%;
                     height: 100%;
-                    background: url(/public/images/member/fav-a1.jpeg) lightgray 50% / cover no-repeat;
+                    background: url(/images/member/fav-a1.jpeg) lightgray 50% / cover no-repeat;
                 }
 
                 .favorite-a-detail {

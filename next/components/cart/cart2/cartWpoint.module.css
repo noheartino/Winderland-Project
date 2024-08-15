@@ -1,0 +1,124 @@
+/* cartWpoint.module.css */
+.wPointContent {
+    width: 100%;
+    max-width: 720px;
+    background-color: #fcfcfc;
+    padding: 50px 0 50px 30px;
+    display: flex;
+}
+
+.wPointContent img {
+    width: 100%;
+    max-width: 110px;
+}
+
+.wPointContent1 {
+    padding: 0 20px;
+}
+
+.wPointContent2 {
+    padding-top: 10px;
+    color: #60464c;
+    font-size: 20px;
+}
+
+.wPointContentHave {
+    color: #ff4f4f;
+    font-size: 40px;
+}
+
+.wPointContent3 {
+    padding: 5px 0 10px 0;
+    color: #60464c;
+    font-size: 16px;
+}
+
+.wPointContentUse {
+    color: #ff4f4f;
+    font-size: 40px;
+}
+
+.wPointContentUse input {
+    width: 100%;
+    max-width: 190px;
+    font-size: 32px;
+    padding-left: 7px;
+    margin-right: 15px;
+    border: 2px solid #ff4f4f;
+    border-radius: 8px;
+    color: #ff4f4f;
+}
+
+.wPointContentUse input:focus {
+    outline: none;
+    border-color: #ff4f4f;
+    color: #ff4f4f;
+}
+
+.wPointContent1M {
+    padding: 30px 20px;
+    display: flex;
+}
+
+.wPointContent3M {
+    padding: 10px 20px 10px;
+    color: #60464c;
+    font-size: 16px;
+    display: grid;
+    place-items: center;
+}
+
+.wPointContentUseM {
+    color: #ff4f4f;
+    font-size: 40px;
+}
+
+.wPointContentUseM input {
+    width: 100%;
+    max-width: 190px;
+    font-size: 32px;
+    padding-left: 7px;
+    margin-right: 15px;
+    border: 2px solid #ff4f4f;
+    border-radius: 8px;
+    color: #ff4f4f;
+}
+
+.wPointContentUseM input:focus {
+    outline: none;
+    border-color: #ff4f4f;
+    color: #ff4f4f;
+}
+
+/* 媒體查詢 */
+@media screen and (max-width: 430px) {
+    .wPointContent {
+        padding: 20px 0 20px 30px;
+        width: 100%;
+        background-color: transparent;
+    }
+
+    .wPointContent img {
+        width: 100%;
+        max-width: 80px;
+    }
+
+    .wPointContentHave {
+        font-size: 28px;
+    }
+
+    .wPointContentUseM {
+        font-size: 40px;
+    }
+
+    .wPointContentUseM input {
+        width: 100%;
+        max-width: 120px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .wPointContentUseM {
+        font-size: 40px;
+    }
+}
