@@ -112,6 +112,7 @@ export default function CartCheckout3() {
             </div>
             <CartMoneyTotal />
             <CartPayDividend />
+            <div style={{ height: "150px" }}></div> {/* 占位元素 */}
           </div>
         </main>
       </>

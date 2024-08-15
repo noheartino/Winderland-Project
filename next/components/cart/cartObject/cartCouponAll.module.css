@@ -1,0 +1,36 @@
+/* src/components/cart/cartObject/cartCouponAll.module.css */
+
+.modalOverlay {
+    position: fixed; /* 浮動於頁面上 */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7); /* 灰色背景，帶有透明度 */
+    display: flex; /* 使用 flex 排版 */
+    justify-content: center; /* 水平置中 */
+    align-items: center; /* 垂直置中 */
+    z-index: 1000; /* 確保彈跳視窗在其他內容之上 */
+  }
+  
+  .modalContent {
+    background: #EFEFEF; /* 彈跳視窗的背景顏色 */
+    padding: 20px;
+    border-radius: 5px;
+    position: relative;
+    width: 600px; /* 彈跳視窗的寬度 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 陰影效果 */
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer; /* 鼠標懸停時變成手指 */
+  }
+  
