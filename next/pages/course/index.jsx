@@ -441,7 +441,7 @@ export default function CourseIndex() {
                   href="/"
                   className="col-12 col-md-4 col-lg-3 course-mycourse px-10px d-flex flex-column align-items-center"
                 >
-                  <div className="row px-0 m-0 flex-row flex-md-column">
+                  <div className="row px-0 m-0 flex-row flex-md-column w-100">
                     <div className="col-4 col-md-12 px-0">
                       <div className="course-video-video overflow-hidden">
                         <img
@@ -534,7 +534,7 @@ export default function CourseIndex() {
                   href="/"
                   className="col-12 col-md-4 col-lg-3 course-mycourse px-10px d-flex flex-column align-items-center"
                 >
-                  <div className="row px-0 m-0 flex-row flex-md-column">
+                  <div className="row px-0 m-0 flex-row flex-md-column w-100">
                     <div className="col-4 col-md-12 px-0">
                       <div className="course-video-video overflow-hidden">
                         <img
@@ -661,7 +661,7 @@ export default function CourseIndex() {
                 href="/"
                 className="col-12 col-md-4 col-lg-3 course-mycourse px-10px d-flex flex-column align-items-center"
               >
-                <div className="row px-0 m-0 flex-row flex-md-column">
+                <div className="row px-0 m-0 flex-row flex-md-column w-100">
                   <div className="col-4 col-md-12 px-0">
                     <div className="course-video-video overflow-hidden">
                       <img
@@ -754,7 +754,7 @@ export default function CourseIndex() {
                 href=""
                 className="col-12 col-md-4 col-lg-3 course-mycourse px-10px d-flex flex-column align-items-center"
               >
-                <div className="row px-0 m-0 flex-row flex-md-column">
+                <div className="row px-0 m-0 flex-row flex-md-column w-100">
                   <div className="col-4 col-md-12 px-0">
                     <div className="course-video-video overflow-hidden">
                       <img

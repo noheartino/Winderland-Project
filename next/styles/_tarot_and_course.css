@@ -81,8 +81,8 @@
     }
     & .fa-star-style {
         color: var(--yellow);
-        font-size: 18px;
-        margin-right: 5px;
+        font-size: 1.12rem;
+        margin-right: 0.3rem;
     }
     & .course-mycourse{
         & .course-more, & .course-no-content{
@@ -95,7 +95,7 @@
     @media screen and (max-width: 768px) {
         & .course-mycourse-box{
             padding: 0 0 0 0;
-        } 
+        }
     }
     & .course-myfavorite-course{
         & .course-more, & .course-no-content{
@@ -207,7 +207,7 @@
             height: 100px;
         }
         & .teacher-detail-banner{
-            height: 250px;
+            height: 350px;
             position: relative;
             &::before{
                 content: "";

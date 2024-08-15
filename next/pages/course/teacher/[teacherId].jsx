@@ -20,12 +20,35 @@ export default function TeacherIndex() {
               <div className="teacher-card-name d-flex flex-column align-items-center">
                 <div className="display-6 spac-2 text-white lh-15">蔡孝倫</div>
                 <h5 className="spac-2 text-white lh-15">Alex Tsai</h5>
+                <div className="stars mt-2 d-flex d-md-none align-items-center">
+                  <i className="fa-solid fa-star fa-star-style" />
+                  <i className="fa-solid fa-star fa-star-style" />
+                  <i className="fa-solid fa-star fa-star-style" />
+                  <i className="fa-solid fa-star fa-star-style" />
+                  <i className="fa-solid fa-star fa-star-style" />
+                  <span className="ms-2 spac-1 text-white">4.8</span>
+                </div>
               </div>
             </div>
           </div>
           <div className="container-fluid px-0 position-relative teacher-detail-contentBox-margin-minus-control">
             <div className="container-sm">
               <div className="teacher-detail-content-box w-100 rounded-5 m-auto">
+                <div className="d-none d-md-flex flex-column justify-content-center align-items-center">
+                  <div className="h3 spac-2 m-0 text-prim-text-prim text-center">
+                    <strong>講師課程平均評價</strong>
+                  </div>
+                  <div className="stars mt-2 d-flex align-items-center">
+                    <i className="fa-solid fa-star fa-star-style" />
+                    <i className="fa-solid fa-star fa-star-style" />
+                    <i className="fa-solid fa-star fa-star-style" />
+                    <i className="fa-solid fa-star fa-star-style" />
+                    <i className="fa-solid fa-star fa-star-style" />
+                    <span className="ms-2 spac-1 text-sec-dark-blue">4.8</span>
+                  </div>
+                  <hr></hr>
+                </div>
+
                 <h6 className="text-prim-dark spac-2 lh-20 teacher-intro-text mb-5">
                   原本從事生化研究，但在就讀英國萊斯特大學生化所博士班期間，發現自己興趣並不在做研究而放棄學位。在餐廳打工時發現自己對葡萄酒的興趣與服務的熱情，決定學習葡萄酒與西方飲食文化，並在倫敦通過WSET
                   Level 1 和 WSET Level 2認證後，正式從事侍酒師的工作。
@@ -95,7 +118,8 @@ export default function TeacherIndex() {
               </div>
             </div>
             <div className="container-fluid my-5 px-0">
-                <div className="w-100 bg-white m-auto teacher-detail-suggest-course">
+              <div className="container-sm">
+                <div className="w-100 bg-white rounded-top-5 m-auto teacher-detail-suggest-course">
                   {/* 講師其他課程 start */}
                   <div className="my-5 border-5">
                     <div className="col-auto h3 pe-2 spac-2 m-0 text-prim-text-prim px-10px mb-5 text-center text-md-start">
@@ -108,7 +132,7 @@ export default function TeacherIndex() {
                         href="/"
                         className="col-12 col-md-4 col-lg-3 course-mycourse px-10px d-flex flex-column align-items-center"
                       >
-                        <div className="row px-0 m-0 flex-row flex-md-column">
+                        <div className="row px-0 m-0 flex-row flex-md-column w-100">
                           <div className="col-4 col-md-12 px-0">
                             <div className="course-video-video overflow-hidden">
                               <img
@@ -201,7 +225,7 @@ export default function TeacherIndex() {
                         href="/"
                         className="col-12 col-md-4 col-lg-3 course-mycourse px-10px d-flex flex-column align-items-center"
                       >
-                        <div className="row px-0 m-0 flex-row flex-md-column">
+                        <div className="row px-0 m-0 flex-row flex-md-column w-100">
                           <div className="col-4 col-md-12 px-0">
                             <div className="course-video-video overflow-hidden">
                               <img
@@ -255,7 +279,7 @@ export default function TeacherIndex() {
                           </div>
                         </div>
                         <div className="row px-0 m-0 w-100">
-                          <div className="col-12 course-process-header d-flex justify-content-between mt-3 px-0">
+                          <div className="col course-process-header d-flex justify-content-between mt-3 px-0">
                             <span className="h6 text-sec-blue spac-1">
                               限額總數-20人
                             </span>
@@ -281,8 +305,9 @@ export default function TeacherIndex() {
                       {/* teacher-detail-suggest 課程卡片 end */}
                     </div>
                   </div>
+                  {/* 講師其他課程 end */}
                 </div>
-                {/* 講師其他課程 end */}
+              </div>
             </div>
           </div>
         </div>
