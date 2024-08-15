@@ -12,7 +12,7 @@ export default function Course() {
   />
   <div className="tarot_wrap">
     <header></header>
-    <div className="container-fluid p-0 tarot-area py-5">
+    <div className="container-fluid px-0 tarot-area py-5">
       {/* Ask modal start */}
       <div
         className="modal fade w-100"
@@ -43,32 +43,32 @@ export default function Course() {
                 </div>
                 <div className="row flex-wrap gap-5 row-gap-4 px-3 my-3 mb-5 justify-content-center mx-4">
                   <button className="col-auto btn btn-sec-blue rounded-4 py-2 px-4 pe-auto">
-                    <h5 className="p-0 py-1 px-1 m-0 spac-1">金錢</h5>
+                    <h5 className="px-0 py-1 px-1 m-0 spac-1">金錢</h5>
                   </button>
                   <button className="col-auto btn btn-sec-blue rounded-4 py-2 px-4 pe-auto">
-                    <h5 className="p-0 py-1 px-1 m-0 spac-1">愛情/戀愛</h5>
+                    <h5 className="px-0 py-1 px-1 m-0 spac-1">愛情/戀愛</h5>
                   </button>
                   <button className="col-auto btn btn-sec-blue rounded-4 py-2 px-4 pe-auto">
-                    <h5 className="p-0 py-1 px-1 m-0 spac-1">事業/工作</h5>
+                    <h5 className="px-0 py-1 px-1 m-0 spac-1">事業/工作</h5>
                   </button>
                   <button className="col-auto btn btn-sec-blue rounded-4 py-2 px-4 pe-auto">
-                    <h5 className="p-0 py-1 px-1 m-0 spac-1">學業</h5>
+                    <h5 className="px-0 py-1 px-1 m-0 spac-1">學業</h5>
                   </button>
                   <button className="col-auto btn btn-sec-blue rounded-4 py-2 px-4 pe-auto">
-                    <h5 className="p-0 py-1 px-1 m-0 spac-1">親子感情</h5>
+                    <h5 className="px-0 py-1 px-1 m-0 spac-1">親子感情</h5>
                   </button>
                   <button className="col-auto btn btn-sec-blue rounded-4 py-2 px-4 pe-auto">
-                    <h5 className="p-0 py-1 px-1 m-0 spac-1">健康</h5>
+                    <h5 className="px-0 py-1 px-1 m-0 spac-1">健康</h5>
                   </button>
                   <button className="col-auto btn btn-sec-blue rounded-4 py-2 px-4 pe-auto">
-                    <h5 className="p-0 py-1 px-1 m-0 spac-1">置產</h5>
+                    <h5 className="px-0 py-1 px-1 m-0 spac-1">置產</h5>
                   </button>
                   <button className="col-auto btn btn-sec-blue rounded-4 py-2 px-4 pe-auto">
-                    <h5 className="p-0 py-1 px-1 m-0 spac-1">生育</h5>
+                    <h5 className="px-0 py-1 px-1 m-0 spac-1">生育</h5>
                   </button>
                 </div>
                 <div className="row gap-5 row-gap-4 my-4 px-3 justify-content-center">
-                  <h6 className="p-0 py-1 px-1 m-0 text-wrap text-center mb-5 spac-1">
+                  <h6 className="px-0 py-1 px-1 m-0 text-wrap text-center mb-5 spac-1">
                     請選擇一項，並在抽牌時在心裡默念您的問題
                   </h6>
                 </div>
@@ -77,7 +77,7 @@ export default function Course() {
                     className="btn btn-white rounded-5 py-2 px-4"
                     data-bs-dismiss="modal"
                   >
-                    <h5 className="col-auto p-0 py-1 px-1 m-0 text-wrap text-center d-inlineblock pe-auto">
+                    <h5 className="col-auto px-0 py-1 px-1 m-0 text-wrap text-center d-inlineblock pe-auto">
                       <strong>
                         <i className="fa-solid fa-angles-left me-1" />
                         返回
@@ -90,7 +90,7 @@ export default function Course() {
                     data-bs-target="#remindArea"
                     data-bs-dismiss="modal"
                   >
-                    <h5 className="col-auto p-0 py-1 px-1 m-0 text-wrap text-center">
+                    <h5 className="col-auto px-0 py-1 px-1 m-0 text-wrap text-center">
                       <strong>
                         選擇完成
                         <i className="fa-solid fa-angles-right ms-1" />
@@ -133,7 +133,7 @@ export default function Course() {
                   <h6 className="spac-1">注意事項</h6>
                 </div>
                 <div className="row my-4">
-                  <p className="p-0 py-1 px-3 m-0 text-wrap mb-5 spac-1 lh-2">
+                  <p className="px-0 py-1 px-3 m-0 text-wrap mb-5 spac-1 lh-2">
                     親愛的使用者，
                     <br />
                     <br />
@@ -164,7 +164,7 @@ export default function Course() {
                     className="btn btn-white rounded-5 py-2 px-4"
                     data-bs-dismiss="modal"
                   >
-                    <h5 className="col-auto p-0 py-1 px-1 m-0 text-wrap text-center d-inlineblock pe-auto">
+                    <h5 className="col-auto px-0 py-1 px-1 m-0 text-wrap text-center d-inlineblock pe-auto">
                       <strong>
                         <i className="fa-solid fa-angles-left me-1" />
                         返回
@@ -175,7 +175,7 @@ export default function Course() {
                     className="btn btn-white-to-wine rounded-5 py-2 px-4 pe-auto start-choose-card-btn"
                     data-bs-dismiss="modal"
                   >
-                    <h5 className="col-auto p-0 py-1 px-1 m-0 text-wrap text-center">
+                    <h5 className="col-auto px-0 py-1 px-1 m-0 text-wrap text-center">
                       <strong>
                         閱讀完畢，開始洗牌
                         <i className="fa-solid fa-angles-right ms-1" />
@@ -235,7 +235,7 @@ export default function Course() {
                     className="btn btn-white rounded-5 py-2 px-4"
                     data-bs-dismiss="modal"
                   >
-                    <h5 className="col-auto p-0 py-1 px-1 m-0 text-wrap text-center d-inlineblock pe-auto">
+                    <h5 className="col-auto px-0 py-1 px-1 m-0 text-wrap text-center d-inlineblock pe-auto">
                       <strong>
                         <i className="fa-solid fa-angles-left me-1" />
                         返回
@@ -285,18 +285,18 @@ export default function Course() {
           </button>
         </div>
         {/* 抽牌區
-              <div class="pick-card-area row justify-content-center align-items-center p-0 m-0 flex-nowrap d-none" style="overflow-x: hidden">
-                  <div class="col-auto d-flex flex-column justify-content-centercard-1 p-0 m-0">
+              <div class="pick-card-area row justify-content-center align-items-center px-0 m-0 flex-nowrap d-none" style="overflow-x: hidden">
+                  <div class="col-auto d-flex flex-column justify-content-centercard-1 px-0 m-0">
                       <div class="tarot_card_div card_unactive">
                           <img class="tarot_card_front" src="/images/course_and_tarot/theHangedMan.png" alt="" />
                       </div>
                   </div>
               </div> */}
         {/* ↓ 結果-塔羅牌 */}
-        <div className="result-tarot-area row justify-content-center align-items-center p-0 m-0 flex-nowrap position-relative d-none">
+        <div className="result-tarot-area row justify-content-center align-items-center px-0 m-0 flex-nowrap position-relative d-none">
           {/* 1 */}
           <div
-            className="card-anim card-1 p-0 m-0 position-absolute"
+            className="card-anim card-1 px-0 m-0 position-absolute"
             style={{ top: "calc(100vh - 300px)", left: "calc(50vw - 116px)" }}
           >
             <div className="tarot_card_div card_active">
@@ -309,7 +309,7 @@ export default function Course() {
           </div>
           {/* 2 */}
           <div
-            className="card-anim card-2 p-0 m-0 position-absolute"
+            className="card-anim card-2 px-0 m-0 position-absolute"
             style={{ top: "calc(100vh - 300px)", left: "calc(50vw - 116px)" }}
           >
             <div className="tarot_card_div card_active">
@@ -322,7 +322,7 @@ export default function Course() {
           </div>
           {/* 3 */}
           <div
-            className="card-anim card-3 p-0 m-0 position-absolute"
+            className="card-anim card-3 px-0 m-0 position-absolute"
             style={{ top: "calc(100vh - 300px)", left: "calc(50vw - 116px)" }}
           >
             <div className="tarot_card_div card_active">
@@ -363,8 +363,8 @@ export default function Course() {
       </div>
     </div>
     {/* page 2 result area start */}
-    <div className="container-fluid d-none tarot-anlz-area p-0">
-      <div className="container-fluid p-0">
+    <div className="container-fluid d-none tarot-anlz-area px-0">
+      <div className="container-fluid px-0">
         <div className="container-md my-5">
           <div className="row justify-content-between mb-4 gap-4">
             <div className="col d-flex rounded-4 p-4 result-card justify-content-between">
@@ -439,7 +439,7 @@ export default function Course() {
           </div>
         </div>
       </div>
-      <div className="container-fluid p-0 bg-prim-wine text-white d-flex flex-column align-items-center justify-content-center py-3 text-center">
+      <div className="container-fluid px-0 bg-prim-wine text-white d-flex flex-column align-items-center justify-content-center py-3 text-center">
         <div className="container-md px-5 py-3">
           <div className="w-for-tarot-result m-auto">
             <h6 className="text-white spac-1 pb-3">屬於你的酒相是：</h6>
@@ -456,12 +456,12 @@ export default function Course() {
           </div>
         </div>
       </div>
-      <div className="container-fluid p-0">
+      <div className="container-fluid px-0">
         <div className="container-md tarot-wine-cards my-5">
-          <div className="row justify-content-between mb-4 p-0">
+          <div className="row justify-content-between mb-4 px-0">
             {/* 結果小卡 start */}
             <div className="col-12 col-md-6 col-lg-4">
-              <div className="rounded-4 result-card d-flex flex-column overflow-hidden p-0 w-100 position-relative">
+              <div className="rounded-4 result-card d-flex flex-column overflow-hidden px-0 w-100 position-relative">
                 <div className="result2-img-area position-relative">
                   <img
                     className="position-relative"
@@ -484,7 +484,7 @@ export default function Course() {
                 <div className="result2-text-area bg-prim p-3">
                   <h4 className="text-white spac-1 mb-2">此處為酒名</h4>
                   <p className="text-white spac-1 mb-4">此處為酒名別稱、英文</p>
-                  <div className="row p-0 align-items-center justify-content-between">
+                  <div className="row px-0 align-items-center justify-content-between">
                     <div className="col-auto">
                       <a href="" className="btn btn-prim-prim">
                         <p className="text-white">+ 查看商品詳情</p>
@@ -505,7 +505,7 @@ export default function Course() {
             {/* 結果小卡 end */}
             {/* 結果小卡 start */}
             <div className="col-12 col-md-6 col-lg-4">
-              <div className="rounded-4 result-card d-flex flex-column overflow-hidden p-0 w-100 position-relative">
+              <div className="rounded-4 result-card d-flex flex-column overflow-hidden px-0 w-100 position-relative">
                 <div className="result2-img-area position-relative">
                   <img
                     className="position-relative"
@@ -528,7 +528,7 @@ export default function Course() {
                 <div className="result2-text-area bg-prim p-3">
                   <h4 className="text-white spac-1 mb-2">此處為酒名</h4>
                   <p className="text-white spac-1 mb-4">此處為酒名別稱、英文</p>
-                  <div className="row p-0 align-items-center justify-content-between">
+                  <div className="row px-0 align-items-center justify-content-between">
                     <div className="col-auto">
                       <p className="text-white">+ 查看商品詳情</p>
                     </div>
@@ -547,7 +547,7 @@ export default function Course() {
             {/* 結果小卡 end */}
             {/* 結果小卡 start */}
             <div className="col-12 col-md-6 col-lg-4">
-              <div className="rounded-4 result-card d-flex flex-column overflow-hidden p-0 w-100 position-relative">
+              <div className="rounded-4 result-card d-flex flex-column overflow-hidden px-0 w-100 position-relative">
                 <div className="result2-img-area position-relative">
                   <img
                     className="position-relative"
@@ -570,7 +570,7 @@ export default function Course() {
                 <div className="result2-text-area bg-prim p-3">
                   <h4 className="text-white spac-1 mb-2">此處為酒名</h4>
                   <p className="text-white spac-1 mb-4">此處為酒名別稱、英文</p>
-                  <div className="row p-0 align-items-center justify-content-between">
+                  <div className="row px-0 align-items-center justify-content-between">
                     <div className="col-auto">
                       <p className="text-white">+ 查看商品詳情</p>
                     </div>

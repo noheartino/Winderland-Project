@@ -5,9 +5,6 @@
     --course_gray_more_light: #F7F9F9;
     --text_gray_light: #CBCBCB;
     --tarot_white_hover: #dddddd;
-    & .caontainer-fluid, & .container-sm, & .container-md, & .container-lg, & .container-xl, & .container-xxl{
-        padding: 0;
-    }
   /* ↓ course */
     & .course-homepage-nav {
         background: linear-gradient(to right, #6F444Ecc, #6F444Ecc), url(/images/course_and_tarot/slide01.png) center center/cover no-repeat;
@@ -382,6 +379,21 @@
     }
   /* ↑ tarot */
     /* ↓ course & tarot 通用 */
+    & h1, & h2, & h3, & h4, & h5, & h6, & p, & .h1, & .h2, & .h3, & .h4, & .h5, & .h6, & .p{
+        font-weight: 400;
+        margin: 0;
+        padding: 0;
+        color: var(--text_dark);
+    }
+    & button, & .btn, & .btn:active{
+        display: inline-block;
+        background-color: transparent;
+        width: auto;
+        border: none;
+    }
+    & ul, & ul li{
+        list-style: none;
+    }
     & .absolute-t0-l0{
         position: absolute;
         top: 0;
@@ -389,10 +401,6 @@
     }
     & h7, & .h7{
         font-size: 0.8rem;
-    }
-    & .row{
-        margin: 0;
-        padding: 0;
     }
     & a, & a:active, & a:visited{
         color: var(--text_dark);
