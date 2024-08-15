@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+import CourseBox from "@/components/course/course-box"
+import CourseNav from "@/components/course/course-nav"
 
 export default function CourseIndex() {
+  const userId = 1
+  const [searchWord, setSearchWord] = useState('')
+  console.log(searchWord);
   return (
     <>
       <title>課程首頁</title>
@@ -12,61 +17,8 @@ export default function CourseIndex() {
       />
       <div className="course_wrap">
         <header></header>
-        {/* course-nav start */}
-        <div className="container-fluid course-homepage-nav d-flex align-items-center gap-4 flex-column justify-content-center">
-          <div className="nav-header d-flex align-items-center flex-column justify-content-center">
-            <h4 className="text-white spac-3">品酒課程</h4>
-            <p className="text-white spac-2">Course</p>
-          </div>
-          <input
-            type="search"
-            className="course-search-input form-control rounded-5"
-            placeholder="搜尋關鍵字"
-            aria-label="搜尋關鍵字"
-            aria-describedby="basic-addon2"
-          />
-          <div className="row px-0 m-0 justify-content-center">
-            <div className="col-11 col-md-6 d-flex justify-content-center flex-wrap">
-              <a href="/" className="nav-tag">
-                品酒
-              </a>
-              <a href="/" className="nav-tag">
-                挑選酒
-              </a>
-              <a href="/" className="nav-tag">
-                認證課程
-              </a>
-              <a href="/" className="nav-tag">
-                法國
-              </a>
-              <a href="/" className="nav-tag">
-                SFM
-              </a>
-              <a href="/" className="nav-tag">
-                BWC布根地
-              </a>
-              <a href="/" className="nav-tag">
-                CIVB波爾多葡萄酒學院
-              </a>
-              <a href="/" className="nav-tag d-none d-md-block">
-                CIVA
-              </a>
-              <a href="/" className="nav-tag d-none d-md-block">
-                阿爾薩斯
-              </a>
-              <a href="/" className="nav-tag d-none d-md-block">
-                葡萄牙公會
-              </a>
-              <a href="/" className="nav-tag d-none d-md-block">
-                葡萄酒學者認證
-              </a>
-              <a href="/" className="nav-tag d-none d-md-block">
-                IWS
-              </a>
-            </div>
-          </div>
-        </div>
-        {/* course-nav end */}
+        
+        <CourseNav setSearchWord={setSearchWord} />
 
         {/* first page start */}
         <div className="container-fluid course-first-page">
@@ -74,33 +26,21 @@ export default function CourseIndex() {
           <div className="container-fluid favorite-and-mycourse-area">
             <div className="container-lg">
               <div className="row px-0 m-0 course-mycourse-box">
-                {/* 我的課程 start */}
-                {/* 我的課程 underline start */}
-                <div className="col-6 course-mycourse d-flex flex-column px-10px d-none">
-                  <div className="row p-x m-0 course-card-header d-flex align-items-center">
-                    <a
-                      href="/"
-                      className="col-12 col-md-auto h4 py-3 pe-2 spac-2 mb-1 d-flex justify-content-between align-items-center"
-                    >
+
+                <div className="col-6 d-flex flex-column px-10px">
+                  <div className="row px-0 m-0 course-card-header d-flex align-items-center">
+                    <a href="/" className="col-12 col-md-auto h4 pe-2 spac-2 m-0 mb-1 d-flex justify-content-between align-items-center">
                       <strong>我的課程</strong>
-                      <div
-                        className="d-flex d-md-none ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark align-items-center justify-content-center"
-                        style={{ width: "20px", height: "20px" }}
-                      >
-                        <i
-                          className="fa-solid fa-chevron-right text-sec-orange"
-                          style={{ fontSize: "0.562rem" }}
-                        />
+                      <div className="d-flex d-md-none ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark align-items-center justify-content-center" style={{ width: "20px", height: "20px" }}>
+                        <i className="fa-solid fa-chevron-right text-sec-orange" style={{ fontSize: "9px" }}/>
                       </div>
                     </a>
-                    <span className="d-none d-md-block col-auto text-gray spac-1 px-0 mb-1">
-                      ｜
-                    </span>
-                    <span className="col-auto text-gray spac-1 px-0 mb-1 h7">
-                      正在學習中的課程內容
-                    </span>
+                    <span className="d-none d-md-block col-auto text-gray-light spac-1 px-0 mb-1">｜</span>
+                    <span className="col-auto text-gray-light spac-1 px-0 mb-1 h7">正在學習中的課程內容</span>
                   </div>
-                  <div className="row px-0 m-0 h-100 course-body d-flex align-items-start">
+                  {/* mycourse box underline start */}
+                  <CourseBox searchWord={searchWord} />
+                  {/* <div className="row px-0 m-0 h-100 course-mycourse d-flex align-items-start d-none">
                     <a
                       className="course-leftcontent col-12 col-md-8 px-0"
                       type="button"
@@ -165,34 +105,25 @@ export default function CourseIndex() {
                       </div>
                     </div>
                   </div>
+                  <CourseBox CourseOnLine setCourseOnLine CourseBox setCourseBox NoneFavorite setNoneFavorite NoneMycourse setNoneMycourse UserCourseData/> */}
+                  {/* mycourse box underline end */}
                 </div>
-                {/* 我的課程 underline end */}
-                {/* 我的課程 online start */}
-                <div className="col-6 course-mycourse d-flex flex-column px-10px">
+
+                <div className="col-6 d-flex flex-column px-10px">
                   <div className="row px-0 m-0 course-card-header d-flex align-items-center">
-                    <a
-                      href="/"
-                      className="col-12 col-md-auto h4 pe-2 spac-2 m-0 mb-1 d-flex justify-content-between align-items-center"
-                    >
+                    <a href="/" className="col-12 col-md-auto h4 pe-2 spac-2 m-0 mb-1 d-flex justify-content-between align-items-center">
                       <strong>我的課程</strong>
-                      <div
-                        className="d-flex d-md-none ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark align-items-center justify-content-center"
-                        style={{ width: "20px", height: "20px" }}
-                      >
-                        <i
-                          className="fa-solid fa-chevron-right text-sec-orange"
-                          style={{ fontSize: "9px" }}
-                        />
+                      <div className="d-flex d-md-none ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark align-items-center justify-content-center" style={{ width: "20px", height: "20px" }}>
+                        <i className="fa-solid fa-chevron-right text-sec-orange" style={{ fontSize: "9px" }}/>
                       </div>
                     </a>
-                    <span className="d-none d-md-block col-auto text-gray spac-1 px-0 mb-1">
-                      ｜
-                    </span>
-                    <span className="col-auto text-gray spac-1 px-0 mb-1 h7">
+                    <span className="d-none d-md-block col-auto text-gray-light spac-1 px-0 mb-1">｜</span>
+                    <span className="col-auto text-gray-light spac-1 px-0 mb-1 h7">
                       正在學習中的課程內容
                     </span>
                   </div>
-                  <div className="row px-0 m-0 h-100 course-body d-flex align-items-start">
+                  {/* myfavorite course box online start */}
+                  <div className="row px-0 m-0 h-100 course-myfavorite-course d-flex align-items-start">
                     <a
                       className="course-leftcontent col-12 col-md-8 px-0"
                       type="button"
@@ -243,181 +174,9 @@ export default function CourseIndex() {
                       </div>
                     </div>
                   </div>
+                  {/* myfavorite course box online end */}
                 </div>
-                {/* 我的課程 online end */}
-                {/* 我的課程 end */}
-                {/* 收藏課程 start */}
-                {/* 我的課程 underline start */}
-                <div className="col-6 course-myfavorite-course d-flex flex-column px-10px d-none">
-                  <div className="row px-0 m-0 course-card-header d-flex align-items-center">
-                    <a
-                      href="/"
-                      className="col-12 col-md-auto h4 pe-2 spac-2 m-0 mb-1 d-flex justify-content-between align-items-center"
-                    >
-                      <strong>我的課程</strong>
-                      <div
-                        className="d-flex d-md-none ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark align-items-center justify-content-center"
-                        style={{ width: "20px", height: "20px" }}
-                      >
-                        <i
-                          className="fa-solid fa-chevron-right text-sec-orange"
-                          style={{ fontSize: "9px" }}
-                        />
-                      </div>
-                    </a>
-                    <span className="d-none d-md-block col-auto text-gray spac-1 px-0 mb-1">
-                      ｜
-                    </span>
-                    <span className="col-auto text-gray spac-1 px-0 mb-1 h7">
-                      正在學習中的課程內容
-                    </span>
-                  </div>
-                  <div className="row px-0 m-0 h-100 course-body d-flex align-items-start">
-                    <a
-                      className="course-leftcontent col-12 col-md-8 px-0"
-                      type="button"
-                      href="/"
-                    >
-                      <div className="course-video-video overflow-hidden position-relative">
-                        <img
-                          className="course-img21"
-                          src="/images/course_and_tarot/rectangle128.png"
-                          alt=""
-                        />
-                        <div className="d-flex d-md-none justify-content-center align-items-center w-100 h-100 absolute-t0-l0">
-                          <p className="text-white z-1 fw-thin spac-1 px-2 text-center">
-                            迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
-                          </p>
-                          <div className="opacity-50 w-100 h-100 bg-text-dark color-cover position-absolute" />
-                        </div>
-                      </div>
-                      <div className="course-body d-none d-md-block">
-                        <span className="underline-tag">實體</span>
-                        <span
-                          className="h5 spac-1"
-                          style={{ lineHeight: "35px" }}
-                        >
-                          迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
-                        </span>
-                        <div
-                          className="progress mt-2 bg-sec-blue"
-                          role="progressbar"
-                          aria-label=""
-                          aria-valuenow={75}
-                          aria-valuemin={0}
-                          aria-valuemax={100}
-                          style={{ height: "5px" }}
-                        >
-                          <div
-                            className="progress-bar bg-sec-blue-dark"
-                            style={{ width: "70%" }}
-                          />
-                        </div>
-                      </div>
-                    </a>
-                    <a
-                      className="course-more col h-100 ms-3 d-none d-md-flex justify-content-center align-items-center"
-                      href="/"
-                    >
-                      <div className="spac-2 text-prim-dark h6">查看更多</div>
-                      <div
-                        className="ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark d-flex align-items-center justify-content-center"
-                        style={{ width: "20px", height: "20px" }}
-                      >
-                        <i
-                          className="fa-solid fa-chevron-right text-sec-orange"
-                          style={{ fontSize: "9px" }}
-                        />
-                      </div>
-                    </a>
-                    <div className="course-no-content col h-100 d-flex flex-column flex-md-row px-0 m-0 row-gap-3 justify-content-center align-items-center d-none">
-                      <i className="fa-regular fa-face-meh me-2 text-prim-dark h5" />
-                      <div className="spac-2 text-prim-dark h6">
-                        尚無課程內容
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* 我的課程 underline end */}
-                {/* 我的課程 online start */}
-                <div className="col-6 course-myfavorite-course d-flex flex-column px-10px">
-                  <div className="row px-0 m-0 course-card-header d-flex align-items-center">
-                    <a
-                      href="/"
-                      className="col-12 col-md-auto h4 pe-2 spac-2 m-0 mb-1 d-flex justify-content-between align-items-center"
-                    >
-                      <strong>我的課程</strong>
-                      <div
-                        className="d-flex d-md-none ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark align-items-center justify-content-center"
-                        style={{ width: "20px", height: "20px" }}
-                      >
-                        <i
-                          className="fa-solid fa-chevron-right text-sec-orange"
-                          style={{ fontSize: "9px" }}
-                        />
-                      </div>
-                    </a>
-                    <span className="d-none d-md-block col-auto text-gray spac-1 px-0 mb-1">
-                      ｜
-                    </span>
-                    <span className="col-auto text-gray spac-1 px-0 mb-1 h7">
-                      正在學習中的課程內容
-                    </span>
-                  </div>
-                  <div className="row px-0 m-0 h-100 course-body d-flex align-items-start">
-                    <a
-                      className="course-leftcontent col-12 col-md-8 px-0"
-                      type="button"
-                      href="/"
-                    >
-                      <div className="course-video-video overflow-hidden position-relative">
-                        <img
-                          className="course-img21"
-                          src="/images/course_and_tarot/rectangle128.png"
-                          alt=""
-                        />
-                        <div className="d-flex d-md-none justify-content-center align-items-center w-100 h-100 absolute-t0-l0">
-                          <p className="text-white z-1 fw-thin spac-1 px-2 text-center">
-                            迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
-                          </p>
-                          <div className="opacity-50 w-100 h-100 bg-text-dark color-cover position-absolute" />
-                        </div>
-                      </div>
-                      <div className="course-body d-none d-md-block">
-                        <span className="online-tag">線上</span>
-                        <span
-                          className="h5 spac-1"
-                          style={{ lineHeight: "35px" }}
-                        >
-                          迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
-                        </span>
-                      </div>
-                    </a>
-                    <a
-                      className="course-more col h-100 ms-3 d-none d-md-flex justify-content-center align-items-center"
-                      href="/"
-                    >
-                      <div className="spac-2 text-prim-dark h6">查看更多</div>
-                      <div
-                        className="ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark d-flex align-items-center justify-content-center"
-                        style={{ width: "20px", height: "20px" }}
-                      >
-                        <i
-                          className="fa-solid fa-chevron-right text-sec-orange"
-                          style={{ fontSize: "9px" }}
-                        />
-                      </div>
-                    </a>
-                    <div className="course-no-content col h-100 d-flex flex-column flex-md-row px-0 m-0 row-gap-3 justify-content-center align-items-center d-none">
-                      <i className="fa-regular fa-face-meh me-2 text-prim-dark h5" />
-                      <div className="spac-2 text-prim-dark h6">
-                        尚無課程內容
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* 我的課程 online end */}
-                {/* 收藏課程 end */}
+
               </div>
             </div>
           </div>
@@ -430,7 +189,7 @@ export default function CourseIndex() {
                   <span className="col-auto h4 pe-2 spac-2 m-0">
                     <strong>推薦課程</strong>
                   </span>
-                  <span className="col-auto text-gray spac-1">
+                  <span className="col-auto text-gray-light spac-1">
                     ｜&nbsp;推薦您可能感興趣的課程
                   </span>
                 </div>
@@ -462,16 +221,16 @@ export default function CourseIndex() {
                         >
                           迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                         </span>
-                        <p className="text-gray mt-2 d-none d-md-block">
+                        <p className="text-gray-light mt-2 d-none d-md-block">
                           by 王淇
                         </p>
                         <div className="sm-card-secondLine d-flex d-md-none justify-content-between mt-2">
                           <span className="sm-card-secondLine-left">
                             <span className="online-tag">線上</span>
-                            <span className="text-gray">by 王淇</span>
+                            <span className="text-gray-light">by 王淇</span>
                           </span>
                           <span className="sm-card-secondLine-right">
-                            <i className="fa-solid fa-star fa-star-style" />
+                            <i className="fa-solid fa-star star-with-score" />
                             <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
                               4.8
                             </span>
@@ -480,10 +239,10 @@ export default function CourseIndex() {
                       </div>
                       <div className="course-body-footer d-none d-md-block">
                         <div className="stars mt-2 d-flex align-items-center">
-                          <i className="fa-solid fa-star fa-star-style" />
-                          <i className="fa-solid fa-star fa-star-style" />
-                          <i className="fa-solid fa-star fa-star-style" />
-                          <i className="fa-solid fa-star fa-star-style" />
+                          <i className="fa-solid fa-star star-with-score" />
+                          <i className="fa-solid fa-star star-with-score" />
+                          <i className="fa-solid fa-star star-with-score" />
+                          <i className="fa-solid fa-star star-with-score" />
                           <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
                             4.8
                           </span>
@@ -496,7 +255,7 @@ export default function CourseIndex() {
                         </div>
                         <div className="course-process-footer mt-2">
                           <span className="h5 spac-2 me-3">NT$3,500</span>
-                          <span className="h6 text-gray spac-2 origin-price">
+                          <span className="h6 text-gray-light spac-2 origin-price">
                             <del>NT$5,500</del>
                           </span>
                         </div>
@@ -555,16 +314,16 @@ export default function CourseIndex() {
                         >
                           迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                         </span>
-                        <p className="text-gray mt-2 d-none d-md-block">
+                        <p className="text-gray-light mt-2 d-none d-md-block">
                           by 王淇
                         </p>
                         <div className="sm-card-secondLine d-flex d-md-none justify-content-between mt-2">
                           <span className="sm-card-secondLine-left">
                             <span className="underline-tag">實體</span>
-                            <span className="text-gray">by 王淇</span>
+                            <span className="text-gray-light">by 王淇</span>
                           </span>
                           <span className="sm-card-secondLine-right">
-                            <i className="fa-solid fa-star fa-star-style" />
+                            <i className="fa-solid fa-star star-with-score" />
                             <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
                               4.8
                             </span>
@@ -580,7 +339,7 @@ export default function CourseIndex() {
                         </div>
                         <div className="course-process-footer mt-2">
                           <span className="h5 spac-2 me-3">NT$3,500</span>
-                          <span className="h6 text-gray spac-2 origin-price">
+                          <span className="h6 text-gray-light spac-2 origin-price">
                             <del>NT$5,500</del>
                           </span>
                         </div>
@@ -626,7 +385,7 @@ export default function CourseIndex() {
                 <span className="col-auto h4 pe-2 spac-2 m-0">
                   <strong>我的課程//我的收藏</strong>
                 </span>
-                <span className="col-auto text-gray spac-1">
+                <span className="col-auto text-gray-light spac-1">
                   ｜&nbsp;正在學習中的課程內容
                 </span>
               </div>
@@ -682,16 +441,16 @@ export default function CourseIndex() {
                       >
                         迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                       </span>
-                      <p className="text-gray mt-2 d-none d-md-block">
+                      <p className="text-gray-light mt-2 d-none d-md-block">
                         by 王淇
                       </p>
                       <div className="sm-card-secondLine d-flex d-md-none justify-content-between mt-2">
                         <span className="sm-card-secondLine-left">
                           <span className="online-tag">線上</span>
-                          <span className="text-gray">by 王淇</span>
+                          <span className="text-gray-light">by 王淇</span>
                         </span>
                         <span className="sm-card-secondLine-right">
-                          <i className="fa-solid fa-star fa-star-style" />
+                          <i className="fa-solid fa-star star-with-score" />
                           <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
                             4.8
                           </span>
@@ -700,10 +459,10 @@ export default function CourseIndex() {
                     </div>
                     <div className="course-body-footer d-none d-md-block">
                       <div className="stars mt-2 d-flex align-items-center">
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
                         <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
                           4.8
                         </span>
@@ -716,7 +475,7 @@ export default function CourseIndex() {
                       </div>
                       <div className="course-process-footer mt-2">
                         <span className="h5 spac-2 me-3">NT$3,500</span>
-                        <span className="h6 text-gray spac-2 origin-price">
+                        <span className="h6 text-gray-light spac-2 origin-price">
                           <del>NT$5,500</del>
                         </span>
                       </div>
@@ -775,16 +534,16 @@ export default function CourseIndex() {
                       >
                         迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                       </span>
-                      <p className="text-gray mt-2 d-none d-md-block">
+                      <p className="text-gray-light mt-2 d-none d-md-block">
                         by 王淇
                       </p>
                       <div className="sm-card-secondLine d-flex d-md-none justify-content-between mt-2">
                         <span className="sm-card-secondLine-left">
                           <span className="underline-tag">實體</span>
-                          <span className="text-gray">by 王淇</span>
+                          <span className="text-gray-light">by 王淇</span>
                         </span>
                         <span className="sm-card-secondLine-right">
-                          <i className="fa-solid fa-star fa-star-style" />
+                          <i className="fa-solid fa-star star-with-score" />
                           <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
                             4.8
                           </span>
@@ -800,7 +559,7 @@ export default function CourseIndex() {
                       </div>
                       <div className="course-process-footer mt-2">
                         <span className="h5 spac-2 me-3">NT$3,500</span>
-                        <span className="h6 text-gray spac-2 origin-price">
+                        <span className="h6 text-gray-light spac-2 origin-price">
                           <del>NT$5,500</del>
                         </span>
                       </div>
@@ -915,11 +674,11 @@ export default function CourseIndex() {
                         by 蔡孝倫
                       </h5>
                       <div className="col-auto stars mt-2 d-flex align-items-center">
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
                         <span className="ms-2 spac-1 text-sec-dark-blue">
                           4.8
                         </span>
@@ -930,7 +689,7 @@ export default function CourseIndex() {
                         <div className="h2 spac-2 text-sec-orange">
                           <strong>NT$3,500</strong>
                         </div>
-                        <p className="text-gray h5 spac-2 mt-3">
+                        <p className="text-gray-light h5 spac-2 mt-3">
                           <del>NT$5,500</del>
                         </p>
                       </div>
@@ -1031,7 +790,7 @@ export default function CourseIndex() {
                           <div className="teacher-starts col d-flex flex-column align-items-center justify-content-center pe-0">
                             <h1 className="spac-2">4.8</h1>
                             <i
-                              className="fa-solid fa-star fa-star-style"
+                              className="fa-solid fa-star star-with-score"
                               style={{
                                 fontSize: "3.125rem",
                                 marginBlock: "15px",
@@ -1077,11 +836,11 @@ export default function CourseIndex() {
                       by 蔡孝倫
                     </h5>
                     <div className="col-auto stars mt-2 d-flex align-items-center">
-                      <i className="fa-solid fa-star fa-star-style" />
-                      <i className="fa-solid fa-star fa-star-style" />
-                      <i className="fa-solid fa-star fa-star-style" />
-                      <i className="fa-solid fa-star fa-star-style" />
-                      <i className="fa-solid fa-star fa-star-style" />
+                      <i className="fa-solid fa-star star-with-score" />
+                      <i className="fa-solid fa-star star-with-score" />
+                      <i className="fa-solid fa-star star-with-score" />
+                      <i className="fa-solid fa-star star-with-score" />
+                      <i className="fa-solid fa-star star-with-score" />
                       <span className="ms-2 spac-1 text-sec-dark-blue">
                         4.8
                       </span>
@@ -1090,7 +849,7 @@ export default function CourseIndex() {
                   <div className="row justify-content-between align-items-center mt-4">
                     <span className="col-auto online-tag me-4 h6">線上</span>
                     <span className="col-auto h6">
-                      <span className="p text-gray h5 spac-2 mt-3 me-4">
+                      <span className="p text-gray-light h5 spac-2 mt-3 me-4">
                         <del>NT$5,500</del>
                       </span>
                       <span className="h2 spac-2 text-sec-orange">
@@ -1255,12 +1014,16 @@ export default function CourseIndex() {
         </div>
         {/* page three course-detail end */}
 
-        {/* page-nav-bar start */}
-        <div
-          className="container-fluid px-0"
-          style={{ height: "100px", backgroundColor: "pink" }}
-        >
-          <div className="container-sm px-0 pb-3">這邊放page-nav</div>
+       {/* page-nav-bar start */}
+       <div className="container-fluid py-3">
+            <div className="container-sm">
+                <div className="row justify-content-between">
+                    <a className="col-auto" href="">
+                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i class="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
+                    </a>
+                    <div className="col-auto">page-nav</div>
+                </div>
+            </div>
         </div>
         {/* page-nav-bar end */}
         <footer></footer>

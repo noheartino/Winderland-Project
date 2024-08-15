@@ -69,7 +69,7 @@ export default function TeacherDetail() {
                 <span className="col-auto h4 pe-2 spac-2 m-0">
                   <strong>教師列表</strong>
                 </span>
-                <span className="col-auto text-gray spac-1">
+                <span className="col-auto text-gray-light spac-1">
                   ｜&nbsp;品酒領域的專家們
                 </span>
               </div>
@@ -98,11 +98,11 @@ export default function TeacherDetail() {
                     </div>
                     <div className="row flex-column justify-content-center align-items-center">
                       <div className="col-auto stars mt-2 d-flex align-items-center">
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
                         <span className="ms-2 spac-1 text-sec-dark-blue">
                           4.8
                         </span>
@@ -125,11 +125,15 @@ export default function TeacherDetail() {
         {/* teacher-list end */}
 
         {/* page-nav-bar start */}
-        <div
-          className="container-fluid px-0"
-          style={{ height: "100px", backgroundColor: "pink" }}
-        >
-          <div className="container-sm px-0 pb-3">這邊放page-nav</div>
+        <div className="container-fluid py-3">
+            <div className="container-sm">
+                <div className="row justify-content-between">
+                    <a className="col-auto" href="">
+                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i class="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
+                    </a>
+                    <div className="col-auto">page-nav</div>
+                </div>
+            </div>
         </div>
         {/* page-nav-bar end */}
         

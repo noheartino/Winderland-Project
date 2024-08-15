@@ -1,4 +1,5 @@
 import React from "react";
+import Comment from "@/components/course/course-comment";
 
 export default function CourseIndex() {
   return (
@@ -91,11 +92,11 @@ export default function CourseIndex() {
                         by 蔡孝倫
                       </h5>
                       <div className="col-auto stars mt-2 d-flex align-items-center">
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
-                        <i className="fa-solid fa-star fa-star-style" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
+                        <i className="fa-solid fa-star star-with-score" />
                         <span className="ms-2 spac-1 text-sec-dark-blue">
                           4.8
                         </span>
@@ -106,7 +107,7 @@ export default function CourseIndex() {
                         <div className="h2 spac-2 text-sec-orange">
                           <strong>NT$3,500</strong>
                         </div>
-                        <p className="text-gray h5 spac-2 mt-3">
+                        <p className="text-gray-light h5 spac-2 mt-3">
                           <del>NT$5,500</del>
                         </p>
                       </div>
@@ -205,15 +206,14 @@ export default function CourseIndex() {
                             </h5>
                           </div>
                           <div className="teacher-starts col d-flex flex-column align-items-center justify-content-center pe-0">
-                            <h1 className="spac-2">4.8</h1>
-                            <i
-                              className="fa-solid fa-star fa-star-style"
-                              style={{
-                                fontSize: "3.125rem",
-                                marginBlock: "15px",
-                              }}
-                            />
-                            <p>教師平均評分</p>
+                            <h1 className="spac-2 text-prim-text-prim ms-2">4.8</h1>
+                            {/* bigStar start */}
+                            <div className="bigStar-box">
+                                <i className="fa-solid fa-star bigStar bigStar-beneath  text-light-wine-border"/>
+                                <i className="fa-solid fa-star bigStar bigStar-above" style={{ width: "65%" }}/>
+                            </div>
+                            {/* bigStar end */}
+                            <p className="text-prim-text-prim">教師平均評分</p>
                           </div>
                         </div>
                       </div>
@@ -253,11 +253,11 @@ export default function CourseIndex() {
                       by 蔡孝倫
                     </h5>
                     <div className="col-auto stars mt-2 d-flex align-items-center">
-                      <i className="fa-solid fa-star fa-star-style" />
-                      <i className="fa-solid fa-star fa-star-style" />
-                      <i className="fa-solid fa-star fa-star-style" />
-                      <i className="fa-solid fa-star fa-star-style" />
-                      <i className="fa-solid fa-star fa-star-style" />
+                      <i className="fa-solid fa-star star-with-score" />
+                      <i className="fa-solid fa-star star-with-score" />
+                      <i className="fa-solid fa-star star-with-score" />
+                      <i className="fa-solid fa-star star-with-score" />
+                      <i className="fa-solid fa-star star-with-score" />
                       <span className="ms-2 spac-1 text-sec-dark-blue">
                         4.8
                       </span>
@@ -266,7 +266,7 @@ export default function CourseIndex() {
                   <div className="row justify-content-between align-items-center mt-4">
                     <span className="col-auto online-tag me-4 h6">線上</span>
                     <span className="col-auto h6">
-                      <span className="p text-gray h5 spac-2 mt-3 me-4">
+                      <span className="p text-gray-light h5 spac-2 mt-3 me-4">
                         <del>NT$5,500</del>
                       </span>
                       <span className="h2 spac-2 text-sec-orange">
@@ -425,18 +425,152 @@ export default function CourseIndex() {
               </div>
             </div>
           </div>
+
           {/* course detail 評論 start */}
-          <div className="container-fluid"></div>
+          <div className="container-fluid course-detail-comment-bg py-5 px-10px">
+            <div className="container-sm">
+              <div className="course-comment-header d-flex flex-column justify-content-center flex-md-row justify-content-md-between align-items-center mt-3 mb-5 row-gap-3">
+                <h4 className="text-prim-text-prim lh-15 spac-2 text-center text-md-start">
+                  學員回饋&nbsp;|&nbsp;Comment
+                </h4>
+                <div class="btn-group course-comment-filter">
+                  <button
+                    type="button"
+                    class="btn btn-border-prim dropdown-toggle rounded-5 px-20px"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <span className="p spac-1 me-5 text-prim-prim">
+                      默認排序
+                    </span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end shadow">
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <span className="p spac-1 me-3 text-prim-prim">
+                          依評分高→低
+                        </span>
+                        <i class="fa-solid fa-arrow-down-wide-short text-prim-prim"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <span className="p spac-1 me-3 text-prim-prim">
+                          依評分低→高
+                        </span>
+                        <i class="fa-solid fa-arrow-up-wide-short text-prim-prim"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <span className="p spac-1 me-3 text-prim-prim">
+                          依時間新→舊
+                        </span>
+                        <i class="fa-solid fa-sort-down text-prim-prim"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <span className="p spac-1 me-3 text-prim-prim">
+                          依時間舊→新
+                        </span>
+                        <i class="fa-solid fa-sort-up text-prim-prim"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="course-comment-scorebars-box mb-5 row d-flex d-md-none">
+                <div className="col-auto d-flex flex-column align-items-center justify-content-center">
+                  <h1 className="spac-2 text-prim-text-prim ms-2">4.8</h1>
+                  {/* bigStar start */}
+                  <div className="bigStar-box">
+                    <i className="fa-solid fa-star bigStar bigStar-beneath  text-light-wine-border"/>
+                    <i className="fa-solid fa-star bigStar bigStar-above" style={{ width: "65%" }}/>
+                  </div>
+                  {/* bigStar end */}
+                  <p className="text-prim-text-prim">1531 則評論</p>
+                </div>
+                <div className="col course-comment-progress-bar d-flex flex-column justify-content-between">
+                    {/* 單條評分bar start */}
+                    <div className="row align-items-center">
+                        <div className="col-10">
+                            <div className="progress bg-light-gray light-wine-border" role="progressbar" aria-label="" aria-valuenow={0} aria-valuemin={0} aria-valuemax={100} style={{ height: "0.65rem" }}>
+                                <div className="progress-bar bg-sec-yellow" style={{ width: "80%" }}></div>
+                            </div>
+                        </div>
+                        <div className="col-2">
+                            <p className="text-sec-dark-blue">100</p>
+                        </div>
+                    </div>
+                    {/* 單條評分bar end */}
+                    {/* 單條評分bar start */}
+                    <div className="row align-items-center">
+                        <div className="col-10">
+                            <div className="progress bg-light-gray light-wine-border" role="progressbar" aria-label="" aria-valuenow={0} aria-valuemin={0} aria-valuemax={100} style={{ height: "0.65rem" }}>
+                                <div className="progress-bar bg-sec-yellow" style={{ width: "80%" }}></div>
+                            </div>
+                        </div>
+                        <div className="col-2">
+                            <p className="text-sec-dark-blue">100</p>
+                        </div>
+                    </div>
+                    {/* 單條評分bar end */}
+                    {/* 單條評分bar start */}
+                    <div className="row align-items-center">
+                        <div className="col-10">
+                            <div className="progress bg-light-gray light-wine-border" role="progressbar" aria-label="" aria-valuenow={0} aria-valuemin={0} aria-valuemax={100} style={{ height: "0.65rem" }}>
+                                <div className="progress-bar bg-sec-yellow" style={{ width: "80%" }}></div>
+                            </div>
+                        </div>
+                        <div className="col-2">
+                            <p className="text-sec-dark-blue">100</p>
+                        </div>
+                    </div>
+                    {/* 單條評分bar end */}
+                    {/* 單條評分bar start */}
+                    <div className="row align-items-center">
+                        <div className="col-10">
+                            <div className="progress bg-light-gray light-wine-border" role="progressbar" aria-label="" aria-valuenow={0} aria-valuemin={0} aria-valuemax={100} style={{ height: "0.65rem" }}>
+                                <div className="progress-bar bg-sec-yellow" style={{ width: "80%" }}></div>
+                            </div>
+                        </div>
+                        <div className="col-2">
+                            <p className="text-sec-dark-blue">100</p>
+                        </div>
+                    </div>
+                    {/* 單條評分bar end */}
+                    {/* 單條評分bar start */}
+                    <div className="row align-items-center">
+                        <div className="col-10">
+                            <div className="progress bg-light-gray light-wine-border" role="progressbar" aria-label="" aria-valuenow={0} aria-valuemin={0} aria-valuemax={100} style={{ height: "0.65rem" }}>
+                                <div className="progress-bar bg-sec-yellow" style={{ width: "80%" }}></div>
+                            </div>
+                        </div>
+                        <div className="col-2">
+                            <p className="text-sec-dark-blue">100</p>
+                        </div>
+                    </div>
+                    {/* 單條評分bar end */}
+                </div>
+              </div>
+              <Comment />
+            </div>
+          </div>
           {/* course detail 評論 end */}
         </div>
         {/* page three course-detail end */}
 
         {/* page-nav-bar start */}
-        <div
-          className="container-fluid px-0"
-          style={{ height: "100px", backgroundColor: "pink" }}
-        >
-          <div className="container-sm px-0 pb-3">這邊放page-nav</div>
+        <div className="container-fluid py-3">
+            <div className="container-sm">
+                <div className="row justify-content-between">
+                    <a className="col-auto" href="">
+                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i class="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
+                    </a>
+                </div>
+              <div className="col-auto">page-nav</div>
+            </div>
         </div>
         {/* page-nav-bar end */}
 

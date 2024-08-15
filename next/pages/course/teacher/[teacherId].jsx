@@ -21,11 +21,11 @@ export default function TeacherIndex() {
                 <div className="display-6 spac-2 text-white lh-15">蔡孝倫</div>
                 <h5 className="spac-2 text-white lh-15">Alex Tsai</h5>
                 <div className="stars mt-2 d-flex d-md-none align-items-center">
-                  <i className="fa-solid fa-star fa-star-style" />
-                  <i className="fa-solid fa-star fa-star-style" />
-                  <i className="fa-solid fa-star fa-star-style" />
-                  <i className="fa-solid fa-star fa-star-style" />
-                  <i className="fa-solid fa-star fa-star-style" />
+                  <i className="fa-solid fa-star star-with-score" />
+                  <i className="fa-solid fa-star star-with-score" />
+                  <i className="fa-solid fa-star star-with-score" />
+                  <i className="fa-solid fa-star star-with-score" />
+                  <i className="fa-solid fa-star star-with-score" />
                   <span className="ms-2 spac-1 text-white">4.8</span>
                 </div>
               </div>
@@ -39,11 +39,11 @@ export default function TeacherIndex() {
                     <strong>講師課程平均評價</strong>
                   </div>
                   <div className="stars mt-2 d-flex align-items-center">
-                    <i className="fa-solid fa-star fa-star-style" />
-                    <i className="fa-solid fa-star fa-star-style" />
-                    <i className="fa-solid fa-star fa-star-style" />
-                    <i className="fa-solid fa-star fa-star-style" />
-                    <i className="fa-solid fa-star fa-star-style" />
+                    <i className="fa-solid fa-star star-with-score" />
+                    <i className="fa-solid fa-star star-with-score" />
+                    <i className="fa-solid fa-star star-with-score" />
+                    <i className="fa-solid fa-star star-with-score" />
+                    <i className="fa-solid fa-star star-with-score" />
                     <span className="ms-2 spac-1 text-sec-dark-blue">4.8</span>
                   </div>
                   <hr className="w-100 my-4"></hr>
@@ -152,16 +152,16 @@ export default function TeacherIndex() {
                               >
                                 迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                               </span>
-                              <p className="text-gray mt-2 d-none d-md-block">
+                              <p className="text-gray-light mt-2 d-none d-md-block">
                                 by 王淇
                               </p>
                               <div className="sm-card-secondLine d-flex d-md-none justify-content-between mt-2">
                                 <span className="sm-card-secondLine-left">
                                   <span className="online-tag">線上</span>
-                                  <span className="text-gray">by 王淇</span>
+                                  <span className="text-gray-light">by 王淇</span>
                                 </span>
                                 <span className="sm-card-secondLine-right">
-                                  <i className="fa-solid fa-star fa-star-style" />
+                                  <i className="fa-solid fa-star star-with-score" />
                                   <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
                                     4.8
                                   </span>
@@ -170,10 +170,10 @@ export default function TeacherIndex() {
                             </div>
                             <div className="course-body-footer d-none d-md-block">
                               <div className="stars mt-2 d-flex align-items-center">
-                                <i className="fa-solid fa-star fa-star-style" />
-                                <i className="fa-solid fa-star fa-star-style" />
-                                <i className="fa-solid fa-star fa-star-style" />
-                                <i className="fa-solid fa-star fa-star-style" />
+                                <i className="fa-solid fa-star star-with-score" />
+                                <i className="fa-solid fa-star star-with-score" />
+                                <i className="fa-solid fa-star star-with-score" />
+                                <i className="fa-solid fa-star star-with-score" />
                                 <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
                                   4.8
                                 </span>
@@ -186,7 +186,7 @@ export default function TeacherIndex() {
                               </div>
                               <div className="course-process-footer mt-2">
                                 <span className="h5 spac-2 me-3">NT$3,500</span>
-                                <span className="h6 text-gray spac-2 origin-price">
+                                <span className="h6 text-gray-light spac-2 origin-price">
                                   <del>NT$5,500</del>
                                 </span>
                               </div>
@@ -245,16 +245,16 @@ export default function TeacherIndex() {
                               >
                                 迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                               </span>
-                              <p className="text-gray mt-2 d-none d-md-block">
+                              <p className="text-gray-light mt-2 d-none d-md-block">
                                 by 王淇
                               </p>
                               <div className="sm-card-secondLine d-flex d-md-none justify-content-between mt-2">
                                 <span className="sm-card-secondLine-left">
                                   <span className="underline-tag">實體</span>
-                                  <span className="text-gray">by 王淇</span>
+                                  <span className="text-gray-light">by 王淇</span>
                                 </span>
                                 <span className="sm-card-secondLine-right">
-                                  <i className="fa-solid fa-star fa-star-style" />
+                                  <i className="fa-solid fa-star star-with-score" />
                                   <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
                                     4.8
                                   </span>
@@ -270,7 +270,7 @@ export default function TeacherIndex() {
                               </div>
                               <div className="course-process-footer mt-2">
                                 <span className="h5 spac-2 me-3">NT$3,500</span>
-                                <span className="h6 text-gray spac-2 origin-price">
+                                <span className="h6 text-gray-light spac-2 origin-price">
                                   <del>NT$5,500</del>
                                 </span>
                               </div>
@@ -313,11 +313,15 @@ export default function TeacherIndex() {
         {/* page four teacher-detail end */}
 
         {/* page-nav-bar start */}
-        <div
-          className="container-fluid px-0"
-          style={{ height: "100px", backgroundColor: "pink" }}
-        >
-          <div className="container-sm px-0 pb-3">這邊放page-nav</div>
+        <div className="container-fluid py-3">
+            <div className="container-sm">
+                <div className="row justify-content-between">
+                    <a className="col-auto" href="">
+                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i class="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
+                    </a>
+                    <div className="col-auto">page-nav</div>
+                </div>
+            </div>
         </div>
         {/* page-nav-bar end */}
         <footer></footer>
