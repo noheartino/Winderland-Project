@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import DashboardProfile from '@/components/member/dashboard/profile'
@@ -8,6 +8,8 @@ import DashboardTitle from '@/components/member/dashboard/dashboardTitle'
 import Nav from '@/components/Header/Header'
 
 export default function MemberIndex() {
+  const [key, setKey] = useState('profile');
+
   return (
     <>
       {/* nav */}
@@ -21,9 +23,11 @@ export default function MemberIndex() {
           <DashboardTitle />
 
           {/* desk */}
-          <div>
+          <div className="d-none d-lg-block">
             <Tabs
-              defaultActiveKey="dashboard"
+              activeKey={key}
+              onSelect={(k) => setKey(k)}
+              // defaultActiveKey="profile"
               id="dashboard-tabs"
               className="mb-3 d-lg-flex d-none d-lg-block container"
             >
@@ -33,7 +37,6 @@ export default function MemberIndex() {
                   <DashboardProfile />
                 </div>
               </Tab>
-
               <Tab eventKey="order" title="訂單查詢">
                 {/* tab內容 */}
                 <div className="tab-pane active order-content">
@@ -53,9 +56,11 @@ export default function MemberIndex() {
           </div>
 
           {/* rwd */}
-          <div>
+          <div className="d-block d-lg-none">
             <Tabs
-              defaultActiveKey="dashboard"
+              // defaultActiveKey="profile-rwd"
+              // activeKey={key}
+              // onSelect={(k) => setKey(k)}
               id="dashboard-tabs-rwd"
               className="mb-3 nav-rwd nav-tabs-rwd d-flex d-block d-lg-none"
             >

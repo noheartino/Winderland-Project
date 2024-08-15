@@ -349,7 +349,7 @@ export default function DashboardFavorite() {
       <div className="d-block d-lg-none" id="favorite-content-rwd">
         {/* 搜尋區 */}
         <div className="d-flex  align-items-center searchArea">
-          <div className="search ">
+          <div className="search ms-4 mt-2 ">
             <FontAwesomeIcon icon={faMagnifyingGlass} className="search_icon" />
             <input id="search" type="search" placeholder="搜 尋 關 鍵 字 " />
           </div>

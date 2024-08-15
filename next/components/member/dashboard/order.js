@@ -875,12 +875,12 @@ export default function DashboardOrder() {
       {/* rwd */}
       <div className="d-block d-lg-none" id="order-content-rwd">
         <div className="d-flex align-items-center searchArea">
-          <div className="search ">
+          <div className="search ms-4 mt-2">
             <FontAwesomeIcon icon={faMagnifyingGlass} className="search_icon" />
             <input id="search" type="search" placeholder="搜 尋 關 鍵 字 " />
           </div>
-       {/* 篩選手風琴元件 */}
-        <OrderFilterOffcanvas />
+          {/* 篩選手風琴元件 */}
+            <OrderFilterOffcanvas />
         </div>
 
         <div className="order-list-rwd container-fluid">
