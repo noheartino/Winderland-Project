@@ -35,7 +35,7 @@ export default function TeacherIndex() {
             <div className="container-sm">
               <div className="teacher-detail-content-box w-100 rounded-5 m-auto">
                 <div className="d-none d-md-flex flex-column justify-content-center align-items-center">
-                  <div className="h3 spac-2 m-0 text-prim-text-prim text-center">
+                  <div className="h5 spac-2 m-0 text-prim-text-prim text-center">
                     <strong>講師課程平均評價</strong>
                   </div>
                   <div className="stars mt-2 d-flex align-items-center">
@@ -46,9 +46,8 @@ export default function TeacherIndex() {
                     <i className="fa-solid fa-star fa-star-style" />
                     <span className="ms-2 spac-1 text-sec-dark-blue">4.8</span>
                   </div>
-                  <hr></hr>
+                  <hr className="w-100 my-4"></hr>
                 </div>
-
                 <h6 className="text-prim-dark spac-2 lh-20 teacher-intro-text mb-5">
                   原本從事生化研究，但在就讀英國萊斯特大學生化所博士班期間，發現自己興趣並不在做研究而放棄學位。在餐廳打工時發現自己對葡萄酒的興趣與服務的熱情，決定學習葡萄酒與西方飲食文化，並在倫敦通過WSET
                   Level 1 和 WSET Level 2認證後，正式從事侍酒師的工作。

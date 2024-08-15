@@ -81,8 +81,8 @@
     }
     & .fa-star-style {
         color: var(--yellow);
-        font-size: 1.12rem;
-        margin-right: 0.3rem;
+        font-size: 1.125rem;
+        margin-right: 0.35rem;
     }
     & .course-mycourse{
         & .course-more, & .course-no-content{
