@@ -1,16 +1,48 @@
-import React from "react";
-import styles from "./PcFliterAside.module.css"
+import React, { useState, useEffect } from "react";
+import styles from "./PcFliterAside.module.css";
 
 export default function PcFliterAside() {
+  // 雙滑塊js start//
+  const minLimit = 500;
+  const maxLimit = 100000;
+  const step = 500;
+
+  const [minValue, setMinValue] = useState(minLimit);
+  const [maxValue, setMaxValue] = useState(maxLimit);
+
+  const getStep = (value) => {
+    return Math.round(value / step) * step;
+  };
+
+  // 小滑塊跟大滑塊的變更
+  const minChange = (e) => {
+    const rawValue = Number(e.target.value);
+    const steppedValue = getStep(rawValue);
+    const newMinValue = Math.min(steppedValue, maxValue - (4*step));
+    setMinValue(newMinValue);
+  };
+
+  const maxChange = (e) => {
+    const rawValue = Number(e.target.value);
+    const steppedValue = getStep(rawValue);
+    const newMaxValue = Math.max(steppedValue, minValue + (4*step));
+    setMaxValue(newMaxValue);
+  };
+
+  const getPercent = (value) =>
+    ((value - minLimit) / (maxLimit - minLimit)) * 100;
+
+  // 雙滑塊js end//
+
   return (
     <>
-      <aside className={`col-3 pe-5 ${styles['product-pc-aside']}`}>
+      <aside className={`col-3 pe-5 ${styles["product-pc-aside"]}`}>
         {/* 類型篩選 */}
         <div className={`col ${styles["shop-category-fliter"]}`}>
           <p className={`${styles["shop-flite-p"]}`}>類型</p>
           <ul>
             <a href="">
-              <li>Red 紅酒</li> 
+              <li>Red 紅酒</li>
             </a>
             <a href="">
               <li>Port Wine 波特酒</li>
@@ -84,14 +116,26 @@ export default function PcFliterAside() {
           <form action="" className={`${styles["aside-price-fliter"]}`}>
             {/* 顯示金額的地方 */}
             <div className={`${styles["minmaxprice"]}`}>
-              <div className={`${styles["min-price"]} ${styles["aside-price"]}`}>
+              <div
+                className={`${styles["min-price"]} ${styles["aside-price"]}`}
+              >
                 <div className={`${styles["money-icon"]}`}>$</div>
-                <div className={`${styles["min-price-value"]} ${styles["price-value"]}`}>500</div>
+                <div
+                  className={`${styles["min-price-value"]} ${styles["price-value"]}`}
+                >
+                  {minValue}
+                </div>
               </div>
               <div className={`${styles["dash"]}`}>-</div>
-              <div className={`${styles["max-price"]} ${styles["aside-price"]}`}>
+              <div
+                className={`${styles["max-price"]} ${styles["aside-price"]}`}
+              >
                 <div className={`${styles["money-icon"]}`}>$</div>
-                <div className={`${styles["max-price-value"]} ${styles["price-value"]}`}>100,000</div>
+                <div
+                  className={`${styles["max-price-value"]} ${styles["price-value"]}`}
+                >
+                  {maxValue}
+                </div>
               </div>
             </div>
             {/* 雙滑塊本人 */}
@@ -99,23 +143,29 @@ export default function PcFliterAside() {
               <input
                 type="range"
                 id="min-price"
-                min={500}
-                max={100000}
-                defaultValue={500}
-                step={500}
+                min={minLimit}
+                max={maxLimit}
+                value={minValue}
+                step={step}
+                onChange={minChange}
               />
               <input
                 type="range"
                 id="max-price"
-                min={500}
-                max={100000}
-                defaultValue={100000}
-                step={500}
+                min={minLimit}
+                max={maxLimit}
+                value={maxValue}
+                step={step}
+                onChange={maxChange}
               />
             </div>
             <div className={`row ${styles["slider-minmax"]}`}>
-              <div className={`col-lg-8 col-md-8  ${styles["money-min"]}`}>$500</div>
-              <div className={`col-lg-3 col-md-3 ${styles["money-max"]}`}>$100,000</div>
+              <div className={`col-lg-8 col-md-8  ${styles["money-min"]}`}>
+                $500
+              </div>
+              <div className={`col-lg-3 col-md-3 ${styles["money-max"]}`}>
+                $100,000
+              </div>
             </div>
             <button className={`${styles["shop-fliter-button"]}`}>
               <div>執行篩選</div>
