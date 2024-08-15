@@ -5,12 +5,14 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
+import FavoriteFilterOffcanvas from '@/components/member/dashboard/FavoriteFilterOffcanvas';
 
 export default function DashboardFavorite() {
   return (
     <>
       {/* desk */}
       <div className=" container d-lg-flex  d-none d-lg-block">
+        {/* 側欄 */}
         <aside>
           <hr />
           <ul className="list-unstyled ">
@@ -30,6 +32,7 @@ export default function DashboardFavorite() {
           <br />
           <button>日期篩選</button>
         </aside>
+
         <div className="favorite-list">
           {/* 商品收藏 */}
           <div className="favorite-p">
@@ -37,7 +40,7 @@ export default function DashboardFavorite() {
             <hr />
             <div className="favorite-p-group d-flex">
               <div className="favorite-p-card">
-                <div className="">
+                <div className="favorite-p-img">
                   <Image
                     src="/images/member/fav-p1.jpg"
                     alt=""
@@ -54,7 +57,7 @@ export default function DashboardFavorite() {
                 </div>
               </div>
               <div className="favorite-p-card">
-                <div className="">
+                <div className="favorite-p-img">
                   <Image
                     src="/images/member/fav-p1.jpg"
                     alt=""
@@ -71,7 +74,7 @@ export default function DashboardFavorite() {
                 </div>
               </div>
               <div className="favorite-p-card">
-                <div className="">
+                <div className="favorite-p-img">
                   <Image
                     src="/images/member/fav-p1.jpg"
                     alt=""
@@ -88,7 +91,7 @@ export default function DashboardFavorite() {
                 </div>
               </div>
               <div className="favorite-p-card">
-                <div className="">
+                <div className="favorite-p-img">
                   <Image
                     src="/images/member/fav-p1.jpg"
                     alt=""
@@ -341,83 +344,20 @@ export default function DashboardFavorite() {
           </div>
         </div>
       </div>
+
       {/* rwd */}
       <div className="d-block d-lg-none" id="favorite-content-rwd">
-        <div className="d-flex  align-items-center">
+        {/* 搜尋區 */}
+        <div className="d-flex  align-items-center searchArea">
           <div className="search ">
             <FontAwesomeIcon icon={faMagnifyingGlass} className="search_icon" />
             <input id="search" type="search" placeholder="搜 尋 關 鍵 字 " />
           </div>
-          {/* 篩選-畫布 */}
-          <button
-            className=" favorite-filter"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasRight2"
-            aria-controls="offcanvasRight2"
-          >
-            <FontAwesomeIcon icon={faFilter} />
-          </button>
-          <div
-            className="offcanvas offcanvas-end"
-            tabIndex={-1}
-            id="offcanvasRight2"
-            aria-labelledby="offcanvasRightLabel2"
-          >
-            {/* 畫布標題 */}
-            <div className="offcanvas-header">
-              <FontAwesomeIcon icon={faFilter} />
-              <p id="offcanvasRightLabel2">篩選項目</p>
-              <button
-                type="button"
-                className="btn-close text-reset"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-              />
-            </div>
-            {/* 畫布內容 */}
-            <div className="offcanvas-body ">
-              <p className="offcanvas-body-title">類別</p>
-              <div className="mb-3">
-                <select
-                  defaultValue="option1"
-                  className="form-select form-select-lg"
-                  name=""
-                  id=""
-                >
-                  <option value="option1">請選擇收藏類別</option>
-                  <option value="">全部</option>
-                  <option value="">商品</option>
-                  <option value="">課程</option>
-                  <option value="">文章</option>
-                </select>
-              </div>
-              <p className="offcanvas-body-title">收藏日期</p>
-              <div className="mb-3">
-                <select
-                  defaultValue="option1"
-                  className="form-select form-select-lg"
-                  name=""
-                  id=""
-                >
-                  <option value="option1">選擇下單日期</option>
-                  <option value="">近半年</option>
-                  <option value="">一年內</option>
-                  <option value="">一年以上</option>
-                </select>
-              </div>
-              <div className="input-date-gruop ">
-                <input type="date" className="mb-3 me-3" />-
-                <input type="date" className="mx-2" />
-              </div>
-              <br />
-              <div className="button-end d-flex justify-content-center">
-                <button>重設</button>
-                <button>送出篩選</button>
-              </div>
-            </div>
-          </div>
+          {/* 篩選手風琴元件 */}
+          <FavoriteFilterOffcanvas />
         </div>
+
+        {/* 收藏區 */}
         <div className="favorite-list-rwd container-fluid">
           {/* 商品收藏 */}
           <div className="favorite-p-rwd">
@@ -429,8 +369,8 @@ export default function DashboardFavorite() {
                   <Image
                     src="/images/member/fav-p1.jpg"
                     alt=""
-                    width={80}
-                    height={80}
+                    width={170}
+                    height={170}
                     className="favorite-p-img-rwd"
                   />
                   <i className="fa-solid fa-bookmark" />
@@ -471,7 +411,7 @@ export default function DashboardFavorite() {
             <div className="favorite-c-group ">
               <div className="favorite-c-card-rwd">
                 {/* 課程資訊 */}
-                <div className="d-flex">
+                <div className="d-flex" >
                   <Image
                     src="/images/member/fav-c1.jpg"
                     alt=""
@@ -506,7 +446,7 @@ export default function DashboardFavorite() {
                   </div>
                 </div>
                 {/* 進度條 */}
-                <div className="div">
+                <div className="progressArea">
                   <div className="progress-detail d-flex justify-content-between ">
                     <p>課程時長-5小時</p>
                     <p>已完成90%</p>
@@ -560,7 +500,7 @@ export default function DashboardFavorite() {
                   </div>
                 </div>
                 {/* 進度條 */}
-                <div className="div">
+                <div className="progressArea">
                   <div className="progress-detail d-flex justify-content-between ">
                     <p>課程時長-5小時</p>
                     <p>已完成90%</p>
@@ -588,8 +528,8 @@ export default function DashboardFavorite() {
                 <Image
                   src="/images/member/fav-a1.jpeg"
                   alt=""
-                  width={125}
-                  height={125}
+                  width={90}
+                  height={90}
                   className="favorite-a-img"
                 />
                 <div className="favorite-a-detail">
