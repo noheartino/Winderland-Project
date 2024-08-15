@@ -1,0 +1,96 @@
+/* cartTransport.module.css */
+.transportContent {
+    padding-left: 50px;
+    width: 100%;
+    max-width: 720px;
+    background-color: #fcfcfc;
+    font-size: 16px;
+    color: #60464c;
+}
+
+.transportContent input {
+    border: 2px solid #619c91;
+    border-radius: 8px;
+    margin: 15px 0 20px 0;
+    height: 40px;
+}
+
+.transportContent input:focus {
+    outline: none;
+    border-color: #619c91;
+}
+
+.transportContent .transportContent1 {
+    display: flex;
+}
+
+.transportContent .transportContent2 {
+    padding-right: 15px;
+}
+
+.transportContent .transportstore {
+    width: 450px; /* 使用此行作為輸入寬度 */
+    padding-left: 10px;
+}
+
+.transportContent .transportname {
+    width: 310px; /* 使用此行作為輸入寬度 */
+    margin-right: 50px;
+    padding-left: 10px;
+}
+
+.transportContent .transportphone {
+    padding-left: 10px;
+}
+
+.transportContent button {
+    margin-top: 38px;
+    height: 40px;
+    width: 100px;
+    display: grid;
+    place-items: center;
+    background-color: #619c91;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: #fff;
+}
+
+/* 媒體查詢 */
+@media screen and (max-width: 992px) {
+    .transportContent {
+        background-color: transparent;
+        display: grid;
+        place-items: center;
+        padding-left: 0px;
+    }
+
+    .transportContent .transportContent2 .transportstore {
+        width: 400px;
+    }
+
+    .transportContent .transportContent2 .transportname {
+        width: 260px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .transportContent {
+        display: grid;
+        place-items: center;
+        padding-left: 0px;
+    }
+
+    .transportContent .transportContent2 .transportstore {
+        width: 220px;
+    }
+
+    .transportContent .transportContent2 .transportname {
+        width: 190px;
+        margin-right: 10px;
+    }
+
+    .transportContent .transportphone {
+        padding-left: 10px;
+        width: 120px;
+    }
+}

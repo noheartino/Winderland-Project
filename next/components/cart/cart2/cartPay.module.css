@@ -1,0 +1,88 @@
+/* cartPay.module.css */
+.payDetail {
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(119, 119, 119, 0.2);
+}
+
+.payDetailTitle {
+    height: 75px;
+    background-color: #ff4f4f;
+    font-size: 20px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding-left: 40px;
+}
+
+.payDetailContent {
+    padding: 35px;
+    height: 515px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 20px;
+    color: #60464c;
+    background-color: #fcfcfc;
+}
+
+.payDetailContent .payContent1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.payContentWpoint {
+    color: #ff4f4f;
+}
+
+.payContentTotal {
+    height: 70px;
+    position: relative;
+}
+
+.payContentTotal1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.payContentTotal2 {
+    font-size: 32px;
+    color: #ff4f4f;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.payWpoint {
+    font-size: 12px;
+    color: #d4c0c0;
+}
+
+.payDetailContent button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 330px;
+    height: 75px;
+    background-color: #ff4f4f;
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 11px;
+}
+
+/* 媒體查詢 */
+@media screen and (max-width: 1200px) and (min-width: 992px) {
+    .payDetailTitle {
+        font-size: 16px;
+    }
+    
+    .payDetailContent {
+        font-size: 16px;
+    }
+    
+    .payContentTotal2 {
+        font-size: 28px;
+    }
+}

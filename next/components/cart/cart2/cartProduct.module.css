@@ -1,0 +1,183 @@
+/* cartProduct.module.css */
+.cartProductBox2 {
+    display: flex;
+    margin-top: 20px;
+    border: 2px solid #f4ebeb;
+    width: 100%;
+    max-width: 770px;
+    height: 200px;
+    justify-content: center;
+    padding-top: 25px;
+}
+
+.cartProductImg2 {
+    width: 100%;
+    max-width: 150px;
+    height: 150px;
+    border: 1px solid #d4c0c0;
+    margin-right: 40px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.cartProductImg2 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.cartProductOrderBox {
+    display: flex;
+    color: #60464c;
+}
+
+.orderContent {
+    width: 100%;
+    max-width: 220px;
+    margin-right: 20px;
+}
+
+.orderNumber {
+    width: 100%;
+    max-width: 95px;
+}
+
+.orderContent1, .orderNumber1, .orderTotal1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.orderContent2 {
+    font-size: 16px;
+    margin-top: 10px;
+    color: #9a5b69;
+}
+
+.orderNumber2 {
+    font-size: 20px;
+    margin-top: 25px;
+    color: #9a5b69;
+}
+
+.orderTotal2 {
+    width: 150px;
+    font-size: 20px;
+    margin-top: 25px;
+    color: #ff4f4f;
+}
+
+.cartProductOrderLine {
+    border: 1px solid #60464c;
+    width: 100%;
+    max-width: 530px;
+}
+
+/* RWD styles */
+@media screen and (max-width: 768px) {
+    .cartProductImg2 {
+        width: 100%;
+        max-width: 140px;
+        height: 140px;
+        margin-right: 30px;
+    }
+
+    .cartProductOrderBox {
+        .orderContent {
+            margin-right: 0px;
+            max-width: 130px;
+        }
+
+        .orderContent1 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            max-width: 110px;
+        }
+
+        .orderNumber1 {
+            font-size: 16px;
+            max-width: 95px;
+        }
+
+        .orderTotal1 {
+            font-size: 16px;
+            white-space: nowrap;
+        }
+
+        .orderContent2 {
+            font-size: 12px;
+            margin-top: 10px;
+            color: #9a5b69;
+        }
+
+        .orderNumber2 {
+            font-size: 17px;
+            margin-top: 25px;
+            color: #9a5b69;
+            padding-left: 10px;
+        }
+
+        .orderTotal2 {
+            width: 100%;
+            max-width: 150px; /* 确保最宽150px */
+            font-size: 17px;
+            margin-top: 25px;
+            color: #ff4f4f;
+        }
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .cartProductImg2 {
+        width: 100%;
+        max-width: 100px;
+        height: 140px;
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .cartProductOrderBox {
+        .orderContent {
+            margin-right: 0px;
+            max-width: 90px;
+        }
+
+        .orderContent1 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .orderNumber1 {
+            font-size: 16px;
+            max-width: 95px;
+            width: 100%;
+        }
+
+        .orderTotal1 {
+            font-size: 16px;
+            white-space: nowrap;
+        }
+
+        .orderContent2 {
+            font-size: 12px;
+            margin-top: 10px;
+            color: #9a5b69;
+        }
+
+        .orderNumber2 {
+            font-size: 15px;
+            margin-top: 25px;
+            color: #9a5b69;
+            padding-left: 10px;
+        }
+
+        .orderTotal2 {
+            width: 100%; /* 保持100% */
+            max-width: 150px; /* 确保最大宽度150px */
+            font-size: 15px;
+            margin-top: 25px;
+            color: #ff4f4f;
+        }
+    }
+}
