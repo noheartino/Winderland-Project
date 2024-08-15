@@ -1,0 +1,58 @@
+@media screen and (max-width: 1920px) {
+    .product-sm-form {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 992px) {}
+
+@media screen and (max-width: 767px) {
+    .product-sm-form {
+        display: flex;
+        flex-direction: column;
+        color: var(--text_primary);
+        padding-right: 10%;
+
+        & .product-labels {
+            display: flex;
+            justify-content: start;
+            margin-inline: 3%;
+            font-size: 20px;
+
+            & .product-reserve {
+                font-size: 12px;
+                margin-top: 2%;
+                margin-left: 14%;
+            }
+
+            & .product-year-label {
+                margin-left: 9%;
+            }
+        }
+
+        & .product-sm-input {
+            margin-top: 2%;
+            display: flex;
+            align-items: center;
+
+            /* 商品數量選擇 */
+            & .product-sm-amount-input {
+                width: 95%;
+                position: relative;
+            }
+
+            /* 商品年份選擇 */
+            & .product-sm-select {
+                width: 74%;
+            }
+        }
+
+        /* 收藏+購物車 */
+        .product-fav-cart {
+            display: flex;
+            margin-top: 8%;
+            margin-left: 5%;
+            align-items: center;
+        }
+    }
+}

@@ -1,0 +1,67 @@
+@media screen and (max-width: 1920px) {
+    .product-detail-title {
+        height: 80px;
+        width: 99%;
+        margin-top: 5%;
+        background-color: var(--light);
+        color: var(--purple_light);
+        font-size: 24px;
+        margin-left: 0;
+        border-radius: 3px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .product-info2 {
+        width: 100%;
+        padding-left: 1%;
+        margin-top: 2%;
+        letter-spacing: 2px;
+        font-size: 20px;
+        color: var(--text_primary);
+        align-items: center;
+
+        & .product-detail-md-title {
+            display: none;
+        }
+
+        /* 左邊區塊 */
+        & .product-ratingArea {
+            border-right: 1px solid var(--wine_light);
+            align-items: center;
+            padding-inline: 3%;
+            padding-top: 0;
+        }
+
+        /* 右邊區塊 */
+        & .product-introduce {
+            padding-top: 1%;
+            padding-inline: 3%;
+
+            & .product-introduce-list {
+                margin-bottom: 4%;
+            }
+        }
+
+        /* 下面那塊 */
+        & .product-depiction{
+            width: 95%;
+            margin-left: 2%;
+            margin-top: 6%;
+        }
+    }
+
+}
+
+@media screen and (max-width: 992px) {
+
+    /* 標題 */
+    .product-detail-title {
+        display: none;
+    }
+
+    /* 商品詳細 */
+    .product-info2 {
+        display: none;
+    }
+}

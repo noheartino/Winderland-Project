@@ -1,0 +1,63 @@
+@media screen and (max-width: 1920px) {
+
+    /* 大照片 */
+    & .product-photo-bg {
+        position: relative;
+        width: 100%;
+        border: 2px solid var(--light);
+        box-shadow: 0 1px 2px var(--light);
+
+        & .product-img {
+            width: 100%;
+        }
+
+        & .photo-arrow {
+            position: absolute;
+            width: 5%;
+            top: 48%;
+            right: 3%;
+        }
+    }
+
+    /* 小照片 */
+    & .product-photos-sm {
+        display: flex;
+        justify-content: space-between;
+
+        & .product-photo-sm {
+            width: 150px;
+            height: 150px;
+            padding: 0;
+            margin-top: 10px;
+            border: 1px solid var(--light);
+            box-shadow: 0 1px 2px var(--light);
+
+            & .product-img {
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 992px) {
+
+    /* 商品圖片 */
+    .product-photo-bg {
+        width: 90%;
+        margin-inline: auto;
+    }
+
+    .product-photos-sm {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 767px) {
+
+    /* 商品圖片 */
+        .product-photo-bg {
+            width: 100%;
+        }
+    
+
+}
