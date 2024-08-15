@@ -49,7 +49,7 @@ export default function RatingArea() {
         </div>
         <div className={`col-3 ${styles['rating-score']}`}>
             <span className={`${styles['average-rating']}`}>4.8</span>
-            <span className={`${styles['star']}`}><i class="fa-solid fa-star"></i></span>
+            <span className={`${styles['star']}`}><i className="fa-solid fa-star"></i></span>
             <span className={`${styles['review-count']}`}>1200則評論</span>
         </div>
       </div>

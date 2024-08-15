@@ -15,7 +15,7 @@
 
         & .product-labels {
             display: flex;
-            justify-content: start;
+            justify-content: flex-start;
             margin-inline: 3%;
             font-size: 20px;
 

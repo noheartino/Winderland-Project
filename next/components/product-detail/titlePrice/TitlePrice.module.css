@@ -30,7 +30,7 @@
     .product-prices {
         display: flex;
         padding-left: var(--detail-left-padding);
-        align-items: end;
+        align-items: flex-end;
         margin-bottom: 8%;
         font-weight: 600;
 

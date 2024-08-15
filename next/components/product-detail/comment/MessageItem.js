@@ -20,18 +20,18 @@ export default function MessageItem() {
                 <span>B1</span>
                 <span className={`${styles["divider"]}`}> | </span>
                 <button className={`${styles["good-button"]}`} type="button">
-                  <i class={`fa-regular fa-thumbs-up ${styles['good-icon']}`}></i>
+                  <i className={`fa-regular fa-thumbs-up ${styles['good-icon']}`}></i>
                   251
                 </button>
               </div>
             </div>
             <div className={`${styles["user-star"]}`}>
               <div className={`${styles["stars"]}`}>
-                <i class={`fa-solid fa-star ${styles["light"]}`}></i>
-                <i class={`fa-solid fa-star ${styles["light"]}`}></i>
-                <i class={`fa-solid fa-star ${styles["light"]}`}></i>
-                <i class={`fa-solid fa-star ${styles["light"]}`}></i>
-                <i class={`fa-solid fa-star ${styles["light"]}`}></i>
+                <i className={`fa-solid fa-star ${styles["light"]}`}></i>
+                <i className={`fa-solid fa-star ${styles["light"]}`}></i>
+                <i className={`fa-solid fa-star ${styles["light"]}`}></i>
+                <i className={`fa-solid fa-star ${styles["light"]}`}></i>
+                <i className={`fa-solid fa-star ${styles["light"]}`}></i>
               </div>
               <div className={`${styles["score"]}`}>4.8</div>
             </div>
@@ -39,7 +39,7 @@ export default function MessageItem() {
         </div>
         <div className={`${styles["more-content"]}`}>
           <div itemType="button" className={`${styles["more"]}`}>
-            <i class="fa-solid fa-ellipsis"></i>
+            <i className="fa-solid fa-ellipsis"></i>
           </div>
           <div className={`${styles["message-content"]}`}>
             <p className={`${styles["comment-text"]}`}>屋哇哇屋挖~~~♪</p>
@@ -64,18 +64,18 @@ export default function MessageItem() {
                 <span>B1</span>
                 <span className={`${styles["divider"]}`}> | </span>
                 <button className={`${styles["good-button"]}`} type="button">
-                  <i class={`fa-regular fa-thumbs-up ${styles['good-icon']}`}></i>
+                  <i className={`fa-regular fa-thumbs-up ${styles['good-icon']}`}></i>
                   1000
                 </button>
               </div>
             </div>
             <div className={`${styles["user-star"]}`}>
               <div className={`${styles["stars"]}`}>
-                <i class={`fa-solid fa-star ${styles["light"]}`}></i>
-                <i class={`fa-solid fa-star`}></i>
-                <i class={`fa-solid fa-star`}></i>
-                <i class={`fa-solid fa-star`}></i>
-                <i class={`fa-solid fa-star`}></i>
+                <i className={`fa-solid fa-star ${styles["light"]}`}></i>
+                <i className={`fa-solid fa-star`}></i>
+                <i className={`fa-solid fa-star`}></i>
+                <i className={`fa-solid fa-star`}></i>
+                <i className={`fa-solid fa-star`}></i>
               </div>
               <div className={`${styles["score"]}`}>1.0</div>
             </div>
@@ -83,7 +83,7 @@ export default function MessageItem() {
         </div>
         <div className={`${styles["more-content"]}`}>
           <div itemType="button" className={`${styles["more"]}`}>
-            <i class="fa-solid fa-ellipsis"></i>
+            <i className="fa-solid fa-ellipsis"></i>
           </div>
           <div className={`${styles["message-content"]}`}>
             <p className={`${styles["comment-text"]}`}>樓上吵啥</p>
