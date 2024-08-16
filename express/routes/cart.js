@@ -19,7 +19,6 @@ router.get('/:user_id', async (request, response) => {
       class.name AS class_name,
       class.price AS class_price,
       users.user_name AS username,
-      users.email,
       GROUP_CONCAT(images_product.path) AS product_images,
       images_class.path AS class_image,
       country.name AS product_country,
@@ -55,9 +54,8 @@ router.get('/:user_id', async (request, response) => {
     }
 });
 
-// 結帳並創建訂單 (Create)
 router.post('/checkout', async (request, response) => {
-    const { user_id } = request.body;
+    const { user_id, pickup_name, pickup_phone, pickup_address, pickup_store_id } = request.body;
 
     try {
         // 獲取購物車內容
@@ -67,14 +65,20 @@ router.post('/checkout', async (request, response) => {
             return response.status(400).json({ message: '購物車為空，不能結帳' });
         }
 
-        // 創建訂單
-        const [orderResult] = await conn.query('INSERT INTO orders (user_id, order_date, status) VALUES (?, NOW(), ?)', [user_id, '新訂單']);
-        const orderId = orderResult.insertId;
+        // 創建訂單，只使用 created_at 記錄時間
+        const [orderResult] = await conn.query(
+            'INSERT INTO orders (user_id, created_at, status, pickup_name, pickup_phone, pickup_address, pickup_store_id) VALUES (?, NOW(), ?, ?, ?, ?, ?)', 
+            [user_id, '新訂單', pickup_name, pickup_phone, pickup_address, pickup_store_id]
+        );
+        
+        const orderId = orderResult.insertId; // 獲取生成的訂單 ID
 
         // 為每個購物車項目創建訂單詳細
         for (const item of cartItems) {
-            await conn.query('INSERT INTO order_details (order_id, product_detail_id, class_id, quantity, price) VALUES (?, ?, ?, ?, ?)', 
-            [orderId, item.product_detail_id, item.class_id, item.product_quantity, item.price]);
+            await conn.query(
+                'INSERT INTO order_details (order_id, product_detail_id, class_id, quantity, price) VALUES (?, ?, ?, ?, ?)', 
+                [orderId, item.product_detail_id, item.class_id, item.product_quantity, item.product_price]
+            ); // 記得根據需要傳入價格
         }
 
         // 清空購物車
@@ -86,6 +90,7 @@ router.post('/checkout', async (request, response) => {
         return response.status(500).json({ error: '結帳失敗', details: error.message });
     }
 });
+
 
 // 更新購物車中的項目數量 (Update)
 router.put('/cart/:id', async (request, response) => {
