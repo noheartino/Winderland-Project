@@ -30,3 +30,9 @@ html{
   text-decoration: none;
   /* ↑ 預設字 */
 }
+@media screen and (max-width: 768px) {
+  html{
+      font-size: 10px;
+  }
+  
+}
