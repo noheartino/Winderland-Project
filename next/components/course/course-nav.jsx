@@ -65,7 +65,7 @@ export default function CourseNav({setSearchWord}) {
           </div>
           <div className="row px-0 m-0 justify-content-center">
             <div className="col-11 col-md-6 d-flex justify-content-center flex-wrap">
-              <a href="/" className="nav-tag" onclick="">
+              <a href="/" className="nav-tag" onClick="">
                 品酒
               </a>
               <a href="/" className="nav-tag">
