@@ -1,4 +1,4 @@
-// # 註冊登入重新導向頁面
+// # 默認路由
 
 import { useRouter } from 'next/router'
 
