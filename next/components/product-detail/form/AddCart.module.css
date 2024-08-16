@@ -1,0 +1,52 @@
+@media screen and (max-width: 1920px) {
+
+    /* 收藏icon */
+    & .product-fav-icon {
+
+        & .fav-button{
+            width: 40px;
+            font-size: 35px;
+            background: none;
+            border: none;
+        }
+    }
+
+    /* 加入購物車按鈕 */
+    & .product-add-cart-button {
+        margin-left: 5%;
+        width: 88%;
+        border: 2px solid var(--wine);
+        background-color: var(--orange);
+        color: white;
+        letter-spacing: 2px;
+        height: 80px;
+        border-radius: 5px;
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    & .product-add-cart-button {
+        width:87%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    & .product-fav-icon {
+        & .fav-button{
+            width: 30px;
+            font-size: 25px;
+        }
+    }
+
+    & .product-add-cart-button {
+        width: 95%;
+        border: 2px solid var(--wine);
+        background-color: var(--orange);
+        text-wrap: nowrap;
+        color: white;
+        border-radius: 5px;
+        font-size: 18px;
+        height: 55px;
+    }
+}

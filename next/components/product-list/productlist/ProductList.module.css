@@ -1,0 +1,26 @@
+
+@media (max-width: 1920px) {
+    .shop-product-list {
+        font-size: 14px;
+        color: var(--text_primary);
+        height: auto;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .shop-product-list {
+        .shop-card {
+            padding-left: 0;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .shop-product-list {
+        & .row {
+            padding-right: 10px;
+        }
+    }
+}
+
+

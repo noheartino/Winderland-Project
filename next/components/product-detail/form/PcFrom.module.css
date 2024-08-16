@@ -1,0 +1,61 @@
+@media screen and (max-width: 1920px) {
+
+    /* 商品數量選擇 */
+    & .product-amount {
+        padding-left: var(--detail-left-padding);
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        position: relative;
+
+        & label {
+            font-size: 23px;
+        }
+
+        & .product-amount-input {
+            align-items: center;
+            width: 50%;
+        }
+    }
+
+    /* 商品年份選擇 */
+    & .product-year {
+        width: 40%;
+        margin-left: 5%;
+        display: flex;
+        align-items: center;
+        font-size: 23px;
+    }
+
+    /* 庫存 */
+    & .product-reserve {
+        margin-left: 35%;
+        margin-top: 2%;
+
+    }
+
+    /* 收藏+加入購物車 */
+    & .product-fav-cart {
+        padding-left: 8%;
+        margin-top: 8%;
+        display: flex;
+        align-items: center;
+        text-wrap: nowrap;
+    }
+}
+
+@media screen and (max-width: 992px) {
+
+    /* 加入購物車 */
+    & .product-fav-cart {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    /* 商品數量跟年份 */
+    & .product-pc-form,
+    .product-fav-cart {
+        display: none;
+    }
+}
