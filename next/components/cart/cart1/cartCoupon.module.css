@@ -133,8 +133,12 @@
     margin: 20px 0;
 }
 
+.cartModalUse{
+    
+}
+
 .cartModalUse button{
     color: #5B839A;
     white-space: nowrap;
-    margin-left: 10px;
+    border: 1px solid transparent;
 }
