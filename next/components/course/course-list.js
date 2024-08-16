@@ -1,10 +1,50 @@
-import React, { useState } from 'react'
+import React, { useState,  useEffect } from 'react'
+import { useRouter } from 'next/router';
 
-export default function CourseBox({searchWord}) {
+export default function CourseList({auth}) {
+
+  const router = useRouter();
+  const { search } = router.query;
+
+  const [courses, setCourses] = useState([]);
+  const [firstCourse, setFirstCourse] = useState([]);
+  const [remainCourses, setRemainCourses] = useState([]);
+
+  useEffect(() => {
+    // const includeImages = false;
+    const apiUrl = search
+      ? `http://localhost:3005/api/course?search=${encodeURIComponent(search)}`
+      : "http://localhost:3005/api/course";
+    // 當組件掛載時執行 fetch 請求
+    fetch(apiUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response not ok");
+        }
+        console.log(response.json);
+        return response.json();
+      })
+      .then((data) => {
+        // 處理 courses 資料，將 images 字段轉換為數組
+        const processedCourses = data.map((course) => ({ auth: auth,
+          ...course,
+          images: course.images ? course.images.split(",") : [],
+        }));
+        setCourses(processedCourses);
+        console.log("courses data: "+processedCourses)
+        console.log("first Course: "+firstCourse);
+        setFirstCourse(processedCourses.slice(0, 1));
+        setRemainCourses(processedCourses.slice(2));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [search]);
+
   return (
     <>
       {/* mycourse box underline start */}
-      <div className={`row px-0 m-0 h-100 ${CourseBox} d-flex align-items-start`}>
+      <div className={`row px-0 m-0 h-100 wait-to-fill d-flex align-items-start`}>
                     <a
                       className="course-leftcontent col-12 col-md-8 px-0"
                       type="button"

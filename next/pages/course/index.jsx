@@ -1,8 +1,9 @@
-import CourseBox from "@/components/course/course-box"
+import CourseList from "@/components/course/course-list"
 import CourseNav from "@/components/course/course-nav"
+import { useAuth } from "@/hooks/use-auth";
 
-export default function CourseIndex() {
-  const userId = 1
+export default function CourseIndex(userId) {
+  const { auth, login, logout } = useAuth();
   return (
     <>
       <title>課程首頁</title>
@@ -36,7 +37,7 @@ export default function CourseIndex() {
                     <span className="col-auto text-gray-light spac-1 px-0 mb-1 h7">正在學習中的課程內容</span>
                   </div>
                   {/* mycourse box underline start */}
-                  <CourseBox />
+                  <CourseList auth={auth} />
                   {/* <div className="row px-0 m-0 h-100 course-mycourse d-flex align-items-start d-none">
                     <a
                       className="course-leftcontent col-12 col-md-8 px-0"
@@ -1016,7 +1017,7 @@ export default function CourseIndex() {
             <div className="container-sm">
                 <div className="row justify-content-between">
                     <a className="col-auto" href="">
-                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i class="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
+                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i className="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
                     </a>
                     <div className="col-auto">page-nav</div>
                 </div>
