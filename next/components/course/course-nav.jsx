@@ -1,9 +1,47 @@
-import React from 'react'
+import React,{ useState } from 'react'
+import { useRouter } from "next/router";
 
 export default function CourseNav({setSearchWord}) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
     const onChangeInput= (e)=>{
         setSearchWord(e.target.value);
     }
+  // 處理搜尋輸入
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      router.push({
+        pathname: '/course',
+        query: { search: searchTerm },
+      });
+    }
+  };
+  const handleClickSearch = () => {
+    if (searchTerm.trim()) {
+      router.push({
+        pathname: '/course',
+        query: { search: searchTerm },
+      });
+    }
+  }
+  // 處理鍵盤事件
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+  const handleClick = (e) => {
+    e.preventDefault();
+    const tagText = e.target.textContent;
+    setSearchTerm(tagText);
+    if (searchTerm.trim()) {
+      router.push({
+        pathname: '/course',
+        query: { search: searchTerm },
+      });
+    }
+  }
+
   return (
     <>
         {/* course-nav start */}
@@ -19,13 +57,15 @@ export default function CourseNav({setSearchWord}) {
               placeholder="搜尋關鍵字"
               aria-label="搜尋關鍵字"
               aria-describedby="basic-addon2"
-              onChange={onChangeInput}
+              value={searchTerm}
+              onChange={(e)=>setSearchTerm(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
             <i class="fa-solid fa-magnifying-glass position-absolute course-search-icon"></i>
           </div>
           <div className="row px-0 m-0 justify-content-center">
             <div className="col-11 col-md-6 d-flex justify-content-center flex-wrap">
-              <a href="/" className="nav-tag">
+              <a href="/" className="nav-tag" onclick="">
                 品酒
               </a>
               <a href="/" className="nav-tag">

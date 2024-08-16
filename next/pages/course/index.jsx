@@ -1,11 +1,8 @@
-import React, { useState } from "react";
 import CourseBox from "@/components/course/course-box"
 import CourseNav from "@/components/course/course-nav"
 
 export default function CourseIndex() {
   const userId = 1
-  const [searchWord, setSearchWord] = useState('')
-  console.log(searchWord);
   return (
     <>
       <title>課程首頁</title>
@@ -18,7 +15,7 @@ export default function CourseIndex() {
       <div className="course_wrap">
         <header></header>
         
-        <CourseNav setSearchWord={setSearchWord} />
+        <CourseNav />
 
         {/* first page start */}
         <div className="container-fluid course-first-page">
@@ -39,7 +36,7 @@ export default function CourseIndex() {
                     <span className="col-auto text-gray-light spac-1 px-0 mb-1 h7">正在學習中的課程內容</span>
                   </div>
                   {/* mycourse box underline start */}
-                  <CourseBox searchWord={searchWord} />
+                  <CourseBox />
                   {/* <div className="row px-0 m-0 h-100 course-mycourse d-flex align-items-start d-none">
                     <a
                       className="course-leftcontent col-12 col-md-8 px-0"
