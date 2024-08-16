@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
+import OrderFilterOffcanvas from '@/components/member/dashboard/OrderFilterOffcanvas';
 
 export default function DashboardOrder() {
   return (
@@ -68,7 +69,7 @@ export default function DashboardOrder() {
                           7-11
                         </td>
                         <td>已送達</td>
-                        <td style={{ color: 'var(--info-orange)' }}>
+                        <td style={{ color: 'var(--orange)' }}>
                           NT$ 8,120
                         </td>
                       </tr>
@@ -275,7 +276,7 @@ export default function DashboardOrder() {
                           7-11
                         </td>
                         <td>已送達</td>
-                        <td style={{ color: 'var(--info-orange)' }}>
+                        <td style={{ color: 'var(--orange)' }}>
                           NT$ 8,120
                         </td>
                       </tr>
@@ -482,7 +483,7 @@ export default function DashboardOrder() {
                           7-11
                         </td>
                         <td>已送達</td>
-                        <td style={{ color: 'var(--info-orange)' }}>
+                        <td style={{ color: 'var(--orange)' }}>
                           NT$ 8,120
                         </td>
                       </tr>
@@ -689,7 +690,7 @@ export default function DashboardOrder() {
                           7-11
                         </td>
                         <td>已送達</td>
-                        <td style={{ color: 'var(--info-orange)' }}>
+                        <td style={{ color: 'var(--orange)' }}>
                           NT$ 8,120
                         </td>
                       </tr>
@@ -873,92 +874,15 @@ export default function DashboardOrder() {
       </div>
       {/* rwd */}
       <div className="d-block d-lg-none" id="order-content-rwd">
-        <div className="d-flex align-items-center">
-          <div className="search ">
+        <div className="d-flex align-items-center searchArea">
+          <div className="search ms-4 mt-2">
             <FontAwesomeIcon icon={faMagnifyingGlass} className="search_icon" />
             <input id="search" type="search" placeholder="搜 尋 關 鍵 字 " />
           </div>
-          {/* 篩選-畫布 */}
-          <button
-            className=" order-filter"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasRight"
-            aria-controls="offcanvasRight"
-          >
-            <FontAwesomeIcon icon={faFilter} />
-          </button>
-          <div
-            className="offcanvas offcanvas-end"
-            tabIndex={-1}
-            id="offcanvasRight"
-            aria-labelledby="offcanvasRightLabel"
-          >
-            {/* 畫布標題 */}
-            <div className="offcanvas-header">
-              <FontAwesomeIcon icon={faFilter} />
-              <p id="offcanvasRightLabel">篩選項目</p>
-              <button
-                type="button"
-                className="btn-close text-reset"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-              />
-            </div>
-            {/* 畫布內容 */}
-            <div className="offcanvas-body ">
-              <p className="offcanvas-body-title">訂單狀態</p>
-              <div className="mb-3">
-                <select
-                  defaultValue="option1"
-                  className="form-select form-select-lg"
-                  name=""
-                  id=""
-                >
-                  <option svalueelected="option1">選擇訂單狀態</option>
-                  <option value="">已完成</option>
-                  <option value="">運送中</option>
-                  <option value="">撿貨中</option>
-                </select>
-              </div>
-              <p className="offcanvas-body-title">特殊狀態</p>
-              <div className="button-groups">
-                <div className="d-flex">
-                  <button>尚未付款</button>
-                  <button>包裹毀損</button>
-                </div>
-                <div className="d-flex">
-                  <button>貨源不足</button>
-                  <button>訂單異常</button>
-                  <button>已取消</button>
-                </div>
-              </div>
-              <p className="offcanvas-body-title">下單日期</p>
-              <div className="mb-3">
-                <select
-                  defaultValue="option1"
-                  className="form-select form-select-lg"
-                  name=""
-                  id=""
-                >
-                  <option value="option1">選擇下單日期</option>
-                  <option value="">近半年</option>
-                  <option value="">一年內</option>
-                  <option value="">一年以上</option>
-                </select>
-              </div>
-              <div className="input-date-gruop ">
-                <input type="date" className="mb-3 me-3" />-
-                <input type="date" className="mx-2" />
-              </div>
-              <br />
-              <div className="button-end d-flex justify-content-center">
-                <button>重設</button>
-                <button>送出篩選</button>
-              </div>
-            </div>
-          </div>
+          {/* 篩選手風琴元件 */}
+            <OrderFilterOffcanvas />
         </div>
+
         <div className="order-list-rwd container-fluid">
           <div className="order-card-rwd card">
             <div className="card-body-rwd d-flex">
