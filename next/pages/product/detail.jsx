@@ -8,12 +8,15 @@ import MobileDescription from "@/components/product-detail/description/MobileDes
 import PcDescription from "@/components/product-detail/description/PcDescription";
 import PcComment from "@/components/product-detail/comment/PcComment";
 import MobileComment from "@/components/product-detail/comment/MobileComment";
+import Nav from "@/components/Header/Header";
+import Footer from "@/components/footer/footer";
+
 
 export default function ProductDetail() {
   return (
     <>
       <header>
-        <nav>topbar 之後要套版的</nav>
+        <Nav />
       </header>
       <main className="container">
         {/* 商品路徑 */}
@@ -43,7 +46,7 @@ export default function ProductDetail() {
         <PcComment />
         <MobileComment />
       </div>
-      <footer></footer>
+        <Footer />
     </>
   );
 }
