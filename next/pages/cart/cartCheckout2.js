@@ -10,18 +10,18 @@ import CartCredicardM from "@/components/cart/cart2/cartCredicardM";
 import CartTransportM from "@/components/cart/cart2/cartTranportM";
 import CartWpointM from "@/components/cart/cart2/cartWpointM";
 import CartMoneyM from "@/components/cart/cart1/cartMoneyM";
+import Nav from '@/components/Header/Header'
+import Footer from "@/components/footer/footer";
 
 export default function CartCheckout2() {
   return (
     <>
       <title>Cart3</title>
-      {/* Required meta tags */}
       <meta charSet="utf-8" />
       <meta
         name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no"
       />
-      {/* Bootstrap CSS v5.2.1 */}
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -35,6 +35,7 @@ export default function CartCheckout2() {
         crossOrigin="anonymous"
         referrerPolicy="no-referrer"
       />
+      <Nav />
       <main>
         <div className="container mb-5 d-none d-lg-block">
           <div className="row">
@@ -62,30 +63,57 @@ export default function CartCheckout2() {
               </div>
               <div className="checkBoxPay">
                 <b>付款方式</b>
-                <input type="checkbox" id="productpay" />
+                <input
+                  type="radio"
+                  id="productpay"
+                  name="payment"
+                  className="styled-checkbox"
+                />
                 <label htmlFor="productpay">貨到付款</label>
-                <input type="checkbox" id="creditpay" />
+                <input
+                  type="radio"
+                  id="creditpay"
+                  name="payment"
+                  className="styled-checkbox"
+                />
                 <label htmlFor="creditpay">信用卡</label>
-                <input type="checkbox" id="linepay" />
+                <input
+                  type="radio"
+                  id="linepay"
+                  name="payment"
+                  className="styled-checkbox"
+                />
                 <label htmlFor="linepay">Line Pay</label>
               </div>
               <CartCredicard />
               <div className="checkBoxTransport">
                 <b>運送方式</b>
-                <input type="checkbox" id="transprot711" />
+                <input
+                  type="radio"
+                  id="transprot711"
+                  name="transport"
+                  className="styled-checkbox"
+                />
                 <label htmlFor="transprot711">7-11</label>
-                <input type="checkbox" id="blackcat" />
+                <input
+                  type="radio"
+                  id="blackcat"
+                  name="transport"
+                  className="styled-checkbox"
+                />
                 <label htmlFor="blackcat">黑貓宅急便</label>
               </div>
               <CartTransport />
               <div className="checkBoxWpoint">
                 <img src="/images/cart/wPoint.png" alt="" />
+                <input
+                  type="checkbox"
+                  id="wPointcheck"
+                  className="styled-checkbox"
+                />
                 <label htmlFor="wPointcheck">
-                  <b>
-                    <span>W Point 扣抵</span>
-                  </b>
+                  <b>W Point 扣抵</b>
                 </label>
-                <input type="checkbox" id="wPointcheck" />
               </div>
               <CartWpoint />
             </div>
@@ -122,11 +150,26 @@ export default function CartCheckout2() {
           </div>
           <div className="payTitleLine" />
           <div className="checkBoxPay">
-            <input type="checkbox" id="productpayM" />
+            <input
+              type="radio"
+              id="productpayM"
+              name="paymentM"
+              className="styled-checkbox"
+            />
             <label htmlFor="productpayM">貨到付款</label>
-            <input type="checkbox" id="creditpayM" />
+            <input
+              type="radio"
+              id="creditpayM"
+              name="paymentM"
+              className="styled-checkbox"
+            />
             <label htmlFor="creditpayM">信用卡</label>
-            <input type="checkbox" id="linepayM" />
+            <input
+              type="radio"
+              id="linepayM"
+              name="paymentM"
+              className="styled-checkbox"
+            />
             <label htmlFor="linepayM">Line Pay</label>
           </div>
           <CartCredicardM />
@@ -135,18 +178,26 @@ export default function CartCheckout2() {
           </div>
           <div className="payTitleLine" />
           <div className="checkBoxTransport">
-            <input type="checkbox" id="transprot711M" />
+            <input
+              type="radio"
+              id="transprot711M"
+              name="transportM"
+              className="styled-checkbox"
+            />
             <label htmlFor="transprot711M">7-11</label>
-            <input type="checkbox" id="blackcatM" />
+            <input
+              type="radio"
+              id="blackcatM"
+              name="transportM"
+              className="styled-checkbox"
+            />
             <label htmlFor="blackcatM">黑貓宅急便</label>
           </div>
           <CartTransportM />
           <div className="checkBoxWpoint">
             <input type="checkbox" id="wPointcheckM" />
             <label htmlFor="wPointcheckM">
-              <b>
-                <span>W Point 扣抵</span>
-              </b>
+              <b>W Point 扣抵</b>
             </label>
           </div>
           <CartWpointM />
@@ -154,6 +205,7 @@ export default function CartCheckout2() {
         </div>
         <CartMoneyM />
       </main>
+      <Footer showMobileFooter={false} />
     </>
   );
 }

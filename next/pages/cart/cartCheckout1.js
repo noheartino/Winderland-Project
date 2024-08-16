@@ -1,13 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CartProduct from "@/components/cart/cart1/cartProduct"; // 引入 CartProduct 組件
-import CartPorductM from "@/components/cart/cart1/cartPorductM";
-import CartClassM from "@/components/cart/cart1/cartClassM";
 import CartClass from "@/components/cart/cart1/cartClass";
 import CartMoney from "@/components/cart/cart1/cartMoney";
-import CartMoneyM from "@/components/cart/cart1/cartMoneyM";
 import CartCoupon from "@/components/cart/cart1/cartCoupon";
+import CartPorductM from "@/components/cart/cart1/cartPorductM";
+import CartClassM from "@/components/cart/cart1/cartClassM";
+import CartMoneyM from "@/components/cart/cart1/cartMoneyM";
 import CartCouponM from "@/components/cart/cart1/cartCouponM";
-export default function CartCheck1() {
+import Nav from '@/components/Header/Header'
+import Footer from "@/components/footer/footer";
+
+export default function CartCheckout1() {
+  const [allChecked, setAllChecked] = useState(false);
+  const [productChecked, setProductChecked] = useState(false);
+  const [classChecked, setClassChecked] = useState(false);
+
+  const handleAllCheck = (e) => {
+    const isChecked = e.target.checked;
+    setAllChecked(isChecked);
+    setProductChecked(isChecked);
+    setClassChecked(isChecked);
+  };
+
+  const handleProductCheck = (e) => {
+    setProductChecked(e.target.checked);
+    setAllChecked(e.target.checked && classChecked); // 根據子選項更新全選狀態
+  };
+
+  const handleClassCheck = (e) => {
+    setClassChecked(e.target.checked);
+    setAllChecked(productChecked && e.target.checked); // 根據子選項更新全選狀態
+  };
+
   return (
     <>
       <title>Cart2</title>
@@ -31,6 +55,7 @@ export default function CartCheck1() {
         crossOrigin="anonymous"
         referrerPolicy="no-referrer"
       />
+      <Nav />
       <main>
         <div className="container mb-5 d-none d-lg-block">
           <div className="row">
@@ -48,12 +73,24 @@ export default function CartCheck1() {
                 <div className="progressCircle progressCircle3" />
               </div>
               <div className="checkAllBox">
-                <input type="checkbox" id="all" />
+                <input
+                  type="checkbox"
+                  id="all"
+                  checked={allChecked}
+                  onChange={handleAllCheck}
+                  className="styled-checkbox"
+                />
                 <label htmlFor="all">全部</label>
               </div>
               <div>
                 <div className="checkProductBox">
-                  <input type="checkbox" id="productCheck" />
+                  <input
+                    type="checkbox"
+                    id="productCheck"
+                    checked={productChecked}
+                    onChange={handleProductCheck}
+                    className="styled-checkbox"
+                  />
                   <label htmlFor="productCheck">酒類商品</label>
                 </div>
                 <CartProduct />
@@ -62,7 +99,13 @@ export default function CartCheck1() {
               </div>
               <div>
                 <div className="checkClassBox">
-                  <input type="checkbox" id="classCheck" />
+                  <input
+                    type="checkbox"
+                    id="classCheck"
+                    checked={classChecked}
+                    onChange={handleClassCheck}
+                    className="styled-checkbox"
+                  />
                   <label htmlFor="classCheck">課程商品</label>
                 </div>
                 <CartClass />
@@ -90,12 +133,24 @@ export default function CartCheck1() {
             <div className="progressCircle progressCircle3" />
           </div>
           <div className="checkAllBox">
-            <input type="checkbox" id="allM" />
+            <input
+              type="checkbox"
+              id="allM"
+              checked={allChecked}
+              onChange={handleAllCheck}
+              className="styled-checkbox"
+            />
             <label htmlFor="allM">全部</label>
           </div>
           <div>
             <div className="checkProductBox">
-              <input type="checkbox" id="productCheckM" />
+              <input
+                type="checkbox"
+                id="productCheckM"
+                checked={productChecked}
+                onChange={handleProductCheck}
+                className="styled-checkbox"
+              />
               <label htmlFor="productCheckM">酒類商品</label>
             </div>
             <CartPorductM />
@@ -104,7 +159,13 @@ export default function CartCheck1() {
           </div>
           <div>
             <div className="checkClassBox">
-              <input type="checkbox" id="classCheckM" />
+              <input
+                type="checkbox"
+                id="classCheckM"
+                checked={classChecked}
+                onChange={handleClassCheck}
+                className="styled-checkbox"
+              />
               <label htmlFor="classCheckM">課程商品</label>
             </div>
             <CartClassM />
@@ -115,6 +176,7 @@ export default function CartCheck1() {
         </div>
         <CartMoneyM />
       </main>
+      <Footer showMobileFooter={false} />
     </>
   );
 }

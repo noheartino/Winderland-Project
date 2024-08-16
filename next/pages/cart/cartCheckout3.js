@@ -4,11 +4,12 @@ import CartProductDetail from "@/components/cart/cart3/cartProductDetail";
 import CartProductDetailM from "@/components/cart/cart3/cartProductDetailM";
 import CartProductTotal from "@/components/cart/cart3/cartProductTotal";
 import CartProductTotalM from "@/components/cart/cart3/cartProductTotalM";
+import Footer from "@/components/footer/footer";
+import Nav from "@/components/Header/Header";
 import React from "react";
 
 export default function CartCheckout3() {
   return (
-    <>
       <>
         <title>Cart4</title>
         {/* Required meta tags */}
@@ -31,6 +32,7 @@ export default function CartCheckout3() {
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
+        <Nav />
         <main>
           <div className="container mb-5 d-none d-lg-block">
             <div className="row">
@@ -112,10 +114,10 @@ export default function CartCheckout3() {
             </div>
             <CartMoneyTotal />
             <CartPayDividend />
-            <div style={{ height: "150px" }}></div> {/* 占位元素 */}
+            <div style={{ height: "20px" }}></div> {/* 占位元素 */}
           </div>
         </main>
+        <Footer />
       </>
-    </>
   );
 }

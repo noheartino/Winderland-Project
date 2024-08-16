@@ -384,19 +384,13 @@ body {
   height: 150px;
   font-size: 20px;
   color: #60464c;
-
-  span {
-    letter-spacing: 0.2em;
-    padding-left: 30px;
-  }
-
-  input {
-    margin: 0 10px;
-  }
+  letter-spacing: 0.2em;
+  padding-left: 30px;
 
   img {
     width: 100%;
     max-width: 60px;
+    margin-right: 20px;
   }
 }
 
@@ -743,4 +737,76 @@ body {
       max-width: 130px;
     }
   }
+}
+
+/* 隱藏原有的 checkbox 和 radio */
+input[type="checkbox"],
+input[type="radio"] {
+  display: none;
+}
+
+/* 自訂 checkbox 和 radio 的標籤樣式 */
+.checkBoxPay label,
+.checkBoxTransport label,
+.checkBoxWpoint label,
+.checkProductBox label,
+.checkClassBox label,
+.checkAllBox label {
+  position: relative;
+  cursor: pointer;
+  padding-left: 30px; /* 預留空間給自訂 checkbox/radio */
+  display: flex; /* 使用 flexbox 使內容縱向居中 */
+  align-items: center; /* 垂直置中 */
+}
+
+/* 自訂 checkbox 和 radio 的樣式 */
+.checkBoxPay label::before,
+.checkBoxTransport label::before,
+.checkBoxWpoint label::before,
+.checkProductBox label::before,
+.checkClassBox label::before,
+.checkAllBox label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%; /* 藉由這項來使整個框位於中央 */
+  transform: translateY(-50%); /* 再次調整 50% 高度 */
+  width: 20px; /* 外部 checkbox/radio 的寬度 */
+  height: 20px; /* 外部 checkbox/radio 的高度 */
+  border: 2px solid #D4C0C0; /* 邊框顏色 */
+  border-radius: 0; /* 不要圓角，保持正方形 */
+  background-color: white; /* 背景顏色 */
+  transition: background-color 0.2s, border-color 0.2s; /* 平滑過渡效果 */
+}
+
+/* 勾選時的樣式 */
+input[type="checkbox"]:checked + label::before,
+input[type="radio"]:checked + label::before {
+  background-color: white; /* 勾選時保留白色背景 */
+}
+
+/* 勾選後顯示的縮小方形 */
+input[type="checkbox"]:checked + label::after {
+  content: '';
+  position: absolute;
+  left: 5px; /* 給外部邊框保留5px的距離 */
+  top: 50%; /* 垂直位置 */
+  transform: translateY(-50%); /* 垂直居中 */
+  width: 10px; /* 縮小方形的寬度 */
+  height: 10px; /* 縮小方形的高度 */
+  background-color: #A66E7B; /* 縮小方形顏色 */
+  border: none; /* 沒有邊框 */
+}
+
+/* 勾選後顯示的圓形 (不使用，已建立正方形樣式) */
+input[type="radio"]:checked + label::after {
+  content: '';
+  position: absolute;
+  left: 5px; /* 給外部邊框保留5px的距離 */
+  top: 50%; /* 垂直位置 */
+  transform: translateY(-50%); /* 垂直居中 */
+  width: 10px; /* 縮小正方形的直徑 */
+  height: 10px; /* 縮小正方形的直徑 */
+  background-color: #A66E7B; /* 縮小正方形顏色 */
+  border: none; /* 沒有邊框 */
 }
