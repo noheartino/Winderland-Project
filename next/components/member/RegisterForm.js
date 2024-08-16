@@ -3,12 +3,10 @@ import React, { useState } from 'react'
 import styles from '@/components/member/member.module.css'
 import Link from 'next/link'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { useRouter } from 'next/router'
 
 
 // @ 預設導出
 export default function RegisterForm() {
-  // 狀態和處理函數
   const [formData, setFormData] = useState({
     user_name: '',
     phone: '',
@@ -57,8 +55,8 @@ export default function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* desk */}
 
+      {/* desk */}
       <div className={` d-none d-lg-block`}>
         <div className={`${styles.tabContent} ms-5`}>
           {/* 02-register */}
@@ -347,6 +345,7 @@ export default function RegisterForm() {
           </div>
         </div>
       </div>
+
     </form>
   )
 }

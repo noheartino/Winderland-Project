@@ -695,11 +695,43 @@
 }
 
 .red{
-  color: var(--info-orange, #ff4f4f);
+  color: var(--orange, #ff4f4f);
   text-decoration: none;
 }
 
 .btnBack Link .notice {
-  color: var(--info-orange, #ff4f4f);
+  color: var(--orange, #ff4f4f);
   text-decoration: none;
+}
+
+.error {
+  color: red;
+  display: none;
+  font-size: 0.9em;
+  margin-top: 5px;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+}
+.errorAccount {
+  color: red;
+  display: none;
+  font-size: 0.9em;
+  margin-top: 5px;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+}
+.errorPwd {
+  color: red;
+  display: none;
+  font-size: 0.9em;
+  margin-top: 5px;
+  position: absolute;
+  top: 35%;
+  left: 20%;
+  
+}
+.error .show {
+  display: block;
 }

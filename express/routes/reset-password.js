@@ -16,7 +16,7 @@ ${otpToken}
     
 敬上
 
-台灣 NextJS Inc. 網站`
+醺迷仙園 || Winderland 網站`
 
 // create otp
 router.post('/otp', async (req, res, next) => {
