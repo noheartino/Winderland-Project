@@ -5,7 +5,7 @@ import ArticleSearchbar from "@/components/article/article-searchbar";
 import ArticleSortdropdown from "@/components/article/article-sortdropdown";
 import ArticleRwdSidebar from "@/components/article/article-rwd-sidebar";
 
-import ArticleList from "@/components/article/article-list";
+import ArticleIndexList from "@/components/article/article-list";
 import ArticlePagination from "@/components/article/article-pagination";
 
 export default function Index() {
@@ -33,7 +33,7 @@ export default function Index() {
           </div>
           {/* 主要文章內容區塊 */}
           <div className="row a-contentmain">
-            <ArticleList />
+            <ArticleIndexList />
           </div>
           {/* 選頁 */}
           <nav aria-label="Page navigation">

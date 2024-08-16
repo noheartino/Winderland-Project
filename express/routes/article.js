@@ -6,16 +6,30 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
   try {
-    // 取得所有article資料加入陣列
-    const query = `SELECT * FROM article`
-    const [articles] = await connection.execute(query)
+    // 獲取查詢參數
+    const { search = '' } = req.query
+
+    // 構建 SQL 查詢語句
+    let query = 'SELECT * FROM article'
+    const params = []
+
+    // 如果有提供 search 參數，則添加 WHERE 條件
+    if (search) {
+      query += ' WHERE title LIKE ?'
+      params.push(`%${search}%`)
+    }
+
+    // 執行 SQL 查詢
+    const [articles] = await connection.execute(query, params)
 
     if (articles.length === 0) {
       return res.status(404).json({ message: '沒有資料' })
     }
+
     res.json(articles)
   } catch (err) {
-    res.status(500).json({ error: 'error' })
+    console.error(err)
+    res.status(500).json({ error: '無法查詢資料' })
   }
 })
 

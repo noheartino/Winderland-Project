@@ -3,15 +3,23 @@ import { useState, useEffect } from "react";
 import ArticleSidebar from "@/components/article/article-sidebar";
 import ArticleIndexCard from "@/components/article/article-index-card";
 import ArticleIndexCardSm from "./article-index-card-sm";
+import { useRouter } from "next/router";
 
 export default function ArticleIndexList() {
+  const router = useRouter();
+  const { search } = router.query;
+
   const [articles, setArticles] = useState([]);
   const [firstTwoArticles, setFirstTwoArticles] = useState([]);
   const [remainArticles, setRemainArticles] = useState([]);
 
   useEffect(() => {
+    // const includeImages = false;
+    const apiUrl = search
+      ? `http://localhost:3005/api/article?search=${encodeURIComponent(search)}`
+      : "http://localhost:3005/api/article";
     // 當組件掛載時執行 fetch 請求
-    fetch("http://localhost:3005/api/article")
+    fetch(apiUrl)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response not ok");
@@ -20,14 +28,14 @@ export default function ArticleIndexList() {
       })
       .then((data) => {
         setArticles(data);
+        console.log(data)
         setFirstTwoArticles(data.slice(0, 2));
         setRemainArticles(data.slice(2));
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-  console.log(firstTwoArticles);
+  }, [search]);
 
   return (
     <>
@@ -50,22 +58,22 @@ export default function ArticleIndexList() {
           </div>
         </div>
         {/* 文章區塊大 */}
-          {firstTwoArticles.length > 0 ? (
-            firstTwoArticles.map((article) => (
-              <ArticleIndexCard key={article.id} article={article} />
-            ))
-          ) : (
-            <p>沒有可顯示的文章</p>
-          )}
+        {firstTwoArticles.length > 0 ? (
+          firstTwoArticles.map((article) => (
+            <ArticleIndexCard key={article.id} article={article} />
+          ))
+        ) : (
+          <p>沒有可顯示的文章</p>
+        )}
 
         {/* 文章區塊小 */}
         {remainArticles.length > 0 ? (
-            remainArticles.map((article) => (
-              <ArticleIndexCardSm key={article.id} article={article} />
-            ))
-          ) : (
-            <p>沒有可顯示的文章</p>
-          )}
+          remainArticles.map((article) => (
+            <ArticleIndexCardSm key={article.id} article={article} />
+          ))
+        ) : (
+          <p>沒有可顯示的文章</p>
+        )}
       </div>
     </>
   );
