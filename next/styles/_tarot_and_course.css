@@ -36,6 +36,9 @@
     width: auto;
     border: none;
   }
+  & a{
+    cursor: pointer;
+  }
   & ul,
   & ul li {
     list-style: none;
