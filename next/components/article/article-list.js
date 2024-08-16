@@ -27,10 +27,15 @@ export default function ArticleIndexList() {
         return response.json();
       })
       .then((data) => {
-        setArticles(data);
-        console.log(data)
-        setFirstTwoArticles(data.slice(0, 2));
-        setRemainArticles(data.slice(2));
+        // 處理 articles 資料，將 images 字段轉換為數組
+        const processedArticles = data.map((article) => ({
+          ...article,
+          images: article.images ? article.images.split(",") : [],
+        }));
+        setArticles(processedArticles);
+        console.log(processedArticles)
+        setFirstTwoArticles(processedArticles.slice(0, 2));
+        setRemainArticles(processedArticles.slice(2));
       })
       .catch((error) => {
         console.log(error);

@@ -10,7 +10,12 @@ router.get('/', async (req, res) => {
     const { search = '' } = req.query
 
     // 構建 SQL 查詢語句
-    let query = 'SELECT * FROM article'
+    let query = `SELECT a.*,
+    GROUP_CONCAT(ia.path) AS images
+    FROM article a
+    LEFT JOIN images_article ia ON a.id = ia.article_id
+    GROUP BY a.id
+`
     const params = []
 
     // 如果有提供 search 參數，則添加 WHERE 條件
@@ -18,6 +23,14 @@ router.get('/', async (req, res) => {
       query += ' WHERE title LIKE ?'
       params.push(`%${search}%`)
     }
+
+    // 如果 includeImages 為 true，則加入 LEFT JOIN 和 GROUP BY
+    // if (includeImages === 'true') {
+    //   query += `
+    //     LEFT JOIN images_article ia ON a.id = ia.article_id
+    //     GROUP BY a.id
+    //   `
+    // }
 
     // 執行 SQL 查詢
     const [articles] = await connection.execute(query, params)
