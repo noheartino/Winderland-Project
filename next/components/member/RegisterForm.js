@@ -8,14 +8,58 @@ import { useRouter } from 'next/router'
 
 // @ 預設導出
 export default function RegisterForm() {
-  // ... 狀態和處理函數
+  // 狀態和處理函數
+  const [formData, setFormData] = useState({
+    user_name: '',
+    phone: '',
+    birthday: '',
+    gender: '',
+    account: '',
+    password: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.account || !formData.password || !formData.user_name) {
+      alert('請填寫所有必要資料');
+      return;
+    }
+    try {
+      const response = await fetch('http://localhost:3005/api/member/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert('註冊成功！');
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || '註冊失敗，請稍後再試');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
 
   return (
-    <form >
+    <form onSubmit={handleSubmit}>
       {/* desk */}
 
-      <div className={`${styles.bg} d-none d-lg-block`}>
+      <div className={` d-none d-lg-block`}>
         <div className={`${styles.tabContent} ms-5`}>
           {/* 02-register */}
           <div
@@ -28,16 +72,17 @@ export default function RegisterForm() {
             <div className={styles.mail}>
               <div className="d-flex justify-content-between align-items-center">
                 <label htmlFor="register-mail" className={styles.label}>
-                  * 電子郵件
+                  * 會員帳號
                 </label>{' '}
                 <span className={styles.span}>
-                  請輸入有效電子郵件。
+                  會員帳號已有人使用。
                 </span>
               </div>
               <input
-                type="email"
-                name="email"
-                id="register-mail"
+                type="text"
+                name="account"
+                value={formData.account}
+                onChange={handleChange}
                 className={styles.registerInput}
               />
             </div>
@@ -51,9 +96,10 @@ export default function RegisterForm() {
               <input
                 type="password"
                 name="password"
-                id="register-pwd"
                 className={styles.registerInput}
                 placeholder="請輸入長度8-12字元"
+                value={formData.password}
+                onChange={handleChange}
               />
             </div>
             {/* pwd2 */}
@@ -66,9 +112,10 @@ export default function RegisterForm() {
               </div>
               <input
                 type="password"
-                name="password"
-                id="register-pwd2"
+                name="password2"
                 className={styles.registerInput}
+                value={formData.password2}
+                onChange={handleChange}
               />
             </div>
             {/* name&tel */}
@@ -83,16 +130,18 @@ export default function RegisterForm() {
             <div className="d-flex align-items-center justify-contents-between">
               <input
                 type="text"
-                name="name"
-                id="register-name"
+                name="user_name"
                 className={`${styles.registerInput2} me-5`}
+                value={formData.user_name}
+                onChange={handleChange}
               />
               <input
-                type="tel"
-                name="tel"
-                id="register-tel"
+                type="text"
+                name="phone"
                 className={`${styles.registerInput2} ${styles.rRegisterInput}`}
                 placeholder="09-xxx-xxx"
+                value={formData.phone}
+                onChange={handleChange}
               />
             </div>
             {/* birthday&gender */}
@@ -111,24 +160,26 @@ export default function RegisterForm() {
               <input
                 type="date"
                 name="birthday"
-                id="birthday"
                 className={`${styles.registerInput2} me-5`}
+                value={formData.birthday}
+                onChange={handleChange}
               />
               <div className="mb-3">
                 <select
                   className={`form-select form-select-lg ${styles.select}`}
-                  name=""
-                  id=""
+                  name="gender"
                   defaultValue="option1"
+                  value={formData.gender}
+                  onChange={handleChange}
                 >
-                  <option value="option1">性別</option>
-                  <option value="">男性</option>
-                  <option value="">女性</option>
-                  <option value="">不願透露</option>
+                <option value="option1">性別</option>
+                    <option value="Male">男性</option>
+                    <option value="Female">女性</option>
+                    <option value="Other">不願透露</option>
                 </select>
               </div>
             </div>
-            <button className={styles.button}>註冊</button>
+            <button type="submit" className={styles.button}>註冊</button>
             <br />
             <p>
               已經是會員了嗎？
@@ -166,17 +217,18 @@ export default function RegisterForm() {
               <div className={styles.mail}>
                 <div className="d-flex justify-content-between align-items-center">
                   <label htmlFor="register-mail" className={styles.label}>
-                    * 電子郵件
+                    * 會員帳號
                   </label>{' '}
                   <span className={styles.span}>
-                    請輸入有效電子郵件。
+                    會員帳號已有人使用
                   </span>
                 </div>
                 <input
-                  type="email"
-                  name="email"
-                  id="register-mail"
+                  type="text"
+                  name="account"
                   className={styles.registerInput}
+                  value={formData.account}
+                  onChange={handleChange}
                 />
               </div>
               {/* pwd */}
@@ -189,9 +241,10 @@ export default function RegisterForm() {
                 <input
                   type="password"
                   name="password"
-                  id="register-pwd"
                   className={styles.registerInput}
                   placeholder="請輸入長度8-12字元"
+                  value={formData.password}
+                  onChange={handleChange}
                 />
               </div>
               {/* pwd2 */}
@@ -205,8 +258,9 @@ export default function RegisterForm() {
                 <input
                   type="password"
                   name="password"
-                  id="register-pwd2"
                   className={styles.registerInput}
+                  value={formData.password}
+                  onChange={handleChange}
                 />
               </div>
               {/* name&tel */}
@@ -221,16 +275,18 @@ export default function RegisterForm() {
               <div className="d-flex align-items-center justify-contents-between">
                 <input
                   type="text"
-                  name="name"
-                  id="register-name"
+                  name="user_name"
                   className={`${styles.registerInput2} me-5`}
+                  value={formData.user_name}
+                  onChange={handleChange}
                 />
                 <input
-                  type="tel"
-                  name="tel"
-                  id="register-tel"
+                  type="text"
+                  name="phone"
                   className={`${styles.registerInput2} ${styles.rRegisterInput}`}
                   placeholder="09-xxx-xxx"
+                  value={formData.phone}
+                  onChange={handleChange}
                 />
               </div>
               {/* birthday&gender */}
@@ -249,24 +305,26 @@ export default function RegisterForm() {
                 <input
                   type="date"
                   name="birthday"
-                  id="register-birthday"
                   className={`${styles.registerInput2} me-5`}
+                  value={formData.birthday}
+                  onChange={handleChange}
                 />
                 <div className="mb-3">
                   <select
                     className={`form-select form-select-lg ${styles.select}`}
-                    name=""
-                    id=""
+                    name="gender"
                     defaultValue="option1"
+                    value={formData.gender}
+                    onChange={handleChange}
                   >
                     <option value="option1">性別</option>
-                    <option value="">男性</option>
-                    <option value="">女性</option>
-                    <option value="">不願透露</option>
+                    <option value="Male">男性</option>
+                    <option value="Female">女性</option>
+                    <option value="Other">不願透露</option>
                   </select>
                 </div>
               </div>
-              <button className={styles.button}>註冊</button>
+              <button type="submit" className={styles.button}>註冊</button>
               <br />
               <p>
                 已經是會員了嗎？

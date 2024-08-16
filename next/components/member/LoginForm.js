@@ -1,12 +1,11 @@
 // @ 導入
 import React, { useState } from 'react'
+import { useRouter } from 'next/router'
 import styles from '@/components/member/member.module.css'
 import Image from 'next/image'
 import Link from 'next/link'
 import GoogleLogo from '@/components/icons/google-logo'
-import { Tab, Tabs } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { useRouter } from 'next/router'
 
 // @ 預設導出
 export default function LoginForm() {
@@ -113,10 +112,8 @@ export default function LoginForm() {
   // @ 渲染
   return (
     <>
-      <main className={`${styles.main}`}>
-
         {/* desk */}
-        <div className={`${styles.bg} d-none d-lg-block`}>
+        <div className={` d-none d-lg-block`}>
             <div>
                   <div className={`${styles.tabContent} ms-5`}>
                     {/* 01-login */}
@@ -381,9 +378,6 @@ export default function LoginForm() {
                 </div>
           </div>
         </div>
-
-
-      </main>
     </>
   )
 }

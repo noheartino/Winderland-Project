@@ -1,4 +1,4 @@
-// # 登入登出系統
+// # 登入、登出、註冊系統
 
 import express from 'express'
 import bcrypt from 'bcrypt'
@@ -9,9 +9,6 @@ import 'dotenv/config.js'
 
 // 資料庫使用
 import connection from '##/configs/mysql.js'
-// import { QueryTypes } from 'sequelize'
-// import sequelize from '#configs/db.js'
-// const { User } = sequelize.models
 
 // token
 import jsonwebtoken from 'jsonwebtoken'
@@ -115,56 +112,65 @@ router.post('/logout', authenticate, (req, res) => {
 
 // @ 註冊
 router.post('/register', async function (req, res) {
- 
   // 要新增的會員資料
   const newUser = req.body
 
   // ! 檢查從前端來的資料哪些為必要
-  if (
-    !newUser.user_name ||
-    !newUser.phone ||
-    !newUser.birthday ||
-    !newUser.gender ||
-    !newUser.account ||
-    !newUser.password
-  ) {
+  if (!newUser.account || !newUser.password || !newUser.user_name) {
     return res.status(400).json({ status: 'error', message: '缺少必要資料' })
   }
 
   try {
-  // ! 檢查會員帳號是否已存在
-  const [rows] = await connection.execute(
-    'SELECT * FROM users WHERE account = ? OR email = ?',
-    [newUser.account, newUser.email]
-  );
+    // ! 檢查會員帳號是否已存在
+    const [rows] = await connection.execute(
+      'SELECT * FROM users WHERE account = ? ',
+      [newUser.account]
+    )
 
-  if (rows.length > 0) {
-    return res.status(409).json({ status: 'error', message: '會員帳號已存在' });
+    if (rows.length > 0) {
+      return res
+        .status(409)
+        .json({ status: 'error', message: '會員帳號已存在' })
+    }
+
+    // 加密密碼
+    const hashedPassword = await bcrypt.hash(newUser.password, 10)
+
+    // 插入新用戶
+    const [result] = await connection.execute(
+      'INSERT INTO users (user_name, phone, birthday, gender, account, password ,member_level_id,total_spending) VALUES (?, ?, ?, ?, ?, ?, ?,?)',
+      [
+        newUser.user_name,
+        newUser.phone || ' ',
+        newUser.birthday || '1900-01-01',
+        newUser.gender || ' ',
+        newUser.account,
+        hashedPassword,
+        1,
+        0.0,
+      ]
+    )
+
+    // 確保用戶插入成功
+    if (result.affectedRows === 1) {
+      return res.status(201).json({
+        status: 'success',
+        message: '會員註冊成功',
+        data: {
+          id: result.insertId,
+          user_name: newUser.user_name,
+          account: newUser.account,
+        },
+      })
+    } else {
+      throw new Error('用戶註冊失敗')
+    }
+  } catch (error) {
+    console.error('註冊失敗：', error)
+    return res
+      .status(500)
+      .json({ status: 'error', message: '伺服器錯誤，請稍後再試' })
   }
-
-  // 加密密碼
-  const hashedPassword = await bcrypt.hash(newUser.password, 10);
-
-  // 插入新用戶
-  const [result] = await connection.execute(
-    'INSERT INTO users (user_name, phone, birthday, gender, account, password) VALUES (?, ?, ?, ?, ?, ?)',
-    [newUser.user_name, newUser.phone, newUser.birthday, newUser.gender, newUser.account, hashedPassword]
-  );
-
-// 確保用戶插入成功
-if (result.affectedRows === 1) {
-  return res.status(201).json({
-    status: 'success',
-    message: '會員註冊成功',
-    data: { id: result.insertId, user_name: newUser.user_name, account: newUser.account },
-  });
-} else {
-  throw new Error('用戶註冊失敗');
-}
-} catch (error) {
-  console.error('註冊失敗：', error);
-  return res.status(500).json({ status: 'error', message: '伺服器錯誤，請稍後再試' });
-}
-});
+})
 
 export default router
