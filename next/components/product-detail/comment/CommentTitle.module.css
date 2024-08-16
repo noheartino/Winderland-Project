@@ -1,0 +1,72 @@
+@media screen and (max-width: 1920px) {
+    .product-comment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 3%;
+        padding-right: 7%;
+    }
+
+    .product-comment-title {
+        letter-spacing: 0.4rem;
+        font-weight: 600;
+        font-size: 30px;
+        color: var(--text_primary);
+    }
+
+    .product-comment-select {
+            /* 取消瀏覽器默認箭頭 */
+            appearance: none;
+            background-image: url(/product_images/arrow-blue.svg);
+            background-repeat: no-repeat;
+            background-position: 90% center;
+            font-size: 12px;
+            color: var(--dark-blue);
+            width: 142px;
+            height: 35px;
+            border: 1px solid var(--dark-blue);
+            border-radius: 44px;
+            padding-left: 18px;
+            position: relative;
+        
+            &:focus {
+            outline: none;
+        }
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .product-comment-header {
+        display: block;
+        padding: 0;
+    }
+
+    .product-comment-title{
+        margin-top: 5%;
+        font-size: 25px;   
+        text-align: center;
+    }
+
+    .product-comment-select{
+        margin-top: 3%;
+        width: 150px;
+        margin-left:75%;
+        margin-bottom: 6%;
+    }
+
+
+}
+
+@media screen and (max-width: 767px) {
+    .product-comment-title{
+        margin-top: 8%;
+        font-size: 20px;
+    }
+
+    .product-comment-select{
+        height: 35px;
+        margin-top: 10%;
+        margin-left:60%;
+    }
+    
+}

@@ -1,0 +1,120 @@
+.orderFilter {
+    font-size: 14px;
+    width: 25px;
+    height: 25px;
+    border-radius: 3px;
+    background: var(--light, #F4EBEB);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    color: var(--text_primary, #60464C);
+    ;
+}
+
+.offcanvasHeader {
+    width: 100%;
+    height: 60px;
+    background: var(--primary, hsl(347, 68%, 31%));
+    color: #FFF;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 3px;
+
+    .offcanvasHeaderTitle {
+        margin-left: 20px;
+        margin-top: 5px;
+        color: #FFF;
+font-family: Inter;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+letter-spacing: 3px;
+    }
+}
+
+.offcanvasBody {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+
+    .offcanvasBodyTitle {
+        color: var(--text_primary, #60464C);
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 3px;
+        margin-bottom: 10px;
+    }
+
+    .select {
+        width: 90%;
+        border-radius: 44px;
+        border: 1px solid  #A66E7B;
+        background: #FFF;
+        color: var(--purple, #9A5B69);
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 1.4px;
+        margin-bottom: 25px;
+    }
+
+    .buttonGroups {
+        margin-bottom: 20px;
+    }
+
+    .button {
+        margin-right: 20px;
+        margin-bottom: 13px;
+        border-radius: 7px;
+        border: none;
+        white-space: nowrap;
+        background: var(--light, #F4EBEB);
+        width: 90px;
+        height: 35px;
+        color: var(--text_primary, #60464C);
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 1.2px;
+    }
+    
+
+    .inputDateGruop {
+        white-space: nowrap;
+        color: var(--primary, #60464C);
+    }
+
+    .input {
+        width: 40%;
+        height: 35px;
+        border-radius: 31px;
+        border: 1px solid #E1E1E1;
+        margin: 5px;
+        /* margin-top: 19px; */
+        color: var(--text_primary, #60464C);
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 1.2px;
+        padding: 5px;
+        color: var(--text_primary, #60464C);
+font-size: 12px;
+font-weight: 400;
+letter-spacing: 1.2px;
+
+    }
+
+    .buttonEnd {
+        .button {
+            width: 109px;
+            height: 50px;
+            border-radius: 2px;
+            background: var(--light, #F4EBEB);
+            box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
+            color: var(--purple_light, #A66E7B);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 2.76px;
+        }
+
+    }
+}

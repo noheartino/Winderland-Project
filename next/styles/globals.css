@@ -1,9 +1,10 @@
 html{
-  min-width: 385px;
-/* ↓ 全域顏色變數 */
+  min-width: 390px;
+  /* ↓ 全域顏色變數 */
   --primary: #851931;
   --wine: #BA435D;
   --purple: #9A5B69;
+  --purple_light: #A66E7B;
   --wine_light: #D4C0C0;
   --light: #F4EBEB;
   --text_primary: #60464C;
@@ -15,16 +16,16 @@ html{
   --blue_dark: #5B839A;
   --green: #9CD8D5;
   --green_dark: #619C91;
-/* ↑ 全域顏色變數 */
+  /* ↑ 全域顏色變數 */
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-/* ↓ 預設字 (1rem規範) */
+  /* ↓ 預設字 (1rem規範) */
   color: var(--text_dark);
   font-size: 16px;
   font-family: Noto Sans HK, sans-serif;
-/* font-family: Inter; */
+  /* font-family: Inter; */
   font-weight: 300;
   text-decoration: none;
   /* ↑ 預設字 */
@@ -34,20 +35,4 @@ html{
       font-size: 10px;
   }
   
-}
-html>*{
-  list-style: none;
-  border: none;
-  & h1, & h2, & h3, & h4, & h5, & h6, & p, & .h1, & .h2, & .h3, & .h4, & .h5, & .h6, & .p{
-      font-weight: 400;
-      margin: 0;
-      padding: 0;
-      color: var(--text_dark);
-  }
-  & button, & .btn, & .btn:active{
-      display: inline-block;
-      background-color: transparent;
-      width: auto;
-      border: none;
-  }
 }
