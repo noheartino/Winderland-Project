@@ -29,25 +29,3 @@ html{
   text-decoration: none;
   /* ↑ 預設字 */
 }
-@media screen and (max-width: 768px) {
-  html{
-      font-size: 10px;
-  }
-  
-}
-html>*{
-  list-style: none;
-  border: none;
-  & h1, & h2, & h3, & h4, & h5, & h6, & p, & .h1, & .h2, & .h3, & .h4, & .h5, & .h6, & .p{
-      font-weight: 400;
-      margin: 0;
-      padding: 0;
-      color: var(--text_dark);
-  }
-  & button, & .btn, & .btn:active{
-      display: inline-block;
-      background-color: transparent;
-      width: auto;
-      border: none;
-  }
-}
