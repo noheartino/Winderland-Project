@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import styles from '@/components/member/member.module.css'
 import Image from 'next/image'
 import Link from 'next/link'
-import axios from 'axios';
 import GoogleLogo from '@/components/icons/google-logo'
 import { Tab, Tabs } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -114,7 +113,7 @@ export default function LoginForm() {
   // @ 渲染
   return (
     <>
-      <main className={styles.main}>
+      <main className={`${styles.main}`}>
 
         {/* desk */}
         <div className={`${styles.bg} d-none d-lg-block`}>
