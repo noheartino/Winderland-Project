@@ -6,6 +6,7 @@
 // # 目的2：包裝useContext，提供一個對應適合的名稱為useAuth，方便消費者(consumers)呼叫使用，提高閱讀性
 
 import { createContext, useState, useContext } from 'react'
+import { useRouter } from 'next/router'
 
 // * Context使用1.建立context與導出
 // 傳入參數為defaultValue，是在套用context時錯誤或失敗才會得到的值
@@ -15,7 +16,10 @@ const AuthContext = createContext(null)
 // * 2.建立AuthProvider元件
 // props.children屬性，代表包裹在Providers中的所有
 export function AuthProvider({ children }) {
-  // 會員狀態
+  // 建立路由器
+  const router = useRouter()
+
+  // 會員使用的認証&授權狀態
   const [auth, setAuth] = useState({
     isAuth: false, // 會員是否有登入的信號值
     // 會員資料

@@ -1,3 +1,5 @@
+// # 會員管理介面
+
 import express from 'express'
 const router = express.Router()
 
@@ -35,7 +37,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 // multer的設定值 - END
 
-// GET - 得到所有會員資料
+// @ GET - 得到所有會員資料
 router.get('/', async function (req, res) {
   const users = await User.findAll({ logging: console.log })
   // 處理如果沒找到資料
@@ -44,7 +46,7 @@ router.get('/', async function (req, res) {
   return res.json({ status: 'success', data: { users } })
 })
 
-// GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
+// @ GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
 router.get('/:id', authenticate, async function (req, res) {
   // 轉為數字
   const id = getIdParam(req)
@@ -64,60 +66,9 @@ router.get('/:id', authenticate, async function (req, res) {
   return res.json({ status: 'success', data: { user } })
 })
 
-// POST - 新增會員資料
-router.post('/', async function (req, res) {
-  // req.body資料範例
-  // {
-  //     "name":"金妮",
-  //     "email":"ginny@test.com",
-  //     "username":"ginny",
-  //     "password":"12345"
-  // }
 
-  // 要新增的會員資料
-  const newUser = req.body
 
-  // 檢查從前端來的資料哪些為必要(name, username...)
-  if (
-    !newUser.username ||
-    !newUser.email ||
-    !newUser.name ||
-    !newUser.password
-  ) {
-    return res.json({ status: 'error', message: '缺少必要資料' })
-  }
-
-  // 執行後user是建立的會員資料，created為布林值
-  // where指的是不可以有相同的資料，如username或是email不能有相同的
-  // defaults用於建立新資料用需要的資料
-  const [user, created] = await User.findOrCreate({
-    where: {
-      [Op.or]: [{ username: newUser.username }, { email: newUser.email }],
-    },
-    defaults: {
-      name: newUser.name,
-      password: newUser.password,
-      username: newUser.username,
-      email: newUser.email,
-    },
-  })
-
-  // 新增失敗 created=false 代表沒新增
-  if (!created) {
-    return res.json({ status: 'error', message: '建立會員失敗' })
-  }
-
-  // 成功建立會員的回應
-  // 狀態`201`是建立資料的標準回應，
-  // 如有必要可以加上`Location`會員建立的uri在回應標頭中，或是回應剛建立的資料
-  // res.location(`/users/${user.id}`)
-  return res.status(201).json({
-    status: 'success',
-    data: null,
-  })
-})
-
-// POST - 可同時上傳與更新會員檔案用，使用multer(設定值在此檔案最上面)
+// @ POST - 可同時上傳與更新會員檔案用，使用multer(設定值在此檔案最上面)
 router.post(
   '/upload-avatar',
   authenticate,
@@ -156,7 +107,7 @@ router.post(
   }
 )
 
-// PUT - 更新會員資料(密碼更新用)
+// @ PUT - 更新會員資料(密碼更新用)
 router.put('/:id/password', authenticate, async function (req, res) {
   const id = getIdParam(req)
 
@@ -216,7 +167,7 @@ router.put('/:id/password', authenticate, async function (req, res) {
   return res.json({ status: 'success', data: null })
 })
 
-// PUT - 更新會員資料(排除更新密碼)
+// @ PUT - 更新會員資料(排除更新密碼)
 router.put('/:id/profile', authenticate, async function (req, res) {
   const id = getIdParam(req)
 
@@ -272,7 +223,7 @@ router.put('/:id/profile', authenticate, async function (req, res) {
   return res.json({ status: 'success', data: { user: updatedUser } })
 })
 
-// DELETE - 刪除會員資料
+// @ DELETE - 刪除會員資料
 router.delete('/:id', async function (req, res) {
   const id = getIdParam(req)
 

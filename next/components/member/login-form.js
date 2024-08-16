@@ -3,21 +3,26 @@ import React, { useState } from 'react'
 import styles from '@/components/member/member.module.css'
 import Image from 'next/image'
 import Link from 'next/link'
-import axios from 'axios';
 import GoogleLogo from '@/components/icons/google-logo'
 import { Tab, Tabs } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { useRouter } from 'next/router'
 
 // @ 預設導出
 export default function LoginForm() {
-  // // 狀態設置
-  // const [user, setUser] = useState({
-  //   account: '',
-  //   password: '',
-  // })
+  // 路由
+  const router = useRouter()
+  // 狀態設置
+  const [user, setUser] = useState({
+    account: '',
+    password: '',
+  })
+
+  // const [account, setAccount] = useState("");
+  // const [password, setPassword] = useState("");
   // 記錄欄位錯誤訊息用
   const [errors, setErrors] = useState({
-    username: '',
+    account: '',
     password: '',
   })
   // 顯示密碼用
@@ -38,6 +43,8 @@ export default function LoginForm() {
   // 表單送出事件處理函式
   const handleSubmit = async (e) => {
     e.preventDefault()
+    console.log('Account:', user.account);
+    console.log('Password:', user.password);
 
     // ! 表單檢查--- START ---
     // 建立一個新的錯誤訊息物件
@@ -71,30 +78,42 @@ export default function LoginForm() {
 
     // 檢查都沒問題才會到這裡執行
     try {
-      const url = 'http://localhost:3000/api/member/login'
+      const url = 'http://localhost:3005/api/member/login'
       const res = await fetch(url, {
         credentials: 'include', // 設定cookie或是存取隱私資料時要加這個參數
         method: 'POST',
         headers: {
-          Accept: 'application/json',
+          // Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(user),
       })
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`)
+      }
+    
 
       const resData = await res.json()
       console.log(resData)
 
-      alert('送到伺服器去')
+      // 假設後端返回 success 字段表示登入成功
+      if (resData.status === 'success') { 
+        alert('登入成功')
+        router.push('/dashboard/profile')
+      } else {
+        alert('登入失敗：' + resData.message)
+      }
     } catch (e) {
       console.error(e)
+      alert('登入過程中發生錯誤')
     }
   }
 
   // @ 渲染
   return (
     <>
-      <main className={styles.main}>
+      <main className={`${styles.main}`}>
 
         {/* desk */}
         <div className={`${styles.bg} d-none d-lg-block`}>
@@ -108,14 +127,14 @@ export default function LoginForm() {
                 <Tab eventKey="login" title="會員登入">
                   <div className={`${styles.tabContent} ms-5`}>
                     {/* 01-login */}
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} >
                       <div
                         className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent}`}
                         id="login"
                         role="tabpanel"
                         aria-labelledby="login-tab"
                       >
-                        <label className={styles.label} htmlFor="mailLabel">
+                        <label className={styles.label} htmlFor="login-account">
                           會員帳號
                         </label>{' '}
                         <br />
@@ -123,7 +142,7 @@ export default function LoginForm() {
                           type="text"
                           name="account"
                           value={user.account}
-                          id="account"
+                          id="login-account"
                           className={styles.loginInput}
                           onChange={handleFieldChange}
                         />
@@ -136,7 +155,7 @@ export default function LoginForm() {
                         <div
                           className={`d-flex justify-content-between align-items-center ${styles.pwdNotice}`}
                         >
-                          <label className={styles.label} htmlFor="pwdLabel">
+                          <label className={styles.label} htmlFor="login-pwd">
                             會員密碼
                           </label>{' '}
                           <br />
@@ -166,7 +185,7 @@ export default function LoginForm() {
                         <input
                           type={showPassword ? 'text' : 'password'}
                           name="password"
-                          id="password"
+                          id="login-pwd"
                           className={styles.loginInput}
                           value={user.password}
                           onChange={handleFieldChange}
@@ -207,10 +226,12 @@ export default function LoginForm() {
                         <button
                           type="submit"
                           className={styles.button}
-                          onClick={() => {
-                            LoginForm()
+                          onClick={(e) => {
+                            // LoginForm()
                             // 登入後跳轉到個人資料頁(使用router)
-                            router.push('/dashboard/profile')
+                            // router.push('/dashboard/profile')
+                            e.preventDefault(); // 防止表單默認提交
+                            handleSubmit(e); // 調用表單提交處理函數
                           }}>
                           登入
                         </button>
@@ -222,6 +243,7 @@ export default function LoginForm() {
                           <Link href="/member/register"
                             className={styles.red}>加入我們</Link>
                         </div>
+                        {/* 第三方登入 */}
                         <div className={styles.fastLogin}>
                           <hr className={styles.hr} />
                           <div className={styles.buttonGruop}>
@@ -262,7 +284,7 @@ export default function LoginForm() {
                       {/* mail */}
                       <div className={styles.mail}>
                         <div className="d-flex justify-content-between align-items-center">
-                          <label htmlFor="mailLabel" className={styles.label}>
+                          <label htmlFor="register-mail" className={styles.label}>
                             * 電子郵件
                           </label>{' '}
                           <span className={styles.span}>
@@ -272,21 +294,21 @@ export default function LoginForm() {
                         <input
                           type="email"
                           name="email"
-                          id="email"
+                          id="register-mail"
                           className={styles.registerInput}
                         />
                       </div>
                       {/* pwd */}
                       <div className={styles.pwd}>
                         <div className="d-flex justify-content-between align-items-center">
-                          <label htmlFor="pwdLabel" className={styles.label}>
+                          <label htmlFor="register-pwd" className={styles.label}>
                             * 會員密碼
                           </label>
                         </div>
                         <input
                           type="password"
                           name="password"
-                          id="password"
+                          id="register-pwd"
                           className={styles.registerInput}
                           placeholder="請輸入長度8-12字元"
                         />
@@ -294,7 +316,7 @@ export default function LoginForm() {
                       {/* pwd2 */}
                       <div className={styles.pwd2}>
                         <div className="d-flex justify-content-between align-items-center">
-                          <label htmlFor="pwd2Label" className={styles.label}>
+                          <label htmlFor="register-pwd2" className={styles.label}>
                             * 再次輸入會員密碼
                           </label>
                           <span className={styles.span}>密碼輸入不符。</span>
@@ -302,16 +324,16 @@ export default function LoginForm() {
                         <input
                           type="password"
                           name="password"
-                          id="password"
+                          id="register-pwd2"
                           className={styles.registerInput}
                         />
                       </div>
                       {/* name&tel */}
                       <div className="d-flex align-items-center">
-                        <label htmlFor=" " className={styles.labelName}>
+                        <label htmlFor="register-name " className={styles.labelName}>
                           * 姓名
                         </label>
-                        <label htmlFor="telLabel" className={styles.labelTel}>
+                        <label htmlFor="register-tel" className={styles.labelTel}>
                           手機
                         </label>
                       </div>
@@ -319,24 +341,24 @@ export default function LoginForm() {
                         <input
                           type="text"
                           name="name"
-                          id="name"
+                          id="register-name"
                           className={`${styles.registerInput2} me-5`}
                         />
                         <input
                           type="tel"
                           name="tel"
-                          id="tel"
+                          id="register-tel"
                           className={`${styles.registerInput2} ${styles.rRegisterInput}`}
                           placeholder="09-xxx-xxx"
                         />
                       </div>
                       {/* birthday&gender */}
                       <div className="d-flex align-items-center">
-                        <label htmlFor=" " className={styles.labelName}>
+                        <label htmlFor="register-birthday " className={styles.labelName}>
                           生日
                         </label>
                         <label
-                          htmlFor="genderLabel"
+                          htmlFor="register-gender"
                           className={styles.labelGender}
                         >
                           性別
@@ -404,11 +426,11 @@ export default function LoginForm() {
                       role="tabpanel"
                       aria-labelledby="login-tab-rwd"
                     >
-                      <label htmlFor="mailLabel">電子郵件</label> <br />
+                      <label htmlFor="login-account">會員帳號</label> <br />
                       <input
-                        type="email"
-                        name="email"
-                        id="email"
+                        type="text"
+                        name="account"
+                        id="login-account"
                         className={styles.loginInput}
                       />
                       <br />
@@ -417,7 +439,7 @@ export default function LoginForm() {
                       <div
                         className={`d-flex justify-content-between align-items-center ${styles.pwdNotice}`}
                       >
-                        <label htmlFor="pwdLabel">會員密碼</label> <br />
+                        <label htmlFor="login-pwd">會員密碼</label> <br />
                         <div
                           className={`form-check align-items-center d-flex ${styles.formCheck}`}
                         >
@@ -439,7 +461,7 @@ export default function LoginForm() {
                       <input
                         type="password"
                         name="password"
-                        id="password"
+                        id="login-pwd"
                         className={styles.loginInput}
                       />
                       <span className="d-none">請輸入密碼。</span>
@@ -520,7 +542,7 @@ export default function LoginForm() {
                     {/* mail */}
                     <div className={styles.mail}>
                       <div className="d-flex justify-content-between align-items-center">
-                        <label htmlFor="mailLabel" className={styles.label}>
+                        <label htmlFor="register-mail" className={styles.label}>
                           * 電子郵件
                         </label>{' '}
                         <span className={styles.span}>
@@ -530,21 +552,21 @@ export default function LoginForm() {
                       <input
                         type="email"
                         name="email"
-                        id="email"
+                        id="register-mail"
                         className={styles.registerInput}
                       />
                     </div>
                     {/* pwd */}
                     <div className={styles.pwd}>
                       <div className="d-flex justify-content-between align-items-center">
-                        <label htmlFor="pwdLabel" className={styles.label}>
+                        <label htmlFor="register-pwd" className={styles.label}>
                           * 會員密碼
                         </label>
                       </div>
                       <input
                         type="password"
                         name="password"
-                        id="password"
+                        id="register-pwd"
                         className={styles.registerInput}
                         placeholder="請輸入長度8-12字元"
                       />
@@ -552,7 +574,7 @@ export default function LoginForm() {
                     {/* pwd2 */}
                     <div className={styles.pwd2}>
                       <div className="d-flex justify-content-between align-items-center">
-                        <label htmlFor="pwd2Label" className={styles.label}>
+                        <label htmlFor="register-pwd2" className={styles.label}>
                           * 再次輸入會員密碼
                         </label>
                         <span className={styles.span}>密碼輸入不符。</span>
@@ -560,16 +582,16 @@ export default function LoginForm() {
                       <input
                         type="password"
                         name="password"
-                        id="password"
+                        id="register-pwd2"
                         className={styles.registerInput}
                       />
                     </div>
                     {/* name&tel */}
                     <div className="d-flex align-items-center">
-                      <label htmlFor=" " className={styles.labelName}>
+                      <label htmlFor="register-name " className={styles.labelName}>
                         * 姓名
                       </label>
-                      <label htmlFor="telLabel" className={styles.labelTel}>
+                      <label htmlFor="register-tel" className={styles.labelTel}>
                         手機
                       </label>
                     </div>
@@ -577,24 +599,24 @@ export default function LoginForm() {
                       <input
                         type="text"
                         name="name"
-                        id="name"
+                        id="register-name"
                         className={`${styles.registerInput2} me-5`}
                       />
                       <input
                         type="tel"
                         name="tel"
-                        id="tel"
+                        id="register-tel"
                         className={`${styles.registerInput2} ${styles.rRegisterInput}`}
                         placeholder="09-xxx-xxx"
                       />
                     </div>
                     {/* birthday&gender */}
                     <div className="d-flex align-items-center">
-                      <label htmlFor=" " className={styles.labelName}>
+                      <label htmlFor="register-birthday" className={styles.labelName}>
                         生日
                       </label>
                       <label
-                        htmlFor="genderLabel"
+                        htmlFor="register-gender"
                         className={styles.labelGender}
                       >
                         性別
@@ -604,7 +626,7 @@ export default function LoginForm() {
                       <input
                         type="date"
                         name="birthday"
-                        id="birthday"
+                        id="register-birthday"
                         className={`${styles.registerInput2} me-5`}
                       />
                       <div className="mb-3">
