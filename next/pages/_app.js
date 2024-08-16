@@ -12,6 +12,9 @@ import '@/styles/Header.css'
 import '@/styles/_tarot_and_course.css'
 import '@/styles/_cart.css'
 
+import '@/styles/product.css'
+import '@/styles/product-detail.css'
+
 // -----各自主頁css檔案 end-----
 
 

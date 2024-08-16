@@ -1,0 +1,7 @@
+@media screen and (max-width: 1920px) {
+    .Message-Items{
+        padding-inline:3%;
+    }
+}
+@media screen and (max-width: 992px) {}
+@media screen and (max-width: 767px) {}

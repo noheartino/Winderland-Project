@@ -1,0 +1,210 @@
+@media screen and (max-width: 1920px) {
+    .message-item {
+        color: var(--text_primary);
+
+        & .message-user {
+            display: flex;
+            text-wrap: nowrap;
+
+            /* user頭貼 */
+            & .photo {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+            }
+
+            /* 名字+星星區塊 */
+            & .name-star {
+                margin-left: 2%;
+                display: flex;
+                flex-direction: column;
+                letter-spacing: 0.2rem;
+                width: auto;
+
+                /* 名字+樓層 */
+                & .user {
+                    display: flex;
+
+                    /* 名字 */
+                    & .user-name {
+                        font-size: 20px;
+                    }
+
+                    /* 樓層+讚 */
+                    & .floor-good {
+                        margin-left: 10%;
+                        display: flex;
+                        flex-direction: row;
+                        text-wrap: nowrap;
+                        align-items: center;
+                        color: var(--dark-blue);
+
+                        & .divider {
+                            margin-inline: 6%;
+                        }
+
+                        & .good-button {
+                            display: flex;
+                            align-items: center;
+                            height: 100%;
+                            width: 100%;
+                            font-size: 20px;
+                            color: var(--dark-blue);
+                            background-color: transparent;
+                            border: none;
+                            letter-spacing: 0.2rem;
+
+                            & .good-icon{
+                                font-size: 25px;
+                                margin-right: 15%;
+                            }
+                        }
+                    }
+                }
+            }
+
+            & .user-star {
+                display: flex;
+                font-size: 23px;
+                margin-top: 5%;
+                width: auto;
+
+                & .stars {
+                    color: var(--light);
+
+                    & i {
+                        margin-right: 2%;
+                    }
+
+                    & .light {
+                        color: #FFF177;
+                    }
+                }
+
+                & .score {
+                    color: var(--dark-blue);
+                    margin-left: 10%;
+                }
+            }
+        }
+    }
+
+    .more-content {
+        margin-left: 8%;
+        margin-right: 5%;
+        margin-top: 1%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        & .more {
+            width: 4%;
+            height: auto;
+            padding: 0;
+            margin-bottom: 1%;
+            align-items: center;
+            position: absolute;
+            top: -30%;
+            right: -2%;
+        }
+
+        & .message-content {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            min-height: 60px;
+            height: auto;
+            background-color: var(--light);
+            border-radius: 5px;
+            font-size: 17px;
+            padding-inline: 1%;
+
+            & .comment-text {
+                margin-block: 2%;
+                max-width: 100%;
+                text-wrap: wrap;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+        }
+
+        & .time {
+            margin-top: 1%;
+            font-size: 14px;
+            letter-spacing: 0.2rem;
+        }
+    }
+
+}
+
+@media screen and (max-width: 992px) {
+    .more-content {
+        & .message-content {
+            width: 94%;
+            margin-left: 8%;
+        }
+
+        & .comment-text {
+            padding-inline: 2%;
+        }
+
+        & .time {
+            font-size: 14px;
+            margin-left: 56%;
+            text-wrap: nowrap;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .message-item {
+        & .message-user {
+            & .photo {
+                height: 55px;
+                width: 55px;
+            }
+            & .name-star {
+                & .user {
+                    & .user-name {
+                        font-size: 20px;
+                    }
+                    & .floor-good{
+                        & .good-button {
+                            font-size: 15px;
+                
+                            & .good-icon{
+                                font-size: 20px;
+                                margin-right: 15%;
+                            }
+                        }
+                    }
+                }
+
+            }
+            & .user-star {
+                font-size: 17px;
+            }
+        }
+    }
+
+    .more-content{
+        & .more {
+            font-size: 20px;
+        }
+        & .message-content {
+            margin-top: 3%;
+            margin-left: 10%;
+        }
+
+        & .comment-text {
+            padding-inline: 5%;
+            font-size: 15px;
+        }
+
+        & .time {
+            font-size: 10px;
+            margin-left: 36%;
+            text-wrap: nowrap;
+        }
+    }
+}

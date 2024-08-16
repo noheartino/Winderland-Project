@@ -1,0 +1,12 @@
+@media screen and (max-width: 1920px) {
+    & .product-taste {
+        margin-bottom: 5%;
+    }
+    
+}
+@media screen and (max-width: 992px) {
+    & .product-taste {
+        margin-bottom: 8%;
+    }
+}
+@media screen and (max-width: 767px) {}
