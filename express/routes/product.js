@@ -4,11 +4,58 @@ import db from '../configs/mysql.js'
 // 創建一個新的路由
 const router = express.Router();
 
-// 商品首頁
+// 取得所有商品
+const getProducts = `SELECT 
+    product.*,
+    variet.name AS variet_name,
+    category.id AS category_id,
+    category.name AS category_name,
+    country.id AS country_id,
+    country.name AS country_name,
+    origin.name AS origin_name
+FROM 
+    product
+LEFT JOIN 
+    variet ON product.variet_id = variet.id
+LEFT JOIN 
+    category ON variet.category_id = category.id
+LEFT JOIN
+	origin ON product.origin_id = origin.id
+LEFT JOIN 
+	country ON origin.country_id = country.id`;
+
+// 取得detail
+const getProductsDetail = `SELECT * FROM product_detail WHERE product_id IN (?)`;
+
+// 取得images
+const getImages = `SELECT * FROM images_product WHERE product_id IN (?)`;
+
+// 取得description
+const getDescription = `SELECT * FROM description WHERE product_id IN (?)`;
+
+
+// 商品首頁,取得所有商品的內容
 router.get("/",async(req,res) => {
     try{
-        const [datas] = await db.query('SELECT * FROM product')
-        res.json(datas);
+        // 獲取所有商品的基本訊息
+        const [products] = await db.query(getProducts);
+        
+        // 獲取所有商品ID
+        const productIds = products.map(p => p.id);
+
+        // 獲取所有商品詳細信息
+        const [details] = await db.query(getProductsDetail,[productIds]);
+        const [images] = await db.query(getImages,[productIds]);
+        const [descriptions] = await db.query(getDescription,[productIds]);
+
+        //將詳細資料加到相對應的id
+        const productsWithDetails = products.map(product => ({
+            ...product,
+            images:images.filter(i => i.product_id === product.id),
+            descriptions:descriptions.filter(d => d.product_id === product.id),
+            details:details.filter(d => d.product_id === product.id),
+        }));
+        res.json(productsWithDetails);
     }catch(error){
         res.status(500).json({
             error:"fail",
@@ -17,25 +64,13 @@ router.get("/",async(req,res) => {
     }
 })
 
-// router.get("/category",async(req,res) => {
-//     try{
-//         const id = req.params.id;
-//         const [datas] = await db.query('SELECT category.id,category.name,variet.id,variet.name,varite.category_id FROM category LEFT JOIN variet ON category.id = variet.category.id');
-//         res.send(datas);
-//     }catch(error){
-//         res.status(404).json({
-//             error:"NOT FOUNTD",
-//             message:"查無此類型"
-//         })
-//     }
-// });
 
 
 // 取得特定的商品ID
 router.get("/:id",async(req,res) => {
     try{
         const id = req.params.id;
-        const [data] = await db.query('SELECT * FROM product WHERE id=?',[id])
+        const [data] = await db.query(getDescription,[id])
         if (data.length > 0){
             res.json([data]);
         }else{
