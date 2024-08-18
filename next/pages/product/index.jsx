@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useState,useEffect} from "react";
+import axios from "axios";
 import CategoryTitle from "@/components/product-list/header/CategoryTitle";
 import SortSearch from "@/components/product-list/sortSearch/SortSearch";
 import MobileFliterAside from "@/components/product-list/aside/MobileFliterAside";
@@ -7,7 +8,32 @@ import ProductGroup from "@/components/product-list/productlist/ProductList";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 
-export default function ProductList() {
+export default function ProductIndex() {
+
+  const [products,setProducts] = useState([]);
+  const [loading,setLoading] = useState(true);
+  const [error,setError] = useState(null);
+
+  // 掛載後執行一個獲取數據的副作用
+  // 使用axios發送get訊息到指定URL API
+  useEffect(() => {
+    const fetchProducts = async () => {
+    try{
+      // response取得axios的回應數據(內容有很多但我們只要data)
+      const response = await axios.get('http://localhost:3005/api/product');
+      setProducts(response.data);
+      setLoading(false);
+    }catch(err){
+      setError('加載商品時出錯');
+      setLoading(false);
+    }
+  };
+  fetchProducts();
+  },[]);
+
+  if(loading) return <div>加載中...</div>;
+  if(error) return <div>{error}</div>;
+
   return (
     <>
       <>
@@ -26,7 +52,7 @@ export default function ProductList() {
             {/* 電腦版篩選 */}
             <PcFliterAside />
             {/* 商品list */}
-            <ProductGroup />
+            <ProductGroup products={products}/>
           </div>
         </div>
         <Footer />
