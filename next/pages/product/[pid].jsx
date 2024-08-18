@@ -1,4 +1,5 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Path from "@/components/product-detail/path/Path";
 import ProductPhoto from "@/components/product-detail/photo/ProductPhoto";
 import TitlePrice from "@/components/product-detail/titlePrice/TitlePrice";
@@ -10,28 +11,37 @@ import PcComment from "@/components/product-detail/comment/PcComment";
 import MobileComment from "@/components/product-detail/comment/MobileComment";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
+import { useRouter } from "next/router";
 
 export default function ProductDetail() {
   const [product, setProduct] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
+  const pid = router.query.pid;
 
-  // 掛載後執行一個獲取數據的副作用
-  // 使用axios發送get訊息到指定URL API
   useEffect(() => {
-    const fetchProductById = async (id) => {
-      try {
-        // response取得axios的回應數據(內容有很多但我們只要data)
-        const response = await axios.get(`http://localhost:3005/api/product/${id}`);
-        setProduct(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError("加載商品時出錯");
-        setLoading(false);
+    if(pid){
+      const fetchProduct = async () => {
+        try{
+          setLoading(true);
+          const response = await axios.get(`http://localhost:3005/api/product/${pid}`)
+          setProduct(response.data);
+        }catch(err){
+          setError("獲取資料失敗");
+          console.error(err);
+        }finally{
+          setLoading(false);
+        }
       }
-    };
-    fetchProductById();
-  }, []);
+      fetchProduct();
+    }
+  },[pid])
+
+  if (loading) return <div>加載中...</div>;
+  if (error) return <div>{error}</div>;
+  if (!product) return <div>No product found</div>;
+
   return (
     <>
       <header>
@@ -40,30 +50,30 @@ export default function ProductDetail() {
       <main className="container">
         {/* 商品路徑 */}
         <div className="row product-backhome">
-          <Path product={product}/>
+          <Path />
         </div>
         {/* 商品圖片 */}
         <div className="row">
           <div className="col-lg-6 col-md-12 product-photos">
-            <ProductPhoto product={product}/>
+            <ProductPhoto />
           </div>
           <div className="col-lg-6 col-md-12 product-info">
             {/* 商品名稱~金額 */}
             <TitlePrice product={product}/>
             {/* 電腦+平版的form */}
-            <PcFrom product={product}/>
+            <PcFrom />
           </div>
           {/* 手機的form */}
-          <MobileForm product={product}/>
+          <MobileForm />
         </div>
         <div className="product-detail">
-          <PcDescription product={product}/>
-          <MobileDescription product={product}/>
+          <PcDescription />
+          <MobileDescription />
         </div>
       </main>
       <div className="product-comment">
-        <PcComment product={product}/>
-        <MobileComment product={product}/>
+        <PcComment />
+        <MobileComment />
       </div>
       <Footer />
     </>

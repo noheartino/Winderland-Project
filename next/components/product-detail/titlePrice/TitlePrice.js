@@ -1,14 +1,14 @@
 import React from 'react'
 import styles from "./TitlePrice.module.css"
 
-export default function TitlePrice() {
+export default function TitlePrice({product}) {
   return (
     <>
         <div className={`${styles['product-title']}`}>
-              皮耶侯奇酒莊 菜刀酒莊 夜聖喬治村卡維一級園紅酒 2017
+              {product[0].name}
             </div>
             <div className={`${styles['product-dataStar']}`}>
-              <div className={`${styles['product-data']}`}>750ml / 法國</div>
+              <div className={`${styles['product-data']}`}>{product[0].details[0].capacity}ml / {product[0].country}</div>
               <div className={`${styles['product-stars']}`}>
                 <img className={`${styles['star']}`} src="/product_images/Star.svg" alt="" />
                 <img className={`${styles['star']}`} src="/product_images/Star.svg" alt="" />

@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ProductPhoto.module.css";
 
-export default function ProductPhoto() {
+export default function ProductPhoto({product}) {
   return (
     <>
       {/* 商品大圖片 */}
