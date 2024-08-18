@@ -4,20 +4,25 @@
 }
 
 .cartProductImg {
-    width: 200px;
-    height: 200px;
+    width: 200px; /* 可以根据需要自行调整 */
+    height: 200px; /* 锁定高度以确保显示效果 */
     border: 1px solid #d4c0c0;
     overflow: hidden;
     box-sizing: border-box;
+    position: relative;
 }
 
 .cartProductImg img {
-    width: 100%;
     height: 100%;
-    object-fit: cover;
+    width: auto; /* 将宽度自动适应 */
+    object-fit: contain; /* 确保整个图像内容能显示出来 */
     object-position: center;
     display: block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
+
 
 .cartProductContent {
     padding-left: 30px;

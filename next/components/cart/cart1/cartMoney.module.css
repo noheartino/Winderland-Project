@@ -18,7 +18,7 @@
 
 .cartMoneyTotalContent {
     padding: 35px;
-    height: 515px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -111,21 +111,14 @@
     display: flex;
     justify-content: space-between;
     color: #60464C;
-    margin: 10px 0;
+    padding: 8px 0;
 }
 
 .cartTotalML2 {
     display: flex;
     justify-content: space-between;
     color: #A66E7B;
-    margin: 10px 0;
-}
-
-.cartTotalML3 {
-    display: flex;
-    justify-content: space-between;
-    color: #60464C;
-    margin: 10px 0;
+    padding: 15px 0;
 }
 
 .cartTotalMR {
