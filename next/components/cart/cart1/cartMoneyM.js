@@ -1,9 +1,8 @@
 import React from 'react';
 import css from '@/components/cart/cart1/cartMoney.module.css';
 
-export default function CartMoneyM({ totalAmount }) { // 接收总金额
-  const discount = 350; // 假设的优惠金额
-  const finalAmount = totalAmount - discount; // 计算最终金额
+export default function CartMoneyM({ totalAmount, discountAmount }) { // 接收总金额和折扣金额
+  const finalAmount = totalAmount - discountAmount; // 计算最终金额
 
   return (
     <>
@@ -16,7 +15,7 @@ export default function CartMoneyM({ totalAmount }) { // 接收总金额
             </div>
             <div className={css.cartTotalML2}>
               <div>優惠折扣</div>
-              <div>- NT$ {discount}</div>
+              <div>- NT$ {discountAmount}</div> {/* 显示动态的优惠折扣 */}
             </div>
           </div>
           <div className={`col-5 ${css.cartTotalMR}`}>

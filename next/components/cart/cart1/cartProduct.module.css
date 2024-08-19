@@ -1,134 +1,171 @@
 /* CartProduct.module.css */
 .cartProductBox {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .cartProductImg {
-    width: 200px; /* 可以根据需要自行调整 */
-    height: 200px; /* 锁定高度以确保显示效果 */
-    border: 1px solid #d4c0c0;
-    overflow: hidden;
-    box-sizing: border-box;
-    position: relative;
+  width: 200px; /* 可以根据需要自行调整 */
+  height: 200px; /* 锁定高度以确保显示效果 */
+  border: 1px solid #d4c0c0;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .cartProductImg img {
-    height: 100%;
-    width: auto; /* 将宽度自动适应 */
-    object-fit: contain; /* 确保整个图像内容能显示出来 */
-    object-position: center;
-    display: block;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+  height: 100%;
+  width: auto; /* 将宽度自动适应 */
+  object-fit: contain; /* 确保整个图像内容能显示出来 */
+  object-position: center;
+  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-
 .cartProductContent {
-    padding-left: 30px;
-    height: 200px;
-    max-width: 400px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  padding-left: 30px;
+  height: 200px;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .cartProductContentTitle {
-    font-size: 20px;
-    color: #60464c;
+  font-size: 20px;
+  color: #60464c;
 }
 
 .cartProductContentMoney {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .cartMoney {
-    font-size: 24px;
-    color: #ff4f4f;
+  font-size: 24px;
+  color: #ff4f4f;
 }
 
 .cartProductContentFormat {
-    font-size: 14px;
-    color: #9a5b69;
+  font-size: 14px;
+  color: #9a5b69;
 }
 
 .cartProductDel {
-    width: 100%;
-    max-width: 145px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  max-width: 145px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .cartProductDel button {
-    color: #9a5b69;
-    font-size: 15px;
-    border: 1px solid transparent;
-    border-radius: 6px;
-    background-color: #f4ebeb;
+  color: #9a5b69;
+  font-size: 15px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background-color: #f4ebeb;
 }
 
 @media screen and (max-width: 992px) {
-    .cartProductBox {
-        padding-bottom: 20px;
-        width: 100%;
-    }
-    .cartProductImg {
-        width: 180px;
-        height: 180px;
-    }
-    .cartProductContent {
-        max-width: 500px;
-        width: 100%;
-        padding-left: 30px;
-        height: 180px;
-    }
-    .cartProductContentTitle {
-        font-size: 18px;
-    }
-    .cartProductContentFormat {
-        font-size: 12px;
-        display: flex;
-        justify-content: space-between;
-    }
-    .cartProductDel {
-        width: 80px;
-    }
-    .cartMoney {
-        font-size: 22px;
-        color: #ff4f4f;
-    }
+  .cartProductBox {
+    padding-bottom: 20px;
+    width: 100%;
+  }
+  .cartProductImg {
+    width: 180px;
+    height: 180px;
+  }
+  .cartProductContent {
+    max-width: 500px;
+    width: 100%;
+    padding-left: 30px;
+    height: 180px;
+  }
+  .cartProductContentTitle {
+    font-size: 18px;
+  }
+  .cartProductContentFormat {
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .cartProductDel {
+    width: 80px;
+  }
+  .cartMoney {
+    font-size: 22px;
+    color: #ff4f4f;
+  }
 }
 
 @media screen and (max-width: 768px) {
-    .cartProductBox {
-        margin-bottom: 10px;
-        width: 100%;
-    }
-    .cartProductImg {
-        width: 150px;
-        height: 150px;
-    }
-    .cartProductContent {
-        width: 100%;
-        padding-left: 10px;
-        height: 150px;
-    }
-    .cartProductContentTitle {
-        font-size: 16px;
-    }
-    .cartProductContentFormat {
-        font-size: 12px;
-        display: flex;
-        justify-content: space-between;
-    }
-    .cartProductDel {
-        width: 80px;
-    }
-    .cartMoney {
-        font-size: 20px;
-        color: #ff4f4f;
-    }
+  .cartProductBox {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  .cartProductImg {
+    width: 150px;
+    height: 150px;
+  }
+  .cartProductContent {
+    width: 100%;
+    padding-left: 10px;
+    height: 150px;
+  }
+  .cartProductContentTitle {
+    font-size: 16px;
+  }
+  .cartProductContentFormat {
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .cartProductDel {
+    width: 80px;
+  }
+  .cartMoney {
+    font-size: 20px;
+    color: #ff4f4f;
+  }
 }
+
+.cartNumber {
+    display: flex;
+    justify-content: space-between;
+    width: 130px;
+  }
+  
+  .cartNumberDetail {
+    color: #a66e7b; /* 数字颜色 */
+    display: flex;
+    align-items: center; /* 垂直居中 */
+  }
+  
+  .cartNumberReduceButton,
+  .cartNumberAddButton {
+    width: 40px;
+    height: 40px;
+    background-color: #d4c0c0;
+    border: none;
+    cursor: pointer;
+    color: #a66e7b;
+    font-size: 20px;
+  }
+  
+  @media screen and (max-width: 991px) {
+    .cartNumber {
+      width: 80px;
+    }
+    .cartNumberDetail {
+      font-size: 16px; /* 在宽度小于 991px 时缩小字体 */
+    }
+    .cartNumberReduceButton,
+    .cartNumberAddButton {
+      width: 20px;
+      height: 40px;
+      font-size: 16px;
+    }
+  }
