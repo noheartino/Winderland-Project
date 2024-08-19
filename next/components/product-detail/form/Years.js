@@ -15,7 +15,7 @@ export default function Years() {
       <select className={`${styles['select']}`} value={detail} onChange={(e) => {setDetail(Number(e.target.value))}}>
         {product[0].details.map(d => {
           return (
-            <option key={d.id} value={d.id}>{d.years}</option>
+            <option key={d.id} value={d.id}>{d.years}年</option>
           )
         })}
       </select>
