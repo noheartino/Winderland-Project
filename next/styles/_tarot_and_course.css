@@ -324,8 +324,15 @@
   }
   & .course-search-icon{
     top: 0.75rem;
+    right: 2.2rem;
+    color: var(--course_purple_light);
+    cursor: pointer;
+  }
+  & .fa-xmark{
+    top: 0.75rem;
     right: 0.75rem;
     color: var(--course_purple_light);
+    cursor: pointer;
   }
   @media screen and (max-width: 768px) {
     & .course-search-input {
@@ -392,12 +399,24 @@
     height: 3rem;
     position: relative;
   }
+  & .bigStar-mini-box{
+    width: 1.5rem;
+    height: 1.5rem;
+    position: relative;
+  }
   & .bigStar{
     display: inline-block;
     left: 0;
     position: absolute;
     top: 0;
     font-size: 3rem;
+  }
+  & .bigStar-mini{
+    display: inline-block;
+    left: 0;
+    position: absolute;
+    top: 0;
+    font-size: 1.5rem;
   }
   & .bigStar-beneath{
     color: var(--shallow-light-gray);
@@ -441,7 +460,7 @@
   }
   @media screen and (max-width: 768px) {
     & .card-md-body {
-      padding: 0 0 0 10px;
+      padding: 0 0 0 15px;
     }
   }
   & .online-tag {
@@ -740,6 +759,14 @@
     border-radius: 50%;
     height: 65px;
     width: 65px;
+  }
+  .sm-card-minH{
+    min-height: 380px;
+  }
+  @media screen and (max-width: 768px) {
+    .sm-card-minH{
+      min-height: auto;
+    }
   }
   .course-comment .course-user-comment-section .course-user-nav-items li {
     padding: 0;

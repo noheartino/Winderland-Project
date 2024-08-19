@@ -1,8 +1,9 @@
-import React,{ useState, useEffect } from 'react'
+import React,{ useState, useEffect, useRef } from 'react'
 import { useRouter } from "next/router";
 
 export default function CourseNav({setSearchWord}) {
   const [searchTerm, setSearchTerm] = useState("");
+  const searchInputRef = useRef(null);
 
   const router = useRouter();
     const onChangeInput= (e)=>{
@@ -26,7 +27,18 @@ export default function CourseNav({setSearchWord}) {
   const handleClick = (e) => {
     e.preventDefault();
     const tagText = e.target.textContent;
-    console.log("course-nav 觸發點擊搜尋事件"+tagText);
+    if (tagText.trim()) {
+      router.push({
+        pathname: '/course',
+        query: { search: tagText },
+      });
+    }
+  };
+  const handleClickSearchIcon = (e) => {
+    e.preventDefault();
+    searchInputRef.current.focus()
+    const tagText = searchInputRef.current.value;
+    console.log(e.target.value);
     if (tagText.trim()) {
       router.push({
         pathname: '/course',
@@ -45,7 +57,8 @@ export default function CourseNav({setSearchWord}) {
           </div>
           <div className="course-search-box-width position-relative">
             <input
-              type="search"
+              ref={searchInputRef}
+              type="text"
               className="course-search-input form-control rounded-5"
               placeholder="搜尋關鍵字"
               aria-label="搜尋關鍵字"
@@ -54,7 +67,8 @@ export default function CourseNav({setSearchWord}) {
               onChange={(e)=>setSearchTerm(e.target.value)}
               onKeyDown={handleKeyDown}
             />
-            <i className="fa-solid fa-magnifying-glass position-absolute course-search-icon"></i>
+            <i className="fa-solid fa-magnifying-glass position-absolute course-search-icon" onClick={handleClickSearchIcon}></i>
+            <i className="fa-solid fa-xmark position-absolute"></i>
           </div>
           <div className="row px-0 m-0 justify-content-center">
             <div className="col-11 col-md-6 d-flex justify-content-center flex-wrap">

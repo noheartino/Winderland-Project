@@ -1,6 +1,7 @@
 import CourseList from "@/components/course/course-list"
 import CourseNav from "@/components/course/course-nav"
 import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from 'next/router';
 
 export default function CourseIndex() {
   const { auth, login, logout } = useAuth();

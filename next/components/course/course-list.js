@@ -9,8 +9,8 @@ export default function CourseList() {
   const { search } = router.query;
 
   const [courses, setCourses] = useState([]);
-  const [firstCourse, setFirstCourse] = useState([]);
-  const [remainCourses, setRemainCourses] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [classAssigns, setClassAssigns] = useState([])
 
   useEffect(() => {
     // const includeImages = false;
@@ -26,18 +26,25 @@ export default function CourseList() {
       return response.json();
     })
     .then((data) => {
+      let {courses, comments, classAssigns} = data;
       // 處理 courses 資料，將 images 字段轉換為數組
-      const processedCourses = data.map((course) => ({...course,
+      const processedCourses = courses.map((course) => ({...course,
         images: course.path ? course.path : [],
       }));
+      setComments(comments);
       setCourses(processedCourses);
-      console.log("courses data: "+processedCourses)
-      console.log("first Course: "+firstCourse);
+      setClassAssigns(classAssigns);
     })
     .catch((error) => {
       console.log(error);
     });
 }, [search]);
+
+
+  function handleHref(e, class_id) {
+    e.preventDefault();
+    router.push(`/course/${class_id}`);
+  }
       
 
   return (
@@ -55,7 +62,37 @@ export default function CourseList() {
                 </div>
               </div>
               <div className="row px-0 m-0 course-mycourse-box row-gap-5">
-                <CourseCardSm courses={courses} />
+
+              {courses.map((course) => {
+                const { class_id, class_name, student_limit, teacher_id, price, online, address, appointment_start, appointment_end, course_start, course_end, description, status, i_class_id, i_teacher_id, path, teacher_name, class_path} = course;
+                const isOnline = parseInt(online) === 0 ? false : true;
+                let averageRating = 0;
+                let classAssignsQ = 0;
+
+                  const filteredComments = comments.filter(comment => comment.entity_type === "class" && comment.entity_id === class_id);
+                  if(filteredComments){
+                    const ratings = filteredComments.map(comment => comment.rating);
+                    averageRating =  Math.round((ratings.reduce((acc, rating) => acc + rating, 0) / ratings.length));
+                  }else{
+                    averageRating = 0
+                  }
+
+                  const filteredclassAssigns = classAssigns.filter(classAssign => classAssign.class_id === class_id && classAssign.status !== 'cancelled');
+                  if(filteredclassAssigns){
+                    classAssignsQ = filteredclassAssigns.length;
+                  }else{
+                    classAssignsQ = 0
+                  }
+                
+                
+              return (
+                <a key={class_id} onClick={(e)=>handleHref(e, class_id)} className='col-12 col-md-4 col-lg-3 px-10px d-flex flex-column align-items-center justify-content-between'>
+                  <CourseCardSm course={course} averageRating={averageRating} classAssigns={classAssigns} classAssignsQ={classAssignsQ}/>
+                </a> 
+              );
+            })}
+                
+
               </div>
             </div>
           </div>
