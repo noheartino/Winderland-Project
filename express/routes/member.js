@@ -36,7 +36,7 @@ router.get('/check', authenticate, async (req, res) => {
 // @ 登入
 router.post('/login', async (req, res) => {
   // 從前端來的資料
-  const { account, password } = req.body
+  const { account, password, rememberMe } = req.body
 
   // 檢查從前端來的資料哪些為必要
   if (!account || !password) {
@@ -62,9 +62,10 @@ router.post('/login', async (req, res) => {
     // compareHash(登入時的密碼純字串, 資料庫中的密碼hash) 比較密碼正確性
     const isValid = await compareHash(password, user.password)
 
-    // isValid=false 代表密碼錯誤
     if (!isValid) {
-      return res.status(401).json({ status: 'error', message: '密碼錯誤' })
+      return res
+        .status(401)
+        .json({ status: 'error', message: '帳號或密碼錯誤' })
     }
 
     // 存取令牌(access token)只需要id和username就足夠，其它資料可以再向資料庫查詢
@@ -76,12 +77,18 @@ router.post('/login', async (req, res) => {
     }
 
     // 產生存取令牌(access token)，其中包含會員資料
-    const accessToken = jsonwebtoken.sign(returnUser, accessTokenSecret, {
-      expiresIn: '3d',
-    })
+    const accessToken = jsonwebtoken.sign(
+      { id: user.id, account: user.account },
+      accessTokenSecret,
+      { expiresIn: rememberMe ? '30d' : '1d' }
+    )
 
     // 使用httpOnly cookie來讓瀏覽器端儲存access token
-    res.cookie('accessToken', accessToken, { httpOnly: true })
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000,
+    })
 
     // ! 返回成功響應
     // 傳送access token回應(例如react可以儲存在state中使用)

@@ -221,7 +221,7 @@
 .main .loginContent .fastLogin .buttonGruop .googleLogin {
   width: 100%;
   font-size: 16px;
-  background-color: var(--primary_color-primary);
+  background-color: var(--primary);
   margin-bottom: 30px;
   white-space: nowrap;
   height: 60px;

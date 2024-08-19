@@ -25,6 +25,9 @@ export default function LoginForm() {
   // 顯示密碼用
   const [showPassword, setShowPassword] = useState(false)
 
+  // 添加 rememberMe 狀態
+  const [rememberMe, setRememberMe] = useState(false);
+
   // 多欄位共用事件處理函式
   const handleFieldChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value })
@@ -33,8 +36,8 @@ export default function LoginForm() {
   // 表單送出事件處理函式
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Account:', user.account);
-    console.log('Password:', user.password);
+    // console.log('Account:', user.account);
+    // console.log('Password:', user.password);
 
     // ! 表單檢查--- START ---
     // 建立一個新的錯誤訊息物件
@@ -73,7 +76,12 @@ export default function LoginForm() {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(user),
+        body: JSON.stringify({
+          // 記住登入
+          account: user.account,
+          password: user.password,
+          rememberMe: rememberMe
+        }),
       })
 
       const resData = await res.json()
@@ -186,10 +194,11 @@ export default function LoginForm() {
                     className={`${styles.formCheck} align-items-center d-flex`}
                   >
                     <input
-                      className={`${styles.formCheckInput} me-2`}
+                       className={`${styles.formCheckInput} me-2`}
                       type="checkbox"
-                      defaultValue=""
-                      id="rememberPassword"
+                      id="rememberMe"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
                     />
                     <label
                       className={styles.formCheckLabel}
@@ -315,22 +324,24 @@ export default function LoginForm() {
                   value={user.password}
                   onChange={handleFieldChange}
                 />
-              {errors.password && <span className={`${styles.error} ${styles.show} ${styles.errorPwd}`}>{errors.password}</span>}
+                {errors.password && <span className={`${styles.error} ${styles.show} ${styles.errorPwd}`}>{errors.password}</span>}
                 <div
                   className={`d-flex justify-content-between align-items-center ${styles.forgetPwd}`}
                 >
+                  {/* 記住登入 */}
                   <div
                     className={`form-check align-items-center d-flex ${styles.formCheck}`}
                   >
                     <input
-                      className="form-check-input me-2"
+                      className={`${styles.formCheckInput} me-2`}
                       type="checkbox"
-                      value=""
-                      id=""
+                      id="rememberMe"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
                     />
                     <label
                       className={`form-check-label ${styles.formCheckLabel}`}
-                      htmlFor=""
+                      htmlFor="rememberMe"
                     >
                       {' '}
                       記住我的登入
