@@ -145,6 +145,7 @@ export default function CartCheckout2() {
               </button>
             </div>
           </div>
+          
           <div className="payTitle">
             <b>付款方式</b>
           </div>

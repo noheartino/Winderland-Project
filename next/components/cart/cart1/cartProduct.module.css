@@ -59,6 +59,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: -15px;
 }
 
 .cartProductDel button {
@@ -136,18 +137,21 @@
     display: flex;
     justify-content: space-between;
     width: 130px;
+    border: 1px solid #a66e7b;
   }
   
   .cartNumberDetail {
     color: #a66e7b; /* 数字颜色 */
     display: flex;
     align-items: center; /* 垂直居中 */
+   
+    
   }
   
   .cartNumberReduceButton,
   .cartNumberAddButton {
     width: 40px;
-    height: 40px;
+    height: 100%;
     background-color: #d4c0c0;
     border: none;
     cursor: pointer;
@@ -164,8 +168,13 @@
     }
     .cartNumberReduceButton,
     .cartNumberAddButton {
-      width: 20px;
-      height: 40px;
+      width: 25px;
+      height: 100%px;
       font-size: 16px;
     }
+  }
+
+  .cartMoneySafe {
+    text-decoration: line-through;
+    color:  #D4C0C0;
   }

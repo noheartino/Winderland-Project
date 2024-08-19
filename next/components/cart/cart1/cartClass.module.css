@@ -197,3 +197,7 @@
     width: 30px;
   }
 }
+.cartMoneySafe {
+  text-decoration: line-through;
+  color:  #D4C0C0;
+}

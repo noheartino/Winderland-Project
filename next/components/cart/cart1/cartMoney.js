@@ -1,20 +1,20 @@
 import React from 'react';
 import css from '@/components/cart/cart1/cartMoney.module.css';
 
-export default function CartMoney({ totalAmount = 0, coupons = [] }) { // 設置默認值
-    // 計算折扣金額
+export default function CartMoney({ totalAmount = 0, selectedCoupon }) {
     let discountAmount = 0;
 
-    // 只有在选中优惠券时才计算
-    if (Array.isArray(coupons) && coupons.length > 0) {
-        discountAmount = coupons.reduce((total, coupon) => {
-            const discount = parseFloat(coupon.discount) || 0; // 确保为有效数字
-            return discount > 1 ? total + discount : total + (total * discount); // 根据优惠券的折扣类型计算
-        }, 0); // 在优惠券为空时设置为0
+    if (selectedCoupon) {
+        const discount = parseFloat(selectedCoupon.coupon_discount) || 0;
+        // 當 discount 大於 1 時，表示是直接金額；當小於 1 時，表示是折扣百分比
+        if (discount > 1) {
+            discountAmount = discount;
+        } else {
+            discountAmount = totalAmount * (1 - discount);
+        }
     }
 
-    // 計算最終金額
-    const finalAmount = totalAmount - discountAmount;
+    const finalAmount = Math.max(0, totalAmount - discountAmount);
 
     return (
         <div className={css.cartMoneyTotal}>
@@ -22,15 +22,15 @@ export default function CartMoney({ totalAmount = 0, coupons = [] }) { // 設置
             <div className={css.cartMoneyTotalContent}>
                 <div className={css.cartContent}>
                     <div>商品總計</div>
-                    <div>NT$ {Math.floor(totalAmount)}</div> {/* 去掉小数点 */}
+                    <div>NT$ {Math.floor(totalAmount)}</div>
                 </div>
                 <div className={css.cartContent}>
                     <div>優惠券</div>
-                    <div className={css.cartContentCoupon}>- NT$ {Math.floor(discountAmount)}</div> {/* 去掉小数点 */}
+                    <div className={css.cartContentCoupon}>- NT$ {Math.floor(discountAmount)}</div>
                 </div>
                 <div className={`${css.cartContent} ${css.cartContentTotal}`}>
                     <div className={css.cartContentTotal1}>訂單總金額</div>
-                    <div className={css.cartContentTotal2}>NT$ {Math.max(0, Math.floor(finalAmount))}</div> {/* 非负金额 */}
+                    <div className={css.cartContentTotal2}>NT$ {Math.floor(finalAmount)}</div>
                 </div>
                 <div className={css.cartContent}>
                     <button className={css.confirmButton}>確認訂單</button>

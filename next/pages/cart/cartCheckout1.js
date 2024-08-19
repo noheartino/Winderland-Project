@@ -29,10 +29,9 @@ export default function CartCheckout1() {
         const data = await response.json();
         setProductData(
           data.items.filter((item) => item.product_detail_id !== null)
-        ); // 过滤出商品数据
-        setClassData(data.items.filter((item) => item.class_id !== null)); // 过滤出课程数据
-        setCoupons(data.items.flatMap((item) => item.coupons)); // 储存用户的优惠券
-        calculateTotalAmount(data.items); // 计算总金额
+        );
+        setClassData(data.items.filter((item) => item.class_id !== null));
+        setCoupons(data.coupons); // 確保這裡正確地設置優惠券數據
       } else {
         const errorData = await response.json();
         console.error("请求失败:", errorData);
@@ -41,45 +40,59 @@ export default function CartCheckout1() {
     fetchData();
   }, [userId]);
 
-  // 计算总金额
-  const calculateTotalAmount = () => {
+  // 使用 useEffect 來監控狀態變化
+  useEffect(() => {
+    calculateTotalAmount(productChecked, classChecked, selectedCoupon);
+  }, [productData, classData, selectedCoupon, productChecked, classChecked]);
+
+  
+
+  const calculateTotalAmount = (isProductChecked, isClassChecked, coupon) => {
     let newTotalAmount = 0;
 
-    // 计算商品金额
-    if (productChecked) {
-      productData.forEach((item) => {
-        const quantity = item.product_quantity || 0;
-        const productPrice = item.product_price || 0;
-        newTotalAmount += productPrice * quantity;
-      });
+    // 計算商品金額
+    if (isProductChecked) {
+        productData.forEach((item) => {
+            const quantity = item.product_quantity || 0;
+            const productPrice = item.product_sale_price > 0 ? item.product_sale_price : item.product_price || 0;
+            newTotalAmount += productPrice * quantity;
+        });
     }
 
-    // 计算课程金额
-    if (classChecked) {
-      classData.forEach((item) => {
-        const classPrice = item.class_price || 0;
-        newTotalAmount += classPrice;
-      });
+    // 計算課程金額
+    if (isClassChecked) {
+        classData.forEach((item) => {
+            const classPrice = item.class_sale_price > 0 ? item.class_sale_price : item.class_price || 0;
+            newTotalAmount += classPrice;
+        });
     }
 
-    // 优惠计算
-    let discountAmount = 0; // 初始化优惠金额
-    if (selectedCoupon) {
-      const discount = parseFloat(selectedCoupon.discount) || 0; // 确保为有效数值
-      if (discount > 1) {
-        discountAmount += discount; // 现金折扣
-      } else {
-        discountAmount += newTotalAmount * discount; // 比例折扣
-      }
+    // 計算折扣
+    let discountAmount = 0;
+    if (coupon) {
+        const discount = parseFloat(coupon.discount) || 0;
+        discountAmount = discount > 1 ? discount : newTotalAmount * discount;
     }
 
-    const finalAmount = Math.max(0, newTotalAmount - discountAmount); // 确保不为负
-    setTotalAmount(Math.floor(finalAmount)); // 更新金额状态
-  };
+    const finalAmount = Math.max(0, newTotalAmount - discountAmount);
+
+    // 如果總金額小於 min_spend，移除選中的優惠券
+    if (selectedCoupon && newTotalAmount < (parseFloat(selectedCoupon.min_spend) || 0)) {
+        setSelectedCoupon(null);
+        handleCouponChange(null); // 確保這裡調用的是正確的函數
+        console.log("Total amount is less than min spend. Coupon removed.");
+    }
+
+    setTotalAmount(Math.floor(finalAmount));
+};
+
+  
+
+
 
   const handleCouponChange = (coupon) => {
-    setSelectedCoupon(coupon); // 更新选中的优惠券
-    calculateTotalAmount(); // 重新计算金额
+    console.log("Coupon changed:", coupon); // 檢查優惠券變更
+    setSelectedCoupon(coupon); // 設置選中的優惠券
   };
 
   const handleAllCheck = (e) => {
@@ -87,23 +100,18 @@ export default function CartCheckout1() {
     setAllChecked(isChecked); // 设置全选状态
     setProductChecked(isChecked); // 同步商品选择状态
     setClassChecked(isChecked); // 同步课程选择状态
-
-    // 一次性更新金额
-    calculateTotalAmount();
   };
 
   const handleProductCheck = (e) => {
     const isChecked = e.target.checked;
-    setProductChecked(isChecked); // 设置商品选择状态
-    setAllChecked(isChecked && classChecked); // 更新全选状态
-    calculateTotalAmount(); // 仅更新金额
+    setProductChecked(isChecked);
+    setAllChecked(isChecked && classChecked); // 检查是否需要更新全选状态
   };
 
   const handleClassCheck = (e) => {
     const isChecked = e.target.checked;
-    setClassChecked(isChecked); // 设置课程选择状态
-    setAllChecked(productChecked && isChecked); // 更新全选状态
-    calculateTotalAmount(); // 更新金额
+    setClassChecked(isChecked);
+    setAllChecked(productChecked && isChecked); // 检查是否需要更新全选状态
   };
 
   const handleRemoveItem = async (itemId) => {
@@ -112,7 +120,6 @@ export default function CartCheckout1() {
         method: "DELETE",
       });
       if (response.ok) {
-        // 从状态中删除被删除的商品
         const updatedProductData = productData.filter(
           (item) => item.cart_item_id !== itemId
         );
@@ -120,12 +127,8 @@ export default function CartCheckout1() {
           (item) => item.cart_item_id !== itemId
         );
 
-        // 更新状态
         setProductData(updatedProductData);
         setClassData(updatedClassData);
-
-        // 重新计算总金额
-        calculateTotalAmount(updatedProductData.concat(updatedClassData));
       } else {
         const errorData = await response.json();
         console.error("无法删除物品:", errorData);
@@ -153,8 +156,6 @@ export default function CartCheckout1() {
               : item
           )
         );
-        // 更新数量后重新计算金额
-        calculateTotalAmount();
       } else {
         const errorData = await response.json();
         console.error("无法更新数量:", errorData);
@@ -241,12 +242,16 @@ export default function CartCheckout1() {
             </div>
             <div className="col-1" />
             <div className="col-4">
-              <CartMoney totalAmount={totalAmount} coupons={coupons} />{" "}
-              {/* 傳遞總金額和優惠券 */}
+              <CartMoney
+                totalAmount={totalAmount}
+                selectedCoupon={selectedCoupon}
+              />
               <CartCoupon
                 userId={userId}
+                selectedCoupon={selectedCoupon}
+                totalAmount={totalAmount} // 確保這裡傳遞了 totalAmount
                 onCouponChange={handleCouponChange}
-              />{" "}
+              />
               {/* 傳遞優惠券變更函數 */}
             </div>
           </div>
@@ -319,6 +324,7 @@ export default function CartCheckout1() {
         </div>
         <Footer showMobileFooter={false} />
       </main>
+      <CartMoneyM totalAmount={totalAmount} selectedCoupon={selectedCoupon} />
     </>
   );
 }
