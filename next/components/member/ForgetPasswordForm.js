@@ -50,8 +50,7 @@ export default function ForgetPasswordForm() {
                                         <br />
                                         <input
                                             type="email"
-                                            name="forgetPWD"
-                                            id="forgetPWD"
+                                            name="email"
                                             className={styles.loginInput}
                                             placeholder='請輸入Email'
                                             value={email}
