@@ -22,16 +22,16 @@ import { compareHash } from '#db-helpers/password-hash.js'
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
 
 // @ 檢查登入狀態用
-router.get('/check', authenticate, async (req, res) => {
-  // 查詢資料庫目前的資料
-  const user = await User.findByPk(req.user.id, {
-    raw: true, // 只需要資料表中資料
-  })
+// router.get('/check', authenticate, async (req, res) => {
+//   // 查詢資料庫目前的資料
+//   const user = await User.findByPk(req.user.id, {
+//     raw: true, // 只需要資料表中資料
+//   })
 
-  // 不回傳密碼值
-  delete user.password
-  return res.json({ status: 'success', data: { user } })
-})
+//   // 不回傳密碼值
+//   delete user.password
+//   return res.json({ status: 'success', data: { user } })
+// })
 
 // @ 登入
 router.post('/login', async (req, res) => {
