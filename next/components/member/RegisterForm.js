@@ -1,8 +1,9 @@
 // @ 導入
 import React, { useState } from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import styles from '@/components/member/member.module.css'
 import Link from 'next/link'
-import 'bootstrap/dist/css/bootstrap.min.css'
+
 
 
 // @ 預設導出
@@ -14,6 +15,14 @@ export default function RegisterForm() {
     gender: '',
     account: '',
     password: '',
+    password2: '',
+  });
+
+  const [errors, setErrors] = useState({
+    account: '',
+    password: '',
+    password2: '',
+    user_name: '',
   });
 
   const handleChange = (e) => {
@@ -22,12 +31,60 @@ export default function RegisterForm() {
       ...formData,
       [name]: value,
     });
+     // 即時驗證
+  let newErrors = { ...errors };
+ 
+  if (name === 'password') {
+    if (value.length < 6 || value.length > 12) {
+      newErrors.password = '密碼長度必須在6-12字元之間';
+    } else {
+      newErrors.password = '';
+    }
+  }
+  if (name === 'password2') {
+    if (value !== formData.password) {
+      newErrors.password2 = '密碼輸入不符';
+    } else {
+      newErrors.password2 = '';
+    }
+  }
+  setErrors(newErrors);
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {};
+
+    if (!formData.account) {
+      newErrors.account = '請輸入會員帳號';
+      isValid = false;
+    }
+
+    if (!formData.password) {
+      newErrors.password = '請輸入密碼';
+      isValid = false;
+    } else if (formData.password.length < 6 || formData.password.length > 12) {
+      newErrors.password = '密碼長度必須在6-12字元之間';
+      isValid = false;
+    }
+
+    if (formData.password !== formData.password2) {
+      newErrors.password2 = '密碼輸入不符';
+      isValid = false;
+    }
+
+    if (!formData.user_name) {
+      newErrors.user_name = '請輸入姓名';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.account || !formData.password || !formData.user_name) {
-      alert('請填寫所有必要資料');
+    if (!validateForm) {
       return;
     }
     try {
@@ -44,11 +101,16 @@ export default function RegisterForm() {
       if (response.ok) {
         alert('註冊成功！');
       } else {
-        const errorData = await response.json();
-        alert(errorData.message || '註冊失敗，請稍後再試');
+       // 處理後端返回的錯誤
+       if (result.message === '會員帳號已存在') {
+        setErrors({ ...errors, account: '會員帳號已存在' });
+      } else {
+        alert(result.message || '註冊失敗，請稍後再試');
+      }
       }
     } catch (error) {
       console.error('Error:', error);
+      alert('發生錯誤，請稍後再試');
     }
   };
 
@@ -66,15 +128,16 @@ export default function RegisterForm() {
             role="tabpanel"
             aria-labelledby="register-tab"
           >
-            {/* mail */}
+          
+            {/* 帳號 */}
             <div className={styles.mail}>
               <div className="d-flex justify-content-between align-items-center">
                 <label htmlFor="register-mail" className={styles.label}>
                   * 會員帳號
                 </label>{' '}
-                <span className={styles.span}>
-                  會員帳號已有人使用。
-                </span>
+                {/* 錯誤訊息 */}
+                {errors.account && <span className={styles.span}>{errors.account}</span>}
+
               </div>
               <input
                 type="text"
@@ -90,12 +153,13 @@ export default function RegisterForm() {
                 <label htmlFor="register-pwd" className={styles.label}>
                   * 會員密碼
                 </label>
+                {errors.password && <span className={styles.span}>{errors.password}</span>}
               </div>
               <input
                 type="password"
                 name="password"
                 className={styles.registerInput}
-                placeholder="請輸入長度8-12字元"
+                placeholder="請輸入長度6-12字元"
                 value={formData.password}
                 onChange={handleChange}
               />
@@ -106,7 +170,8 @@ export default function RegisterForm() {
                 <label htmlFor="register-pwd2" className={styles.label}>
                   * 再次輸入會員密碼
                 </label>
-                <span className={styles.span}>密碼輸入不符。</span>
+              {/* 錯誤訊息 */}
+              {errors.password2 && <span className={styles.span}>{errors.password2}</span>}
               </div>
               <input
                 type="password"
@@ -133,6 +198,7 @@ export default function RegisterForm() {
                 value={formData.user_name}
                 onChange={handleChange}
               />
+               {errors.user_name && <span className={styles.span}>{errors.user_name}</span>}
               <input
                 type="text"
                 name="phone"
@@ -217,9 +283,8 @@ export default function RegisterForm() {
                   <label htmlFor="register-mail" className={styles.label}>
                     * 會員帳號
                   </label>{' '}
-                  <span className={styles.span}>
-                    會員帳號已有人使用
-                  </span>
+                  {/* 錯誤訊息 */}
+                {errors.account && <span className={styles.span}>{errors.account}</span>}
                 </div>
                 <input
                   type="text"
@@ -251,13 +316,14 @@ export default function RegisterForm() {
                   <label htmlFor="register-pwd2" className={styles.label}>
                     * 再次輸入會員密碼
                   </label>
-                  <span className={styles.span}>密碼輸入不符。</span>
+                  {/* 錯誤訊息 */}
+                {errors.pwd2 && <span className={styles.span}>{errors.pwd2}</span>}
                 </div>
                 <input
                   type="password"
-                  name="password"
+                  name="password2"
                   className={styles.registerInput}
-                  value={formData.password}
+                  value={formData.password2}
                   onChange={handleChange}
                 />
               </div>

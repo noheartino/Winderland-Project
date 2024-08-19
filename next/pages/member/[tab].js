@@ -6,6 +6,7 @@ import { Tab, Tabs } from 'react-bootstrap'
 import LoginForm from '@/components/member/LoginForm'
 import RegisterForm from '@/components/member/RegisterForm'
 import styles from '@/components/member/member.module.css'
+import Nav from '@/components/Header/Header'
 
 export default function MemberPage() {
     const router = useRouter()
@@ -25,19 +26,20 @@ export default function MemberPage() {
     return (
         <main className={styles.main}>
             <div className={styles.bg}>
+            <Nav />
                 <div className={styles.loginBox}>
                     <Tabs
                         activeKey={activeTab}
                         onSelect={(k) => handleTabChange(k)}
-                        id="login-tabs"
+                        id="member-tabs"
                         className={styles.navTabs}
                     >
-                        <Tab eventKey="login" title="會員登入">
+                        <Tab eventKey="login" title="會員登入" className={styles.loginTab} >
                             <LoginForm />
                         </Tab>
-                        <Tab eventKey="register" title="會員註冊">
+                        <Tab eventKey="register" title="會員註冊" className={styles.registerTab}>
                             <RegisterForm />
-                        </Tab>
+                        </Tab> 
                     </Tabs>
                 </div>
             </div>
