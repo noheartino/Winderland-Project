@@ -41,7 +41,7 @@ export default function ArticleDetail() {
       {/* Header */}
       <Nav />
       <title>{article.title}</title>
-      <div className="container">
+      <div className="container pb-5">
         {/* 文章主題 */}
         {/* 最上面桌機header */}
         <ArticleListHeader article={article} />

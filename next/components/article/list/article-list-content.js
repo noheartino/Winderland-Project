@@ -23,7 +23,7 @@ export default function ArticleListContent({ article }) {
       if (index < article.images.length - 1) {
         // 確保插入圖片不超過圖片數組的長度
         acc.push(
-          <div className="aid-content-pic my-5" key={`image-${index}`}>
+          <div className="aid-content-pic my-4" key={`image-${index}`}>
             <Image
               src={`/images/article/${article.images[index + 1]}`} // 從第二張圖片開始插入
               alt="Description of image"
@@ -41,7 +41,12 @@ export default function ArticleListContent({ article }) {
   return (
     <>
       <div className="aid-content-word">
-        <div className="aid-content-p" style={{ whiteSpace: "pre-wrap" }}>
+        {/* rwd */}
+        <div className="aid-content-p d-none d-lg-block" style={{ whiteSpace: "pre-wrap" }}>
+          {contentWithImages}
+        </div>
+        {/* 桌機 */}
+        <div className="aid-content-p-sm d-lg-none" style={{ whiteSpace: "pre-wrap" }}>
           {contentWithImages}
         </div>
       </div>

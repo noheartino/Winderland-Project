@@ -2,7 +2,7 @@ import React from "react";
 import ArticleCReplymore from "./article-c-replymore";
 
 export default function ArticleComment({ comment, index }) {
-  console.log(comment)
+  // console.log(comment)
   return (
     <>
       <div className="col-12 mb-4">
@@ -24,7 +24,7 @@ export default function ArticleComment({ comment, index }) {
                 <h5 className="m-0">{comment.account}</h5>
               </div>
 
-              <div className="col-6 col-lg-4">
+              <div className="col-5 col-lg-4">
                 {/* 評論的上排nav */}
                 <ul className="au-nav-items row align-items-center justify-content-center m-0 p-0">
                   {/* 樓層 */}

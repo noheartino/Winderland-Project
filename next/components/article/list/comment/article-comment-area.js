@@ -6,27 +6,31 @@ import ArticleCommentCreate from "./article-comment-create";
 
 export default function ArticleCommentArea({ articleId }) {
   const [comments, setComments] = useState([]);
-  // const [newComment, setNewComment] = useState('');
 
   // 用於獲取評論
   useEffect(() => {
-    async function fetchComments() {
+    // 定義 fetchComments 函數
+    const fetchComments = async () => {
       try {
-        // 發送 GET 請求到 /api/comments/:id
-        const response = await axios.get(
-          `http://localhost:3005/api/a-comment/${articleId}`
-        );
-        setComments(response.data);
+        if (articleId) {
+          // console.log(`Fetching comments for articleId: ${articleId}`);
+          const response = await axios.get(
+            `http://localhost:3005/api/a-comment/${articleId}`
+          );
+          setComments(response.data);
+        }
       } catch (error) {
-        console.error("Error fetching comments:", error);
+        console.error("取得資料錯誤", error);
       }
-    }
+    };
+
+    // 呼叫 fetchComments 函數
     fetchComments();
   }, [articleId]);
 
   return (
     <>
-      <div className="aid-commentArea py-5">
+      <div className="aid-commentArea py-5 mt-5">
         <div className="container">
           <h2 className="text-center text-lg-start">留言討論 | Comment</h2>
           {/* 上排按鈕 */}
@@ -44,24 +48,28 @@ export default function ArticleCommentArea({ articleId }) {
             >
               攥寫評論
             </button>
-            <ArticleCommentCreate />
+            <ArticleCommentCreate articleId={articleId} />
           </div>
 
           <div className="aid-reply-area row">
             {/* 回覆區 */}
-              {console.log(comments)}
-              {comments.length > 0 ? (
-                comments.map((comment, index) => (
-                  <ArticleComment key={comment.id} comment={comment} index={index} />
-                ))
-              ) : (
-                <p>No comments yet</p>
-              )}
+            {/* {console.log(comments)} */}
+            {comments.length > 0 ? (
+              comments.map((comment, index) => (
+                <ArticleComment
+                  key={comment.id}
+                  comment={comment}
+                  index={index}
+                />
+              ))
+            ) : (
+              <p className="text-center">還沒有任何人留下評論QQ</p>
+            )}
 
             {/* 回覆區的回覆 */}
-            <div className="col-11 ms-auto mb-4">
+            {/* <div className="col-11 ms-auto mb-4">
               <ArticleCRreply />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

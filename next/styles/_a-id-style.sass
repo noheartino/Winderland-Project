@@ -75,6 +75,7 @@
   .aid-title
     font-size: 24px
     color: var(--text_primary)
+    letter-spacing: 3.6px
 
   .aid-pic
     width: 100%
@@ -85,9 +86,17 @@
       height: 100%
       object-fit: contain
 
+  // 文章文字
   .aid-content-word
     .aid-content-p
       font-size: 20px
+      font-style: normal
+      font-weight: 400
+      line-height: 2em
+      letter-spacing: 2px
+      color: var(--text_dark)
+    .aid-content-p-sm
+      font-size: 14px
       font-style: normal
       font-weight: 400
       line-height: 2em
@@ -181,8 +190,9 @@
           border-radius: 10px
           background-color: #fff
           p
+            font-size: 16px
+            letter-spacing: 1.6px
             margin: 0
-            max-height: 5rem
             overflow: hidden
             text-overflow: ellipsis
             display: -webkit-box

@@ -24,7 +24,7 @@ router.get('/:id', async (req, res) => {
        FROM comments
        JOIN users ON comments.user_id = users.id
        WHERE comments.entity_type = ? AND comments.entity_id = ?
-       ORDER BY comments.created_at DESC`,
+       ORDER BY comments.created_at ASC`,
       ['article', id]
     );
 
