@@ -1,45 +1,50 @@
-import React from 'react'
+import React from "react";
+import Image from "next/image";
+import { ClientPageRoot } from "next/dist/client/components/client-page";
 
-export default function ArticleListContent() {
+export default function ArticleListContent({ article }) {
+  if (!article || !article.images || article.images.length === 0) {
+    return null; // 或者可以返回一個預設的加載中佈局
+  }
+
+  // 假設 article.content 是從資料庫提取的文章內容
+  const content = article.content;
+  const imagePlaceholder = /<!--IMAGE_HERE-->/g;
+  // + <!--IMAGE_HERE-->這個切的地方往上是一塊區塊
+
+  // 使用 reduce 來處理內容和圖片
+  const contentWithImages = content
+    .split(imagePlaceholder)
+    .reduce((acc, part, index) => {
+      // 插入內容部分
+      acc.push(part);
+
+      // 檢查是否需要插入圖片
+      if (index < article.images.length - 1) {
+        // 確保插入圖片不超過圖片數組的長度
+        acc.push(
+          <div className="aid-content-pic my-5" key={`image-${index}`}>
+            <Image
+              src={`/images/article/${article.images[index + 1]}`} // 從第二張圖片開始插入
+              alt="Description of image"
+              width={100}
+              height={100}
+              priority
+            />
+          </div>
+        );
+      }
+
+      return acc;
+    }, []);
+
   return (
     <>
-      <div className="aid-content">
-              <p className="">
-                即便是經驗豐富的葡萄酒愛好者，談酒有時候仍然令人發憷。如果你試過由侍酒師介紹葡萄酒，你就會明白我們的意思。收斂感、單寧、酒香和香氣等，都是描述葡萄酒的一些術語，當你不瞭解時，就會一頭霧水，聽不出所以然來。
-                <br />
-                對個人描述葡萄酒的口感時，答案沒有對錯之分，但在葡萄酒王國，有一些專門的詞彙用來描述特定的純度、口味和質地。
-                以下是認識常用葡萄酒術語的快速指南。
-                <br />
-              </p>
-              <div className="aid-content-pic my-3">
-                <img
-                  src="/images/article/36f4354c96eac045775082278bf8618f.png"
-                  alt=""
-                />
-              </div>
-              <p>
-                收斂性（Astringent）是指一些葡萄酒在口腔中引起粗糙、苦澀和乾緊的感覺，通常是由單寧酸
-                度或兩者兼有所引起。單寧含量高的葡萄酒會導致口腔有乾澀的感覺，變得緊致，猶如飲過一杯濃
-                紅茶。
-                <br />
-                澀感（Tannic）可不是個貶義詞。它僅僅是指充滿了單寧酸的葡萄酒，主要是由葡萄皮和梗來反
-                映在味覺上的苦味、乾燥和澀味。它經常被誤解為帶有負面含義，但是要達到葡萄酒的平衡口感，
-                單寧必不可少。
-                <br />
-                口感（Mouthfeel）是指酒入口後的感覺，可以被描述為順滑、粗糙或絲滑等。
-                <br />
-                醒酒（Aeration）是指讓葡萄酒與氧氣接觸一段時間，也稱之為「呼吸」。讓氧氣滲透到葡萄酒
-                中，使口感更圓潤順口。
-                香氣（Nose）是用來描述葡萄酒的芳香和酒香。
-                <br />
-                芳香（Aromas）指源自葡萄品種的香味。例如，葡萄酒的芳香可以被描述為果香、草本香或香。
-                與芳香不同，酒香（Bouquet）是指釀酒過程中，由發酵和陳釀所產生的葡萄酒氣味，可以被描述
-                為堅果味、香料味或木味。
-                <br />
-                餘味（Finish）&nbsp;是指品嚐後，餘留在口中那揮之不去的味道和質地。
-                <br />
-              </p>
-            </div>
+      <div className="aid-content-word">
+        <div className="aid-content-p" style={{ whiteSpace: "pre-wrap" }}>
+          {contentWithImages}
+        </div>
+      </div>
     </>
-  )
+  );
 }

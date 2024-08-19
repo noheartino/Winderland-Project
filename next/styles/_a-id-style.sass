@@ -33,7 +33,7 @@
     img
       width: 100%
       height: 100%
-      object-fit: cover
+      object-fit: contain
 
 /* 文章內容 */
 .aid-content-area
@@ -83,10 +83,10 @@
     img
       width: 100%
       height: 100%
-      object-fit: cover
+      object-fit: contain
 
-  .aid-content
-    p
+  .aid-content-word
+    .aid-content-p
       font-size: 20px
       font-style: normal
       font-weight: 400
@@ -101,7 +101,7 @@
       img
         width: 100%
         height: 100%
-        object-fit: cover
+        object-fit: contain
 
 /* 評論區 */
 .aid-commentArea
@@ -158,7 +158,7 @@
             padding: 0
             text-align: center
             list-style: none
-            // border-right: 1px solid var(--purple_light)
+            border-right: 1px solid var(--purple_light)
             color: var(--blue_dark)
             a
               text-decoration: none
