@@ -78,8 +78,7 @@
     width: 100%;
 }
 
-.cartTotalML2 {
-    padding-top: 15px;
+.cartTotalML2All {
     padding-left: 30px;
     font-size: 18px;
 }
@@ -118,8 +117,9 @@
 }
 
 .cartTotalMRTitle2 {
-    margin-left: -40px;
+    margin-left: -50px;
     color: #60464c;
+    font-size: 15px;
 }
 
 .cartTotalMRMoney2 {
@@ -136,11 +136,12 @@
     border: 1px solid transparent;
     background-color: #ff4f4f;
     color: #d4c0c0;
+    font-size: 16px;
 }
 
 /* 媒體查詢 */
 @media screen and (max-width: 768px) {
-    .cartTotalML2 {
+    .cartTotalML2All {
         font-size: 14px;
     }
 }

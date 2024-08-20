@@ -90,6 +90,12 @@
     color: #ff4f4f;
 }
 
+@media screen and (max-width: 991px) {
+    .wPointContent{
+        background-color: transparent;
+    }
+}
+
 /* 媒體查詢 */
 @media screen and (max-width: 430px) {
     .wPointContent {

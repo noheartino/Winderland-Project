@@ -1,0 +1,97 @@
+/* cartMoneyTotal.module.css */
+.cartMoneyTotal3 {
+    margin: 150px 0 30px 0;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(119, 119, 119, 0.2);
+}
+
+.cartMoneyTotalTitle3 {
+    height: 75px;
+    background-color: #851931;
+    font-size: 20px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+}
+
+.cartMoneyTotalContent3 {
+    padding: 30px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 20px;
+    color: #60464c;
+    background-color: #fcfcfc;
+}
+
+.cartContent3 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cartContentTotal1 {
+    padding-top: 10px;
+}
+
+.cartContentTotal2 {
+    font-size: 32px;
+    color: #ff4f4f;
+}
+
+/* 媒體查詢 */
+@media screen and (max-width: 1200px) and (min-width: 992px) {
+    .cartMoneyTotalTitle3 {
+        font-size: 16px;
+    }
+
+    .cartMoneyTotalContent3 {
+        font-size: 16px;
+
+        .cartContentTotal2 {
+            font-size: 28px;
+        }
+    }
+}
+
+@media screen and (max-width: 992px) and (min-width: 768px) {
+    .cartMoneyTotal3 {
+        margin: 50px 0 30px 0;
+        width: 100%;
+        max-width: 1000px;
+    }
+
+    .cartMoneyTotalTitle3 {
+        font-size: 20px;
+    }
+
+    .cartMoneyTotalContent3 {
+        font-size: 20px;
+
+        .cartContentTotal2 {
+            font-size: 32px;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .cartMoneyTotal3 {
+        margin: 50px 0 30px 0;
+        width: 100%;
+        max-width: 1000px;
+    }
+
+    .cartMoneyTotalTitle3 {
+        font-size: 20px;
+    }
+
+    .cartMoneyTotalContent3 {
+        font-size: 20px;
+
+        .cartContentTotal2 {
+            font-size: 32px;
+        }
+    }
+}

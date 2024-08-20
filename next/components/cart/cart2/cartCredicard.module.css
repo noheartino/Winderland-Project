@@ -39,7 +39,7 @@
     width: 100%;
     max-width: 500px;
     padding-left: 10px;
-    padding-right: 200px;
+    padding-right: 180px;
 }
 
 .payContent .creditDate {
@@ -68,6 +68,14 @@
 }
 
 /* 媒體查詢 */
+@media screen and (max-width: 1200px) and (min-width:992px) {
+    .payContent .creditaddress {
+        width: 100%;
+        max-width: 550px;
+        padding-left: 10px;
+    }
+}
+
 @media screen and (max-width: 992px) {
     .payContent {
         background-color: transparent;
@@ -122,5 +130,11 @@
         max-width: 335px;
         padding-left: 10px;
         padding-right: 280px;
+    }
+
+    .payContent .creditNumber {
+        width: 100%;
+        max-width: 130px;
+        padding-left: 10px;
     }
 }
