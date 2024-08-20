@@ -1,15 +1,26 @@
 import React, { useState } from "react";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function TestArticleComment({ articleId }) {
-  // console.log(articleId);
   const [commentText, setCommentText] = useState("");
   const [rows, setRows] = useState(2);
 
+  // 這邊是使用hooks的useAuth測試
+  const { auth } = useAuth(); // 取得認證資訊
+  const userId = auth.userData.id; // 取得使用者 ID
+  const account = auth.userData.account;
+  const entityType = 'article';
+
+  const firstTwoChars = account.slice(0, 2).toUpperCase();
+
   const handleCreate = async () => {
-    const userId = 5; // 替換為實際的使用者 ID
-    // const articleId = articleId; // 替換為實際的文章 ID
+    if (!commentText.trim()) {
+      alert("評論內容不能為空白");
+      return;
+    }
 
     try {
+      
       const response = await fetch(
         `http://localhost:3005/api/a-comment/${articleId}`,
         {
@@ -18,9 +29,10 @@ export default function TestArticleComment({ articleId }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            entity_type: entityType,
             user_id: userId,
             comment_text: commentText,
-            parent_comment_id: null, // 如果這是一個回覆，則提供父評論的 ID
+            parent_comment_id: null,
           }),
         }
       );
@@ -53,18 +65,18 @@ export default function TestArticleComment({ articleId }) {
           <div className="col-auto">
             {/* 桌機icon */}
             <div className="au-icon d-none d-lg-flex">
-              <p className="m-0">AA</p>
+              <p className="m-0">{firstTwoChars}</p>
             </div>
             {/* 手機icon */}
             <div className="au-icon-sm d-lg-none">
-              <p className="m-0">AA</p>
+              <p className="m-0">{firstTwoChars}</p>
             </div>
           </div>
           <div className="aucomment-section col">
             <div className="aucomment-nav row align-items-center mb-2">
               {/* 使用者 */}
               <div className="au-name col-auto col-lg-auto">
-                <h5 className="m-0">AAA</h5>
+                <h5 className="m-0">{account}</h5>
               </div>
             </div>
             {/* 評論內容 */}

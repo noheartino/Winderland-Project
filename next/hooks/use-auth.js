@@ -24,10 +24,10 @@ export function AuthProvider({ children }) {
     isAuth: false, // 會員是否有登入的信號值
     // 會員資料
     userData: {
-      id: 0,
+      id: 1,
       user_name: '',
       email: '',
-      account: '',
+      account: 'gobo_dogg',
     },
   })
 
@@ -37,9 +37,9 @@ export function AuthProvider({ children }) {
       isAuth: true,
       userData: {
         id: 1,
-        user_name: '哈利',
-        email: 'herry@test.com',
-        account: 'herry',
+        user_name: '黃柏翰',
+        email: 'gobo_dogg@test.com',
+        account: 'gobo_dogg',
       },
     })
     alert('登入成功！')

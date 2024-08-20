@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ArticleCReplymore from "./article-c-replymore";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function ArticleComment({ comment, index }) {
   // console.log(comment)
@@ -9,14 +10,29 @@ export default function ArticleComment({ comment, index }) {
   const [rows, setRows] = useState(2);
   // 設定回覆icon字元
   const firstTwoChars = comment.account.slice(0, 2).toUpperCase();
+
+  // 這邊是使用hooks的useAuth測試
+  const { auth } = useAuth(); // 取得認證資訊
+  const userId = auth.userData.id; // 取得使用者 ID
+
   const handleUpdate = async () => {
-    const userId = comment.user_id; // 替換為實際的使用者 ID
+    const commentUser = comment.user_id; // 替換為實際的使用者 ID
     const commentId = comment.id; // 替換為實際的文章 ID
-    // console.log("Article ID (Comment ID):", commentId);
+    const entityType = "article";
+
+    // 檢查用戶是否有權更新評論
+    if (commentUser !== userId) {
+      // 替換 `yourCurrentUserId` 為當前用戶的 ID
+      alert("您沒有權限修改此評論");
+      window.location.reload();
+      return;
+    }
 
     try {
       const response = await fetch(
-        `http://localhost:3005/api/a-comment/${commentId}`,
+        `http://localhost:3005/api/a-comment/${commentId}?entity_type=${encodeURIComponent(
+          entityType
+        )}`,
         {
           method: "PUT",
           headers: {
@@ -36,7 +52,10 @@ export default function ArticleComment({ comment, index }) {
         alert("提交評論失敗：" + errorData.error);
       } else {
         const responseData = await response.json();
-        console.log("Comment submitted successfully with ID:", responseData.commentId);
+        console.log(
+          "Comment submitted successfully with ID:",
+          responseData.commentId
+        );
         alert("評論修改成功");
         setCommentText("");
         setIsEditing(false);
@@ -74,7 +93,7 @@ export default function ArticleComment({ comment, index }) {
                 {/* 評論的上排nav */}
                 <ul className="au-nav-items row align-items-center justify-content-center m-0 p-0">
                   {/* 樓層 */}
-                  <li className="col-auto pe-3">B{index+1}</li>
+                  <li className="col-auto pe-3">B{index + 1}</li>
                   {/* 讚數 */}
                   <li className="col-auto px-3">
                     <a href="">
@@ -101,35 +120,39 @@ export default function ArticleComment({ comment, index }) {
             </div>
             {/* 評論內容 */}
             <div className="aucomment p-4">
-            {!isEditing ? (
+              {!isEditing ? (
                 <p style={{ whiteSpace: "pre-wrap" }}>{comment.comment_text}</p>
               ) : (
-              <form>
-                <textarea
-                  placeholder={comment.comment_text}
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                  rows={rows}
-                  className="form-control"
-                  id="message-text"
-                />
-                <div className="d-flex justify-content-end">
-                  <button type="button" className="btn btn-primary" onClick={handleUpdate}>
-                    送出
-                  </button>
-                  <button
+                <form>
+                  <textarea
+                    placeholder={comment.comment_text}
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    rows={rows}
+                    className="form-control"
+                    id="message-text"
+                  />
+                  <div className="d-flex justify-content-end">
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={handleUpdate}
+                    >
+                      送出
+                    </button>
+                    <button
                       type="button"
                       className="btn btn-secondary ms-2"
                       onClick={() => setIsEditing(false)}
                     >
                       取消
                     </button>
-                </div>
-              </form>
+                  </div>
+                </form>
               )}
             </div>
             <div className="aucomment-time mt-2">
-              <p>發佈於 {comment.updated_at}</p> 
+              <p>發佈於 {comment.updated_at}</p>
             </div>
           </div>
         </div>

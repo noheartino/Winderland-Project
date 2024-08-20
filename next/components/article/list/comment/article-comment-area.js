@@ -7,16 +7,24 @@ import TestArticleComment from "./test-article-comment";
 
 export default function ArticleCommentArea({ articleId }) {
   const [comments, setComments] = useState([]);
-
+  
   // 用於獲取評論
   useEffect(() => {
     // 定義 fetchComments 函數
     const fetchComments = async () => {
       try {
         if (articleId) {
-          // console.log(`Fetching comments for articleId: ${articleId}`);
+          const entityType = 'article';
           const response = await axios.get(
-            `http://localhost:3005/api/a-comment/${articleId}`
+            `http://localhost:3005/api/a-comment/${articleId}`,
+            {
+              params: {
+                entity_type: entityType, // 查詢參數
+              },
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
           );
           setComments(response.data);
         }
@@ -58,7 +66,7 @@ export default function ArticleCommentArea({ articleId }) {
           <div className="aid-reply-area row">
             {/* 新增回覆區 */}
             <div className="send-comment">
-              <TestArticleComment articleId={articleId} />
+              <TestArticleComment articleId={articleId} comments={comments}/>
             </div>
             {/* 所有人回覆區 */}
             {comments.length > 0 ? (
