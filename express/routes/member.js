@@ -1,4 +1,4 @@
-// # 登入、登出、註冊系統
+// # 登入、登出、註冊、忘記密碼系統
 
 import express from 'express'
 import bcrypt from 'bcrypt'
@@ -26,8 +26,8 @@ import { createOtp, updatePassword } from '#db-helpers/otp.js'
 import transporter from '#configs/mail.js'
 
 // @ 檢查登入狀態用
-// router.get('/check', authenticate, async (req, res) => {
-//   // 查詢資料庫目前的資料
+router.get('/check', authenticate, async (req, res) => {
+  // 查詢資料庫目前的資料
 //   const user = await User.findByPk(req.user.id, {
 //     raw: true, // 只需要資料表中資料
 //   })
@@ -286,4 +286,5 @@ router.post('/reset-password', async (req, res) => {
     res.status(500).json({ status: 'error', message: '伺服器錯誤' })
   }
 })
+
 export default router
