@@ -1,13 +1,12 @@
-// # member默認路由
+// # dashboard默認路由
 
 import { useRouter } from 'next/router'
 
-export default function MemberIndex() {
+export default function DashboardIndex() {
   const router = useRouter()
 
-  // Make sure we're in the browser
   if (typeof window !== 'undefined') {
-    router.push('/member/login')
+    router.push('/dashboard/profile')
   }
 
   return <></>

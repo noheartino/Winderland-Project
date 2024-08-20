@@ -21,8 +21,6 @@ export default function MemberIndex() {
       {/* main */}
       <div className='main-m '>
         <div className="container-m">
-          {/* <div className="u-title d-none d-lg-block">會員中心</div>
-          <div className="u-title-rwd d-block d-lg-none">會員中心</div> */}
           <DashboardTitle />
 
           {/* desk */}
