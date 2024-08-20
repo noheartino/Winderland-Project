@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function ArticleCReplymore() {
+export default function ArticleCReplymore({ onEdit }) {
   return (
     <>
       <div className="dropdown aid-replymore">
@@ -18,7 +18,7 @@ export default function ArticleCReplymore() {
         </a>
         <ul className="dropdown-menu aid-replymore-dropmenu dropdown-menu-end dropdown-menu-lg-start">
           <li>
-            <a className="dropdown-item" href="#">
+            <a className="dropdown-item" onClick={ onEdit }>
               編輯留言
               <i className="fa-solid fa-pen ms-1"></i>
             </a>

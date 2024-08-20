@@ -3,6 +3,7 @@ import axios from "axios";
 import ArticleCRreply from "@/components/article/list/comment/article-c-reply";
 import ArticleComment from "@/components/article/list/comment/article-comment";
 import ArticleCommentCreate from "./article-comment-create";
+import TestArticleComment from "./test-article-comment";
 
 export default function ArticleCommentArea({ articleId }) {
   const [comments, setComments] = useState([]);
@@ -32,13 +33,15 @@ export default function ArticleCommentArea({ articleId }) {
     <>
       <div className="aid-commentArea py-5 mt-5">
         <div className="container">
-          <h2 className="text-center text-lg-start">留言討論 | Comment</h2>
+        {/* 留言區title */}
+          <h2 className="text-center text-lg-start py-5">留言討論 | Comment</h2>
           {/* 上排按鈕 */}
-          <div className="row ac-topbtn gap-4 my-4 justify-content-lg-end justify-content-center">
+          {/* <div className="row ac-topbtn gap-4 my-4 justify-content-lg-end justify-content-center"> */}
             {/* 新增評論 */}
             {/* <button className="col-auto px-5 py-2 btn addC-btn">
               攥寫評論
-            </button> */}
+            </button>
+
             <button
               type="button"
               className="col-auto px-5 py-2 btn addC-btn"
@@ -46,14 +49,18 @@ export default function ArticleCommentArea({ articleId }) {
               data-bs-target="#commentModal"
               data-bs-whatever="@Harry"
             >
-              攥寫評論
+              新增留言
             </button>
-            <ArticleCommentCreate articleId={articleId} />
-          </div>
+            <ArticleCommentCreate articleId={articleId} /> */}
+          {/* </div> */}
 
+          {/* 回覆區主要的內容 */}
           <div className="aid-reply-area row">
-            {/* 回覆區 */}
-            {/* {console.log(comments)} */}
+            {/* 新增回覆區 */}
+            <div className="send-comment">
+              <TestArticleComment articleId={articleId} />
+            </div>
+            {/* 所有人回覆區 */}
             {comments.length > 0 ? (
               comments.map((comment, index) => (
                 <ArticleComment
