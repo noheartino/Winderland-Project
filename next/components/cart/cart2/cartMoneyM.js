@@ -6,7 +6,7 @@ export default function CartMoneyM() {
         <>
             <div className={`container-fluid d-block d-lg-none ${css.cartTotalM2}`}>
                 <div className={`row ${css.cartTotalMROW2}`}>
-                    <div className={`col-6 ${css.cartTotalML2}`}>
+                    <div className={`col-7 ${css.cartTotalML2All}`}>
                         <div className={css.cartTotalML1}>
                             <div>付款方式</div>
                             <div>信用卡付款(7-11)</div>
@@ -25,7 +25,7 @@ export default function CartMoneyM() {
                             <div>- 1000P</div>
                         </div>
                     </div>
-                    <div className={`col-6 ${css.cartTotalMR2}`}>
+                    <div className={`col-5 ${css.cartTotalMR2}`}>
                         <div className={css.cartTotalMRTitle2}>實付金額</div>
                         <div className={css.cartTotalMRMoney2}>
                             <b>NT$ 15,690</b>

@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from "react";
-import CartProduct from "@/components/cart/cart1/cartProduct"; // 引入 CartProduct 組件
-import CartClass from "@/components/cart/cart1/cartClass"; // 引入 CartClass 組件
-import CartMoney from "@/components/cart/cart1/cartMoney"; // 引入 CartMoney 組件
-import CartCoupon from "@/components/cart/cart1/cartCoupon"; // 引入 CartCoupon 組件
-import CartProductM from "@/components/cart/cart1/cartPorductM"; // 引入手機版 CartProduct 組件
-import CartClassM from "@/components/cart/cart1/cartClassM"; // 引入手機版 CartClass 組件
-import CartMoneyM from "@/components/cart/cart1/cartMoneyM"; // 引入手機版 CartMoney 組件
-import CartCouponM from "@/components/cart/cart1/cartCouponM"; // 引入手機版 CartCoupon 組件
-import Nav from "@/components/Header/Header"; // 引入導航組件
-import Footer from "@/components/footer/footer"; // 引入底部組件
+import CartProduct from "@/components/cart/cart1/cartProduct";
+import CartClass from "@/components/cart/cart1/cartClass";
+import CartMoney from "@/components/cart/cart1/cartMoney";
+import CartCoupon from "@/components/cart/cart1/cartCoupon";
+import CartProductM from "@/components/cart/cart1/cartPorductM";
+import CartClassM from "@/components/cart/cart1/cartClassM";
+import CartMoneyM from "@/components/cart/cart1/cartMoneyM";
+import CartCouponM from "@/components/cart/cart1/cartCouponM";
+import Nav from "@/components/Header/Header";
+import Footer from "@/components/footer/footer";
 
 export default function CartCheckout1() {
   const userId = 3; // 假设的用户 ID
-  const [allChecked, setAllChecked] = useState(false); // 全选状态
-  const [productChecked, setProductChecked] = useState(false); // 商品选择状态
-  const [classChecked, setClassChecked] = useState(false); // 课程选择状态
-  const [productData, setProductData] = useState([]); // 商品数据状态
-  const [classData, setClassData] = useState([]); // 课程数据状态
-  const [totalAmount, setTotalAmount] = useState(0); // 总金额
-  const [coupons, setCoupons] = useState([]); // 储存优惠券
-  const [selectedCoupon, setSelectedCoupon] = useState(null); // 储存选择的优惠券
+  const [allChecked, setAllChecked] = useState(false);
+  const [productChecked, setProductChecked] = useState(false);
+  const [classChecked, setClassChecked] = useState(false);
+  const [productData, setProductData] = useState([]);
+  const [classData, setClassData] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [coupons, setCoupons] = useState([]);
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
 
-  // 当组件加载时获取数据
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(`http://localhost:3005/api/cart/${userId}`);
@@ -31,7 +30,7 @@ export default function CartCheckout1() {
           data.items.filter((item) => item.product_detail_id !== null)
         );
         setClassData(data.items.filter((item) => item.class_id !== null));
-        setCoupons(data.coupons); // 確保這裡正確地設置優惠券數據
+        setCoupons(data.coupons);
       } else {
         const errorData = await response.json();
         console.error("请求失败:", errorData);
@@ -40,78 +39,76 @@ export default function CartCheckout1() {
     fetchData();
   }, [userId]);
 
-  // 使用 useEffect 來監控狀態變化
   useEffect(() => {
     calculateTotalAmount(productChecked, classChecked, selectedCoupon);
   }, [productData, classData, selectedCoupon, productChecked, classChecked]);
 
-  
-
   const calculateTotalAmount = (isProductChecked, isClassChecked, coupon) => {
     let newTotalAmount = 0;
 
-    // 計算商品金額
     if (isProductChecked) {
-        productData.forEach((item) => {
-            const quantity = item.product_quantity || 0;
-            const productPrice = item.product_sale_price > 0 ? item.product_sale_price : item.product_price || 0;
-            newTotalAmount += productPrice * quantity;
-        });
+      productData.forEach((item) => {
+        const quantity = item.product_quantity || 0;
+        const productPrice =
+          item.product_sale_price > 0
+            ? item.product_sale_price
+            : item.product_price || 0;
+        newTotalAmount += productPrice * quantity;
+      });
     }
 
-    // 計算課程金額
     if (isClassChecked) {
-        classData.forEach((item) => {
-            const classPrice = item.class_sale_price > 0 ? item.class_sale_price : item.class_price || 0;
-            newTotalAmount += classPrice;
-        });
+      classData.forEach((item) => {
+        const classPrice =
+          item.class_sale_price > 0
+            ? item.class_sale_price
+            : item.class_price || 0;
+        newTotalAmount += classPrice;
+      });
     }
 
-    // 計算折扣
     let discountAmount = 0;
     if (coupon) {
-        const discount = parseFloat(coupon.discount) || 0;
-        discountAmount = discount > 1 ? discount : newTotalAmount * discount;
+      const discount = parseFloat(coupon.discount) || 0;
+      discountAmount = discount > 1 ? discount : newTotalAmount * discount;
     }
 
     const finalAmount = Math.max(0, newTotalAmount - discountAmount);
 
-    // 如果總金額小於 min_spend，移除選中的優惠券
-    if (selectedCoupon && newTotalAmount < (parseFloat(selectedCoupon.min_spend) || 0)) {
-        setSelectedCoupon(null);
-        handleCouponChange(null); // 確保這裡調用的是正確的函數
-        console.log("Total amount is less than min spend. Coupon removed.");
+    if (
+      selectedCoupon &&
+      newTotalAmount < (parseFloat(selectedCoupon.min_spend) || 0)
+    ) {
+      setSelectedCoupon(null);
+      handleCouponChange(null);
+      console.log("Total amount is less than min spend. Coupon removed.");
     }
 
     setTotalAmount(Math.floor(finalAmount));
-};
-
-  
-
-
+  };
 
   const handleCouponChange = (coupon) => {
-    console.log("Coupon changed:", coupon); // 檢查優惠券變更
-    setSelectedCoupon(coupon); // 設置選中的優惠券
+    console.log("Coupon changed:", coupon);
+    setSelectedCoupon(coupon);
   };
 
   const handleAllCheck = (e) => {
     const isChecked = e.target.checked;
-    setAllChecked(isChecked); // 设置全选状态
-    setProductChecked(isChecked); // 同步商品选择状态
-    setClassChecked(isChecked); // 同步课程选择状态
+    setAllChecked(isChecked);
+    setProductChecked(isChecked);
+    setClassChecked(isChecked);
   };
 
   const handleProductCheck = (e) => {
     const isChecked = e.target.checked;
     setProductChecked(isChecked);
-    setAllChecked(isChecked && classChecked); // 检查是否需要更新全选状态
+    setAllChecked(isChecked && classChecked);
   };
 
   const handleClassCheck = (e) => {
     const isChecked = e.target.checked;
     setClassChecked(isChecked);
-    setAllChecked(productChecked && isChecked); // 检查是否需要更新全选状态
+    setAllChecked(productChecked && isChecked);
   };
 
   const handleRemoveItem = async (itemId) => {
@@ -245,14 +242,14 @@ export default function CartCheckout1() {
               <CartMoney
                 totalAmount={totalAmount}
                 selectedCoupon={selectedCoupon}
+                userId={userId} // 添加 userId 传递给 CartMoney 组件
               />
               <CartCoupon
                 userId={userId}
                 selectedCoupon={selectedCoupon}
-                totalAmount={totalAmount} // 確保這裡傳遞了 totalAmount
+                totalAmount={totalAmount}
                 onCouponChange={handleCouponChange}
               />
-              {/* 傳遞優惠券變更函數 */}
             </div>
           </div>
         </div>
@@ -320,11 +317,15 @@ export default function CartCheckout1() {
             )}
           </div>
           <CartCouponM />
-          <div style={{ height: "150px" }}></div> {/* 占位元素 */}
+          <div style={{ height: "150px" }}></div>
         </div>
         <Footer showMobileFooter={false} />
       </main>
-      <CartMoneyM totalAmount={totalAmount} selectedCoupon={selectedCoupon} />
+      <CartMoneyM
+        totalAmount={totalAmount}
+        selectedCoupon={selectedCoupon}
+        userId={userId} // 传递 userId
+      />
     </>
   );
 }

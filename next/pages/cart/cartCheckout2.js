@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CartProduct from "@/components/cart/cart2/cartProduct";
 import CartCredicard from "@/components/cart/cart2/cartCredicard";
 import CartTransport from "@/components/cart/cart2/cartTransport";
@@ -9,11 +9,32 @@ import CartProductM from "@/components/cart/cart2/cartProductM";
 import CartCredicardM from "@/components/cart/cart2/cartCredicardM";
 import CartTransportM from "@/components/cart/cart2/cartTranportM";
 import CartWpointM from "@/components/cart/cart2/cartWpointM";
-import CartMoneyM from "@/components/cart/cart1/cartMoneyM";
-import Nav from '@/components/Header/Header'
+import CartMoneyM from "@/components/cart/cart2/cartMoneyM";
+import CartProductDetail from "@/components/cart/cart3/cartProductDetail";
+import CartProductDetailM from "@/components/cart/cart3/cartProductDetailM";
+import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 
 export default function CartCheckout2() {
+  const [userId, setUserId] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState("");
+
+  useEffect(() => {
+    const storedUserId = sessionStorage.getItem("user_id");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+  }, []);
+
+  const toggleDetails = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const handlePaymentChange = (event) => {
+    setSelectedPayment(event.target.value);
+  };
+
   return (
     <>
       <title>Cart3</title>
@@ -53,20 +74,39 @@ export default function CartCheckout2() {
                 <div className="progressCircle-2 progressCircle3-2" />
               </div>
               <CartProduct />
-              <div className="cartProductDetailBox">
-                <div>訂單詳情</div>
-                <div>
-                  <button>
-                    <i className="fa-solid fa-chevron-down" />
-                  </button>
+              {isExpanded ? (
+                <>
+                  <div className="cartProductDetailBox-3">
+                    <div className="col-7 cartProductDetailBox1-3">品項</div>
+                    <div className="col-1 cartProductDetailBox2-3">件數</div>
+                    <div className="col-3 cartProductDetailBox3-3">小計</div>
+                    <div className="col-1 cartProductDetailBox4-3">
+                      <button onClick={toggleDetails}>
+                        <i className="fa-solid fa-chevron-up" />
+                      </button>
+                    </div>
+                  </div>
+                  <CartProductDetail />
+                </>
+              ) : (
+                <div className="cartProductDetailBox">
+                  <div>訂單詳情</div>
+                  <div>
+                    <button onClick={toggleDetails}>
+                      <i className="fa-solid fa-chevron-down" />
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="checkBoxPay">
                 <b>付款方式</b>
                 <input
                   type="radio"
                   id="productpay"
                   name="payment"
+                  value="productpay"
+                  checked={selectedPayment === "productpay"}
+                  onChange={handlePaymentChange}
                   className="styled-checkbox"
                 />
                 <label htmlFor="productpay">貨到付款</label>
@@ -74,6 +114,9 @@ export default function CartCheckout2() {
                   type="radio"
                   id="creditpay"
                   name="payment"
+                  value="creditpay"
+                  checked={selectedPayment === "creditpay"}
+                  onChange={handlePaymentChange}
                   className="styled-checkbox"
                 />
                 <label htmlFor="creditpay">信用卡</label>
@@ -81,11 +124,14 @@ export default function CartCheckout2() {
                   type="radio"
                   id="linepay"
                   name="payment"
+                  value="linepay"
+                  checked={selectedPayment === "linepay"}
+                  onChange={handlePaymentChange}
                   className="styled-checkbox"
                 />
                 <label htmlFor="linepay">Line Pay</label>
               </div>
-              <CartCredicard />
+              {selectedPayment === "creditpay" && <CartCredicard />}
               <div className="checkBoxTransport">
                 <b>運送方式</b>
                 <input
@@ -137,24 +183,42 @@ export default function CartCheckout2() {
             <div className="progressCircle-2 progressCircle3-2" />
           </div>
           <CartProductM />
-          <div className="cartProductDetailBox">
-            <div>訂單詳情</div>
-            <div>
-              <button>
-                <i className="fa-solid fa-chevron-down" />
-              </button>
+          {isExpanded ? (
+            <>
+              <div className="cartProductDetailBox-3">
+                <div className="col-7 cartProductDetailBox1-3">品項</div>
+                <div className="col-1 cartProductDetailBox2-3">件數</div>
+                <div className="col-3 cartProductDetailBox3-3">小計</div>
+                <div className="col-1 cartProductDetailBox4-3">
+                  <button onClick={toggleDetails}>
+                    <i className="fa-solid fa-chevron-up" />
+                  </button>
+                </div>
+              </div>
+              <div className="cartProductDetailListM">
+                <CartProductDetailM />
+                <CartProductDetailM />
+              </div>
+            </>
+          ) : (
+            <div className="cartProductDetailBox">
+              <div>訂單詳情</div>
+              <div>
+                <button onClick={toggleDetails}>
+                  <i className="fa-solid fa-chevron-down" />
+                </button>
+              </div>
             </div>
-          </div>
-          
-          <div className="payTitle">
-            <b>付款方式</b>
-          </div>
-          <div className="payTitleLine" />
+          )}
           <div className="checkBoxPay">
+            <b>付款方式</b>
             <input
               type="radio"
               id="productpayM"
               name="paymentM"
+              value="productpay"
+              checked={selectedPayment === "productpay"}
+              onChange={handlePaymentChange}
               className="styled-checkbox"
             />
             <label htmlFor="productpayM">貨到付款</label>
@@ -162,6 +226,9 @@ export default function CartCheckout2() {
               type="radio"
               id="creditpayM"
               name="paymentM"
+              value="creditpay"
+              checked={selectedPayment === "creditpay"}
+              onChange={handlePaymentChange}
               className="styled-checkbox"
             />
             <label htmlFor="creditpayM">信用卡</label>
@@ -169,16 +236,16 @@ export default function CartCheckout2() {
               type="radio"
               id="linepayM"
               name="paymentM"
+              value="linepay"
+              checked={selectedPayment === "linepay"}
+              onChange={handlePaymentChange}
               className="styled-checkbox"
             />
             <label htmlFor="linepayM">Line Pay</label>
           </div>
-          <CartCredicardM />
-          <div className="payTitle">
-            <b>運送方式</b>
-          </div>
-          <div className="payTitleLine" />
+          {selectedPayment === "creditpay" && <CartCredicardM />}
           <div className="checkBoxTransport">
+            <b>運送方式</b>
             <input
               type="radio"
               id="transprot711M"
@@ -195,18 +262,23 @@ export default function CartCheckout2() {
             <label htmlFor="blackcatM">黑貓宅急便</label>
           </div>
           <CartTransportM />
-          <div className="checkBoxWpoint">
-            <input type="checkbox" id="wPointcheckM" />
+          <div className="wPointTitle">
+            <img src="/images/cart/wPoint.png" alt="" />
+            <input
+              type="checkbox"
+              id="wPointcheckM"
+              className="styled-checkbox"
+            />
             <label htmlFor="wPointcheckM">
               <b>W Point 扣抵</b>
             </label>
           </div>
           <CartWpointM />
-          <div style={{ height: "150px" }}></div> {/* 占位元素 */}
+          <CartMoneyM />
+          <CartPay />
         </div>
-        <CartMoneyM />
       </main>
-      <Footer showMobileFooter={false} />
+      <Footer />
     </>
   );
 }
