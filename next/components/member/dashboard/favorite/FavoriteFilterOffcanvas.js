@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Offcanvas, Button, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import styles from '@/components/member/dashboard/FavoriteFilterOffcanvas.module.css'
+import styles from '@/components/member/dashboard/favorite/FavoriteFilterOffcanvas.module.css'
 
 export default function FavoriteFilterOffcanvas() {
     const [show, setShow] = useState(false);

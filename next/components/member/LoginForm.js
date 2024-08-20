@@ -88,6 +88,12 @@ export default function LoginForm() {
 
       if (res.ok) {
         if (resData.status === 'success') {
+          const { accessToken } = resData.data;
+
+          if (accessToken) {
+            localStorage.setItem('authToken', accessToken);
+          }
+
           alert('登入成功')
           router.push('/dashboard')
         } else {
@@ -137,7 +143,6 @@ export default function LoginForm() {
                   type="text"
                   name="account"
                   value={user.account}
-                  id="login-account"
                   className={styles.loginInput}
                   onChange={handleFieldChange}
                 />
@@ -164,7 +169,6 @@ export default function LoginForm() {
                         setShowPassword(!showPassword)
                       }}
                       defaultValue=""
-                      id="showPassword"
                     />
                     <label
                       className={styles.formCheckLabel}
@@ -178,7 +182,6 @@ export default function LoginForm() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   name="password"
-                  id="login-pwd"
                   className={styles.loginInput}
                   value={user.password}
                   onChange={handleFieldChange}
@@ -194,9 +197,8 @@ export default function LoginForm() {
                     className={`${styles.formCheck} align-items-center d-flex`}
                   >
                     <input
-                       className={`${styles.formCheckInput} me-2`}
+                      className={`${styles.formCheckInput} me-2`}
                       type="checkbox"
-                      id="rememberMe"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
                     />
@@ -273,7 +275,6 @@ export default function LoginForm() {
             <form onSubmit={handleSubmit}>
               <div
                 className={`tab-pane fade show active ${styles.loginContent}`}
-                id="login-rwd"
                 role="tabpanel"
                 aria-labelledby="login-tab-rwd"
               >
@@ -282,7 +283,6 @@ export default function LoginForm() {
                   type="text"
                   name="account"
                   value={user.account}
-                  id="login-account"
                   className={styles.loginInput}
                   onChange={handleFieldChange}
                 />
@@ -305,7 +305,6 @@ export default function LoginForm() {
                         setShowPassword(!showPassword)
                       }}
                       defaultValue=""
-                      id="showPassword"
                     />
                     <label
                       className={`form-check-label ${styles.formCheckLabel}`}
@@ -319,7 +318,6 @@ export default function LoginForm() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   name="password"
-                  id="login-pwd"
                   className={styles.loginInput}
                   value={user.password}
                   onChange={handleFieldChange}
@@ -335,7 +333,6 @@ export default function LoginForm() {
                     <input
                       className={`${styles.formCheckInput} me-2`}
                       type="checkbox"
-                      id="rememberMe"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
                     />

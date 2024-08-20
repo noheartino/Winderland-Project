@@ -26,8 +26,8 @@ import { createOtp, updatePassword } from '#db-helpers/otp.js'
 import transporter from '#configs/mail.js'
 
 // @ 檢查登入狀態用
-router.get('/check', authenticate, async (req, res) => {
-  // 查詢資料庫目前的資料
+// router.get('/check', authenticate, async (req, res) => {
+// 查詢資料庫目前的資料
 //   const user = await User.findByPk(req.user.id, {
 //     raw: true, // 只需要資料表中資料
 //   })
