@@ -478,7 +478,13 @@ body {
   }
 }
 
-/* cart3 */
+.wPointTitle{
+  font-size: 16px;
+  color: #60464C;
+  padding-left: 15px;
+}
+
+/* cart4 */
 
 .progressTitle3 {
   display: flex;
@@ -751,7 +757,8 @@ input[type="radio"] {
 .checkBoxWpoint label,
 .checkProductBox label,
 .checkClassBox label,
-.checkAllBox label {
+.checkAllBox label,
+.wPointTitle label {
   position: relative;
   cursor: pointer;
   padding-left: 30px; /* 預留空間給自訂 checkbox/radio */
@@ -765,7 +772,8 @@ input[type="radio"] {
 .checkBoxWpoint label::before,
 .checkProductBox label::before,
 .checkClassBox label::before,
-.checkAllBox label::before {
+.checkAllBox label::before,
+.wPointTitle label::before {
   content: '';
   position: absolute;
   left: 0;

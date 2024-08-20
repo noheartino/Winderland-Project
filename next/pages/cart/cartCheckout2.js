@@ -19,6 +19,7 @@ export default function CartCheckout2() {
   const [userId, setUserId] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState("");
+  const [selectedTransport, setSelectedTransport] = useState("");
 
   useEffect(() => {
     const storedUserId = sessionStorage.getItem("user_id");
@@ -35,14 +36,15 @@ export default function CartCheckout2() {
     setSelectedPayment(event.target.value);
   };
 
+  const handleTransportChange = (event) => {
+    setSelectedTransport(event.target.id);
+  };
+
   return (
     <>
       <title>Cart3</title>
       <meta charSet="utf-8" />
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no"
-      />
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -139,6 +141,8 @@ export default function CartCheckout2() {
                   id="transprot711"
                   name="transport"
                   className="styled-checkbox"
+                  checked={selectedTransport === "transprot711"}
+                  onChange={handleTransportChange}
                 />
                 <label htmlFor="transprot711">7-11</label>
                 <input
@@ -146,10 +150,19 @@ export default function CartCheckout2() {
                   id="blackcat"
                   name="transport"
                   className="styled-checkbox"
+                  checked={selectedTransport === "blackcat"}
+                  onChange={handleTransportChange}
                 />
                 <label htmlFor="blackcat">黑貓宅急便</label>
               </div>
-              <CartTransport />
+              {selectedTransport === "blackcat" ? (
+                <CartTransport
+                  addressLabel="地址"
+                  hideSelectButton={true}
+                />
+              ) : (
+                <CartTransport />
+              )}
               <div className="checkBoxWpoint">
                 <img src="/images/cart/wPoint.png" alt="" />
                 <input
@@ -195,10 +208,7 @@ export default function CartCheckout2() {
                   </button>
                 </div>
               </div>
-              <div className="cartProductDetailListM">
-                <CartProductDetailM />
-                <CartProductDetailM />
-              </div>
+              <CartProductDetailM />
             </>
           ) : (
             <div className="cartProductDetailBox">
@@ -216,8 +226,8 @@ export default function CartCheckout2() {
               type="radio"
               id="productpayM"
               name="paymentM"
-              value="productpay"
-              checked={selectedPayment === "productpay"}
+              value="productpayM"
+              checked={selectedPayment === "productpayM"}
               onChange={handlePaymentChange}
               className="styled-checkbox"
             />
@@ -226,8 +236,8 @@ export default function CartCheckout2() {
               type="radio"
               id="creditpayM"
               name="paymentM"
-              value="creditpay"
-              checked={selectedPayment === "creditpay"}
+              value="creditpayM"
+              checked={selectedPayment === "creditpayM"}
               onChange={handlePaymentChange}
               className="styled-checkbox"
             />
@@ -236,14 +246,14 @@ export default function CartCheckout2() {
               type="radio"
               id="linepayM"
               name="paymentM"
-              value="linepay"
-              checked={selectedPayment === "linepay"}
+              value="linepayM"
+              checked={selectedPayment === "linepayM"}
               onChange={handlePaymentChange}
               className="styled-checkbox"
             />
             <label htmlFor="linepayM">Line Pay</label>
           </div>
-          {selectedPayment === "creditpay" && <CartCredicardM />}
+          {selectedPayment === "creditpayM" && <CartCredicardM />}
           <div className="checkBoxTransport">
             <b>運送方式</b>
             <input
@@ -251,6 +261,8 @@ export default function CartCheckout2() {
               id="transprot711M"
               name="transportM"
               className="styled-checkbox"
+              checked={selectedTransport === "transprot711M"}
+              onChange={handleTransportChange}
             />
             <label htmlFor="transprot711M">7-11</label>
             <input
@@ -258,12 +270,20 @@ export default function CartCheckout2() {
               id="blackcatM"
               name="transportM"
               className="styled-checkbox"
+              checked={selectedTransport === "blackcatM"}
+              onChange={handleTransportChange}
             />
             <label htmlFor="blackcatM">黑貓宅急便</label>
           </div>
-          <CartTransportM />
-          <div className="wPointTitle">
-            <img src="/images/cart/wPoint.png" alt="" />
+          {selectedTransport === "blackcatM" ? (
+            <CartTransportM
+              addressLabel="地址"
+              hideSelectButton={true}
+            />
+          ) : (
+            <CartTransportM />
+          )}
+          <div className="wPointTitle">            
             <input
               type="checkbox"
               id="wPointcheckM"
@@ -275,7 +295,6 @@ export default function CartCheckout2() {
           </div>
           <CartWpointM />
           <CartMoneyM />
-          <CartPay />
         </div>
       </main>
       <Footer />
