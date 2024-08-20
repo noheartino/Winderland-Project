@@ -302,13 +302,13 @@
 }
 
 .main .registerContent .rRegisterInput::placeholder {
-  color: var(--info-dark_blue);
-  font-size: large;
+  color: var(--blue);
+  font-size: medium;
 }
 
 .main .registerContent .registerInput::placeholder {
-  color: var(--info-dark_blue);
-  font-size: large;
+  color: var(--blue);
+  font-size: medium;
 }
 
 .main .registerContent .labelName {
@@ -642,7 +642,7 @@
 }
 
 .registerInput::placeholder {
-    color: var(--info-dark_blue);
+    color: var(--dark_blue);
     font-size: small;
 }
 
@@ -753,4 +753,22 @@
 }
 .error .show {
   display: block;
+}
+
+/* 重設密碼 */
+.resetNotice{
+  color: var(--blue);
+  font-weight: 500;
+}
+
+.main .loginInput::placeholder {
+  color: #A66E7B;
+  font-size: medium;
+}
+
+/* 忘記密碼 */
+.message{
+  color: var(--orange);
+  font-weight: 600;
+
 }

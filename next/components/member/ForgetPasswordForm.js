@@ -1,3 +1,5 @@
+// # 忘記密碼
+
 // @ 導入
 import React, { useState } from 'react'
 import styles from '@/components/member/member.module.css'
@@ -73,7 +75,7 @@ export default function ForgetPasswordForm() {
 
                                 </div>
                             </form>
-                            {message && <div className={styles.message}>{message}</div>}
+                            {message && <div className={`${styles.message} ms-5`}>{message}</div>}
                         </div>
                     </div>
                 </main>
@@ -113,7 +115,7 @@ export default function ForgetPasswordForm() {
 
                             </div>
                         </form>
-                        {message && <div className={styles.message}>{message}</div>}
+                        {message && <div className={`${styles.message} ms-5`}>{message}</div>}
                     </div>
                 </div>
             </div>
