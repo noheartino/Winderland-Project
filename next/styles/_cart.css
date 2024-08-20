@@ -1,489 +1,820 @@
 body {
-    box-sizing: border-box;
-  }
+  box-sizing: border-box;
+}
 /* cart2 */
+.progressTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 30px 0 80px;
+  margin-top: 50px;
+}
+
+.progressText1 {
+  font-size: 16px;
+  color: #9a5b69;
+}
+
+.progressText2 {
+  font-size: 16px;
+  color: #d4c0c0;
+}
+
+.progressText3 {
+  font-size: 16px;
+  color: #d4c0c0;
+}
+
+.progressBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 60px 0 100px;
+  height: 50px;
+}
+
+.progressCircle {
+  max-width: 20px;
+  width: 100%;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.progressCircle1 {
+  border: 1px solid #9a5b69;
+  background-color: #9a5b69;
+}
+
+.progressCircle2 {
+  border: 1px solid #d4c0c0;
+  background-color: #d4c0c0;
+}
+
+.progressCircle3 {
+  border: 1px solid #d4c0c0;
+  background-color: #d4c0c0;
+}
+
+.progressLine {
+  border: 2px solid #d4c0c0;
+  width: 46%;
+}
+
+@media screen and (max-width: 992px) {
   .progressTitle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 30px 0 80px;
-    margin-top: 50px;
+    padding: 0 30px;
   }
-
-  .progressText1 {
-    font-size: 16px;
-    color: #9a5b69;
-  }
-
-  .progressText2 {
-    font-size: 16px;
-    color: #d4c0c0;
-  }
-
-  .progressText3 {
-    font-size: 16px;
-    color: #d4c0c0;
-  }
-
   .progressBar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 60px 0 100px;
-    height: 50px;
+    padding: 0 50px;
   }
+}
 
-  .progressCircle {
-    max-width: 20px;
-    width: 100%;
-    height: 20px;
-    border-radius: 50%;
+.checkAllBox {
+  height: 75px;
+  margin: 30px 0;
+  font-size: 20px;
+  color: #60464c;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  input {
+    margin-right: 10px;
   }
+}
 
-  .progressCircle1 {
-    border: 1px solid #9a5b69;
-    background-color: #9a5b69;
+.checkProductBox {
+  height: 75px;
+  background-color: #fffcfc;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 30px;
+  font-size: 20px;
+  color: #60464c;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  input {
+    margin-right: 10px;
   }
+}
 
-  .progressCircle2 {
-    border: 1px solid #d4c0c0;
-    background-color: #d4c0c0;
+.checkClassBox {
+  height: 75px;
+  background-color: #fffcfc;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 30px;
+  font-size: 20px;
+  color: #60464c;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  input {
+    margin-right: 10px;
   }
+}
 
-  .progressCircle3 {
-    border: 1px solid #d4c0c0;
-    background-color: #d4c0c0;
-  }
-
-  .progressLine {
-    border: 2px solid #d4c0c0;
-    width: 46%;
-  }
-
-  @media screen and (max-width: 992px) {
-    .progressTitle {
-      padding: 0 30px;
-    }
-    .progressBar {
-      padding: 0 50px;
-    }
-  }
-
+@media screen and (max-width: 992px) {
   .checkAllBox {
-    height: 75px;
-    margin: 30px 0;
-    font-size: 20px;
-    color: #60464c;
-    display: flex;
-    align-items: center;
-    padding-left: 30px;
-    input {
-      margin-right: 10px;
-    }
+    margin: 10px 10px;
   }
-
   .checkProductBox {
-    height: 75px;
-    background-color: #fffcfc;
-    border: 1px solid #f0f0f0;
+    margin: 0 10px;
     margin-bottom: 30px;
-    font-size: 20px;
-    color: #60464c;
-    display: flex;
-    align-items: center;
-    padding-left: 30px;
-    input {
-      margin-right: 10px;
-    }
   }
-
   .checkClassBox {
-    height: 75px;
-    background-color: #fffcfc;
-    border: 1px solid #f0f0f0;
+    margin: 0 10px;
     margin-bottom: 30px;
-    font-size: 20px;
-    color: #60464c;
-    display: flex;
-    align-items: center;
-    padding-left: 30px;
+  }
+}
+
+/* cart3 */
+.progressTitle-2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 140px 0 80px;
+  margin-top: 50px;
+}
+
+.progressText1-2 {
+  font-size: 16px;
+  color: #d4c0c0;
+}
+
+.progressText2-2 {
+  font-size: 16px;
+  color: #9a5b69;
+}
+
+.progressText3-2 {
+  font-size: 16px;
+  color: #d4c0c0;
+}
+
+.progressBar-2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 170px 0 100px;
+  height: 50px;
+}
+
+.progressCircle-2 {
+  width: 100%;
+  max-width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.progressCircle1-2 {
+  border: 1px solid #d4c0c0;
+  background-color: #d4c0c0;
+}
+
+.progressCircle2-2 {
+  border: 1px solid #9a5b69;
+  background-color: #9a5b69;
+}
+
+.progressCircle3-2 {
+  border: 1px solid #d4c0c0;
+  background-color: #d4c0c0;
+}
+
+.progressLine-2 {
+  border: 2px solid #d4c0c0;
+  width: 46%;
+}
+
+@media screen and (max-width: 1400px) and (min-width: 1200px) {
+  .progressTitle {
+    padding: 0 80px 0 80px;
+  }
+  .progressBar {
+    padding: 0 100px 0 100px;
+  }
+}
+
+@media screen and (max-width: 1200px) and (min-width: 992px) {
+  .progressTitle {
+    padding: 0 80px 0 80px;
+  }
+  .progressBar {
+    padding: 0 100px 0 100px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .progressTitle-2 {
+    width: 100%;
+    padding: 0 37px 0 20px;
+  }
+  .progressBar-2 {
+    width: 100%;
+    padding: 0 57px 0 40px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .progressTitle-2 {
+    width: 100%;
+    padding: 0 40px 0 20px;
+  }
+  .progressBar-2 {
+    width: 100%;
+    padding: 0 60px 0 40px;
+  }
+}
+
+.cartProductDetailBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 770px;
+  height: 50px;
+  background-color: #f4ebeb;
+  font-size: 16px;
+  color: #9a5b69;
+
+  button {
+    border: 1px solid transparent;
+    color: #9a5b69;
+    background-color: #f4ebeb;
+  }
+}
+
+.payTitle {
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  color: #60464c;
+  height: 100px;
+}
+
+.payTitleLine {
+  width: 100%;
+  border: 2px solid #d4c0c0;
+}
+
+.checkBoxPay {
+  display: flex;
+  align-items: center;
+  height: 150px;
+  font-size: 20px;
+  color: #60464c;
+
+  input {
+    margin: 0 10px;
+  }
+
+  label {
+    margin-right: 50px;
+  }
+
+  b {
+    margin-right: 50px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .checkBoxPay {
+    justify-content: center;
+    height: 80px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .checkBoxPay {
+    font-size: 16px;
     input {
+      margin: 0 5px;
+    }
+
+    label {
+      margin-right: 30px;
+    }
+
+    b {
+      margin-right: 30px;
+    }
+  }
+}
+@media screen and (max-width: 415px) {
+  .checkBoxPay {
+    input {
+      margin: 0 5px;
+    }
+
+    label {
+      margin-right: 10px;
+    }
+
+    b {
       margin-right: 10px;
     }
   }
+}
 
-  @media screen and (max-width: 992px) {
-    .checkAllBox {
-      margin: 10px 10px;
-    }
-    .checkProductBox {
-      margin: 0 10px;
-      margin-bottom: 30px;
-    }
-    .checkClassBox {
-      margin: 0 5px;
-      margin-bottom: 30px;
-    }
+.checkBoxTransport {
+  display: flex;
+  align-items: center;
+  height: 150px;
+  font-size: 20px;
+  color: #60464c;
+
+  input {
+    margin: 0 10px;
   }
 
-  /* cart3 */
-  .progressTitle-2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 140px 0 80px;
-    margin-top: 50px;
+  label {
+    margin-right: 50px;
   }
 
-  .progressText1-2 {
-    font-size: 16px;
-    color: #d4c0c0;
+  b {
+    margin-right: 50px;
   }
+}
 
-  .progressText2-2 {
-    font-size: 16px;
-    color: #9a5b69;
-  }
-
-  .progressText3-2 {
-    font-size: 16px;
-    color: #d4c0c0;
-  }
-
-  .progressBar-2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 170px 0 100px;
-    height: 50px;
-  }
-
-  .progressCircle-2 {
-    width: 100%;
-    max-width: 20px;
-    height: 20px;
-    border-radius: 50%;
-  }
-
-  .progressCircle1-2 {
-    border: 1px solid #d4c0c0;
-    background-color: #d4c0c0;
-  }
-
-  .progressCircle2-2 {
-    border: 1px solid #9a5b69;
-    background-color: #9a5b69;
-  }
-
-  .progressCircle3-2 {
-    border: 1px solid #d4c0c0;
-    background-color: #d4c0c0;
-  }
-
-  .progressLine-2 {
-    border: 2px solid #d4c0c0;
-    width: 46%;
-  }
-
-  @media screen and (max-width: 1400px) and (min-width: 1200px) {
-    .progressTitle {
-      padding: 0 80px 0 80px;
-    }
-    .progressBar {
-      padding: 0 100px 0 100px;
-    }
-  }
-
-  @media screen and (max-width: 1200px) and (min-width: 992px) {
-    .progressTitle {
-      padding: 0 80px 0 80px;
-    }
-    .progressBar {
-      padding: 0 100px 0 100px;
-    }
-  }
-
-  @media screen and (max-width: 992px) {
-    .progressTitle-2 {
-      width: 100%;
-      padding: 0 37px 0 20px;
-    }
-    .progressBar-2 {
-      width: 100%;
-      padding: 0 57px 0 40px;
-    }
-  }
-
-  @media screen and (max-width: 576px) {
-    .progressTitle-2 {
-      width: 100%;
-      padding: 0 40px 0 20px;
-    }
-    .progressBar-2 {
-      width: 100%;
-      padding: 0 60px 0 40px;
-    }
-  }
-
-  
-
-  .cartProductDetailBox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 770px;
-    height: 50px;
-    background-color: #f4ebeb;
-    font-size: 16px;
-    color: #9a5b69;
-
-    button {
-      border: 1px solid transparent;
-      color: #9a5b69;
-      background-color: #f4ebeb;
-    }
-  }
-
-  .payTitle {
-    display: grid;
-    place-items: center;
-    font-size: 24px;
-    color: #60464c;
-    height: 100px;
-  }
-
-  .payTitleLine {
-    width: 100%;
-    border: 2px solid #d4c0c0;
-  }
-
-  .checkBoxPay {
-    display: flex;
-    align-items: center;
-    height: 150px;
-    font-size: 20px;
-    color: #60464c;
-
-    input {
-      margin: 0 10px;
-    }
-
-    label {
-      margin-right: 50px;
-    }
-
-    b {
-      margin-right: 50px;
-    }
-  }
-
-  @media screen and (max-width: 992px) {
-    .checkBoxPay {
-      justify-content: center;
-      height: 80px;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    .checkBoxPay {
-      font-size: 16px;
-      input {
-        margin: 0 5px;
-      }
-
-      label {
-        margin-right: 30px;
-      }
-
-      b {
-        margin-right: 30px;
-      }
-    }
-  }
-  @media screen and (max-width: 415px) {
-    .checkBoxPay {
-      input {
-        margin: 0 5px;
-      }
-
-      label {
-        margin-right: 10px;
-      }
-
-      b {
-        margin-right: 10px;
-      }
-    }
-  }
-
-  
-
+@media screen and (max-width: 992px) {
   .checkBoxTransport {
-    display: flex;
-    align-items: center;
-    height: 150px;
-    font-size: 20px;
-    color: #60464c;
+    justify-content: center;
+    height: 80px;
+  }
+}
 
+@media screen and (max-width: 768px) {
+  .checkBoxTransport {
+    font-size: 16px;
     input {
-      margin: 0 10px;
+      margin: 0 5px;
     }
 
     label {
-      margin-right: 50px;
+      margin-right: 30px;
     }
 
     b {
-      margin-right: 50px;
+      margin-right: 30px;
     }
   }
+}
+@media screen and (max-width: 415px) {
+  .checkBoxTransport {
+    input {
+      margin: 0 5px;
+    }
 
-  @media screen and (max-width: 992px) {
-    .checkBoxTransport {
-      justify-content: center;
-      height: 80px;
+    label {
+      margin-right: 10px;
+    }
+
+    b {
+      margin-right: 10px;
     }
   }
+}
 
-  @media screen and (max-width: 768px) {
-    .checkBoxTransport {
-      font-size: 16px;
-      input {
-        margin: 0 5px;
-      }
+.checkBoxWpoint {
+  display: flex;
+  align-items: center;
+  height: 150px;
+  font-size: 20px;
+  color: #60464c;
+  letter-spacing: 0.2em;
+  padding-left: 30px;
 
-      label {
-        margin-right: 30px;
-      }
-
-      b {
-        margin-right: 30px;
-      }
-    }
+  img {
+    width: 100%;
+    max-width: 60px;
+    margin-right: 20px;
   }
-  @media screen and (max-width: 415px) {
-    .checkBoxTransport {
-      input {
-        margin: 0 5px;
-      }
+}
 
-      label {
-        margin-right: 10px;
-      }
-
-      b {
-        margin-right: 10px;
-      }
-    }
-  }
-
+@media screen and (max-width: 992px) {
   .checkBoxWpoint {
-    display: flex;
-    align-items: center;
-    height: 150px;
-    font-size: 20px;
-    color: #60464c;
-
+    height: 80px;
     span {
       letter-spacing: 0.2em;
+      padding-left: 0px;
+    }
+  }
+}
+.cartTotalM-2 {
+  width: 100%;
+  background-color: #d4c0c0;
+  height: 150px;
+  padding: 5px;
+  position: fixed; /* 固定在視口 */
+  bottom: 0; /* 在底部 */
+  left: 0;
+  z-index: 1000;
+}
+
+.cartTotalMROW-2 {
+  padding-top: 10px;
+  width: 100%;
+}
+
+.cartTotalML-2 {
+  padding-top: 15px;
+  padding-left: 30px;
+  font-size: 18px;
+
+  .cartTotalML1-2 {
+    display: flex;
+    justify-content: space-between;
+    color: #60464c;
+    margin: 10px 0;
+  }
+  .cartTotalML2-2 {
+    display: flex;
+    justify-content: space-between;
+    color: #60464c;
+    margin: 10px 0;
+  }
+  .cartTotalML3-2 {
+    display: flex;
+    justify-content: space-between;
+    color: #a66e7b;
+    margin: 10px 0;
+    .cartTotalML3Detail {
+      color: #b99090;
+      font-size: 10px;
+    }
+  }
+}
+.cartTotalMR-2 {
+  padding: 0;
+  height: 110px;
+  display: grid;
+  place-items: center;
+  .cartTotalMRTitle-2 {
+    margin-left: -40px;
+    color: #60464c;
+  }
+  .cartTotalMRMoney-2 {
+    color: #ff4f4f;
+    font-size: 20px;
+  }
+  .cartTotalMRBTN-2 {
+    margin-left: -15px;
+    width: 100px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 1px solid transparent;
+    background-color: #ff4f4f;
+    color: #d4c0c0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .cartTotalML-2 {
+    font-size: 14px;
+  }
+}
+
+.wPointTitle{
+  font-size: 16px;
+  color: #60464C;
+  padding-left: 15px;
+}
+
+/* cart4 */
+
+.progressTitle3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 140px 0 80px;
+  margin-top: 50px;
+}
+
+.progressText13 {
+  font-size: 16px;
+  color: #d4c0c0;
+}
+
+.progressText23 {
+  font-size: 16px;
+  color: #d4c0c0;
+}
+
+.progressText33 {
+  font-size: 16px;
+  color: #ff4f4f;
+}
+
+.progressBar3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 170px 0 100px;
+  height: 50px;
+}
+
+.progressCircle3 {
+  width: 100%;
+  max-width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.progressCircle13 {
+  border: 1px solid #d4c0c0;
+  background-color: #d4c0c0;
+}
+
+.progressCircle23 {
+  border: 1px solid #d4c0c0;
+  background-color: #d4c0c0;
+}
+
+.progressCircle33 {
+  border: 1px solid #ff4f4f;
+  background-color: #ff4f4f;
+}
+
+.progressLine3 {
+  border: 2px solid #d4c0c0;
+  width: 46%;
+}
+
+.payEndTitle {
+  font-size: 40px;
+  color: #ff4f4f;
+  height: 200px;
+  display: grid;
+  place-items: center;
+  padding-right: 50px;
+}
+
+@media screen and (max-width: 1400px) and (min-width: 1200px) {
+  .progressTitle3 {
+    padding: 0 80px 0 80px;
+  }
+
+  .progressBar3 {
+    padding: 0 100px 0 100px;
+  }
+
+  .payEndTitle {
+    padding-left: 30px;
+    padding-right: 0;
+  }
+}
+
+@media screen and (max-width: 1200px) and (min-width: 992px) {
+  .progressTitle3 {
+    padding: 0 80px 0 80px;
+  }
+
+  .progressBar3 {
+    padding: 0 100px 0 100px;
+  }
+
+  .payEndTitle {
+    padding-left: 50px;
+    padding-right: 0;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .progressTitle3 {
+    width: 100%;
+    padding: 0 40px 0 10px;
+  }
+
+  .progressBar3 {
+    width: 100%;
+    padding: 0 60px 0 30px;
+  }
+
+  .payEndTitle {
+    padding: 0px;
+    height: 100px;
+  }
+}
+
+.cartProductDetailBox-3 {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 770px;
+  height: 50px;
+  background-color: #ff4f4f;
+  font-size: 16px;
+  color: #fff;
+
+  .cartProductDetailBox1-3 {
+    margin-left: 25px;
+  }
+
+  .cartProductDetailBox2-3 {
+    padding-left: 15px;
+  }
+
+  .cartProductDetailBox3-3 {
+    padding-left: 80px;
+  }
+
+  button {
+    border: 1px solid transparent;
+    color: #fff;
+    background-color: #ff4f4f;
+  }
+}
+
+@media screen and (max-width: 1400px) and (min-width: 1200px) {
+  .cartProductDetailBox4-3 {
+    padding-right: 5px;
+  }
+}
+
+@media screen and (max-width: 1200px) and (min-width: 992px) {
+  .cartProductDetailBox4-3 {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .cartProductDetailBox-3 {
+    width: 100%;
+    height: 50px;
+    background-color: #ff4f4f;
+    font-size: 16px;
+    color: #fff;
+
+    .cartProductDetailBox1-3 {
+      margin: 0 -20px 0 20px;
+    }
+
+    .cartProductDetailBox2-3 {
+      padding-left: 0px;
+      white-space: nowrap;
+    }
+
+    .cartProductDetailBox3-3 {
       padding-left: 30px;
     }
 
-    input {
-      margin: 0 10px;
-    }
-
-    img {
-      width: 100%;
-      max-width: 60px;
-    }
-  }
-
-  @media screen and (max-width: 992px) {
-    .checkBoxWpoint {
-      height: 80px;
-      span {
-        letter-spacing: 0.2em;
-        padding-left: 0px;
-      }
-    }
-  }
-  .cartTotalM-2 {
-    width: 100%;
-    background-color: #d4c0c0;
-    height: 150px;
-    padding: 5px;
-    position: fixed; /* 固定在視口 */
-    bottom: 0; /* 在底部 */
-    left: 0;
-    z-index: 1000;
-  }
-
-  .cartTotalMROW-2 {
-    padding-top: 10px;
-    width: 100%;
-  }
-
-  .cartTotalML-2 {
-    padding-top: 15px;
-    padding-left: 30px;
-    font-size: 18px;
-
-    .cartTotalML1-2 {
-      display: flex;
-      justify-content: space-between;
-      color: #60464c;
-      margin: 10px 0;
-    }
-    .cartTotalML2-2 {
-      display: flex;
-      justify-content: space-between;
-      color: #60464c;
-      margin: 10px 0;
-    }
-    .cartTotalML3-2 {
-      display: flex;
-      justify-content: space-between;
-      color: #a66e7b;
-      margin: 10px 0;
-      .cartTotalML3Detail {
-        color: #b99090;
-        font-size: 10px;
-      }
-    }
-  }
-  .cartTotalMR-2 {
-    padding: 0;
-    height: 110px;
-    display: grid;
-    place-items: center;
-    .cartTotalMRTitle-2 {
-      margin-left: -40px;
-      color: #60464c;
-    }
-    .cartTotalMRMoney-2 {
-      color: #ff4f4f;
-      font-size: 20px;
-    }
-    .cartTotalMRBTN-2 {
-      margin-left: -15px;
-      width: 100px;
-      height: 40px;
-      display: grid;
-      place-items: center;
+    button {
       border: 1px solid transparent;
+      color: #fff;
       background-color: #ff4f4f;
-      color: #d4c0c0;
+    }
+  }
+}
+
+.cartProductDetailListM {
+  padding-bottom: 20px;
+  background-color: #f4ebeb;
+  width: 100%;
+  max-width: 696px;
+}
+
+.checkOutEnd {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+  font-size: 20px;
+
+  .goPage {
+    margin-right: 10px;
+  }
+
+  button {
+    width: 100%;
+    max-width: 180px;
+    height: 75px;
+    color: #f4ebeb;
+    background-color: #851931;
+    border: 1px solid transparent;
+    border-radius: 11px;
+  }
+}
+
+@media screen and (max-width: 1400px) and (min-width: 1200px) {
+  .checkOutEnd {
+    button {
+      width: 140px;
+    }
+
+    .goPage {
+      margin-right: 8px;
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) and (min-width: 992px) {
+  .checkOutEnd {
+    button {
+      width: 120px;
+    }
+
+    .goPage {
+      margin-right: 5px;
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .checkOutEnd {
+    button {
+      background-color: #f4ebeb;
+      color: #9a5b69;
     }
   }
 
-  @media screen and (max-width: 768px) {
-    .cartTotalML-2 {
-      font-size: 14px;
+  .goPage {
+    margin-right: 0px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .checkOutEnd {
+    button {
+      max-width: 130px;
     }
   }
+}
+
+/* 隱藏原有的 checkbox 和 radio */
+input[type="checkbox"],
+input[type="radio"] {
+  display: none;
+}
+
+/* 自訂 checkbox 和 radio 的標籤樣式 */
+.checkBoxPay label,
+.checkBoxTransport label,
+.checkBoxWpoint label,
+.checkProductBox label,
+.checkClassBox label,
+.checkAllBox label,
+.wPointTitle label {
+  position: relative;
+  cursor: pointer;
+  padding-left: 30px; /* 預留空間給自訂 checkbox/radio */
+  display: flex; /* 使用 flexbox 使內容縱向居中 */
+  align-items: center; /* 垂直置中 */
+}
+
+/* 自訂 checkbox 和 radio 的樣式 */
+.checkBoxPay label::before,
+.checkBoxTransport label::before,
+.checkBoxWpoint label::before,
+.checkProductBox label::before,
+.checkClassBox label::before,
+.checkAllBox label::before,
+.wPointTitle label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%; /* 藉由這項來使整個框位於中央 */
+  transform: translateY(-50%); /* 再次調整 50% 高度 */
+  width: 20px; /* 外部 checkbox/radio 的寬度 */
+  height: 20px; /* 外部 checkbox/radio 的高度 */
+  border: 2px solid #D4C0C0; /* 邊框顏色 */
+  border-radius: 0; /* 不要圓角，保持正方形 */
+  background-color: white; /* 背景顏色 */
+  transition: background-color 0.2s, border-color 0.2s; /* 平滑過渡效果 */
+}
+
+/* 勾選時的樣式 */
+input[type="checkbox"]:checked + label::before,
+input[type="radio"]:checked + label::before {
+  background-color: white; /* 勾選時保留白色背景 */
+}
+
+/* 勾選後顯示的縮小方形 */
+input[type="checkbox"]:checked + label::after {
+  content: '';
+  position: absolute;
+  left: 5px; /* 給外部邊框保留5px的距離 */
+  top: 50%; /* 垂直位置 */
+  transform: translateY(-50%); /* 垂直居中 */
+  width: 10px; /* 縮小方形的寬度 */
+  height: 10px; /* 縮小方形的高度 */
+  background-color: #A66E7B; /* 縮小方形顏色 */
+  border: none; /* 沒有邊框 */
+}
+
+/* 勾選後顯示的圓形 (不使用，已建立正方形樣式) */
+input[type="radio"]:checked + label::after {
+  content: '';
+  position: absolute;
+  left: 5px; /* 給外部邊框保留5px的距離 */
+  top: 50%; /* 垂直位置 */
+  transform: translateY(-50%); /* 垂直居中 */
+  width: 10px; /* 縮小正方形的直徑 */
+  height: 10px; /* 縮小正方形的直徑 */
+  background-color: #A66E7B; /* 縮小正方形顏色 */
+  border: none; /* 沒有邊框 */
+}

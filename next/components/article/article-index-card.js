@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 export default function ArticleIndexCard({ article }) {
   const router = useRouter();
-  const handleClick = () => {
+  const handleLink = () => {
     if (article && article.id) {
       router.push(`/article/${article.id}`);
     }
@@ -30,10 +30,10 @@ export default function ArticleIndexCard({ article }) {
             <p>{article.category}</p>
             <h4>{article.title}</h4>
             <h5>
-              by {article.poster} l {article.update_time}
+              by {article.poster} l {article.update_date}
             </h5>
             <div className="a-readmore">
-              <button className="btn a-btn-content" onClick={handleClick}>
+              <button className="btn a-btn-content" onClick={handleLink}>
                 閱讀文章
               </button>
             </div>

@@ -41,10 +41,12 @@
 
 .cartClassContentText {
   display: flex;
+  justify-content: space-between;
 }
 
 .cartOnline {
   width: 100%;
+  padding: 5px;
   max-width: 57px;
   height: 30px;
   background-color: #a5d1df;
@@ -59,7 +61,7 @@
 .cartTeacher {
   padding-left: 10px;
   color: #a66e7b;
-  letter-spacing: 0.2em;
+  white-space: nowrap;
 }
 
 .cartClassContentMoney {
@@ -194,4 +196,8 @@
   .cartClassDel {
     width: 30px;
   }
+}
+.cartMoneySafe {
+  text-decoration: line-through;
+  color:  #D4C0C0;
 }
