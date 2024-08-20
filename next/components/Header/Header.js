@@ -166,7 +166,7 @@ export default function Nav() {
             <a href="" id="shop_li">
               <li>商品列表+</li>
             </a>
-            <a href="">
+            <a href="/article">
               <li>相關文章</li>
             </a>
             <a href="">

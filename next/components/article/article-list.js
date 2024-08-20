@@ -5,7 +5,7 @@ import ArticleIndexCard from "@/components/article/article-index-card";
 import ArticleIndexCardSm from "./article-index-card-sm";
 import { useRouter } from "next/router";
 
-export default function ArticleIndexList() {
+export default function ArticleIndexList({Article}) {
   const router = useRouter();
   const { search } = router.query;
 
@@ -13,11 +13,12 @@ export default function ArticleIndexList() {
   const [firstTwoArticles, setFirstTwoArticles] = useState([]);
   const [remainArticles, setRemainArticles] = useState([]);
 
+
   useEffect(() => {
-    // const includeImages = false;
     const apiUrl = search
       ? `http://localhost:3005/api/article?search=${encodeURIComponent(search)}`
       : "http://localhost:3005/api/article";
+
     // 當組件掛載時執行 fetch 請求
     fetch(apiUrl)
       .then((response) => {
@@ -33,7 +34,7 @@ export default function ArticleIndexList() {
           images: article.images ? article.images.split(",") : [],
         }));
         setArticles(processedArticles);
-        console.log(processedArticles)
+        // console.log(processedArticles);
         setFirstTwoArticles(processedArticles.slice(0, 2));
         setRemainArticles(processedArticles.slice(2));
       })
@@ -42,6 +43,16 @@ export default function ArticleIndexList() {
       });
   }, [search]);
 
+    // 取得背景圖片的路徑
+    const backgroundImage = Article?.images.length > 0
+    ? `url(/images/article/${Article.images[0]})`
+    : `url(/images/article/titlePic.jpeg)`;
+
+    const handleLink = () => {
+      if (Article.id) {
+        router.push(`/article/${Article.id}`);
+      }
+    };
   return (
     <>
       {/* 側邊欄 */}
@@ -50,8 +61,8 @@ export default function ArticleIndexList() {
       <div className="a-content col-lg-9 row g-3">
         {/* 文章頭條 */}
         <div className="col-9 col-lg-8">
-          <div className="a-title">
-            <h3>aaa</h3>
+          <div className="a-title" style={{backgroundImage: backgroundImage}} onClick={handleLink}>
+            <h3>{Article ? Article.title : "..."}</h3>
           </div>
         </div>
         {/* 收藏 */}
@@ -68,17 +79,14 @@ export default function ArticleIndexList() {
             <ArticleIndexCard key={article.id} article={article} />
           ))
         ) : (
-          <p>沒有可顯示的文章</p>
+          <h3 className="text-center">沒有可顯示的文章</h3>
         )}
 
         {/* 文章區塊小 */}
-        {remainArticles.length > 0 ? (
+        {remainArticles.length > 0 &&
           remainArticles.map((article) => (
             <ArticleIndexCardSm key={article.id} article={article} />
-          ))
-        ) : (
-          <p>沒有可顯示的文章</p>
-        )}
+          ))}
       </div>
     </>
   );
