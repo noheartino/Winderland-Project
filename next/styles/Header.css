@@ -1,11 +1,16 @@
 .nav_margin{
     width: 100%;
     height: 90px;
-    background-color: white;
+    background-color: transparent;
     @media screen and (max-width: 992px){
         height: 60px;
     }
 }
+
+.HeaderCNav.transparentBg{
+    background-color: transparent;
+}
+
 .HeaderCNav{
     height: 90px;
     width: 100%;
