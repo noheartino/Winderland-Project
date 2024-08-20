@@ -17,13 +17,13 @@ export default function ArticleCRreply() {
               <h5 className="m-0">user01</h5>
             </div>
 
-            <div className="col-7 col-lg-5">
+            <div className="col-6 col-lg-5">
               {/* 評論的上排nav */}
               <ul className="au-nav-items row align-items-center justify-content-center m-0 p-0">
                 {/* 樓層 */}
-                <li className="col">B1</li>
+                <li className="col-auto px-3">B1</li>
                 {/* 讚數 */}
-                <li className="col-auto">
+                <li className="col-auto px-3">
                   <a href="">
                     <i
                       className="fa-regular fa-thumbs-up me-1"
@@ -33,7 +33,7 @@ export default function ArticleCRreply() {
                   </a>
                 </li>
                 {/* 回覆 */}
-                <li className="col border-0">
+                <li className="col-auto px-3 border-0">
                   <a href="">
                     <i className="fa-solid fa-reply me-1" />
                     <p className="d-none d-lg-inline">回覆</p>

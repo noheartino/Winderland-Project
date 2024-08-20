@@ -402,7 +402,7 @@
             margin-right: 15px;
         }
 
-        .progressCircle {
+        .Header_ProgressCircle {
         position: absolute;
         left: -28px;
         cursor: pointer;
