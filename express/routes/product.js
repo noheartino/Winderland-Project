@@ -87,6 +87,7 @@ const tidyProduct = async (product) => {
       const [details] = await db.query("SELECT * FROM product_detail WHERE product_id = ?",[pid])
       const [images] = await db.query("SELECT * FROM images_product WHERE product_id = ?",[pid])
       const [descriptions] = await db.query("SELECT * FROM description WHERE product_id = ?",[pid])
+      const [comments] = await db.query(`SELECT * FROM comments WHERE entity_type = "product" && entity_id = ?`,[pid])
   
       //將詳細資料加到相對應的id
       return product.map(product => ({
@@ -94,6 +95,7 @@ const tidyProduct = async (product) => {
         images: images,
         descriptions: descriptions,
         details: details,
+        comments:comments
       }))
     } catch (error) {
       console.error('Error in tidyProducts:', error)
