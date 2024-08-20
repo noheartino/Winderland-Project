@@ -80,28 +80,51 @@ const tidyProducts = async (products) => {
 
 // 整理商品資訊的函式(單個)
 const tidyProduct = async (product) => {
-    try {
-      const pid = product[0].id;
-  
-      // 獲取所有商品詳細信息
-      const [details] = await db.query("SELECT * FROM product_detail WHERE product_id = ?",[pid])
-      const [images] = await db.query("SELECT * FROM images_product WHERE product_id = ?",[pid])
-      const [descriptions] = await db.query("SELECT * FROM description WHERE product_id = ?",[pid])
-      const [comments] = await db.query(`SELECT * FROM comments WHERE entity_type = "product" && entity_id = ?`,[pid])
-  
-      //將詳細資料加到相對應的id
-      return product.map(product => ({
-        ...product,
-        images: images,
-        descriptions: descriptions,
-        details: details,
-        comments:comments
-      }))
-    } catch (error) {
-      console.error('Error in tidyProducts:', error)
-      throw error;
-    }
+  try {
+    const pid = product[0].id
+
+    // 獲取所有商品詳細信息
+    const [details] = await db.query(
+      'SELECT * FROM product_detail WHERE product_id = ?',
+      [pid]
+    )
+    const [images] = await db.query(
+      'SELECT * FROM images_product WHERE product_id = ?',
+      [pid]
+    )
+    const [descriptions] = await db.query(
+      'SELECT * FROM description WHERE product_id = ?',
+      [pid]
+    )
+    const [comments] = await db.query(
+      `SELECT 
+    comments.* ,
+    users.account AS account,
+    users.gender AS user_gender
+FROM 
+    comments 
+LEFT JOIN
+    users ON comments.user_id = users.id
+LEFT JOIN
+    images_user ON comments.user_id = images_user.user_id
+WHERE
+    entity_type = "product" && entity_id = ?`,
+      [pid]
+    )
+
+    //將詳細資料加到相對應的id
+    return product.map((product) => ({
+      ...product,
+      images: images,
+      descriptions: descriptions,
+      details: details,
+      comments: comments,
+    }))
+  } catch (error) {
+    console.error('Error in tidyProducts:', error)
+    throw error
   }
+}
 
 // 商品首頁,取得所有商品的內容
 router.get('/', async (req, res) => {
@@ -109,9 +132,9 @@ router.get('/', async (req, res) => {
     // 獲取所有商品的基本訊息
     const [products] = await db.query(getProducts)
 
-    const productWithDetails = await tidyProducts(products);
+    const productWithDetails = await tidyProducts(products)
 
-    res.json(productWithDetails);
+    res.json(productWithDetails)
   } catch (error) {
     res.status(500).json({
       error: 'fail',
@@ -122,16 +145,16 @@ router.get('/', async (req, res) => {
 
 // 取得特定的商品ID
 router.get('/:pid', async (req, res) => {
-    try{
-        const id = req.params.pid;
-        const [product] = await db.query(getIdProduct,[id]);
-        const productWithDetails = await tidyProduct(product);
+  try {
+    const id = req.params.pid
+    const [product] = await db.query(getIdProduct, [id])
+    const productWithDetails = await tidyProduct(product)
 
-        res.json(productWithDetails);
-    }catch(error) {
-            console.error('Error in tidyProduct:', error)
-            throw error;
-        }
-});
+    res.json(productWithDetails)
+  } catch (error) {
+    console.error('Error in tidyProduct:', error)
+    throw error
+  }
+})
 
-export default router;
+export default router
