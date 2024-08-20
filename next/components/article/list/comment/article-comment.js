@@ -3,6 +3,7 @@ import ArticleCReplymore from "./article-c-replymore";
 
 export default function ArticleComment({ comment, index }) {
   // console.log(comment)
+  const firstTwoChars = comment.account.slice(0, 2).toUpperCase();
   return (
     <>
       <div className="col-12 mb-4">
@@ -10,11 +11,11 @@ export default function ArticleComment({ comment, index }) {
           <div className="col-auto">
             {/* 桌機icon */}
             <div className="au-icon d-none d-lg-flex">
-              <p className="m-0">u1</p>
+              <p className="m-0">{firstTwoChars}</p>
             </div>
             {/* 手機icon */}
             <div className="au-icon-sm d-lg-none">
-              <p className="m-0">u1</p>
+              <p className="m-0">{firstTwoChars}</p>
             </div>
           </div>
           <div className="aucomment-section col">
@@ -28,7 +29,7 @@ export default function ArticleComment({ comment, index }) {
                 {/* 評論的上排nav */}
                 <ul className="au-nav-items row align-items-center justify-content-center m-0 p-0">
                   {/* 樓層 */}
-                  <li className="col-auto px-3">B{index+1}</li>
+                  <li className="col-auto pe-3">B{index+1}</li>
                   {/* 讚數 */}
                   <li className="col-auto px-3">
                     <a href="">
@@ -40,7 +41,7 @@ export default function ArticleComment({ comment, index }) {
                     </a>
                   </li>
                   {/* 回覆 */}
-                  <li className="col-auto px-2 border-0">
+                  <li className="col-auto ps-3 border-0">
                     <a href="">
                       <i className="fa-solid fa-reply me-1" />
                       <p className="d-none d-lg-inline">回覆</p>
@@ -59,8 +60,8 @@ export default function ArticleComment({ comment, index }) {
                 {comment.comment_text}
               </p>
             </div>
-            <div className="aucomment-time my-1">
-              發佈於 {comment.created_at}
+            <div className="aucomment-time mt-2">
+              <p>發佈於 {comment.created_at}</p> 
             </div>
           </div>
         </div>
