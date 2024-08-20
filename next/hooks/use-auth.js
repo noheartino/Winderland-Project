@@ -37,9 +37,9 @@ export function AuthProvider({ children }) {
       isAuth: true,
       userData: {
         id: 1,
-        user_name: '哈利',
-        email: 'herry@test.com',
-        account: 'herry',
+        user_name: '黃柏翰',
+        email: 'gobo_dogg@test.com',
+        account: 'gobo_dogg',
       },
     })
     alert('登入成功！')

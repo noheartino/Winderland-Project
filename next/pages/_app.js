@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 // -----各自主頁css檔案 start-----
-import '@/styles/_member.css'
+import '@/styles/_dashboard.css'
 
 import '@/styles/_a-style.sass'
 import '@/styles/_a-id-style.sass'
