@@ -4,13 +4,15 @@ import SortSearch from "@/components/product-list/sortSearch/SortSearch";
 import MobileFliterAside from "@/components/product-list/aside/MobileFliterAside";
 import PcFliterAside from "@/components/product-list/aside/PcFliterAside";
 import ProductGroup from "@/components/product-list/productlist/ProductList";
+import Nav from "@/components/Header/Header";
+import Footer from "@/components/footer/footer";
 
 export default function ProductList() {
   return (
     <>
       <>
         <header>
-          <nav id="header">{/* 之後要塞套版 */}</nav>
+          <Nav />
           {/* TOP的分類名稱 */}
           <CategoryTitle />
         </header>
@@ -27,7 +29,7 @@ export default function ProductList() {
             <ProductGroup />
           </div>
         </div>
-        <footer id="footer"></footer>
+        <Footer />
       </>
     </>
   );
