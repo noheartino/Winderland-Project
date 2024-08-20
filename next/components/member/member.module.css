@@ -772,3 +772,8 @@
   font-weight: 600;
 
 }
+
+.main .forgetPWD::placeholder {
+  color: #A66E7B;
+  font-size: small;
+}

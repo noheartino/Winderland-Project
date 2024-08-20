@@ -33,7 +33,7 @@ export default function DashboardFavorite() {
           <button>日期篩選</button>
         </aside>
 
-        <div className="favorite-list">
+        <div className="favorite-list mb-5">
           {/* 商品收藏 */}
           <div className="favorite-p">
             <span>商品收藏</span>
@@ -237,7 +237,7 @@ export default function DashboardFavorite() {
             </div>
           </div>
           {/* 文章收藏 */}
-          <div className="favorite-a">
+          <div className="favorite-a mb-5">
             <span>文章收藏</span>
             <hr />
             <div className="favorite-a-group d-flex">
@@ -358,7 +358,7 @@ export default function DashboardFavorite() {
         </div>
 
         {/* 收藏區 */}
-        <div className="favorite-list-rwd container-fluid">
+        <div className="favorite-list-rwd container-fluid mb-5">
           {/* 商品收藏 */}
           <div className="favorite-p-rwd">
             <span>商品收藏</span>
@@ -520,7 +520,7 @@ export default function DashboardFavorite() {
             </div>
           </div>
           {/* 文章收藏 */}
-          <div className="favorite-a">
+          <div className="favorite-a mb-5">
             <span>文章收藏</span>
             <hr />
             <div className="favorite-a-group">
