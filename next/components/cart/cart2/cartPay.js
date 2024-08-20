@@ -9,7 +9,7 @@ export default function CartPay() {
         <div className={css.payDetailContent}>
           <div className={css.payContent1}>
             <div>付款方式</div>
-            <div>信用卡付款(7-11)</div>
+            <div>信用卡(7-11)</div>
           </div>
           <div className={css.payContent1}>
             <div>總金額</div>

@@ -1,28 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import css from "@/components/cart/cart3/cartProductDetail.module.css";
 
 export default function CartProductDetailM() {
+  const [productData, setProductData] = useState([]);
+
+  useEffect(() => {
+    // 從 sessionStorage 獲取商品資料
+    const storedProductData = sessionStorage.getItem('productData');
+    if (storedProductData) {
+      setProductData(JSON.parse(storedProductData));
+    }
+  }, []);
+
+  if (productData.length === 0) return null;
+
   return (
     <>
-      <div className={`row ${css.cartProductDetailBoxM}`}>
-        <div className={`col-7 ${css.cartProductDetailContentM}`}>
-          <div className={css.cartProductDetailTitleM}>
-            <b>皮耶侯奇酒莊 菜刀酒莊 夜聖喬治村卡 維一級園紅酒 2017</b>
+      {productData.map((item) => (
+        <div key={item.cart_item_id} className={`row ${css.cartProductDetailBoxM}`}>
+          <div className={`col-7 ${css.cartProductDetailContentM}`}>
+            <div className={css.cartProductDetailTitleM}>
+              <b>{item.product_name}</b>
+            </div>
+            <div className={css.formatDetailM}>
+              <div className={css.formatCcM}>{item.capacity}ml</div>&nbsp;/&nbsp;
+              <div className={css.formatCountyM}>{item.product_country}</div>&nbsp;/&nbsp;
+              <div className={css.formatYearM}>{item.years}年</div>
+            </div>
           </div>
-          <div className={css.formatDetailM}>
-            <div className={css.formatCcM}>750</div>&nbsp;/&nbsp;
-            <div className={css.formatCountyM}>法國</div>&nbsp;/&nbsp;
-            <div className={css.formatYearM}>2017年</div>
+          <div className={`col-1 ${css.cartProductDetailAmountM}`}>
+            <b>{item.product_quantity}</b>
+          </div>
+          <div className={`col-3 ${css.cartProductDetailTotalM}`}>
+            <b>NT$ {item.product_sale_price > 0 ? item.product_sale_price : item.product_price}</b>
           </div>
         </div>
-        <div className={`col-1 ${css.cartProductDetailAmountM}`}>
-          <b>1</b>
-        </div>
-        <div className={`col-3 ${css.cartProductDetailTotalM}`}>
-          <b>NT$&nbsp;17,997</b>
-        </div>
-      </div>
+      ))}
     </>
   );
 }
-

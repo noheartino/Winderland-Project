@@ -14,6 +14,8 @@ import CartProductDetail from "@/components/cart/cart3/cartProductDetail";
 import CartProductDetailM from "@/components/cart/cart3/cartProductDetailM";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
+import CartClassDetail from "@/components/cart/cart3/cartClassDetail";
+import CartClassDetailM from "@/components/cart/cart3/cartClassDetailM";
 
 export default function CartCheckout2() {
   const [userId, setUserId] = useState(null);
@@ -89,6 +91,7 @@ export default function CartCheckout2() {
                     </div>
                   </div>
                   <CartProductDetail />
+                  <CartClassDetail />
                 </>
               ) : (
                 <div className="cartProductDetailBox">
@@ -122,16 +125,6 @@ export default function CartCheckout2() {
                   className="styled-checkbox"
                 />
                 <label htmlFor="creditpay">信用卡</label>
-                <input
-                  type="radio"
-                  id="linepay"
-                  name="payment"
-                  value="linepay"
-                  checked={selectedPayment === "linepay"}
-                  onChange={handlePaymentChange}
-                  className="styled-checkbox"
-                />
-                <label htmlFor="linepay">Line Pay</label>
               </div>
               {selectedPayment === "creditpay" && <CartCredicard />}
               <div className="checkBoxTransport">
@@ -209,6 +202,7 @@ export default function CartCheckout2() {
                 </div>
               </div>
               <CartProductDetailM />
+              <CartClassDetailM />
             </>
           ) : (
             <div className="cartProductDetailBox">

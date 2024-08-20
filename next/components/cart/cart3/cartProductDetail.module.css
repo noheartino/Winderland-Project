@@ -10,15 +10,21 @@
     border: 1px solid #d4c0c0;
     overflow: hidden;
     box-sizing: border-box;
+    position: relative;
 }
 
 .cartProductDetailImg img {
-    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: auto;
     height: 100%;
     object-fit: cover;
     object-position: center;
+    transform: translate(-50%, -50%);
     display: block;
 }
+
 
 .cartProductDetailContent {
     padding-left: 10px;

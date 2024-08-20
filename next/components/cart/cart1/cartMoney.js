@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import css from '@/components/cart/cart1/cartMoney.module.css';
 
-export default function CartMoney({ totalAmount = 0, selectedCoupon, userId }) {
+export default function CartMoney({ totalAmount = 0, selectedCoupon, userId, productData, classData }) {
   const router = useRouter();
   let discountAmount = 0;
 
@@ -14,11 +14,13 @@ export default function CartMoney({ totalAmount = 0, selectedCoupon, userId }) {
   const finalAmount = Math.max(0, totalAmount - discountAmount);
 
   const confirmOrder = () => {
-    // 存儲資料到 sessionStorage
+    // 儲存資料到 sessionStorage
     sessionStorage.setItem('user_id', userId);
     sessionStorage.setItem('totalAmount', totalAmount);
     sessionStorage.setItem('discountAmount', discountAmount);
     sessionStorage.setItem('finalAmount', finalAmount);
+    sessionStorage.setItem('productData', JSON.stringify(productData));
+    sessionStorage.setItem('classData', JSON.stringify(classData));
 
     // 跳轉到 CartCheckout2 頁
     router.push('/cart/cartCheckout2');
@@ -41,7 +43,13 @@ export default function CartMoney({ totalAmount = 0, selectedCoupon, userId }) {
           <div className={css.cartContentTotal2}>NT$ {Math.floor(finalAmount)}</div>
         </div>
         <div className={css.cartContent}>
-          <button className={css.confirmButton} onClick={confirmOrder}>確認訂單</button>
+          <button 
+            className={css.confirmButton} 
+            onClick={confirmOrder}
+            disabled={productData.length === 0 && classData.length === 0}
+          >
+            確認訂單
+          </button>
         </div>
       </div>
     </div>
