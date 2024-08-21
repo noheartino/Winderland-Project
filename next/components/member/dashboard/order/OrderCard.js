@@ -1,19 +1,18 @@
 import React from 'react'
-import OrderAccordion from '@/components/member/dashboard/order/OrderAccordion'
 import Image from 'next/image'
 
 export default function OrderCard() {
   return (
     <>
-        <div className="card-body d-flex">
+        <div className=" d-flex mb-4">
                 <Image
                   src="/images/member/order1.png"
                   alt=""
                   width={50}
                   height={50}
-                  className="order-img"
+                  className="order-img mt-4 ms-4"
                 />
-                <div className="order-detail">
+                <div className="order-detail mt-4">
                   <table className="table ">
                     <thead>
                       <tr>
@@ -40,7 +39,6 @@ export default function OrderCard() {
                   </table>
                 </div>
         </div>
-        <OrderAccordion />
     </>
   )
 }
