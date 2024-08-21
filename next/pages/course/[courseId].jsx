@@ -433,10 +433,10 @@ export default function CourseIndex() {
                 <h4 className="text-prim-text-prim lh-15 spac-2 text-center text-md-start">
                   學員回饋&nbsp;|&nbsp;Comment
                 </h4>
-                <div class="btn-group course-comment-filter">
+                <div className="btn-group course-comment-filter">
                   <button
                     type="button"
-                    class="btn btn-border-prim dropdown-toggle rounded-5 px-20px"
+                    className="btn btn-border-prim dropdown-toggle rounded-5 px-20px"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
@@ -444,37 +444,37 @@ export default function CourseIndex() {
                       默認排序
                     </span>
                   </button>
-                  <ul class="dropdown-menu dropdown-menu-end shadow">
+                  <ul className="dropdown-menu dropdown-menu-end shadow">
                     <li>
-                      <a class="dropdown-item" href="#">
+                      <a className="dropdown-item" href="#">
                         <span className="p spac-1 me-3 text-prim-prim">
                           依評分高→低
                         </span>
-                        <i class="fa-solid fa-arrow-down-wide-short text-prim-prim"></i>
+                        <i className="fa-solid fa-arrow-down-wide-short text-prim-prim"></i>
                       </a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#">
+                      <a className="dropdown-item" href="#">
                         <span className="p spac-1 me-3 text-prim-prim">
                           依評分低→高
                         </span>
-                        <i class="fa-solid fa-arrow-up-wide-short text-prim-prim"></i>
+                        <i className="fa-solid fa-arrow-up-wide-short text-prim-prim"></i>
                       </a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#">
+                      <a className="dropdown-item" href="#">
                         <span className="p spac-1 me-3 text-prim-prim">
                           依時間新→舊
                         </span>
-                        <i class="fa-solid fa-sort-down text-prim-prim"></i>
+                        <i className="fa-solid fa-sort-down text-prim-prim"></i>
                       </a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#">
+                      <a className="dropdown-item" href="#">
                         <span className="p spac-1 me-3 text-prim-prim">
                           依時間舊→新
                         </span>
-                        <i class="fa-solid fa-sort-up text-prim-prim"></i>
+                        <i className="fa-solid fa-sort-up text-prim-prim"></i>
                       </a>
                     </li>
                   </ul>
@@ -566,7 +566,7 @@ export default function CourseIndex() {
             <div className="container-sm">
                 <div className="row justify-content-between">
                     <a className="col-auto" href="">
-                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i class="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
+                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i className="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
                     </a>
                 </div>
               <div className="col-auto">page-nav</div>
