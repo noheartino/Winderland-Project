@@ -3,49 +3,12 @@ import { useRouter } from 'next/router';
 import CourseCardSm from '@/components/course/course-card-sm'
 
 
-export default function CourseList() {
-
-  const router = useRouter();
-  const { search } = router.query;
-
-  const [courses, setCourses] = useState([]);
-  const [comments, setComments] = useState([]);
-  const [classAssigns, setClassAssigns] = useState([])
-
-  useEffect(() => {
-    // const includeImages = false;
-    const apiUrl = search
-      ? `http://localhost:3005/api/courseList?search=${search}`
-      : "http://localhost:3005/api/courseList";
-    // 當組件掛載時執行 fetch 請求
-    fetch(apiUrl).then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response not ok");
-      }
-      console.log(response.json);
-      return response.json();
-    })
-    .then((data) => {
-      let {courses, comments, classAssigns} = data;
-      // 處理 courses 資料，將 images 字段轉換為數組
-      const processedCourses = courses.map((course) => ({...course,
-        images: course.path ? course.path : [],
-      }));
-      setComments(comments);
-      setCourses(processedCourses);
-      setClassAssigns(classAssigns);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}, [search]);
-
+export default function CourseList({courses, comments, classAssigns}) {
 
   function handleHref(e, class_id) {
     e.preventDefault();
     router.push(`/course/${class_id}`);
   }
-      
 
   return (
     <>
@@ -64,15 +27,14 @@ export default function CourseList() {
               <div className="row px-0 m-0 course-mycourse-box row-gap-5">
 
               {courses.map((course) => {
-                const { class_id, class_name, student_limit, teacher_id, price, online, address, appointment_start, appointment_end, course_start, course_end, description, status, i_class_id, i_teacher_id, path, teacher_name, class_path} = course;
-                const isOnline = parseInt(online) === 0 ? false : true;
+                const { class_id } = course;
                 let averageRating = 0;
                 let classAssignsQ = 0;
 
                   const filteredComments = comments.filter(comment => comment.entity_type === "class" && comment.entity_id === class_id);
                   if(filteredComments){
                     const ratings = filteredComments.map(comment => comment.rating);
-                    averageRating =  Math.round((ratings.reduce((acc, rating) => acc + rating, 0) / ratings.length));
+                    averageRating = (ratings.reduce((acc, rating) => acc + rating, 0) / ratings.length).toFixed(1);;
                   }else{
                     averageRating = 0
                   }

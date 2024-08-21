@@ -6,10 +6,9 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
   const { search } = req.query
+  let userId = 12;
   let querySQL = ``
   let querySQLParams = []
-  let orderByClassId = `ORDER BY class.id ASC`
-  let orderByOrderUuId = `ORDER BY orders.order_uuid ASC`
   let querySQLComments = `SELECT comments.* FROM comments`
   let querySQLClassAsign = `SELECT 
                                 orders_detail.*, 
@@ -21,8 +20,33 @@ router.get('/', async (req, res) => {
                                 orders 
                             ON 
                                 orders_detail.order_uuid = orders.order_uuid
-                            ${orderByOrderUuId};
+                            ORDER BY orders.order_uuid ASC;
                         `;
+   let querySQLMyFavoriteCourse = `SELECT user_like.* FROM user_like WHERE user_like.item_type ='class' AND user_like.user_id = ${userId}`
+   let querySQLMyCourse = `SELECT orders_detail.order_uuid, orders_detail.class_id, orders.user_id, orders.order_uuid, class.*, class.id AS class_id
+                            FROM
+                                orders_detail
+                            JOIN
+                                orders ON orders_detail.order_uuid = orders.order_uuid
+                            JOIN
+                                class ON orders_detail.class_id = class.id
+                            WHERE orders.user_id = ${userId}
+                                AND orders_detail.class_id > 0
+                            ORDER BY orders.order_uuid ASC;
+                            `;
+//    let querySQLMyCourse = `SELECT orders_detail.*, 
+//                                 orders.*, 
+//                                 orders_detail.id AS order_detail_id
+//                             FROM 
+//                                 orders_detail 
+//                             JOIN 
+//                                 orders 
+//                             ON 
+//                                 orders_detail.order_uuid = orders.order_uuid
+//                             WHERE orders.user_id = ${userId}
+//                             AND orders_detail.class_id > 0
+//                             ORDER BY orders.order_uuid ASC;
+//                             `;
   try {
     if (!search) {
       // 取得所有 class 資料加入陣列
@@ -46,7 +70,7 @@ router.get('/', async (req, res) => {
                       images_class ON class.id = images_class.class_id
                   LEFT JOIN
                       images_teacher ON teacher.id = images_teacher.teacher_id
-                  ${orderByClassId};`
+                  ORDER BY class.id ASC;`
       
      } else {
       querySQL = `SELECT 
@@ -70,20 +94,22 @@ router.get('/', async (req, res) => {
                       images_teacher ON teacher.id = images_teacher.teacher_id
                  WHERE
                       class.name LIKE ?
-                 ${orderByClassId};`
-      querySQLParams = [`%${search}%`]
+                      OR teacher.name LIKE ?
+                 ORDER BY class.id ASC;`
+      querySQLParams = [`%${search}%`, `%${search}%`]
   }
     // courses: class 資料表的 result
     const [courses] = await connection.execute(querySQL, querySQLParams)
     const [comments] = await connection.execute(querySQLComments)
     const [classAssigns] = await connection.execute(querySQLClassAsign)
+    const [myFavoriteCourse] = await connection.execute(querySQLMyFavoriteCourse)
+    const [myCourse] = await connection.execute(querySQLMyCourse)
 
     if (courses.length === 0) {
       return res.status(200).json({ message: '資料庫沒有資料' })
     }
     // 傳出去的資料庫資料
-    // res.json({courses, comments})
-    res.json({courses, comments, classAssigns})
+    res.json({courses, comments, classAssigns, myFavoriteCourse, myCourse})
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
   }

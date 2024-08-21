@@ -2,10 +2,51 @@ import CourseList from "@/components/course/course-list"
 import CourseNav from "@/components/course/course-nav"
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from 'next/router';
+import CourseBox from '@/components/course/course-courseBox'
+import { useState,useEffect } from "react";
 
 export default function CourseIndex() {
-  const { auth, login, logout } = useAuth();
-  const currentUserId=auth.userData.id;
+  
+  const router = useRouter();
+  const { search } = router.query;
+
+  const [courses, setCourses] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [classAssigns, setClassAssigns] = useState([])
+  const [myFavoriteCourse, setMyFavoriteCourse] = useState([]);
+  const [myCourse, setMyCourse] = useState([])
+
+  useEffect(() => {
+    // const includeImages = false;
+    const apiUrl = search
+      ? `http://localhost:3005/api/courseList?search=${search}`
+      : "http://localhost:3005/api/courseList";
+    // 當組件掛載時執行 fetch 請求
+    fetch(apiUrl).then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response not ok");
+      }
+      console.log(response.json);
+      return response.json();
+    })
+    .then((data) => {
+      let {courses, comments, classAssigns, myFavoriteCourse, myCourse} = data;
+      // 處理 courses 資料，將 images 字段轉換為數組
+      const processedCourses = courses.map((course) => ({...course,
+        images: course.path ? course.path : [],
+      }));
+      setComments(comments);
+      setCourses(processedCourses);
+      setClassAssigns(classAssigns);
+      setMyFavoriteCourse(myFavoriteCourse);
+      setMyCourse(myCourse);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}, [search]);
+
+
   return (
     <>
       <title>課程首頁</title>
@@ -22,15 +63,16 @@ export default function CourseIndex() {
 
         {/* first page start */}
         <div className="container-fluid course-first-page">
+
           {/* page one 我的課程&收藏課程 start */}
-          <div className="container-fluid favorite-and-mycourse-area">
+    <div className="container-fluid favorite-and-mycourse-area">
             <div className="container-lg">
               <div className="row px-0 m-0 course-mycourse-box">
 
                 <div className="col-6 d-flex flex-column px-10px">
                   <div className="row px-0 m-0 course-card-header d-flex align-items-center">
                     <a href="/" className="col-12 col-md-auto h4 pe-2 spac-2 m-0 mb-1 d-flex justify-content-between align-items-center">
-                      <strong>我的課程</strong>
+                      <strong>我的課程{myCourse.name}</strong>
                       <div className="d-flex d-md-none ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark align-items-center justify-content-center" style={{ width: "20px", height: "20px" }}>
                         <i className="fa-solid fa-chevron-right text-sec-orange" style={{ fontSize: "9px" }}/>
                       </div>
@@ -38,72 +80,14 @@ export default function CourseIndex() {
                     <span className="d-none d-md-block col-auto text-gray-light spac-1 px-0 mb-1">｜</span>
                     <span className="col-auto text-gray-light spac-1 px-0 mb-1 h7">正在學習中的課程內容</span>
                   </div>
-                  {/* mycourse box underline start */}
                   
-                  <div className="row px-0 m-0 h-100 course-mycourse d-flex align-items-start d-none">
-                    <a
-                      className="course-leftcontent col-12 col-md-8 px-0"
-                      type="button"
-                      href="/"
-                    >
-                      <div className="course-video-video overflow-hidden position-relative">
-                        <img
-                          className="course-img21"
-                          src="/images/course_and_tarot/rectangle128.png"
-                          alt=""
-                        />
-                        <div className="d-flex d-md-none justify-content-center align-items-center w-100 h-100 absolute-t0-l0">
-                          <p className="text-white z-1 fw-thin spac-1 px-2 text-center">
-                            迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
-                          </p>
-                          <div className="opacity-50 w-100 h-100 bg-text-dark color-cover position-absolute" />
-                        </div>
-                      </div>
-                      <div className="course-body d-none d-md-block">
-                        <span className="underline-tag">實體</span>
-                        <span
-                          className="h5 spac-1"
-                          style={{ lineHeight: "35px" }}
-                        >
-                          迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
-                        </span>
-                        <div
-                          className="progress mt-2 bg-sec-blue"
-                          role="progressbar"
-                          aria-label=""
-                          aria-valuenow={75}
-                          aria-valuemin={0}
-                          aria-valuemax={100}
-                          style={{ height: "5px" }}
-                        >
-                          <div
-                            className="progress-bar bg-sec-blue-dark"
-                            style={{ width: "70%" }}
-                          />
-                        </div>
-                      </div>
-                    </a>
-                    <a
-                      className="course-more col h-100 ms-3 d-none d-md-flex justify-content-center align-items-center"
-                      href="/"
-                    >
-                      <div className="spac-2 text-prim-dark h6">查看更多</div>
-                      <div
-                        className="ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark d-flex align-items-center justify-content-center"
-                        style={{ width: "20px", height: "20px" }}
-                      >
-                        <i
-                          className="fa-solid fa-chevron-right text-sec-orange"
-                          style={{ fontSize: "9px" }}
-                        />
-                      </div>
-                    </a>
-                    <div className="course-no-content col h-100 d-flex flex-column flex-md-row px-0 m-0 row-gap-3 justify-content-center align-items-center d-none">
-                      <i className="fa-regular fa-face-meh me-2 text-prim-dark h5" />
-                      <div className="spac-2 text-prim-dark h6">
-                        尚無課程內容
-                      </div>
-                    </div>
+
+                  
+                  {/* mycourse box underline start */}
+                  <div className="row px-0 m-0 h-100 course-mycourse d-flex align-items-start">
+                    {myCourse.slice(0,1).map((firstMyCourse)=>{return(
+                      <CourseBox firstMyCourse={firstMyCourse} />
+                    )})}
                   </div>
                   {/* mycourse box underline end */}
                 </div>
@@ -111,67 +95,21 @@ export default function CourseIndex() {
                 <div className="col-6 d-flex flex-column px-10px">
                   <div className="row px-0 m-0 course-card-header d-flex align-items-center">
                     <a href="/" className="col-12 col-md-auto h4 pe-2 spac-2 m-0 mb-1 d-flex justify-content-between align-items-center">
-                      <strong>我的課程</strong>
+                      <strong>收藏課程</strong>
                       <div className="d-flex d-md-none ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark align-items-center justify-content-center" style={{ width: "20px", height: "20px" }}>
                         <i className="fa-solid fa-chevron-right text-sec-orange" style={{ fontSize: "9px" }}/>
                       </div>
                     </a>
                     <span className="d-none d-md-block col-auto text-gray-light spac-1 px-0 mb-1">｜</span>
                     <span className="col-auto text-gray-light spac-1 px-0 mb-1 h7">
-                      正在學習中的課程內容
+                    感興趣的課程收藏內容
                     </span>
                   </div>
                   {/* myfavorite course box online start */}
                   <div className="row px-0 m-0 h-100 course-myfavorite-course d-flex align-items-start">
-                    <a
-                      className="course-leftcontent col-12 col-md-8 px-0"
-                      type="button"
-                      href="/"
-                    >
-                      <div className="course-video-video overflow-hidden position-relative">
-                        <img
-                          className="course-img21"
-                          src="/images/course_and_tarot/rectangle128.png"
-                          alt=""
-                        />
-                        <div className="d-flex d-md-none justify-content-center align-items-center w-100 h-100 absolute-t0-l0">
-                          <p className="text-white z-1 fw-thin spac-1 px-2 text-center">
-                            迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
-                          </p>
-                          <div className="opacity-50 w-100 h-100 bg-text-dark color-cover position-absolute" />
-                        </div>
-                      </div>
-                      <div className="course-body d-none d-md-block">
-                        <span className="online-tag">線上</span>
-                        <span
-                          className="h5 spac-1"
-                          style={{ lineHeight: "35px" }}
-                        >
-                          迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
-                        </span>
-                      </div>
-                    </a>
-                    <a
-                      className="course-more col h-100 ms-3 d-none d-md-flex justify-content-center align-items-center"
-                      href="/"
-                    >
-                      <div className="spac-2 text-prim-dark h6">查看更多</div>
-                      <div
-                        className="ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark d-flex align-items-center justify-content-center"
-                        style={{ width: "20px", height: "20px" }}
-                      >
-                        <i
-                          className="fa-solid fa-chevron-right text-sec-orange"
-                          style={{ fontSize: "9px" }}
-                        />
-                      </div>
-                    </a>
-                    <div className="course-no-content col h-100 d-flex flex-column flex-md-row px-0 m-0 row-gap-3 justify-content-center align-items-center d-none">
-                      <i className="fa-regular fa-face-meh me-2 text-prim-dark h5" />
-                      <div className="spac-2 text-prim-dark h6">
-                        尚無課程內容
-                      </div>
-                    </div>
+                    {myFavoriteCourse.slice(0,1).map((firstMyFavoriteCourse)=>{return(
+                      <CourseBox firstMyFavoriteCourse={firstMyFavoriteCourse} />
+                    )})}
                   </div>
                   {/* myfavorite course box online end */}
                 </div>
@@ -180,7 +118,9 @@ export default function CourseIndex() {
             </div>
           </div>
           {/* page one 我的課程&收藏課程 end */}
-          <CourseList />
+          
+          
+          <CourseList courses={courses} comments={comments} classAssigns={classAssigns} />
         </div>
         {/* first page end */}
 

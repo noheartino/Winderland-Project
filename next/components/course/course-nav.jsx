@@ -17,7 +17,23 @@ export default function CourseNav({setSearchWord}) {
         query: { search: searchTerm },
       });
     }
+    if(searchTerm.trim().length<1){
+      router.push({
+        pathname: '/course',
+        query: {},
+      });
+    }
   };
+
+  //處理清空搜尋
+  const handleClear=(e)=>{
+    setSearchTerm("")
+    router.push({
+      pathname: '/course',
+      query: {},
+    });
+    
+  }
   // 處理鍵盤事件
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -37,14 +53,8 @@ export default function CourseNav({setSearchWord}) {
   const handleClickSearchIcon = (e) => {
     e.preventDefault();
     searchInputRef.current.focus()
-    const tagText = searchInputRef.current.value;
-    console.log(e.target.value);
-    if (tagText.trim()) {
-      router.push({
-        pathname: '/course',
-        query: { search: tagText },
-      });
-    }
+    setSearchTerm(searchInputRef.current.value)
+    handleSearch();
   };
 
   return (
@@ -68,7 +78,7 @@ export default function CourseNav({setSearchWord}) {
               onKeyDown={handleKeyDown}
             />
             <i className="fa-solid fa-magnifying-glass position-absolute course-search-icon" onClick={handleClickSearchIcon}></i>
-            <i className="fa-solid fa-xmark position-absolute"></i>
+            <i className="fa-solid fa-xmark position-absolute" onClick={handleClear}></i>
           </div>
           <div className="row px-0 m-0 justify-content-center">
             <div className="col-11 col-md-6 d-flex justify-content-center flex-wrap">
