@@ -15,16 +15,23 @@ export default function ArticleComment({ comment, index }) {
   const { auth } = useAuth(); // 取得認證資訊
   const userId = auth.userData.id; // 取得使用者 ID
 
-  const handleUpdate = async () => {
-    const commentUser = comment.user_id; // 替換為實際的使用者 ID
-    const commentId = comment.id; // 替換為實際的文章 ID
-    const entityType = "article";
+  const commentUser = comment.user_id; // 替換為實際的使用者 ID
+  const commentId = comment.id; // 替換為實際的文章 ID
+  const entityType = "article";
 
+  // 判定是否有權限編輯
+  const handleEdit = async () => {
+    if (commentUser !== userId) {
+      alert("您沒有權限編輯此評論");
+      return;
+    }
+    setIsEditing(true); // 如果有權限，切換到編輯模式
+  };
+
+  const handleUpdate = async () => {
     // 檢查用戶是否有權更新評論
     if (commentUser !== userId) {
-      // 替換 `yourCurrentUserId` 為當前用戶的 ID
       alert("您沒有權限修改此評論");
-      window.location.reload();
       return;
     }
 
@@ -63,6 +70,46 @@ export default function ArticleComment({ comment, index }) {
       }
     } catch (error) {
       console.error("Error submitting comment:", error);
+      alert("發生錯誤，請聯繫管理員");
+    }
+  };
+
+  // 刪除
+  const handleDelete = async () => {
+    // 彈出確認對話框
+    const confirmDelete = window.confirm(
+      "您確定要刪除此評論嗎？此操作無法恢復。"
+    );
+
+    if (!confirmDelete) {
+      return; // 如果用戶取消，則退出函數
+    }
+    
+    if (commentUser !== userId) {
+      alert("您沒有權限刪除此評論");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3005/api/a-comment/${commentId}?entity_type=${encodeURIComponent(
+          entityType
+        )}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error:", errorData.error);
+        alert("刪除評論失敗：" + errorData.error);
+      } else {
+        alert("評論已刪除");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Error deleting comment:", error);
       alert("發生錯誤，請聯繫管理員");
     }
   };
@@ -115,7 +162,10 @@ export default function ArticleComment({ comment, index }) {
               </div>
               {/* 回覆區的more */}
               <div className="ms-auto col-auto pe-3 dropdown aid-replymore">
-                <ArticleCReplymore onEdit={() => setIsEditing(true)} />
+                <ArticleCReplymore
+                  onDelete={handleDelete}
+                  onEdit={handleEdit} // 傳遞 handleEdit 函數
+                />
               </div>
             </div>
             {/* 評論內容 */}

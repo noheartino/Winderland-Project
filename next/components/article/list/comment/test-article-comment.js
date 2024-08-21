@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 
-export default function TestArticleComment({ articleId }) {
+export default function TestArticleComment({ articleId, comments }) {
   const [commentText, setCommentText] = useState("");
   const [rows, setRows] = useState(2);
-
   // 這邊是使用hooks的useAuth測試
   const { auth } = useAuth(); // 取得認證資訊
   const userId = auth.userData.id; // 取得使用者 ID
@@ -13,6 +12,7 @@ export default function TestArticleComment({ articleId }) {
 
   const firstTwoChars = account.slice(0, 2).toUpperCase();
 
+  // 新增
   const handleCreate = async () => {
     if (!commentText.trim()) {
       alert("評論內容不能為空白");
@@ -20,7 +20,6 @@ export default function TestArticleComment({ articleId }) {
     }
 
     try {
-      
       const response = await fetch(
         `http://localhost:3005/api/a-comment/${articleId}`,
         {
@@ -58,6 +57,7 @@ export default function TestArticleComment({ articleId }) {
       alert("發生錯誤，請聯繫管理員");
     }
   };
+
   return (
     <>
       <div className="col-12 mb-4">

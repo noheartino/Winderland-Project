@@ -24,10 +24,10 @@ export function AuthProvider({ children }) {
     isAuth: false, // 會員是否有登入的信號值
     // 會員資料
     userData: {
-      id: 1,
+      id: 8,
       user_name: '',
       email: '',
-      account: 'gobo_dogg',
+      account: 'fireexorio',
     },
   })
 
