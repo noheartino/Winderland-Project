@@ -1,5 +1,5 @@
 import React from "react";
-import css from '@/components/cart/cart2/cartCredicard.module.css';
+import css from "@/components/cart/cart2/cartCredicard.module.css";
 
 export default function CartCredicardM() {
   return (
@@ -46,13 +46,19 @@ export default function CartCredicardM() {
           <div>
             <div>持卡人姓名</div>
             <div>
-              <input type="text" className={`${css.inputField} ${css.creditname}`} />
+              <input
+                type="text"
+                className={`${css.inputField} ${css.creditname}`}
+              />
             </div>
           </div>
           <div>
             <div>帳單地址</div>
             <div>
-              <input type="text" className={`${css.inputField} ${css.creditaddress}`} />
+              <input
+                type="text"
+                className={`${css.inputField} ${css.creditaddress}`}
+              />
             </div>
           </div>
         </div>

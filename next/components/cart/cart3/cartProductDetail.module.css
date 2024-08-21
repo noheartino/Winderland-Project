@@ -78,6 +78,8 @@
     place-items: center;
     font-size: 20px;
     color: #ff4f4f;
+    margin-left: -10px;
+    white-space: nowrap;
 }
 
 @media screen and (max-width: 1400px) and (min-width: 1200px) {
@@ -160,6 +162,7 @@
     display: flex;
     align-items: center;
     color: #ff4f4f;
+    white-space: nowrap;
 }
 
 @media screen and (max-width: 768px) {
@@ -176,4 +179,8 @@
         padding-left: 90px;
         font-size: 16px;
     }
+}
+
+.formatCcM{
+    white-space: nowrap;
 }

@@ -32,7 +32,7 @@ export default function CartProductDetailM() {
             <b>{item.product_quantity}</b>
           </div>
           <div className={`col-3 ${css.cartProductDetailTotalM}`}>
-            <b>NT$ {item.product_sale_price > 0 ? item.product_sale_price : item.product_price}</b>
+            <b>NT$ {item.product_sale_price > 0 ? item.product_sale_price * item.product_quantity : item.product_price * item.product_quantity}</b>
           </div>
         </div>
       ))}

@@ -6,6 +6,7 @@ const router = express.Router();
 router.get('/:user_id', async (request, response) => {
   const userId = request.params.user_id;
 
+  // 查詢購物車內容
   const queryToFetchCartContents = `
   SELECT 
       cart_items.id AS cart_item_id,
@@ -43,23 +44,27 @@ router.get('/:user_id', async (request, response) => {
       cart_items.id, product.id;
   `;
 
-  const queryToFetchCoupons = `
+  // 查詢點數和優惠券
+  const queryToFetchPointsAndCoupons = `
   SELECT 
+      user_points.points_balance AS user_have_points,
       coupon.id AS coupon_id,
       coupon.name AS coupon_name,
       coupon.discount AS coupon_discount,
       coupon.category AS coupon_category,
       coupon.min_spend AS min_spend
   FROM 
-      user_coupon
-  JOIN coupon ON user_coupon.coupon_id = coupon.id
+      users
+  LEFT JOIN user_points ON users.id = user_points.user_id
+  LEFT JOIN user_coupon ON users.id = user_coupon.user_id
+  LEFT JOIN coupon ON user_coupon.coupon_id = coupon.id
   WHERE 
-      user_coupon.user_id = ?;
+      users.id = ?;
   `;
 
   try {
     const [cartResults] = await conn.query(queryToFetchCartContents, [userId]);
-    const [couponResults] = await conn.query(queryToFetchCoupons, [userId]);
+    const [pointsAndCouponsResults] = await conn.query(queryToFetchPointsAndCoupons, [userId]);
 
     // 格式化購物車內容
     const formattedCartResults = cartResults.map((item) => {
@@ -87,20 +92,25 @@ router.get('/:user_id', async (request, response) => {
     });
 
     // 過濾不能使用的優惠券
-    const validCoupons = couponResults.filter(coupon => totalAmount >= coupon.min_spend);
+    const validCoupons = pointsAndCouponsResults.filter(coupon => totalAmount >= coupon.min_spend);
+
+    // 提取點數
+    const userPoints = pointsAndCouponsResults.length > 0 ? pointsAndCouponsResults[0].user_have_points : 0;
 
     response.json({
       items: formattedCartResults,
       totalAmount,
-      coupons: validCoupons
+      coupons: validCoupons,
+      user_have_points: userPoints
     });
   } catch (error) {
-    console.error('查詢購物車內容失敗:', error);
+    console.error('查詢失敗:', error);
     return response
       .status(500)
-      .json({ error: '查詢購物車內容失敗', details: error.message });
+      .json({ error: '查詢失敗', details: error.message });
   }
 });
+
 
 
 

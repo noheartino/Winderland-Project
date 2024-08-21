@@ -747,7 +747,12 @@ body {
 
 /* 隱藏原有的 checkbox 和 radio */
 input[type="checkbox"],
-input[type="radio"] {
+.checkBoxPay input[type="radio"],
+.checkBoxTransport input[type="radio"],
+.checkBoxWpoint input[type="checkbox"],
+.checkAllBox input[type="checkbox"],
+.checkProductBox input[type="checkbox"],
+.checkClassBox input[type="checkbox"] {
   display: none;
 }
 

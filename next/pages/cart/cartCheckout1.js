@@ -11,7 +11,7 @@ import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 
 export default function CartCheckout1() {
-  const userId = 3; // 假设的用户 ID
+  const userId = 1; // 假设的用户 ID
   const [allChecked, setAllChecked] = useState(false);
   const [productChecked, setProductChecked] = useState(false);
   const [classChecked, setClassChecked] = useState(false);
@@ -314,12 +314,12 @@ export default function CartCheckout1() {
                 />
                 <label htmlFor="classCheckM">課程商品</label>
               </div>
-              <CartClassM
-                classItems={classData}
-                onRemove={handleRemoveItem}
-              />
+              <CartClassM classItems={classData} onRemove={handleRemoveItem} />
             </div>
           )}
+
+          <div style={{ height: "150px"}}>
+          </div>
 
           {/* 仅在商品或课程勾选时传递数据 */}
           <CartMoneyM
@@ -337,8 +337,7 @@ export default function CartCheckout1() {
           />
         </div>
       </main>
-      <Footer />
+      <Footer showMobileFooter={false} />
     </>
   );
 }
-
