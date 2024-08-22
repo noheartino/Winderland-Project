@@ -54,6 +54,12 @@ const getImages = `SELECT * FROM images_product WHERE product_id IN (?)`
 // 取得description
 const getDescription = `SELECT * FROM description WHERE product_id IN (?)`
 
+// 取得基礎分類
+const getCategories = "SELECT * FROM category";
+
+// 取得variet
+const getVariet = `SELECT * FROM variet WHERE category_id IN (?)`
+
 // 整理商品資訊的函式(多個)
 const tidyProducts = async (products) => {
   try {
@@ -101,14 +107,14 @@ const tidyProduct = async (product) => {
     comments.* ,
     users.account AS account,
     users.gender AS user_gender
-FROM 
-    comments 
-LEFT JOIN
-    users ON comments.user_id = users.id
-LEFT JOIN
-    images_user ON comments.user_id = images_user.user_id
-WHERE
-    entity_type = "product" && entity_id = ?`,
+    FROM 
+        comments 
+    LEFT JOIN
+        users ON comments.user_id = users.id
+    LEFT JOIN
+        images_user ON comments.user_id = images_user.user_id
+    WHERE
+        entity_type = "product" && entity_id = ?`,
       [pid]
     )
 
@@ -126,15 +132,40 @@ WHERE
   }
 }
 
+const tidyCategories = async (categories) => {
+    try{
+        // 取得所有category id
+        const cids = categories.map((c) => c.id);
+
+        // 取得相對應的variet
+        const[variets] = await db.query(getVariet,[cids]);
+
+        // 加到對應的category_id
+        return categories.map((category) => ({
+            ...category,
+            variets:variets.filter((v) => v.category_id === category.id)
+        }))
+    }catch(error){
+        console.error('Error in tidyCategories:', error)
+        throw error;
+    }
+}
+
 // 商品首頁,取得所有商品的內容
 router.get('/', async (req, res) => {
   try {
     // 獲取所有商品的基本訊息
     const [products] = await db.query(getProducts)
+    const [categories] = await db.query(getCategories);
 
-    const productWithDetails = await tidyProducts(products)
+    const productWithDetails = await tidyProducts(products);
+    const categoryWithVarieds = await tidyCategories(categories)
 
-    res.json(productWithDetails)
+    res.json({
+        productWithDetails:productWithDetails,
+        categoryWithVarieds:categoryWithVarieds
+    });
+
   } catch (error) {
     res.status(500).json({
       error: 'fail',
