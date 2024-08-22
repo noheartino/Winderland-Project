@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Offcanvas, Button, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import styles from '@/components/member/dashboard/OrderFilterOffcanvas.module.css'
+import styles from '@/components/member/dashboard/order/OrderFilterOffcanvas.module.css'
 
 export default function OrderFilterOffcanvas() {
     const [show, setShow] = useState(false);

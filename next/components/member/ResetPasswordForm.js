@@ -55,7 +55,7 @@ export default function ResetPasswordForm() {
       const data = await response.json()
       if (response.ok) {
         setMessage('密碼重設成功')
-        setTimeout(() => router.push('member/login'), 3000)
+        setTimeout(() => router.push('/member/login'), 3000)
       } else {
         setMessage(data.message || '重設密碼失敗')
       }
@@ -66,57 +66,114 @@ export default function ResetPasswordForm() {
   }
 
   return (
-    <div className={`d-none d-lg-block`}>
-      <main className={styles.main}>
-        <div className={styles.bg}>
-          <div className={styles.loginBox}>
+    <>
+      {/* desk */}
+      <div className={`d-none d-lg-block`}>
+        <main className={styles.main}>
+          <div className={styles.bg}>
+            <div className={styles.loginBox}>
 
-            {message && <div className={` ms-5 mt-5 ${styles.message} ${message.includes('成功') ? styles.success : styles.error}`}>{message}</div>}
+              {message && <div className={` ms-5 mt-5 ${styles.message} ${message.includes('成功') ? styles.success : styles.error}`}>{message}</div>}
 
-            <form onSubmit={handleSubmit}>
-              <div className={`${styles.tabContent} ms-5`}>
-                <div className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent}`}>
-                  <label className={`${styles.label} mt-5 mb-2`} htmlFor="newPassword">
-                    重設密碼
-                  </label>{' '}
-                  <p className={`${styles.resetNotice} me-5`}>請重新設定您的密碼，完成設定後用新密碼登入。
-                  </p>
-                  <br />
-                  <input
-                    type="password"
-                    name="newPassword"
-                    id="newPassword"
-                    className={styles.loginInput}
-                    placeholder='新密碼 (至少6個字符) '
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    minLength="6"
-                  />
-                  <br />
+              <form onSubmit={handleSubmit}>
+                <div className={`${styles.tabContent} ms-5`}>
+                  <div className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent}`}>
+                    <label className={`${styles.label} mt-5 mb-2`} htmlFor="newPassword">
+                      重設密碼
+                    </label>{' '}
+                    <p className={`${styles.resetNotice} me-5`}>請重新設定您的密碼，完成設定後用新密碼登入。
+                    </p>
+                    <br />
+                    <input
+                      type="password"
+                      name="newPassword"
+                      id="newPassword"
+                      className={styles.loginInput}
+                      placeholder='新密碼 (至少6個字符) '
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      minLength="6"
+                    />
+                    <br />
 
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    id="confirmPassword"
-                    className={styles.loginInput}
-                    placeholder='確認新密碼'
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                    minLength="6"
-                  />
-                  <br />
-                  <button type="submit" className={`${styles.button} mt-5 mb-5`}>
-                    確認重設密碼
-                  </button>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      id="confirmPassword"
+                      className={styles.loginInput}
+                      placeholder='確認新密碼'
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      minLength="6"
+                    />
+                    <br />
+                    <button type="submit" className={`${styles.button} mt-5 mb-5`}>
+                      確認重設密碼
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </form>
-            {/* {message && <div className={styles.message}>{message}</div>} */}
+              </form>
+              {/* {message && <div className={styles.message}>{message}</div>} */}
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+
+      {/* RWD */}
+      <div className="d-block d-lg-none">
+      <main className={styles.main}>
+      
+  
+
+              {message && <div className={` ms-5 mt-5 ${styles.message} ${message.includes('成功') ? styles.success : styles.error}`}>{message}</div>}
+
+              <form onSubmit={handleSubmit}>
+                <div className={`${styles.tabContent} ms-5 mt-5`}>
+                  <div className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent}`}>
+                    <label className={`${styles.label} mt-5 mb-2 ms-4`} htmlFor="newPassword">
+                      重設密碼
+                    </label>{' '}
+                    <p className={`${styles.resetNotice} me-5 ms-4`}>請重新設定您的密碼，完成設定後用新密碼登入。
+                    </p>
+                    <br />
+                    <input
+                      type="password"
+                      name="newPassword"
+                      id="newPassword"
+                      className={`${styles.loginInput} ms-4`}
+                      placeholder='新密碼 (至少6個字符) '
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      minLength="6"
+                    />
+                    <br />
+
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      id="confirmPassword"
+                      className={`${styles.loginInput} ms-4 mb-5`}
+                      placeholder='確認新密碼'
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      minLength="6"
+                    />
+                    <br />
+                    <button type="submit" className={`${styles.button} mt-5 mb-5 ms-4`}>
+                      確認重設密碼
+                    </button>
+                  </div>
+                </div>
+              </form>
+              {/* {message && <div className={styles.message}>{message}</div>} */}
+         
+   
+        </main>
+      </div>
+    </>
   )
 }

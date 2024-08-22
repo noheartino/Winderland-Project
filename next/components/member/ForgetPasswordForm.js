@@ -4,6 +4,7 @@
 import React, { useState } from 'react'
 import styles from '@/components/member/member.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import Link from 'next/link'
 
 
 // @ 預設導出
@@ -62,6 +63,10 @@ export default function ForgetPasswordForm() {
 
                                         <br />
 
+                                        <div className={` d-flex justify-content-around  `}>   
+                                        <div></div>  
+                                            <Link href="/member/login"  className={`${styles.red} `}>返回登入</Link>
+                                        </div>
                                         {/* 按鈕 */}
                                         <button
                                             type="submit"
@@ -86,7 +91,7 @@ export default function ForgetPasswordForm() {
             {/* RWD */}
             <div className="d-block d-lg-none">
                 <div>
-                    <div className={`${styles.tabContent} ms-5`}>
+                    <div className={`${styles.tabContent} ms-5 mt-5`}>
                         <form onSubmit={handleSubmit}>
                             <div
                                 className={`tab-pane fade show active ${styles.loginContent}`}
@@ -94,7 +99,7 @@ export default function ForgetPasswordForm() {
                                 role="tabpanel"
                                 aria-labelledby="login-tab-rwd"
                             >
-                                <label className={`${styles.label} mt-5 mb-4`} htmlFor="forgetPWD">
+                                <label className={`${styles.label} mt-5 mb-4 ms-5`} htmlFor="forgetPWD">
                                     忘記密碼
                                 </label>
                                 <br />
@@ -102,7 +107,7 @@ export default function ForgetPasswordForm() {
                                     type="email"
                                     name="forgetPWD"
                                     id="forgetPWD"
-                                    className={styles.loginInput}
+                                    className={`${styles.loginInput} ${styles.forgetPWD} ms-5 mb-5`}
                                     placeholder='請輸入Email'
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -110,7 +115,9 @@ export default function ForgetPasswordForm() {
                                 />
                                 <br />
 
-                                <button className={`${styles.loginButton} mb-5 mt-5`} type="submit">重設密碼</button>
+
+
+                                <button className={`${styles.loginButton} mb-5 mt-5 ms-5`} type="submit">重設密碼</button>
 
 
                             </div>

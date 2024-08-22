@@ -1,4 +1,5 @@
 // # 會員中心頁面
+// 2024.08.20 11:27
 
 import React, { useState } from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
@@ -8,6 +9,7 @@ import DashboardOrder from '@/components/member/dashboard/order'
 import DashboardFavorite from '@/components/member/dashboard/favorite'
 import DashboardTitle from '@/components/member/dashboard/dashboardTitle'
 import Nav from '@/components/Header/Header'
+import Footer from '@/components/footer/footer'
 
 export default function MemberIndex() {
   const [key, setKey] = useState('profile');
@@ -20,8 +22,6 @@ export default function MemberIndex() {
       {/* main */}
       <div className='main-m '>
         <div className="container-m">
-          {/* <div className="u-title d-none d-lg-block">會員中心</div>
-          <div className="u-title-rwd d-block d-lg-none">會員中心</div> */}
           <DashboardTitle />
 
           {/* desk */}
@@ -93,6 +93,9 @@ export default function MemberIndex() {
       </div>
 
       {/* footer */}
+      <Footer />
+
+      {/* style */}
       <style jsx>
         {`
           * {
