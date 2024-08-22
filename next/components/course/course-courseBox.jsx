@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
 
-export default function CourseList({ myBox, classAssigns }) {
+export default function CourseList({ myBox, classAssigns, onClickMore }) {
     const assigns = classAssigns?.filter((assign) => {
         return assign.class_id === myBox?.id;
       });
@@ -9,7 +9,7 @@ export default function CourseList({ myBox, classAssigns }) {
     console.log(assigns.length);
     return (
         <>
-            <div className={`course-leftcontent col-12 col-md-8 px-0 ${myBox ? 'd-block' : 'd-none'}`} type="button">
+            <div className={`course-leftcontent col-12 col-md-8 h-100 px-0 ${myBox ? 'd-block' : 'd-none'}`} type="button">
                 <div className="course-video-video overflow-hidden position-relative">
                     <img
                         className="course-img21"
@@ -23,33 +23,37 @@ export default function CourseList({ myBox, classAssigns }) {
                         <div className="opacity-50 w-100 h-100 bg-text-dark color-cover position-absolute" />
                     </div>
                 </div>
-                <div className="course-body d-none d-md-block">
-                    <span className={`${myBox?.online===0?'online-tag':'underline-tag'}`}>{myBox?.online===0?'線上':'實體'}</span>
-                    <span
-                        className="h5 spac-1"
-                        style={{ lineHeight: "35px" }}
-                    >
-                        {myBox?.name}
-                        
-                    </span>
+                <div className="course-body row d-none d-md-flex flex-column align-items-center justify-content-between">
+                    <div className="col-12 h-auto py-0 my-0">
+                        <span className={`${myBox?.online===0?'online-tag':'underline-tag'}`}>{myBox?.online===0?'線上':'實體'}</span>
+                        <span
+                            className="h5 spac-1"
+                            style={{ lineHeight: "35px" }}
+                        >
+                            {myBox?.name}
+                            
+                        </span>
+                    </div>
+                    <div className="col-12">
                     <div
-                        className="progress mt-2 bg-sec-blue"
+                        className="progress bg-sec-blue"
                         role="progressbar"
                         aria-label=""
                         aria-valuenow={75}
                         aria-valuemin={0}
                         aria-valuemax={100}
-                        style={{ height: "5px" }}
+                        style={{ height: "5px", marginTop: '15px' }}
                     >
                         <div
                         className="progress-bar bg-sec-blue-dark"
                         style={{ width: `${assignedQ}%` }}
                         />
                     </div>
+                    </div>
                     
                 </div>
             </div>
-            <div className={`course-more col h-100 ms-3 justify-content-center align-items-center ${myBox ? 'd-none d-md-flex' : 'd-none'}`}>
+            <div className={`course-more col h-100 ms-3 justify-content-center align-items-center cursor-pointer ${myBox ? 'd-none d-md-flex' : 'd-none'}`} onClick={onClickMore}>
                 <div className="spac-2 text-prim-dark h6">查看更多</div>
                 <div
                     className="ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark d-flex align-items-center justify-content-center"

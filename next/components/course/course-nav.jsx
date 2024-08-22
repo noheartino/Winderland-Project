@@ -82,42 +82,42 @@ export default function CourseNav({setSearchWord}) {
           </div>
           <div className="row px-0 m-0 justify-content-center">
             <div className="col-11 col-md-6 d-flex justify-content-center flex-wrap">
-              <a href="/" className="nav-tag" onClick={handleClick}>
+              <span className="nav-tag cursor-pointer" onClick={handleClick}>
                 品酒
-              </a>
-              <a href="/" className="nav-tag" onClick={handleClick}>
+              </span>
+              <span className="nav-tag cursor-pointer" onClick={handleClick}>
                 挑選酒
-              </a>
-              <a href="/" className="nav-tag" onClick={handleClick}>
+              </span>
+              <span className="nav-tag cursor-pointer" onClick={handleClick}>
                 認證課程
-              </a>
-              <a href="/" className="nav-tag" onClick={handleClick}>
+              </span>
+              <span className="nav-tag cursor-pointer" onClick={handleClick}>
                 法國
-              </a>
-              <a href="/" className="nav-tag" onClick={handleClick}>
+              </span>
+              <span className="nav-tag cursor-pointer" onClick={handleClick}>
                 SFM
-              </a>
-              <a href="/" className="nav-tag" onClick={handleClick}>
+              </span>
+              <span className="nav-tag cursor-pointer" onClick={handleClick}>
                 BWC布根地
-              </a>
-              <a href="/" className="nav-tag" onClick={handleClick}>
+              </span>
+              <span className="nav-tag cursor-pointer" onClick={handleClick}>
                 CIVB波爾多葡萄酒學院
-              </a>
-              <a href="/" className="nav-tag d-none d-md-block" onClick={handleClick}>
+              </span>
+              <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
                 CIVA
-              </a>
-              <a href="/" className="nav-tag d-none d-md-block" onClick={handleClick}>
+              </span>
+              <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
                 阿爾薩斯
-              </a>
-              <a href="/" className="nav-tag d-none d-md-block" onClick={handleClick}>
+              </span>
+              <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
                 葡萄牙公會
-              </a>
-              <a href="/" className="nav-tag d-none d-md-block" onClick={handleClick}>
+              </span>
+              <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
                 葡萄酒學者認證
-              </a>
-              <a href="/" className="nav-tag d-none d-md-block" onClick={handleClick}>
+              </span>
+              <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
                 IWS
-              </a>
+              </span>
             </div>
           </div>
         </div>

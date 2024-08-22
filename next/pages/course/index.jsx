@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/router";
 import CourseBox from "@/components/course/course-courseBox";
 import { useState, useEffect } from "react";
+import CourseCardSm from '@/components/course/course-card-sm'
 
 export default function CourseIndex() {
   const router = useRouter();
@@ -16,7 +17,7 @@ export default function CourseIndex() {
   const [myCourse, setMyCourse] = useState([]);
   const [myFirstFavoriteCourse, setmyFirstFavoriteCourse] = useState({});
   const [firstMyCourse, setFirstMyCourse] = useState({});
-  const [myCoursePage, setMyCoursePage] = useState(false);
+  const [isHomePage, setIsHomePage] = useState(true);
 
   useEffect(() => {
     // const includeImages = false;
@@ -54,17 +55,11 @@ export default function CourseIndex() {
   }, [search]);
   // console.log(myFirstFavoriteCourse[0]);
 
-  function handleSetMyCourse(){
-    setMyCoursePage(!myCoursePage);
-    pageShow()
-  }
-  function pageShow(){
-    if(!myCoursePage){
-
-    }
+  function onClickMore(){
+    console.log("測試按按鈕啦");
+    setIsHomePage(!isHomePage);
   }
   
-
   return (
     <>
       <title>課程首頁</title>
@@ -80,7 +75,7 @@ export default function CourseIndex() {
         <CourseNav />
 
         {/* first page start */}
-        <div className="container-fluid course-first-page">
+        <div className={`container-fluid course-first-page ${isHomePage?'d-block':'d-none'}`}>
           {/* page one 我的課程&收藏課程 start */}
           <div className="container-fluid favorite-and-mycourse-area">
             <div className="container-lg p-0">
@@ -109,7 +104,7 @@ export default function CourseIndex() {
 
                   {/* mycourse box underline start */}
                   <div className="row px-0 m-0 h-100 course-mycourse d-flex align-items-start">
-                    <CourseBox myBox={firstMyCourse} classAssigns={classAssigns}/>
+                    <CourseBox myBox={firstMyCourse} classAssigns={classAssigns} onClickMore={onClickMore} />
                     {/* {console.log(myCourse[0].name)} */}
                   </div>
                   {/* mycourse box underline end */}
@@ -157,12 +152,12 @@ export default function CourseIndex() {
         {/* first page end */}
 
         {/* page two 我的課程&我的收藏 start */}
-        <div className="container-fluid px-0 d-none">
+        <div className={`container-fluid px-0 ${isHomePage?'d-none':'d-block'}`}>
           <div className="container-sm px-0 my-5">
             <div className="px-10px">
               <div className="row px-0 m-0 justify-content-center justify-content-md-start course-card-header-page2 align-items-center">
                 <span className="col-auto h4 pe-2 spac-2 m-0">
-                  <strong>我的課程//我的收藏</strong>
+                  <strong>我的課程</strong>
                 </span>
                 <span className="col-auto text-gray-light spac-1">
                   ｜&nbsp;正在學習中的課程內容
@@ -182,96 +177,33 @@ export default function CourseIndex() {
             </div>
             <div className="row px-0 m-0 course-mycourse-box row-gap-5">
               {/* 課程卡片 start */}
+
               {/* card-sm online start */}
-              <div className="col-12 col-md-4 col-lg-3 course-mycourse px-10px d-flex flex-column align-items-center bg-warning">
-                <div className="row px-0 m-0 flex-row flex-md-column w-100">
-                  <div className="col-4 col-md-12 px-0">
-                    <div className="course-video-video overflow-hidden">
-                      <img
-                        className="course-img21"
-                        src="/images/course_and_tarot/rectangle128.png"
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                  <div className="card-md-body col-8 col-md-12">
-                    <div className="course-body-header px-0">
-                      <span className="online-tag d-none d-md-inline-block">
-                        線上
-                      </span>
-                      <span
-                        className="h5 spac-1 text-justify"
-                        style={{ lineHeight: "35px" }}
-                      >
-                        迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
-                      </span>
-                      <p className="text-gray-light mt-2 d-none d-md-block">
-                        by 王淇
-                      </p>
-                      <div className="sm-card-secondLine d-flex d-md-none justify-content-between mt-2">
-                        <span className="sm-card-secondLine-left">
-                          <span className="online-tag">線上</span>
-                          <span className="text-gray-light">by 王淇</span>
-                        </span>
-                        <span className="sm-card-secondLine-right">
-                          <i className="fa-solid fa-star star-with-score" />
-                          <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
-                            4.8
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-                    <div className="course-body-footer d-none d-md-block">
-                      <div className="stars mt-2 d-flex align-items-center">
-                        <i className="fa-solid fa-star star-with-score" />
-                        <i className="fa-solid fa-star star-with-score" />
-                        <i className="fa-solid fa-star star-with-score" />
-                        <i className="fa-solid fa-star star-with-score" />
-                        <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
-                          4.8
-                        </span>
-                      </div>
-                      <div className="location mt-2 d-flex align-items-center d-none">
-                        <i className="fa-solid fa-location-dot text-sec-dark-blue" />
-                        <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
-                          上課縣市-台北市
-                        </span>
-                      </div>
-                      <div className="course-process-footer mt-2">
-                        <span className="h5 spac-2 me-3">NT$3,500</span>
-                        <span className="h6 text-gray-light spac-2 origin-price">
-                          <del>NT$5,500</del>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row px-0 m-0 w-100">
-                  <div className="col-12 course-process-header d-flex justify-content-between mt-3 px-0">
-                    <span className="h6 text-sec-blue spac-1">
-                      課程時長-5小時
-                    </span>
-                    <span className="h6 text-sec-blue spac-1 d-none">
-                      已完成70%
-                    </span>
-                  </div>
-                  <div
-                    className="progress mt-2 bg-sec-blue px-0 d-none"
-                    role="progressbar"
-                    aria-label=""
-                    aria-valuenow={75}
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                    style={{ height: "5px" }}
-                  >
-                    <div
-                      className="progress-bar bg-sec-blue-dark"
-                      style={{ width: "70%" }}
-                    />
-                  </div>
-                </div>
-              </div>
+              {courses.map((course) => {
+                const { class_id } = course;
+                let averageRating = 0;
+                let classAssignsQ = 0;
+                  const filteredComments = comments.filter(comment => comment.entity_type === "class" && comment.entity_id === class_id);
+                  if(filteredComments){
+                    const ratings = filteredComments.map(comment => comment.rating);
+                    averageRating = (ratings.reduce((acc, rating) => acc + rating, 0) / ratings.length).toFixed(1);;
+                  }else{
+                    averageRating = 0
+                  }
+                  const filteredclassAssigns = classAssigns.filter(classAssign => classAssign.class_id === class_id && classAssign.status !== 'cancelled');
+                  if(filteredclassAssigns){
+                    classAssignsQ = filteredclassAssigns.length;
+                  }else{
+                    classAssignsQ = 0
+                  }
+              return (
+                <div key={class_id} onClick={(e)=>handleHref(e, class_id)} className='col-12 col-md-4 col-lg-3 px-10px d-flex flex-column align-items-center justify-content-between'>
+                  <CourseCardSm course={course} averageRating={averageRating} classAssigns={classAssigns} classAssignsQ={classAssignsQ}/>
+                </div> 
+              );
+            })}
               {/* card-sm online end */}
+
               {/* card-sm underline start */}
               <div className="col-12 col-md-4 col-lg-3 course-mycourse px-10px d-flex flex-column align-items-center">
                 <div className="row px-0 m-0 flex-row flex-md-column w-100">
