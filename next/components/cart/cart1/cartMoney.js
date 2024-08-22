@@ -22,6 +22,13 @@ export default function CartMoney({ totalAmount = 0, selectedCoupon, userId, pro
     sessionStorage.setItem('productData', JSON.stringify(productData));
     sessionStorage.setItem('classData', JSON.stringify(classData));
 
+    if (selectedCoupon) {
+      // 儲存選擇的優惠券資料
+      sessionStorage.setItem('selectedCoupon', JSON.stringify(selectedCoupon));
+
+      // 你可以在此處增加邏輯來通知後端該優惠券已被使用（選擇在下一頁完成後實現）
+    }
+
     // 跳轉到 CartCheckout2 頁
     router.push('/cart/cartCheckout2');
   };

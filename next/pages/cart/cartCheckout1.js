@@ -11,7 +11,7 @@ import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 
 export default function CartCheckout1() {
-  const userId = 1; // 假设的用户 ID
+  const userId = 3; // 用户 ID
   const [allChecked, setAllChecked] = useState(false);
   const [productChecked, setProductChecked] = useState(false);
   const [classChecked, setClassChecked] = useState(false);

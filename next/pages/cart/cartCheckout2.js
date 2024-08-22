@@ -265,6 +265,7 @@ export default function CartCheckout2() {
             <div className="col-4">
               <CartMoney />
               <CartPay
+                userId={userId}
                 pointsUsed={pointsUsed}
                 originalPoints={originalPoints}
                 selectedPayment={selectedPayment}
