@@ -9,9 +9,11 @@ import CartMoneyM from "@/components/cart/cart1/cartMoneyM";
 import CartCouponM from "@/components/cart/cart1/cartCouponM";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
+import CartZero from "@/components/cart/cartObject/cartZero";
+
 
 export default function CartCheckout1() {
-  const userId = 3; // 用户 ID
+  const userId = 2; // 用户 ID
   const [allChecked, setAllChecked] = useState(false);
   const [productChecked, setProductChecked] = useState(false);
   const [classChecked, setClassChecked] = useState(false);
@@ -171,6 +173,10 @@ export default function CartCheckout1() {
         content="width=device-width, initial-scale=1, shrink-to-fit=no"
       />
       <Nav />
+      {productData.length === 0 && classData.length === 0 ? (
+          <CartZero />
+        ) : (
+
       <main>
         <div className="container mb-5 d-none d-lg-block">
           <div className="row">
@@ -337,6 +343,7 @@ export default function CartCheckout1() {
           />
         </div>
       </main>
+    )}
       <Footer showMobileFooter={false} />
     </>
   );

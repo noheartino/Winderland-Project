@@ -11,7 +11,6 @@ export default function CartPay({
   selectedTransport,
   transportData,
   transportBlackCatData,
-  creditCardData,
 }) {
   const [finalAmount, setFinalAmount] = useState(0);
   const [productData, setProductData] = useState([]);
@@ -35,15 +34,12 @@ export default function CartPay({
   }, []);
 
   const minLength = {
-    creditCardNumber: 16,
-    expiryDate: 4,
-    securityCode: 3,
     pickupPhone: 10,
     blackCatPhoneNumber: 10,
   };
 
   const discountAmount = pointsUsed;
-  const finalTotalAmount = finalAmount + 60;
+  const finalTotalAmount = finalAmount + 60; // 假設運費為60元
   const discountedAmount = finalTotalAmount - discountAmount;
 
   const validateForm = () => {
@@ -54,39 +50,6 @@ export default function CartPay({
       valid = false;
       errorMessages.push("請選擇付款方式和運送方式");
     } else {
-      if (selectedPayment === "creditpay") {
-        if (!creditCardData || Object.keys(creditCardData).length === 0) {
-          valid = false;
-          errorMessages.push("請填寫信用卡資料");
-        } else {
-          const {
-            creditCardNumber,
-            expiryDate,
-            cardHolderName,
-            securityCode,
-            billingAddress,
-          } = creditCardData;
-          if (
-            !creditCardNumber ||
-            !expiryDate ||
-            !cardHolderName ||
-            !securityCode ||
-            !billingAddress
-          ) {
-            valid = false;
-            errorMessages.push("信用卡資料不完整");
-          }
-          if (
-            creditCardNumber.length < minLength.creditCardNumber ||
-            expiryDate.length < minLength.expiryDate ||
-            securityCode.length < minLength.securityCode
-          ) {
-            valid = false;
-            errorMessages.push("信用卡格式不正確");
-          }
-        }
-      }
-
       if (selectedTransport === "transprot711") {
         if (!transportData || Object.keys(transportData).length === 0) {
           valid = false;
@@ -131,7 +94,6 @@ export default function CartPay({
     }
 
     setIsFormValid(valid);
-    // 使用 `<br />` 來實現換行
     setFormError(errorMessages.join(" / ").replace(/ \//g, " <br />"));
     return valid;
   };
@@ -141,7 +103,6 @@ export default function CartPay({
   }, [
     selectedPayment,
     selectedTransport,
-    creditCardData,
     transportData,
     transportBlackCatData,
     pointsUsed,
@@ -151,7 +112,6 @@ export default function CartPay({
     if (validateForm()) {
       try {
         let response;
-        console.log("Selected Coupon:", selectedCoupon); // 打印查看 selectedCoupon
 
         if (selectedPayment === "productpay") {
           // 貨到付款
@@ -176,26 +136,34 @@ export default function CartPay({
           // 導航到確認頁
           router.push("/cart/cartCheckout3");
         } else if (selectedPayment === "creditpay") {
-          // 信用卡付款
-          response = await axios.post("/api/creditCardPayment", {
-            pointsUsed,
-            originalPoints,
-            selectedPayment,
-            selectedTransport,
-            transportData,
-            transportBlackCatData,
-            couponData,
-            cartItems: [...productData, ...classData],
-            discountedAmount,
-            creditCardData, // 記得把信用卡資料也發送到後端
-          });
+          const goECPayTestOnly = (discountedAmount) => {
+            if (window.confirm('確認要導向至ECPay進行付款?')) {
+              window.location.href = `http://localhost:3005/api/ecpay-test-only?amount=${discountedAmount}`;
+            }
+          };
 
-          // 在成功後，可能需要處理付款成功後的邏輯（例如，保存訂單編號）
-          // 這裡示例中假設後端返回了訂單編號
+          // 信用卡付款
+          response = await axios.post(
+            "http://localhost:3005/api/cart/creditCardPayment",
+            {
+              userId,
+              pointsUsed,
+              originalPoints,
+              selectedPayment,
+              selectedTransport,
+              transportData,
+              transportBlackCatData,
+              couponData: selectedCoupon || null,
+              cartItems: [...productData, ...classData],
+              discountedAmount,
+            }
+          );
+
+          // 假設後端返回了訂單編號
           setOrderNumber(response.data.orderNumber);
 
-          // 導航到確認頁
-          router.push("/cart/cartCheckout3");
+          // 在處理完成後，可能需要導航至某個頁面
+          goECPayTestOnly(discountedAmount);
         }
 
         console.log("Order created successfully:", response.data);

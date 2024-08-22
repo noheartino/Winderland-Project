@@ -793,13 +793,24 @@ input[type="checkbox"],
 }
 
 /* 勾選時的樣式 */
-input[type="checkbox"]:checked + label::before,
-input[type="radio"]:checked + label::before {
+.checkBoxPay input[type="checkbox"]:checked + label::before,
+.checkBoxTransport input[type="radio"]:checked + label::before,
+.checkBoxWpoint input[type="checkbox"]:checked + label::before,
+.checkProductBox input[type="checkbox"]:checked + label::before,
+.checkClassBox input[type="checkbox"]:checked + label::before,
+.checkAllBox input[type="checkbox"]:checked + label::before,
+.wPointTitle input[type="checkbox"]:checked + label::before {
   background-color: white; /* 勾選時保留白色背景 */
 }
 
 /* 勾選後顯示的縮小方形 */
-input[type="checkbox"]:checked + label::after {
+.checkBoxPay input[type="checkbox"]:checked + label::after,
+.checkBoxTransport input[type="radio"]:checked + label::after,
+.checkBoxWpoint input[type="checkbox"]:checked + label::after,
+.checkProductBox input[type="checkbox"]:checked + label::after,
+.checkClassBox input[type="checkbox"]:checked + label::after,
+.checkAllBox input[type="checkbox"]:checked + label::after,
+.wPointTitle input[type="checkbox"]:checked + label::after {
   content: '';
   position: absolute;
   left: 5px; /* 給外部邊框保留5px的距離 */
@@ -812,14 +823,21 @@ input[type="checkbox"]:checked + label::after {
 }
 
 /* 勾選後顯示的圓形 (不使用，已建立正方形樣式) */
-input[type="radio"]:checked + label::after {
+.checkBoxPay input[type="radio"]:checked + label::after,
+.checkBoxTransport input[type="radio"]:checked + label::after,
+.checkBoxWpoint input[type="radio"]:checked + label::after,
+.checkProductBox input[type="radio"]:checked + label::after,
+.checkClassBox input[type="radio"]:checked + label::after,
+.checkAllBox input[type="radio"]:checked + label::after,
+.wPointTitle input[type="radio"]:checked + label::after {
   content: '';
   position: absolute;
   left: 5px; /* 給外部邊框保留5px的距離 */
   top: 50%; /* 垂直位置 */
   transform: translateY(-50%); /* 垂直居中 */
-  width: 10px; /* 縮小正方形的直徑 */
-  height: 10px; /* 縮小正方形的直徑 */
-  background-color: #A66E7B; /* 縮小正方形顏色 */
+  width: 10px; /* 縮小圓形的直徑 */
+  height: 10px; /* 縮小圓形的直徑 */
+  background-color: #A66E7B; /* 縮小圓形顏色 */
   border: none; /* 沒有邊框 */
 }
+

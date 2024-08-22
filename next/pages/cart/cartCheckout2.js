@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import CartProduct from "@/components/cart/cart2/cartProduct";
-import CartCredicard from "@/components/cart/cart2/cartCredicard";
 import CartTransport from "@/components/cart/cart2/cartTransport";
 import CartWpoint from "@/components/cart/cart2/cartWpoint";
 import CartMoney from "@/components/cart/cart2/cartMoney";
 import CartPay from "@/components/cart/cart2/cartPay";
 import CartProductM from "@/components/cart/cart2/cartProductM";
-import CartCredicardM from "@/components/cart/cart2/cartCredicardM";
 import CartTransportM from "@/components/cart/cart2/cartTranportM";
 import CartWpointM from "@/components/cart/cart2/cartWpointM";
 import CartMoneyM from "@/components/cart/cart2/cartMoneyM";
@@ -27,14 +25,12 @@ export default function CartCheckout2() {
   const [isChecked, setIsChecked] = useState(false);
   const [pointsUsed, setPointsUsed] = useState(0);
   const [originalPoints, setOriginalPoints] = useState(0); // 儲存原本點數
-  const [creditCardData, setCreditCardData] = useState({}); // 新增狀態來儲存信用卡資料
   const [transportData, setTransportData] = useState({}); //運送資料7-11
   const [transportBlackCatData, setTransportBlackCatData] = useState({}); // 新增狀態來儲存黑貓運送資料
 
   useEffect(() => {
     const storedUserId = sessionStorage.getItem("user_id");
     const storedOriginalPoints = sessionStorage.getItem("originalPoints"); // 讀取原本點數
-    const storedCreditCardData = sessionStorage.getItem("creditCardData"); // 讀取信用卡資料
     const storedTransportData = sessionStorage.getItem("transportData");
     const storedTransportBlackCatData = sessionStorage.getItem(
       "transportBlackCatData"
@@ -47,11 +43,6 @@ export default function CartCheckout2() {
     }
     if (storedOriginalPoints) {
       setOriginalPoints(parseFloat(storedOriginalPoints));
-    }
-    if (storedCreditCardData) {
-      // 如果需要，可以將信用卡資料設置到狀態中
-      setCreditCardData(JSON.parse(storedCreditCardData)); // 設置信用卡資料
-      // 在這裡可以處理信用卡資料
     }
     if (storedTransportData) {
       setTransportData(JSON.parse(storedTransportData));
@@ -105,12 +96,6 @@ export default function CartCheckout2() {
   // 新增處理從 CartWpoint 獲取點數的函數
   const handlePointsFetch = (fetchedPoints) => {
     setOriginalPoints(fetchedPoints);
-  };
-
-  const handleCreditCardDataChange = (newCreditCardData) => {
-    setCreditCardData(newCreditCardData);
-    console.log("Updated Credit Card Data:", newCreditCardData); // 顯示信用卡資料變化
-    sessionStorage.setItem("creditCardData", JSON.stringify(newCreditCardData));
   };
 
   const handleTransportDataChange = (newTransportData) => {
@@ -212,7 +197,6 @@ export default function CartCheckout2() {
                 />
                 <label htmlFor="creditpay">信用卡</label>
               </div>
-              {selectedPayment === "creditpay" && <CartCredicard onCreditCardDataChange={handleCreditCardDataChange} />}
               <div className="checkBoxTransport">
                 <b>運送方式</b>
                 <input
@@ -275,9 +259,6 @@ export default function CartCheckout2() {
                 }
                 transportBlackCatData={
                   selectedTransport === "blackcat" ? transportBlackCatData : {}
-                }
-                creditCardData={
-                  selectedPayment === "creditpay" ? creditCardData : {}
                 }
               />
             </div>
@@ -345,7 +326,6 @@ export default function CartCheckout2() {
             />
             <label htmlFor="creditpayM">信用卡</label>
           </div>
-          {selectedPayment === "creditpay" && <CartCredicardM />}
           <div className="checkBoxTransport">
             <b>運送方式</b>
             <input
