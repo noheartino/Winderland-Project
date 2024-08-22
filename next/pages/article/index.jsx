@@ -48,6 +48,7 @@ export default function Index() {
   const handleLink = () => {
     router.push(`/article`);
   };
+  console.log(articleHead)
   return (
     <>
       {/* Header */}

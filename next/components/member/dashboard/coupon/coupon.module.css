@@ -1,0 +1,241 @@
+.coupon-content {
+  .couponNav {
+    font-weight: 400;
+    color: var(--blue_dark);
+
+    .CTitle {
+      font-size: 20px;
+      letter-spacing: 4.8px;
+      display: flex;
+      align-items: center;
+    }
+
+    .couponLimit {
+      color: var(--primary_color-wine, #ba435d);
+      font-size: 14px;
+      letter-spacing: 2.8px;
+    }
+
+    .couponAlert {
+      color: var(--orange, #ff4f4f);
+      font-size: 16px;
+      letter-spacing: 3.2px;
+    }
+
+    /* 領取優惠券 */
+    .couponPlus {
+      text-decoration: none;
+      font-size: 20px;
+      letter-spacing: 4.8px;
+      color: var(--blue_dark);
+      cursor: pointer;
+      text-wrap: nowrap;
+    }
+    .membership {
+      letter-spacing: 2px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      .memberP {
+        font-size: 20px;
+        letter-spacing: 2px;
+        color: var(--text_primary);
+        border-radius: 13.153px;
+        background: linear-gradient(
+          180deg,
+          #fbe09b 0%,
+          #fff1cf 47.5%,
+          #e5c369 100%
+        );
+      }
+    }
+    .pointDown {
+      text-align: right;
+      font-size: 12px;
+    }
+  }
+
+  /* 優惠券區塊一格格的那個 */
+  .couponZone {
+    margin-bottom: 25px;
+  }
+  .couponZoneSm {
+    background-color: var(--light);
+    margin-bottom: 25px;
+  }
+
+  /* 一張優惠券 */
+  .couponCard {
+    border-radius: 3px;
+    box-shadow: -2px 3px 4px 0px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(90deg, #a5d1df 0%, #597179 100%);
+    color: var(--text_primary);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    .couponC {
+      border-radius: 10px;
+      background: var(--blue_dark);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 400;
+      text-wrap: nowrap;
+      /* letter-spacing: 3.2px; */
+    }
+
+    .couponN {
+      color: #fff;
+      text-wrap: nowrap;
+    }
+
+    .couponNSm {
+      color: #fff;
+      font-size: 12px;
+    }
+  }
+  /* 紀錄區塊 */
+  .couponRecordHeader {
+    background-color: var(--blue_dark);
+    .couponRecordTitle {
+      margin: 0;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 3.2px;
+    }
+  }
+  .couponRecordMain {
+    background-color: #f5f5f5;
+    font-size: 16px;
+    letter-spacing: 3.2px;
+    align-items: center;
+
+    .couponRecordDate {
+      color: var(--blue_dark);
+    }
+    .couponRecordCost {
+      color: var(--orange);
+    }
+  }
+
+  /* .coupon-ticket-y {
+    background: linear-gradient(90deg, #fff177 0%, #f6584e 100%);
+
+    .coupon-c {
+      background: var(--info-orange, #ff4f4f);
+    }
+  }
+
+  .coupon-ticket-r {
+    background: linear-gradient(90deg, #f46274 0%, #851931 100%);
+
+    .coupon-c {
+      background: var(--primary_color-primary, #851931);
+    }
+  } */
+
+  .wPoints {
+    .wp-title {
+      width: 70%;
+      font-weight: 400;
+
+      .WTitle {
+        color: var(--info-dark_blue);
+        font-size: 24px;
+        letter-spacing: 4.8px;
+      }
+
+      .wp-t {
+        margin-top: 22px;
+      }
+
+      .wp-limit {
+        color: var(--primary_color-wine, #ba435d);
+        font-size: 14px;
+        letter-spacing: 2.8px;
+        margin-right: 25px;
+        margin-bottom: 116px;
+      }
+    }
+
+    .wp-detail {
+      width: 20%;
+      color: var(--info-dark_blue, #5b839a);
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: 4.8px;
+
+      .membership {
+        width: 130px;
+        height: 50px;
+        border-radius: 13.153px;
+        background: linear-gradient(
+          180deg,
+          #fbe09b 0%,
+          #fff1cf 47.5%,
+          #e5c369 100%
+        );
+        color: var(--text_color-text_primary, #60464c);
+        letter-spacing: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 28px;
+        margin-left: 300px;
+      }
+    }
+  }
+
+  .point {
+    width: 70%;
+    color: var(--text_color-text_primary, #60464c);
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: 4.8px;
+
+    .point-img {
+      width: 250px;
+      height: 250px;
+      background: url(/img/wpoint.png);
+      background-repeat: no-repeat;
+      background-size: cover;
+      margin-right: 85px;
+    }
+
+    .point-text {
+      /* margin-top: 45px; */
+    }
+
+    .totalWpoints {
+      color: var(--info-orange);
+      font-size: 96px;
+      letter-spacing: 9.6px;
+    }
+  }
+
+  .point-detail {
+    color: var(--info-dark_blue);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 4.8px;
+
+    .membership {
+      width: 130px;
+      height: 50px;
+      border-radius: 13.153px;
+      background: linear-gradient(
+        180deg,
+        #fbe09b 0%,
+        #fff1cf 47.5%,
+        #e5c369 100%
+      );
+      color: var(--text_color-text_primary, #60464c);
+      font-size: 20px;
+      letter-spacing: 2px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 140px;
+    }
+  }
+}
