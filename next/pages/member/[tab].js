@@ -7,6 +7,7 @@ import LoginForm from '@/components/member/LoginForm'
 import RegisterForm from '@/components/member/RegisterForm'
 import styles from '@/components/member/member.module.css'
 import Nav from '@/components/Header/Header'
+import Footer from '@/components/footer/footer'
 
 export default function MemberPage() {
     const router = useRouter()
@@ -43,6 +44,7 @@ export default function MemberPage() {
                     </Tabs>
                 </div>
             </div>
+            <Footer />
         </main>
     )
 }

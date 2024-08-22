@@ -317,7 +317,7 @@ export default function TeacherIndex() {
             <div className="container-sm">
                 <div className="row justify-content-between">
                     <a className="col-auto" href="">
-                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i class="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
+                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i className="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
                     </a>
                     <div className="col-auto">page-nav</div>
                 </div>

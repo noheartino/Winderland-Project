@@ -21,13 +21,13 @@ export function AuthProvider({ children }) {
 
   // 會員使用的認証&授權狀態
   const [auth, setAuth] = useState({
-    isAuth: false, // 會員是否有登入的信號值
+    isAuth: true, // 會員是否有登入的信號值
     // 會員資料
     userData: {
-      id: 8,
-      user_name: '',
-      email: '',
-      account: 'fireexorio',
+      id: 12,
+      user_name: 'Sophie',
+      email: 'Sophie',
+      account: 'sophie',
     },
   })
 
