@@ -2,10 +2,10 @@ import React from "react";
 
 export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
   const {
-    class_name,
+    class_name='',
     student_limit,
-    price,
-    sale_price,
+    price=0,
+    sale_price=0,
     online,
     address,
     teacher_name,
@@ -15,7 +15,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
   return (
     <>
       <div className="d-flex flex-column align-items-center justify-content-between">
-        <div className="row px-0 m-0 flex-row flex-md-column w-100 sm-card-minH">
+        <div className="row px-0 m-0 flex-row flex-md-column w-100 sm-card-minH cursor-pointer">
           <div className="col-4 col-md-12 px-0">
             <div className="course-video-video overflow-hidden">
               <img

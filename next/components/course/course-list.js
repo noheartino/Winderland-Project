@@ -4,6 +4,7 @@ import CourseCardSm from '@/components/course/course-card-sm'
 
 
 export default function CourseList({courses, comments, classAssigns}) {
+  const router = useRouter()
 
   function handleHref(e, class_id) {
     e.preventDefault();
@@ -14,7 +15,8 @@ export default function CourseList({courses, comments, classAssigns}) {
     <>
       <div className="container-fluid px-0">
             <div className="container-sm px-0 mb-5">
-              <div className="row px-0 m-0 px-10px justify-content-center">
+            
+              <div className="row px-10px m-0 justify-content-center">
                 <div className="col-auto col-md-12 course-card-header d-flex align-items-center">
                   <span className="col-auto h4 pe-2 spac-2 m-0">
                     <strong>推薦課程</strong>
@@ -48,9 +50,9 @@ export default function CourseList({courses, comments, classAssigns}) {
                 
                 
               return (
-                <a key={class_id} onClick={(e)=>handleHref(e, class_id)} className='col-12 col-md-4 col-lg-3 px-10px d-flex flex-column align-items-center justify-content-between'>
+                <div key={class_id} onClick={(e)=>handleHref(e, class_id)} className='col-12 col-md-4 col-lg-3 px-10px d-flex flex-column align-items-center justify-content-between'>
                   <CourseCardSm course={course} averageRating={averageRating} classAssigns={classAssigns} classAssignsQ={classAssignsQ}/>
-                </a> 
+                </div> 
               );
             })}
                 
