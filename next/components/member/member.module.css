@@ -1,11 +1,11 @@
 /* desk */
 /* 登入login */
-.main .bg {
+ .bg {
   background: var(--light, #f4ebeb);
   overflow: hidden;
 }
 
-.main .loginBox {
+ .loginBox {
   width: 500px;
   height: 100%;
   background: #fffdfd;
@@ -18,7 +18,7 @@
   margin-bottom: 200px;
 }
 
-.main .navTabs {
+ .navTabs {
   width: 100%;
   font-size: medium;
   margin-bottom: 20px;
@@ -31,7 +31,7 @@
 
 }
 
-.main .nav-link  {
+.nav-link  {
    /* padding: 15px; */
         /* 移除预设样式 */
         width: 100%;
@@ -52,7 +52,7 @@
         border: none;
   }
   
-  .main .nav-link::after {
+.nav-link::after {
     content: '';
     position: absolute;
     left: 25%;
@@ -65,8 +65,8 @@
     border: none;
   }
   
-  .main .nav-link:hover::after,
-  .main .nav-link.active::after {
+.nav-link:hover::after,
+.nav-link.active::after {
     color: #A66E7B;
     width:10%;
     height: 5px;
@@ -77,7 +77,7 @@
  
 
 
-.main .tabContent {
+.tabContent {
   color:  #a66e7b;
   font-size: 14px;
   font-weight: 400;
@@ -85,14 +85,14 @@
   margin-right: -25px;
 }
 
-.main .loginContent .label {
+.loginContent .label {
   color: #a66e7b;
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 1.4px;
 }
 
-.main .loginContent .loginInput {
+.loginContent .loginInput {
   width: 80%;
   border: none;
   border-bottom: 2px solid #a66e7b;
@@ -103,23 +103,23 @@
   outline: none;
 }
 
-.main .loginContent .span {
+.loginContent .span {
   color: var(--orange, #ff4f4f);
   display: block;
   margin-bottom: 5px;
 }
 
-.main .loginContent .notice {
+.loginContent .notice {
   color: var(--orange, #ff4f4f);
   text-decoration: none;
 }
 
-.main .loginContent .pwdNotice {
+.loginContent .pwdNotice {
   margin-right: 20%;
 }
 
 /* 隱藏預設的 checkbox 樣式 */
-.main .loginContent .pwdNotice .formCheck .formCheckInput {
+.formCheckInput {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -133,13 +133,12 @@
 }
 
 /* 自定義 checkbox 選中狀態 */
-.main .loginContent .pwdNotice .formCheck .formCheckInput:checked {
+.formCheckInput:checked {
   background-color: #9a5b69;
   border-color: #ccc;
 }
 
-/* 偽元素來表示選中狀態的外觀 */
-.main .loginContent .pwdNotice .formCheck .formCheckInput:checked::after {
+ .formCheckInput:checked::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -151,13 +150,13 @@
   border-radius: 2px;
 }
 
-.main .loginContent .forgetPwd {
+.loginContent .forgetPwd {
   margin-right: 20%;
   margin-top: 20px;
   margin-bottom: 20px;
 }
 /* 隱藏預設的 checkbox 樣式 */
-.main .loginContent .forgetPwd .formCheck .formCheckInput {
+.loginContent .forgetPwd .formCheck .formCheckInput {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -171,13 +170,13 @@
 }
 
 /* 自定義 checkbox 選中狀態 */
-.main .loginContent .forgetPwd .formCheck .formCheckInput:checked {
+.loginContent .forgetPwd .formCheck .formCheckInput:checked {
   background-color: #9a5b69;
   border-color: #ccc;
 }
 
 /* 偽元素來表示選中狀態的外觀 */
-.main .loginContent .forgetPwd .formCheck .formCheckInput:checked::after {
+.loginContent .forgetPwd .formCheck .formCheckInput:checked::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -189,12 +188,12 @@
   border-radius: 2px;
 }
 
-.main .loginContent .noAccount {
+.loginContent .noAccount {
   margin-right: 20%;
   margin-top: 10px;
 }
 
-.main .loginContent .button {
+.loginContent .button {
   width: 80%;
   height: 60px;
   border-radius: 4px;
@@ -208,11 +207,11 @@
   margin-top: 10px;
 }
 
-.main .loginContent .fastLogin {
+.loginContent .fastLogin {
   width: 80%;
 }
 
-.main .loginContent .fastLogin .hr {
+.loginContent .fastLogin .hr {
   color: var(--text_color-text_primary);
   border: 0;
   font-size: 12px;
@@ -221,7 +220,7 @@
   margin-bottom: 30px;
 }
 
-.main .loginContent .fastLogin .hr::before {
+.loginContent .fastLogin .hr::before {
   content: '快速登入';
   position: absolute;
   padding: 0 10px;
@@ -233,11 +232,10 @@
   transform: translateX(-50%);
 }
 
-.main .loginContent .fastLogin .buttonGruop {
+.loginContent .fastLogin .buttonGruop {
   margin-bottom: 50px;
 }
-
-.main .loginContent .fastLogin .buttonGruop .googleLogin {
+.loginContent .fastLogin .buttonGruop .googleLogin {
   width: 100%;
   font-size: 16px;
   background-color: var(--primary);
@@ -253,10 +251,10 @@
   margin-top: 10px;
 }
 
-.main .loginContent .fastLogin .buttonGruop .googleLogin .img {
+.loginContent .fastLogin .buttonGruop .googleLogin .img {
   object-fit: scale-down;
 }
-.main .loginContent .fastLogin .buttonGruop .lineLogin {
+.loginContent .fastLogin .buttonGruop .lineLogin {
   width: 100%;
   font-size: 16px;
   background-color: #06c755;
@@ -271,11 +269,11 @@
 }
 
 /* 註冊register */
-.main .registerContent {
+.registerContent {
   width: 100%;
 }
 
-.main .registerContent .label {
+.registerContent .label {
   color: var(--primary_color-purple_light, #a66e7b);
   font-size: 18px;
   font-weight: 600;
@@ -283,14 +281,14 @@
   margin-top: 15px;
 }
 
-.main .registerContent .span {
+.registerContent .span {
   color: var(--info-orange, #ff4f4f);
   display: block;
   margin-right: 80px;
   margin-top: 7px;
 }
 
-.main .registerContent .registerInput {
+.registerContent .registerInput {
   width: 80%;
   border: none;
   border-bottom: 2px solid var(--primary_color-purple_light, #a66e7b);
@@ -301,29 +299,29 @@
   outline: none;
 }
 
-.main .registerContent .rRegisterInput::placeholder {
+ .registerContent .rRegisterInput::placeholder {
   color: var(--blue);
   font-size: medium;
 }
 
-.main .registerContent .registerInput::placeholder {
+.registerContent .registerInput::placeholder {
   color: var(--blue);
   font-size: medium;
 }
 
-.main .registerContent .labelName {
+.registerContent .labelName {
   margin-right: 35%;
 }
 
-.main .registerContent .labelTel {
+.registerContent .labelTel {
   margin-left: -30px;
 }
 
-.main .registerContent .labelGender {
+.registerContent .labelGender {
   margin-left: -10px;
 }
 
-.main .registerContent .registerInput2 {
+.registerContent .registerInput2 {
   width: 37%;
   border: none;
   border-bottom: 2px solid var(--primary_color-purple_light, #a66e7b);
@@ -334,17 +332,17 @@
   outline: none;
 }
 
-.main .registerContent .registerInput2.rRegisterInput {
+.registerContent .registerInput2.rRegisterInput {
   display: inline-block;
   margin-left: -30px;
 }
 
-.main .registerContent input[type='date'] {
+.registerContent input[type='date'] {
   font-size: 18px;
   margin-top: 20px;
 }
 
-.main .registerContent select {
+.registerContent select {
   width: 170%;
   border-radius: 0%;
   border: none;
@@ -355,7 +353,7 @@
   margin-left: -35px;
 }
 
-.main .registerContent .button {
+  .registerContent .button {
   width: 80%;
   height: 60px;
   border-radius: 4px;
@@ -370,13 +368,13 @@
   margin-bottom: 30px;
 }
 
-.main .registerContent .btnBack {
+  .registerContent .btnBack {
   margin-top: -20px;
   margin-left: 45%;
   margin-bottom: 30px;
 }
 
-.main .registerContent .btnBack .notice {
+  .registerContent .btnBack .notice {
   color: var(--primary_color-purple_light);
   text-decoration: none;
 }
@@ -761,7 +759,7 @@
   font-weight: 500;
 }
 
-.main .loginInput::placeholder {
+  .loginInput::placeholder {
   color: #A66E7B;
   font-size: medium;
 }
@@ -773,7 +771,7 @@
 
 }
 
-.main .forgetPWD::placeholder {
+  .forgetPWD::placeholder {
   color: #A66E7B;
   font-size: small;
 }

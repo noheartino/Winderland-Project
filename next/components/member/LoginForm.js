@@ -170,6 +170,16 @@ export default function LoginForm() {
                       }}
                       defaultValue=""
                     />
+                    {/* <input
+                    
+                      type="radio"
+                      name="showPassword"
+                      checked={showPassword}
+                      onChange={() => {
+                        setShowPassword(!showPassword)
+                      }}
+                      className={`${styles.formCheckInput} styled-checkbox me-2`}
+                    /> */}
                     <label
                       className={styles.formCheckLabel}
                       htmlFor="showPassword"
