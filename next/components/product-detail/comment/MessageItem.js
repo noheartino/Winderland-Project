@@ -5,7 +5,6 @@ import { useProduct } from "@/context/ProductContext";
 export default function MessageItem() {
   const { product, loading, error } = useProduct();
 
-
   if (loading) return <div>加載中...</div>;
   if (error) return <div>{error}</div>;
   if (!product) return <div>查無此商品</div>;
@@ -24,9 +23,11 @@ export default function MessageItem() {
             </div>
             <div className={`${styles["name-star"]}`}>
               <div className={`${styles["user"]}`}>
-                <div className={`${styles["user-name"]}`}>{comment.account}</div>
+                <div className={`${styles["user-name"]}`}>
+                  {comment.account}
+                </div>
                 <div className={`${styles["floor-good"]}`}>
-                  <span>B{index+1}</span>
+                  <span>B{index + 1}</span>
                   <span className={`${styles["divider"]}`}> | </span>
                   <button className={`${styles["good-button"]}`} type="button">
                     <i
@@ -38,11 +39,9 @@ export default function MessageItem() {
               </div>
               <div className={`${styles["user-star"]}`}>
                 <div className={`${styles["stars"]}`}>
-                  <i className={`fa-solid fa-star ${styles["light"]}`}></i>
-                  <i className={`fa-solid fa-star ${styles["light"]}`}></i>
-                  <i className={`fa-solid fa-star ${styles["light"]}`}></i>
-                  <i className={`fa-solid fa-star ${styles["light"]}`}></i>
-                  <i className={`fa-solid fa-star ${styles["light"]}`}></i>
+                  {[1,2,3,4,5].map((star) => (
+                    <i className={`fa-solid fa-star ${star<=comment.rating? styles["light"] : ""}`}></i>
+                  ))}
                 </div>
                 <div className={`${styles["score"]}`}>{comment.rating}</div>
               </div>
@@ -53,7 +52,9 @@ export default function MessageItem() {
               <i className="fa-solid fa-ellipsis"></i>
             </div>
             <div className={`${styles["message-content"]}`}>
-              <p className={`${styles["comment-text"]}`}>{comment.comment_text}</p>
+              <p className={`${styles["comment-text"]}`}>
+                {comment.comment_text}
+              </p>
             </div>
             <div className={`${styles["time"]}`}>
               發佈於 {comment.updated_at}
