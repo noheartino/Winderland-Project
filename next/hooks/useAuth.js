@@ -4,87 +4,106 @@
 
 // @ 導入模組
 import { useContext, useState } from 'react'
-import { AuthContent } from '@/context/AuthContext'
+import { AuthContext } from '@/context/AuthContext'
 
 
 const useAuth = () => {
     // 取出
-    const { setUser } = useContext(AuthContent)
-    const { token,setToken } = useContext(AuthContent)
+    const { setUser, checkAuth } = useContext(AuthContext);
+
+    // const { setUser } = useContext( AuthContext)
+    // const { token,setToken } = useContext(AuthContext)
 
     // * 登入邏輯
     const login = async (account, password) => {
-        // 宣告全域變數
-        let newToken, error
-        // 宣告變數
-        const url = "http://localhost:3005/api/member/login"
-        const formData = new FormData()
-        // 插入
-        formData.append("account", account)
-        formData.append("password", password)
+        try {
+            const url = 'http://localhost:3005/api/member/login'
+            const res = await fetch(url, {
+                credentials: 'include', // 設定cookie或是存取隱私資料時要加這個參數
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    // 記住登入
+                    account: user.account,
+                    password: user.password,
+                    rememberMe: rememberMe
+                }),
+            })
 
-        newToken = await fetch(url, {
-            method: "POST",
-            body: formData
-        }).then(res => res.json())
-            .then(result => {
-                if (result.status === "success") {
-                    return result.token
+            const resData = await res.json()
+
+            if (res.ok) {
+                if (resData.status === 'success') {
+                    const { accessToken } = resData.data;
+
+                    if (accessToken) {
+                        localStorage.setItem('authToken', accessToken);
+                    }
+
+                    alert('登入成功')
+                    router.push('/dashboard')
                 } else {
-                    throw new Error(result.message)
+                    alert('登入失敗：' + resData.message)
                 }
-            })
-            .catch(err => {
-                error = err
-                return undefined
-            })
-        console.log(token);
-        if (error) {
-            alert(error.message)
-            return
+            } else {
+                switch (res.status) {
+                    case 400:
+                        alert('登入失敗：缺少必要資料')
+                        break
+                    case 401:
+                        alert('登入失敗：帳號或密碼錯誤')
+                        break
+                    case 404:
+                        alert('登入失敗：使用者不存在')
+                        break
+                    default:
+                        alert('登入失敗：' + (resData.message || '未知錯誤'))
+                }
+            }
+        } catch (e) {
+            console.error(e)
+            alert('登入過程中發生錯誤')
         }
-        if (newToken) {
-            // 設定進去狀態
-            setToken(newToken)
-            localStorage.setItem("nextBenToken",newToken)
-        }
+        // try {Ｆ
+        //     const response = await fetch("http://localhost:3005/api/member/login", {
+        //         method: "POST",
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({ account, password }),
+        //         credentials: 'include'
+        //     });
+
+        //     const data = await response.json();
+
+        //     if (data.status === "success") {
+        //         await checkAuth(); // 重新檢查認證狀態
+        //         return { success: true };
+        //     } else {
+        //         throw new Error(data.message);
+        //     }
+        // } catch (error) {
+        //     console.error("Login error:", error);
+        //     return { success: false, message: error.message };
+        // }
     }
 
     // * 登出邏輯
     const logout = async () => {
-        // 宣告全域變數
-        let newToken, error
-        // 宣告變數
-        const url = "http://localhost:3005/api/member/logout"
-
-        newToken = await fetch(url, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }).then(res => res.json(
-        )).then(result => {
-            if (result.status === "success") {
-                return result.token
-            } else {
-                throw new Error(result.message)
-            }
-        }).catch(err => {
-            error = err
-            return undefined
-        })
-        // 判斷錯誤
-        if (error) {
-            alert(error.message)
-            return;
+        try {
+            await fetch("http://localhost:3005/api/member/logout", {
+                method: "GET",
+                credentials: 'include'
+            });
+            setUser(null);
+            return { success: true };
+        } catch (error) {
+            console.error("Logout error:", error);
+            return { success: false, message: error.message };
         }
-        if (newToken) {
-            setToken(newToken)
-            localStorage.setItem("nextToken",newToken)
-        }
-        // setUser(undefined);
-
-
     }
 
     return { login, logout }

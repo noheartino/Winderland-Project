@@ -6,9 +6,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import GoogleLogo from '@/components/icons/google-logo'
 import 'bootstrap/dist/css/bootstrap.min.css'
+// import { useAuth } from '@/hooks/useAuth'; 
 
 // @ 預設導出
 export default function LoginForm() {
+  // const { login } = useAuth();
+
   // 路由
   const router = useRouter()
   // 狀態設置
@@ -118,7 +121,21 @@ export default function LoginForm() {
       console.error(e)
       alert('登入過程中發生錯誤')
     }
+
+    // try {
+    //   const loginResult = await login(user.account, user.password);
+    //   if (loginResult.success) {
+    //     alert('登入成功');
+    //     router.push('/dashboard');
+    //   } else {
+    //     alert('登入失敗：' + loginResult.message);
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    //   alert('登入過程中發生錯誤');
+    // }
   }
+  
 
   // @ 渲染
   return (

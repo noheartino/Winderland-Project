@@ -143,25 +143,27 @@ export default function ProfileUpdatePwdRWD() {
         <>
             <section className="editPwd-card-rwd ">
                 <h2 className="edit-card-title">修改密碼</h2>
-                <label htmlFor="">舊密碼</label> <span>*舊密碼輸入錯誤</span>
+                <label htmlFor="">舊密碼</label> 
+                {/* <span>*舊密碼輸入錯誤</span> */}
                 <input
                     type="text"
                     name=""
-                    placeholder="********"
+                    // placeholder="請輸入舊密碼"
                     style={{ width: "100%" }}
                 />
                 <br />
-                <label htmlFor="">新密碼</label>
+                <label htmlFor="">新密碼 (6-12字元）</label>
                 <input
                     type="text"
-                    placeholder="********"
+                    // placeholder="6-12字元"
                     style={{ width: "100%" }}
                 />
                 <br />
-                <label htmlFor="">再次輸入新密碼</label> <span>*密碼內容輸入錯誤</span>
+                <label htmlFor="">再次輸入新密碼</label> 
+                {/* <span>*密碼內容輸入錯誤</span> */}
                 <input
                     type="text"
-                    placeholder="********"
+                    // placeholder="請再次輸入新密碼"
                     style={{ width: "100%" }}
                 />
             </section>

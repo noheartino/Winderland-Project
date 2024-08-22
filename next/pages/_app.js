@@ -21,7 +21,7 @@ import '@/styles/product-detail.css'
 
 // import其他套件
 import { useEffect } from "react";
-import { AuthProvider } from '@/hooks/use-auth'  // 管理會員狀態
+import { AuthProvider } from '@/context/AuthContext';  // 管理會員狀態
 import NextTopLoader from 'nextjs-toploader' //  換頁進度條－nextjs-toploanpm install nextjs-toploaderder
 
 export default function MyApp({ Component, pageProps }) {

@@ -12,7 +12,8 @@ export default function ProfileUpdateUser() {
     birthday: '',
     member_level_id: '',
     phone: '',
-    address: ''
+    address: '',
+    email:''
   })
 
   useEffect(() => {
@@ -47,6 +48,7 @@ export default function ProfileUpdateUser() {
           phone: user.phone,
           address: user.address,
           member_level_id: user.member_level_id,
+          email: user.email,
         });
       } else {
         throw new Error('User data is not available or in unexpected format');
@@ -93,15 +95,15 @@ export default function ProfileUpdateUser() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='form-update'>
               <section className="editAccount-card me-5 col-6">
                 <h4 className="edit-card-title">修改會員資料</h4>
                 <input
                   type="text"
-                  name="name"
+                  name="user_name"
                   value={formData.user_name}
                   onChange={handleInputChange}
-                  placeholder={`${userData.name}`}
+                  // placeholder={`${userData.user_name}`}
                   style={{ width: "100%" }}
                 />
                 <br />
@@ -110,8 +112,9 @@ export default function ProfileUpdateUser() {
                   name="birthday"
                   value={formData.birthday}
                   onChange={handleInputChange}
-                  placeholder={`${userData.birthday}`}
+                  // placeholder={`${userData.birthday}`}
                   style={{ width: "50%" }}
+                  className='me-4'
                 />
                 <select 
                   name="gender"
@@ -127,7 +130,7 @@ export default function ProfileUpdateUser() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  placeholder={`${userData.phone}`}
+                  // placeholder={`${userData.phone}`}
                   style={{ width: "50%" }} />
                 <br />
                 <input
@@ -138,6 +141,16 @@ export default function ProfileUpdateUser() {
                   placeholder={`${userData.address}`}
                   style={{ width: "100%" }}
                 />
+                <input
+                  type="text"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  // placeholder={`${userData.email}`}
+                  style={{ width: "100%" }}
+                />
+              
+                
               </section>
       </form>
     </>

@@ -183,6 +183,9 @@ export default function DashboardProfile() {
   };
   const userMembership = membershipMapping[userData.member_level_id] ;
 
+  // * 會員頭像
+  // const avatarPath = `/public/member/avatar/${userData.img.split('/').pop()}`;
+
   return (
     <>
       <>
@@ -195,7 +198,7 @@ export default function DashboardProfile() {
               <div className="userName">{userData.user_name}</div>
               <div className="userID">ID：{userData.account}</div>
               <div className="userAge">{userGender} / {userAge}歲 / {userData.birthday}</div>
-              <div className="user-img" style={{ backgroundImage: `url(${userData.avatar})` }} />
+              <div className="user-img" style={{ backgroundImage: `url($)` }} />
               <div className="membership">{userMembership}</div>
             </div>
             {/* 會員等級 */}
@@ -217,7 +220,7 @@ export default function DashboardProfile() {
           {/* 按鈕區 */}
           <form onSubmit={handleSubmit}>
             <div className="btn-group d-flex justify-content-end mb-5">
-              <button ype="button" onClick={() => setFormData({ ...userData })}>清空</button>
+              <button type="button" onClick={() => setFormData({ ...userData })}>清空</button>
               <button type="submit" className="button-send">
                 送出更改
               </button>

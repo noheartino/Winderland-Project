@@ -12,7 +12,8 @@ export default function ProfileUpdateUserRWD() {
     birthday: '',
     member_level_id: '',
     phone: '',
-    address: ''
+    address: '',
+    email:''
   })
 
   useEffect(() => {
@@ -51,6 +52,7 @@ export default function ProfileUpdateUserRWD() {
           phone: user.phone,
           address: user.address,
           member_level_id: user.member_level_id,
+          email: user.email
         });
       } else {
         throw new Error('用戶數據不可用或格式不正確');
@@ -101,10 +103,10 @@ export default function ProfileUpdateUserRWD() {
         <h2 className="edit-card-title">修改會員資料</h2>
         <input
           type="text"
-          name="name"
+          name="user_name"
           value={formData.user_name}
           onChange={handleInputChange}
-          placeholder={`${userData.name}`}
+          // placeholder={`${userData.name}`}
           style={{ width: "100%" }}
         />
         <br />
@@ -113,14 +115,15 @@ export default function ProfileUpdateUserRWD() {
           name="birthday"
           value={formData.birthday}
           onChange={handleInputChange}
-          placeholder={`${userData.birthday}`}
-          style={{ width: "45%" }}
+          // placeholder={`${userData.birthday}`}
+          style={{ width: "65%" }}
+          className='me-2'
         />
         <select
           name="gender"
           value={formData.gender}
           onChange={handleInputChange}
-          style={{ width: "45%" }}>
+          style={{ width: "27%" }}>
           <option value="option1">選擇性別</option>
           <option value="Male">男</option>
           <option value="Female">女</option>
@@ -132,16 +135,25 @@ export default function ProfileUpdateUserRWD() {
           name="phone"
           value={formData.phone}
           onChange={handleInputChange}
-          placeholder={`${userData.phone}`} style={{ width: "50%" }} />
+          // placeholder={`${userData.phone}`} 
+          style={{ width: "50%" }} />
         <br />
         <input
           type="text"
           name="address"
           value={formData.address}
           onChange={handleInputChange}
-          placeholder={`${userData.address}`}
-          style={{ width: "100%", marginBottom: 41 }}
+          // placeholder={`${userData.address}`}
+          style={{ width: "100%"}}
         />
+         <input
+                  type="text"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  // placeholder={`${userData.email}`}
+                  style={{ width: "100%", marginBottom: 60 } }
+                />
       </section>
       </form>
     </>
