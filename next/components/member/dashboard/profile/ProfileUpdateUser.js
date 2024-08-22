@@ -15,12 +15,6 @@ export default function ProfileUpdateUser() {
     address: ''
   })
 
-  const [passwordData, setPasswordData] = useState({
-    oldPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  })
-
   useEffect(() => {
     fetchUserData()
   }, [])
@@ -28,17 +22,14 @@ export default function ProfileUpdateUser() {
   const fetchUserData = async () => {
     setIsLoading(true)
     try {
-      // 從 localStorage 獲取令牌
-      const token = localStorage.getItem('authToken');
-      console.log('Token:', token);  // 打印出Token的值
-
       const response = await fetch('http://localhost:3005/api/dashboard/profile', {
+        method: 'GET',
+        credentials: 'include', // 這將包含cookies
         headers: {
-          'Authorization': `Bearer ${token}`,// 添加授權頭
           'Content-Type': 'application/json',
-          credentials: 'include' // 這會包含 cookies
         }
       })
+
       if (!response.ok) {
         throw new Error('Failed to fetch user data')
       }
@@ -75,23 +66,15 @@ export default function ProfileUpdateUser() {
     })
   }
 
-  const handlePasswordChange = (e) => {
-    setPasswordData({
-      ...passwordData,
-      [e.target.name]: e.target.value
-    })
-  }
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch('http://localhost:3005/api/dashboard/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
       if (!response.ok) {
@@ -100,36 +83,6 @@ export default function ProfileUpdateUser() {
       // 更新成功後的操作，例如顯示成功消息
       alert('Profile updated successfully')
       fetchUserData() // 重新獲取用戶數據以刷新頁面
-    } catch (err) {
-      setError(err.message)
-    }
-  }
-
-  const handlePasswordSubmit = async (e) => {
-    e.preventDefault()
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setError('New passwords do not match')
-      return
-    }
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3005/api/dashboard/password', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          oldPassword: passwordData.oldPassword,
-          newPassword: passwordData.newPassword
-        })
-      })
-      if (!response.ok) {
-        throw new Error('Failed to update password')
-      }
-      // 密碼更新成功後的操作
-      alert('Password updated successfully')
-      setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' })
     } catch (err) {
       setError(err.message)
     }
@@ -146,7 +99,7 @@ export default function ProfileUpdateUser() {
                 <input
                   type="text"
                   name="name"
-                  value={formData.name}
+                  value={formData.user_name}
                   onChange={handleInputChange}
                   placeholder={`${userData.name}`}
                   style={{ width: "100%" }}
@@ -160,15 +113,15 @@ export default function ProfileUpdateUser() {
                   placeholder={`${userData.birthday}`}
                   style={{ width: "50%" }}
                 />
-                <select name="gender"
+                <select 
+                  name="gender"
                   value={formData.gender}
                   onChange={handleInputChange}
-                  style={{ width: "45%" }}
-                  defaultValue="option1">
+                  style={{ width: "45%" }}>
                   <option value="option1">選擇性別</option>
-                  <option value="male">男</option>
-                  <option value="female">女</option>
-                  <option value="order">不願透露</option>
+                  <option value="Male">男</option>
+                  <option value="Female">女</option>
+                  <option value="Other">不願透露</option>
                 </select>
                 <input type="tel"
                   name="phone"
@@ -186,7 +139,7 @@ export default function ProfileUpdateUser() {
                   style={{ width: "100%" }}
                 />
               </section>
-            </form>
+      </form>
     </>
   )
 }

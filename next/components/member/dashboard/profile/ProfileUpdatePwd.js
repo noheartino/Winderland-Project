@@ -29,24 +29,25 @@ export default function ProfileUpdatePwd() {
     setIsLoading(true)
     try {
       // 從 localStorage 獲取令牌
-      const token = localStorage.getItem('authToken');
-      console.log('Token:', token);  // 打印出Token的值
+      // const token = localStorage.getItem('authToken');
+      // console.log('Token:', token);  // 打印出Token的值
 
       const response = await fetch('http://localhost:3005/api/dashboard/profile', {
+        method: 'GET',
+        credentials: 'include', // 這將包含cookies
         headers: {
-          'Authorization': `Bearer ${token}`,// 添加授權頭
+          // 'Authorization': `Bearer ${token}`,// 添加授權頭
           'Content-Type': 'application/json',
-          credentials: 'include' // 這會包含 cookies
         }
       })
       if (!response.ok) {
-        throw new Error('Failed to fetch user data')
+        throw new Error('獲取用戶數據失敗')
       }
       const data = await response.json()
-      console.log('Fetched data:', data);
+      console.log('獲取的數據:', data);
 
-      const user = data?.data?.user || data?.user || data;
-      if (user && typeof user === 'object') {
+      if (data.status === 'success' && data.data && data.data.user) {
+        const user = data.data.user;
         setUserData(user);
         setFormData({
           user_name: user.user_name,
@@ -58,10 +59,10 @@ export default function ProfileUpdatePwd() {
           member_level_id: user.member_level_id,
         });
       } else {
-        throw new Error('User data is not available or in unexpected format');
+        throw new Error('用戶數據不可用或格式不正確');
       }
     } catch (err) {
-      console.error("Error fetching user data:", err);
+      console.error("獲取用戶數據時出錯:", err);
       setError(err.message);
     } finally {
       setIsLoading(false)
@@ -85,13 +86,12 @@ export default function ProfileUpdatePwd() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch('http://localhost:3005/api/dashboard/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
       if (!response.ok) {
@@ -112,13 +112,12 @@ export default function ProfileUpdatePwd() {
       return
     }
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch('http://localhost:3005/api/dashboard/password', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
+        credentials: 'include',
         body: JSON.stringify({
           oldPassword: passwordData.oldPassword,
           newPassword: passwordData.newPassword

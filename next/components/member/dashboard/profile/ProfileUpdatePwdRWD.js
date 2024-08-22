@@ -28,45 +28,46 @@ export default function ProfileUpdatePwdRWD() {
     const fetchUserData = async () => {
         setIsLoading(true)
         try {
-            // 從 localStorage 獲取令牌
-            const token = localStorage.getItem('authToken');
-            console.log('Token:', token);  // 打印出Token的值
-
-            const response = await fetch('http://localhost:3005/api/dashboard/profile', {
-                headers: {
-                    'Authorization': `Bearer ${token}`,// 添加授權頭
-                    'Content-Type': 'application/json',
-                    credentials: 'include' // 這會包含 cookies
-                }
-            })
-            if (!response.ok) {
-                throw new Error('Failed to fetch user data')
+          // 從 localStorage 獲取令牌
+          // const token = localStorage.getItem('authToken');
+          // console.log('Token:', token);  // 打印出Token的值
+    
+          const response = await fetch('http://localhost:3005/api/dashboard/profile', {
+            method: 'GET',
+            credentials: 'include', // 這將包含cookies
+            headers: {
+              // 'Authorization': `Bearer ${token}`,// 添加授權頭
+              'Content-Type': 'application/json',
             }
-            const data = await response.json()
-            console.log('Fetched data:', data);
-
-            const user = data?.data?.user || data?.user || data;
-            if (user && typeof user === 'object') {
-                setUserData(user);
-                setFormData({
-                    user_name: user.user_name,
-                    account: user.account,
-                    birthday: user.birthday,
-                    gender: user.gender,
-                    phone: user.phone,
-                    address: user.address,
-                    member_level_id: user.member_level_id,
-                });
-            } else {
-                throw new Error('User data is not available or in unexpected format');
-            }
+          })
+          if (!response.ok) {
+            throw new Error('獲取用戶數據失敗')
+          }
+          const data = await response.json()
+          console.log('獲取的數據:', data);
+    
+          if (data.status === 'success' && data.data && data.data.user) {
+            const user = data.data.user;
+            setUserData(user);
+            setFormData({
+              user_name: user.user_name,
+              account: user.account,
+              birthday: user.birthday,
+              gender: user.gender,
+              phone: user.phone,
+              address: user.address,
+              member_level_id: user.member_level_id,
+            });
+          } else {
+            throw new Error('用戶數據不可用或格式不正確');
+          }
         } catch (err) {
-            console.error("Error fetching user data:", err);
-            setError(err.message);
+          console.error("獲取用戶數據時出錯:", err);
+          setError(err.message);
         } finally {
-            setIsLoading(false)
+          setIsLoading(false)
         }
-    }
+      }
 
     const handleInputChange = (e) => {
         setFormData({

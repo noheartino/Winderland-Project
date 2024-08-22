@@ -38,24 +38,25 @@ export default function DashboardProfile() {
     setIsLoading(true)
     try {
       // 從 localStorage 獲取令牌
-      const token = localStorage.getItem('authToken');
-      console.log('Token:', token);  // 打印出Token的值
+      // const token = localStorage.getItem('authToken');
+      // console.log('Token:', token);  // 打印出Token的值
 
       const response = await fetch('http://localhost:3005/api/dashboard/profile', {
+        method: 'GET',
+        credentials: 'include', // 這將包含cookies
         headers: {
-          'Authorization': `Bearer ${token}`,// 添加授權頭
+          // 'Authorization': `Bearer ${token}`,// 添加授權頭
           'Content-Type': 'application/json',
-          credentials: 'include' // 這會包含 cookies
         }
       })
       if (!response.ok) {
-        throw new Error('Failed to fetch user data')
+        throw new Error('獲取用戶數據失敗')
       }
       const data = await response.json()
-      console.log('Fetched data:', data);
+      console.log('獲取的數據:', data);
 
-      const user = data?.data?.user || data?.user || data;
-      if (user && typeof user === 'object') {
+      if (data.status === 'success' && data.data && data.data.user) {
+        const user = data.data.user;
         setUserData(user);
         setFormData({
           user_name: user.user_name,
@@ -67,10 +68,10 @@ export default function DashboardProfile() {
           member_level_id: user.member_level_id,
         });
       } else {
-        throw new Error('User data is not available or in unexpected format');
+        throw new Error('用戶數據不可用或格式不正確');
       }
     } catch (err) {
-      console.error("Error fetching user data:", err);
+      console.error("獲取用戶數據時出錯:", err);
       setError(err.message);
     } finally {
       setIsLoading(false)
@@ -94,13 +95,14 @@ export default function DashboardProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const token = localStorage.getItem('token');
+      // const token = localStorage.getItem('token');
       const response = await fetch('http://localhost:3005/api/dashboard/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          // 'Authorization': `Bearer ${token}`
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
       if (!response.ok) {
@@ -121,13 +123,14 @@ export default function DashboardProfile() {
       return
     }
     try {
-      const token = localStorage.getItem('token');
+      // const token = localStorage.getItem('token');
       const response = await fetch('http://localhost:3005/api/dashboard/password', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          // 'Authorization': `Bearer ${token}`
         },
+        credentials: 'include',
         body: JSON.stringify({
           oldPassword: passwordData.oldPassword,
           newPassword: passwordData.newPassword
@@ -147,6 +150,39 @@ export default function DashboardProfile() {
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error: {error}</div>
 
+  // 前端換算顯示
+  // * 性別
+  const genderMapping = {
+    Male: '男性',
+    Female: '女性',
+  };
+  const userGender = genderMapping[userData.gender] || '其他';
+
+  // * 歲數
+  const calculateAge = (birthday) => {
+    const birthDate = new Date(birthday);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    // 如果生日還沒過，年齡需要減一歲
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age;
+  };
+  const userAge = calculateAge(userData.birthday);
+
+  // * 會員等級
+  const membershipMapping = {
+    1: '銅瓶會員',
+    2: '白瓶會員',
+    3: '黃金會員',
+    4: '白金會員',
+  };
+  const userMembership = membershipMapping[userData.member_level_id] ;
+
   return (
     <>
       <>
@@ -156,15 +192,15 @@ export default function DashboardProfile() {
           <section className="name-card d-flex row">
             {/* 會員資料 */}
             <div className="name col-5">
-              <div className="userName">{userData.name}</div>
-              <div className="userID">ID：{userData.id}</div>
-              <div className="userAge">{userData.gender} / 28歲 / {userData.birthday}</div>
+              <div className="userName">{userData.user_name}</div>
+              <div className="userID">ID：{userData.account}</div>
+              <div className="userAge">{userGender} / {userAge}歲 / {userData.birthday}</div>
               <div className="user-img" style={{ backgroundImage: `url(${userData.avatar})` }} />
-              <div className="membership">{userData.member_level_id}</div>
+              <div className="membership">{userMembership}</div>
             </div>
             {/* 會員等級 */}
             <div className="membership-level d-flex  col-2">
-            <ProfileMembership />
+              <ProfileMembership />
             </div>
             {/* 會員期限 */}
             <div className="membership-detail col-2">
@@ -199,23 +235,23 @@ export default function DashboardProfile() {
             {/* 會員資料 */}
             <div className="d-flex">
               <div className="name-rwd">
-                <div className="userName-rwd">椎名林檎</div>
-                <div className="userID-rwd">ID：Ann_970412</div>
-                <div className="userAge-rwd">女 / 28歲 / 1996.02.05</div>
+                <div className="userName-rwd">{userData.user_name}</div>
+                <div className="userID-rwd">ID：{userData.account}</div>
+                <div className="userAge-rwd">{userGender} / {userAge}歲 / {userData.birthday}</div>
               </div>
               <div className="user-img-rwd" />
             </div>
             <hr style={{ border: "3px solid var(--primary_color-light)" }} />
             <div className="membership-detail-rwd d-flex">
-              <div className="membership-rwd">白金會員</div>
+              <div className="membership-rwd">{userMembership}</div>
               <p className="membership-exp-rwd">白金會員到期日 - 2025.07.10</p>
             </div>
             <hr style={{ border: "3px solid var(--primary_color-light)" }} />
           </section>
           {/* 修改區 */}
           <div className="edit-card edit-card-rwd">
-           <ProfileUpdateUserRWD />
-          <ProfileUpdatePwdRWD />
+            <ProfileUpdateUserRWD />
+            <ProfileUpdatePwdRWD />
           </div>
           {/* 按鈕區 */}
           <div className="btn-group-rwd d-flex justify-content-center d-block d-lg-none mb-5">

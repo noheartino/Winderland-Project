@@ -8,7 +8,7 @@ import 'dotenv/config.js'
 // 資料庫使用
 import connection from '##/configs/mysql.js'
 // token
-import jsonwebtoken from 'jsonwebtoken'
+// import jsonwebtoken from 'jsonwebtoken'
 // 中介軟體，存取隱私會員資料用
 import authenticate from '#middlewares/authenticate.js'
 // 檢查空物件, 轉換req.params為數字
