@@ -3,6 +3,7 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import LoginForm from '@/components/member/LoginForm'
 import RegisterForm from '@/components/member/RegisterForm'
 import styles from '@/components/member/member.module.css'
