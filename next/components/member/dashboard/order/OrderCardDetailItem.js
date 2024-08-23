@@ -10,8 +10,8 @@ export default function OrderCardDetailItem() {
                     <Image
                         src="/images/member/order-p1.png"
                         alt=""
-                        width={50}
-                        height={50}
+                        width={150}
+                        height={150}
                         className="order-img"
                     />
                     <div className={`${styles.orderDetail} d-flex justify-content-between align-items-center`}>

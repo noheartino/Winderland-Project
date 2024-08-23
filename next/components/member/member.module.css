@@ -4,6 +4,13 @@
   background: var(--light, #f4ebeb);
   overflow: hidden;
 }
+/* 手機版樣式 */
+@media (max-width: 768px) {
+  .bg {
+    background: none; /* 去除背景 */
+  }
+}
+
 
  .loginBox {
   width: 500px;
@@ -300,12 +307,12 @@
 }
 
  .registerContent .rRegisterInput::placeholder {
-  color: var(--blue);
+  color:#afa6a6;
   font-size: medium;
 }
 
 .registerContent .registerInput::placeholder {
-  color: var(--blue);
+  color:#afa6a6;
   font-size: medium;
 }
 
@@ -678,7 +685,7 @@
 }
 
 .registerContent select {
-    width: 80%;
+    /* width: 80%; */
     border-radius: 0%;
     border: none;
     font-size: large;

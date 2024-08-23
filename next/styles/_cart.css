@@ -772,7 +772,7 @@ body {
 }
 
 /* 隱藏原有的 checkbox 和 radio */
-input[type="checkbox"],
+/* input[type="checkbox"],
 .checkBoxPay input[type="radio"],
 .checkBoxTransport input[type="radio"],
 .checkBoxWpoint input[type="checkbox"],
@@ -780,7 +780,7 @@ input[type="checkbox"],
 .checkProductBox input[type="checkbox"],
 .checkClassBox input[type="checkbox"] {
   display: none;
-}
+} */
 
 /* 自訂 checkbox 和 radio 的標籤樣式 */
 .checkBoxPay label,

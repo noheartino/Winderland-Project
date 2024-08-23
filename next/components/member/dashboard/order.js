@@ -13,11 +13,22 @@ import OrderCardRWD from './order/OrderCardRWD'
 import styles from '@/components/member/dashboard/order/OrderCardDetail.module.css'
 
 export default function DashboardOrder() {
-  const [isExpanded, setIsExpanded] = useState(false);
+// 假設這是您的訂單數據
+const orders = [
+  { id: 'a441', date: '2024.07.10' },
+  { id: 'b552', date: '2024.07.11' },
+{id: 'b333', date: '2024.03.03'}
+];
 
-  const toggleDetails = () => {
-    setIsExpanded(!isExpanded);
-  };
+// 使用對象來存儲每個訂單的展開狀態
+const [expandedStates, setExpandedStates] = useState({});
+
+const toggleDetails = (orderId) => {
+  setExpandedStates(prevStates => ({
+    ...prevStates,
+    [orderId]: !prevStates[orderId]
+  }));
+};
 
   return (
     <>
@@ -25,56 +36,49 @@ export default function DashboardOrder() {
       <div className="container d-none d-lg-block">
         <div className=" d-flex">
           <OrderAside />
+
           <div className="order-list">
-            <div className="order-card card">
+          {orders.map(order => (
+            <div className="order-card card mb-4">
               <OrderCard />
 
-              {isExpanded ? (
-            <>
-
-            {/* <div className="order-detail-title d-flex p-3">
-                  <p style={{ marginRight: '60%', marginLeft: '5%' }}>品項</p>
-                  <p style={{ marginRight: '10%' }}>件數</p>
-                  <p style={{ marginRight: '10%' }}>小計</p>
-                  <i className="fa-solid fa-chevron-up" />
-                </div> */}
-
-              <div className={`${styles.orderDetailTitle} d-flex p-3`}>
-                <div className={`col-7  ${styles.titleLabel}`}>品項</div>
-                <div className={`col-2 ${styles.titleLabelNumber} ${styles.titleLabel}`}>件數</div>
-                <div className={`col-1 ${styles.titleLabel}`}>小計</div>
-                <div className={`col-1`}>
-                  <button onClick={toggleDetails} className={styles.iconBox}>
-                    <i className={`fa-solid fa-chevron-up ${styles.faChevronUp} `} />
+              {expandedStates[order.id] ? (
+                <>
+                  <div className={`${styles.orderDetailTitle} d-flex p-3`}>
+                    <div className={`col-7  ${styles.titleLabel}`}>品項</div>
+                    <div className={`col-2 ${styles.titleLabelNumber} ${styles.titleLabel}`}>件數</div>
+                    <div className={`col-1 ${styles.titleLabel}`}>小計</div>
+                    <div className={`col-1`}>
+                    <button onClick={() => toggleDetails(order.id)} className={styles.iconBox}>
+                        <i className={`fa-solid fa-chevron-up ${styles.faChevronUp} `} />
+                      </button>
+                    </div>
+                  </div>
+                  <OrderCardDetail />
+                </>
+              ) : (
+                <div>
+                  <button
+                    type="button"
+                    className="card-footer text-muted d-flex justify-content-between align-items-center collapsible"
+                    onClick={() => toggleDetails(order.id)}
+                  >
+                    <div>{order.date}</div>
+                    <div>訂單編號 ＃{order.id}</div>
+                    <div>
+                      訂單詳情
+                      <i className="fa-solid fa-chevron-down" />
+                    </div>
                   </button>
                 </div>
-              </div>
-              <OrderCardDetail />
-            </>
-          ) : (
-            <div>
-            <button
-                type="button"
-                className="card-footer text-muted d-flex justify-content-between align-items-center collapsible"
-                onClick={toggleDetails}
-            >
-                <div>2024.07.10</div>
-                <div>訂單編號 ＃a441</div>
-                <div>
-                    訂單詳情
-                    <i className="fa-solid fa-chevron-down"/>
-                </div>
-            </button>
-              {/* <div>
-                <button onClick={toggleDetails}>
-                  <i className="fa-solid fa-chevron-down" />
-                </button>
-              </div> */}
-            </div>
-          )}
+              )}
 
-            </div>           
+            </div>
+
+          ))}
           </div>
+
+
         </div>
       </div>
 
