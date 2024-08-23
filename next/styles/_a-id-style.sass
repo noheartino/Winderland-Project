@@ -128,7 +128,8 @@
   /* 回覆區 */
   .aid-reply-area
     // justify-content: space-between
-
+    .send-comment
+      border-bottom: 1px solid var(--wine_light)
     .aid-reply
       .au-icon
         background-color: var(--wine)
@@ -189,16 +190,27 @@
         .aucomment
           border-radius: 10px
           background-color: #fff
+
+          textarea
+            border: 0
+            outline: none
+            resize: none
+            box-shadow: none
+            padding: 0
+          button
+            background-color: var(--primary)
+            color: #fff
+            border-radius: 44px
+
           p
             font-size: 16px
             letter-spacing: 1.6px
             margin: 0
             color: var(--text_dark)
-            overflow: hidden
-            text-overflow: ellipsis
-            display: -webkit-box
-            -webkit-line-clamp: 3
-            -webkit-box-orient: vertical
+            overflow: auto
+            // display: -webkit-box
+            // -webkit-line-clamp: 5
+            // -webkit-box-orient: vertical
             white-space: normal
         .aucomment-time
           p
