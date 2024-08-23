@@ -20,7 +20,7 @@ export default function CouponList1() {
       </div>
       <div className="col-3 my-3">
         <p className={`${style.couponRecordDate} py-2 m-0 d-none d-lg-block`}>2024.06.08</p>
-        <p className={`${style.couponRecordDateSm} py-2 m-0 d-lg-none`}>06.08</p>
+        <p className={`${style.couponRecordDateSm} py-2 ps-3 m-0 d-lg-none`}>06.08</p>
       </div>
       <div className="col-3 my-3">
         <p className={`${style.couponRecordCost} py-2 m-0 d-none d-lg-block`}>-NT $350</p>
