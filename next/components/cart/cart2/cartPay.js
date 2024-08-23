@@ -112,6 +112,12 @@ export default function CartPay({
     if (validateForm()) {
       try {
         let response;
+        // 把必要的資料存入 sessionStorage
+        sessionStorage.setItem("productData", JSON.stringify(productData));
+        sessionStorage.setItem("classData", JSON.stringify(classData));
+        sessionStorage.setItem("selectedPayment", selectedPayment);
+        sessionStorage.setItem("selectedTransport", selectedTransport);
+        sessionStorage.setItem("discountedAmount", discountedAmount);
 
         if (selectedPayment === "productpay") {
           // 貨到付款
@@ -137,7 +143,7 @@ export default function CartPay({
           router.push("/cart/cartCheckout3");
         } else if (selectedPayment === "creditpay") {
           const goECPayTestOnly = (discountedAmount) => {
-            if (window.confirm('確認要導向至ECPay進行付款?')) {
+            if (window.confirm("確認要導向至ECPay進行付款?")) {
               window.location.href = `http://localhost:3005/api/ecpay-test-only?amount=${discountedAmount}`;
             }
           };

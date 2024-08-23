@@ -10,6 +10,10 @@ export default function Nav() {
     router.push("/cart/cartCheckout1"); // 使用 router.push 直接導航到首頁
   };
 
+  const goHome = () => {
+    router.push("/");
+  }
+
   const hamburgerHook = () => {
     setisOpen((prevState) => !prevState);
 
@@ -160,7 +164,7 @@ export default function Nav() {
       <div className="nav_margin"></div>
       <div className="HeaderCNav">
         <div className="container d-none d-lg-flex">
-          <a href="index.html">
+          <a onClick={goHome} style={{ cursor: 'pointer' }}>
             <img
               className="nav_logo"
               src="/nav-footer/nav_logo.png"

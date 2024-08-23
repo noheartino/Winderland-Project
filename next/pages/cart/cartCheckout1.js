@@ -13,7 +13,7 @@ import CartZero from "@/components/cart/cartObject/cartZero";
 
 
 export default function CartCheckout1() {
-  const userId = 2; // 用户 ID
+  const userId = 3; // 用户 ID
   const [allChecked, setAllChecked] = useState(false);
   const [productChecked, setProductChecked] = useState(false);
   const [classChecked, setClassChecked] = useState(false);
