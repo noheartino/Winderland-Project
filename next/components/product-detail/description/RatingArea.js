@@ -68,17 +68,6 @@ export default function RatingArea() {
               </div>
             </div>
           ))}
-          {/* <div className={`${styles["rating-item"]}`}>
-            <div className={`${styles["rating-bar"]}`}>
-              <span className={`${styles["rating-number"]}`}>5</span>
-              <div className={`${styles["bar-container"]}`}>
-                <div
-                  className={`${styles["bar"]}`}
-                  style={{ width: "80%" }}
-                ></div>
-              </div>
-            </div>
-          </div> */}
         </div>
         <div className={`col-3 ${styles["rating-score"]}`}>
           <span className={`${styles["average-rating"]}`}>

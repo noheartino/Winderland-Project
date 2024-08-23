@@ -157,13 +157,14 @@ router.get('/', async (req, res) => {
     // 獲取所有商品的基本訊息
     const [products] = await db.query(getProducts)
     const [categories] = await db.query(getCategories);
+    
 
     const productWithDetails = await tidyProducts(products);
     const categoryWithVarieds = await tidyCategories(categories)
 
     res.json({
-        productWithDetails:productWithDetails,
-        categoryWithVarieds:categoryWithVarieds
+        products:productWithDetails,
+        categories:categoryWithVarieds
     });
 
   } catch (error) {

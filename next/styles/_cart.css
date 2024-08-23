@@ -1,6 +1,7 @@
 body {
   box-sizing: border-box;
 }
+
 /* cart2 */
 .progressTitle {
   display: flex;
@@ -66,6 +67,7 @@ body {
   .progressTitle {
     padding: 0 30px;
   }
+
   .progressBar {
     padding: 0 50px;
   }
@@ -79,6 +81,7 @@ body {
   display: flex;
   align-items: center;
   padding-left: 30px;
+
   input {
     margin-right: 10px;
   }
@@ -94,6 +97,7 @@ body {
   display: flex;
   align-items: center;
   padding-left: 30px;
+
   input {
     margin-right: 10px;
   }
@@ -109,6 +113,7 @@ body {
   display: flex;
   align-items: center;
   padding-left: 30px;
+
   input {
     margin-right: 10px;
   }
@@ -118,10 +123,12 @@ body {
   .checkAllBox {
     margin: 10px 10px;
   }
+
   .checkProductBox {
     margin: 0 10px;
     margin-bottom: 30px;
   }
+
   .checkClassBox {
     margin: 0 10px;
     margin-bottom: 30px;
@@ -193,6 +200,7 @@ body {
   .progressTitle {
     padding: 0 80px 0 80px;
   }
+
   .progressBar {
     padding: 0 100px 0 100px;
   }
@@ -202,6 +210,7 @@ body {
   .progressTitle {
     padding: 0 80px 0 80px;
   }
+
   .progressBar {
     padding: 0 100px 0 100px;
   }
@@ -212,6 +221,7 @@ body {
     width: 100%;
     padding: 0 37px 0 20px;
   }
+
   .progressBar-2 {
     width: 100%;
     padding: 0 57px 0 40px;
@@ -223,6 +233,7 @@ body {
     width: 100%;
     padding: 0 40px 0 20px;
   }
+
   .progressBar-2 {
     width: 100%;
     padding: 0 60px 0 40px;
@@ -290,6 +301,7 @@ body {
 @media screen and (max-width: 768px) {
   .checkBoxPay {
     font-size: 16px;
+
     input {
       margin: 0 5px;
     }
@@ -303,6 +315,7 @@ body {
     }
   }
 }
+
 @media screen and (max-width: 415px) {
   .checkBoxPay {
     input {
@@ -349,6 +362,7 @@ body {
 @media screen and (max-width: 768px) {
   .checkBoxTransport {
     font-size: 16px;
+
     input {
       margin: 0 5px;
     }
@@ -362,6 +376,7 @@ body {
     }
   }
 }
+
 @media screen and (max-width: 415px) {
   .checkBoxTransport {
     input {
@@ -397,19 +412,23 @@ body {
 @media screen and (max-width: 992px) {
   .checkBoxWpoint {
     height: 80px;
+
     span {
       letter-spacing: 0.2em;
       padding-left: 0px;
     }
   }
 }
+
 .cartTotalM-2 {
   width: 100%;
   background-color: #d4c0c0;
   height: 150px;
   padding: 5px;
-  position: fixed; /* 固定在視口 */
-  bottom: 0; /* 在底部 */
+  position: fixed;
+  /* 固定在視口 */
+  bottom: 0;
+  /* 在底部 */
   left: 0;
   z-index: 1000;
 }
@@ -430,36 +449,43 @@ body {
     color: #60464c;
     margin: 10px 0;
   }
+
   .cartTotalML2-2 {
     display: flex;
     justify-content: space-between;
     color: #60464c;
     margin: 10px 0;
   }
+
   .cartTotalML3-2 {
     display: flex;
     justify-content: space-between;
     color: #a66e7b;
     margin: 10px 0;
+
     .cartTotalML3Detail {
       color: #b99090;
       font-size: 10px;
     }
   }
 }
+
 .cartTotalMR-2 {
   padding: 0;
   height: 110px;
   display: grid;
   place-items: center;
+
   .cartTotalMRTitle-2 {
     margin-left: -40px;
     color: #60464c;
   }
+
   .cartTotalMRMoney-2 {
     color: #ff4f4f;
     font-size: 20px;
   }
+
   .cartTotalMRBTN-2 {
     margin-left: -15px;
     width: 100px;
@@ -478,7 +504,7 @@ body {
   }
 }
 
-.wPointTitle{
+.wPointTitle {
   font-size: 16px;
   color: #60464C;
   padding-left: 15px;
@@ -747,7 +773,12 @@ body {
 
 /* 隱藏原有的 checkbox 和 radio */
 input[type="checkbox"],
-input[type="radio"] {
+.checkBoxPay input[type="radio"],
+.checkBoxTransport input[type="radio"],
+.checkBoxWpoint input[type="checkbox"],
+.checkAllBox input[type="checkbox"],
+.checkProductBox input[type="checkbox"],
+.checkClassBox input[type="checkbox"] {
   display: none;
 }
 
@@ -761,9 +792,12 @@ input[type="radio"] {
 .wPointTitle label {
   position: relative;
   cursor: pointer;
-  padding-left: 30px; /* 預留空間給自訂 checkbox/radio */
-  display: flex; /* 使用 flexbox 使內容縱向居中 */
-  align-items: center; /* 垂直置中 */
+  padding-left: 30px;
+  /* 預留空間給自訂 checkbox/radio */
+  display: flex;
+  /* 使用 flexbox 使內容縱向居中 */
+  align-items: center;
+  /* 垂直置中 */
 }
 
 /* 自訂 checkbox 和 radio 的樣式 */
@@ -777,44 +811,104 @@ input[type="radio"] {
   content: '';
   position: absolute;
   left: 0;
-  top: 50%; /* 藉由這項來使整個框位於中央 */
-  transform: translateY(-50%); /* 再次調整 50% 高度 */
-  width: 20px; /* 外部 checkbox/radio 的寬度 */
-  height: 20px; /* 外部 checkbox/radio 的高度 */
-  border: 2px solid #D4C0C0; /* 邊框顏色 */
-  border-radius: 0; /* 不要圓角，保持正方形 */
-  background-color: white; /* 背景顏色 */
-  transition: background-color 0.2s, border-color 0.2s; /* 平滑過渡效果 */
+  top: 50%;
+  /* 藉由這項來使整個框位於中央 */
+  transform: translateY(-50%);
+  /* 再次調整 50% 高度 */
+  width: 20px;
+  /* 外部 checkbox/radio 的寬度 */
+  height: 20px;
+  /* 外部 checkbox/radio 的高度 */
+  border: 2px solid #D4C0C0;
+  /* 邊框顏色 */
+  border-radius: 0;
+  /* 不要圓角，保持正方形 */
+  background-color: white;
+  /* 背景顏色 */
+  transition: background-color 0.2s, border-color 0.2s;
+  /* 平滑過渡效果 */
 }
 
 /* 勾選時的樣式 */
-input[type="checkbox"]:checked + label::before,
-input[type="radio"]:checked + label::before {
-  background-color: white; /* 勾選時保留白色背景 */
+.checkBoxPay input[type="checkbox"]:checked+label::before,
+.checkBoxTransport input[type="radio"]:checked+label::before,
+.checkBoxWpoint input[type="checkbox"]:checked+label::before,
+.checkProductBox input[type="checkbox"]:checked+label::before,
+.checkClassBox input[type="checkbox"]:checked+label::before,
+.checkAllBox input[type="checkbox"]:checked+label::before,
+.wPointTitle input[type="checkbox"]:checked+label::before {
+  background-color: white;
+  /* 勾選時保留白色背景 */
 }
 
 /* 勾選後顯示的縮小方形 */
-input[type="checkbox"]:checked + label::after {
+.checkBoxPay input[type="checkbox"]:checked+label::after,
+.checkBoxTransport input[type="radio"]:checked+label::after,
+.checkBoxWpoint input[type="checkbox"]:checked+label::after,
+.checkProductBox input[type="checkbox"]:checked+label::after,
+.checkClassBox input[type="checkbox"]:checked+label::after,
+.checkAllBox input[type="checkbox"]:checked+label::after,
+.wPointTitle input[type="checkbox"]:checked+label::after {
   content: '';
   position: absolute;
-  left: 5px; /* 給外部邊框保留5px的距離 */
-  top: 50%; /* 垂直位置 */
-  transform: translateY(-50%); /* 垂直居中 */
-  width: 10px; /* 縮小方形的寬度 */
-  height: 10px; /* 縮小方形的高度 */
-  background-color: #A66E7B; /* 縮小方形顏色 */
-  border: none; /* 沒有邊框 */
+  left: 5px;
+  /* 給外部邊框保留5px的距離 */
+  top: 50%;
+  /* 垂直位置 */
+  transform: translateY(-50%);
+  /* 垂直居中 */
+  width: 10px;
+  /* 縮小方形的寬度 */
+  height: 10px;
+  /* 縮小方形的高度 */
+  background-color: #A66E7B;
+  /* 縮小方形顏色 */
+  border: none;
+  /* 沒有邊框 */
 }
 
 /* 勾選後顯示的圓形 (不使用，已建立正方形樣式) */
-input[type="radio"]:checked + label::after {
+.checkBoxPay input[type="radio"]:checked+label::after,
+.checkBoxTransport input[type="radio"]:checked+label::after,
+.checkBoxWpoint input[type="radio"]:checked+label::after,
+.checkProductBox input[type="radio"]:checked+label::after,
+.checkClassBox input[type="radio"]:checked+label::after,
+.checkAllBox input[type="radio"]:checked+label::after,
+.wPointTitle input[type="radio"]:checked+label::after {
   content: '';
   position: absolute;
-  left: 5px; /* 給外部邊框保留5px的距離 */
-  top: 50%; /* 垂直位置 */
-  transform: translateY(-50%); /* 垂直居中 */
-  width: 10px; /* 縮小正方形的直徑 */
-  height: 10px; /* 縮小正方形的直徑 */
-  background-color: #A66E7B; /* 縮小正方形顏色 */
-  border: none; /* 沒有邊框 */
+  left: 5px;
+  /* 給外部邊框保留5px的距離 */
+  top: 50%;
+  /* 垂直位置 */
+  transform: translateY(-50%);
+  /* 垂直居中 */
+  width: 10px;
+  /* 縮小圓形的直徑 */
+  height: 10px;
+  /* 縮小圓形的直徑 */
+  background-color: #A66E7B;
+  /* 縮小圓形顏色 */
+  border: none;
+  /* 沒有邊框 */
+}
+
+/* 勾選後顯示的圓形 (不使用，已建立正方形樣式) */
+input[type="radio"]:checked+label::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  /* 給外部邊框保留5px的距離 */
+  top: 50%;
+  /* 垂直位置 */
+  transform: translateY(-50%);
+  /* 垂直居中 */
+  width: 10px;
+  /* 縮小正方形的直徑 */
+  height: 10px;
+  /* 縮小正方形的直徑 */
+  background-color: #A66E7B;
+  /* 縮小正方形顏色 */
+  border: none;
+  /* 沒有邊框 */
 }

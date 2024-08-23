@@ -7,10 +7,12 @@ import PcFliterAside from "@/components/product-list/aside/PcFliterAside";
 import ProductGroup from "@/components/product-list/productlist/ProductList";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
+import ListPageNation from "@/components/product-list/productlist/ListPageNation";
 
 export default function ProductIndex() {
 
   const [products,setProducts] = useState([]);
+  const [categories,setCategoryies] = useState([]);
   const [loading,setLoading] = useState(true);
   const [error,setError] = useState(null);
 
@@ -21,7 +23,9 @@ export default function ProductIndex() {
     try{
       // response取得axios的回應數據(內容有很多但我們只要data)
       const response = await axios.get('http://localhost:3005/api/product');
-      setProducts(response.data);
+      setProducts(response.data.products);
+      setCategoryies(response.data.categories);
+
       setLoading(false);
     }catch(err){
       setError('加載商品時出錯');
@@ -50,9 +54,11 @@ export default function ProductIndex() {
           {/* 主要內容 */}
           <div className="row main-content">
             {/* 電腦版篩選 */}
-            <PcFliterAside />
+            <PcFliterAside categories={categories}/>
             {/* 商品list */}
             <ProductGroup products={products}/>
+            {/* 分頁 */}
+            <ListPageNation />
           </div>
         </div>
         <Footer />
