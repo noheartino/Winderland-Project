@@ -669,8 +669,8 @@
 
     .order-card {
         width: 100%;
-        height: 35%;
-        margin-bottom: 31px;
+        /* height: 35%; */
+        /* margin-bottom: 31px; */
 
         border-top: 1px solid var(--light, #F4EBEB);
         border-right: 1px solid var(--light, #F4EBEB);
@@ -681,14 +681,16 @@
             width: 18%;
             height: 150px;
             border: 1px solid var(--wine_light, #D4C0C0);
-            background: url(/images/member/order-p1.png);
+            /* background: url(/images/member/order-p1.png); */
             background-repeat: no-repeat;
             background-size: cover;
+            margin-left: 50px;
+            margin-top: 20px;
         }
 
         .order-detail {
             width: 100%;
-            height: 150px;
+            /* height: 150px; */
             margin-left: 40px;
 
             table th {
