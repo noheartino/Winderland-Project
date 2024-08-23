@@ -212,18 +212,18 @@ export default function Nav() {
               </div>
               <div className="line" />
               <ul>
-                <a href="">
+                <Link href="/dashboard/profile">
                   <li>個人資料</li>
-                </a>
-                <a href="">
+                </Link>
+                <Link href="/dashboard/order">
                   <li>訂單查詢</li>
-                </a>
-                <a href="">
-                  <li>優惠券&amp;WP</li>
-                </a>
-                <a href="">
-                  <li>收藏庫</li>
-                </a>
+                </Link>
+                <Link href="/dashboard/coupon">
+                  <li>優惠券庫</li>
+                </Link>
+                <Link href="/dashboard/favorite">
+                  <li>經典收藏</li>
+                </Link>
               </ul>
               <div className="user_area_btn">
                 <button disabled>註冊</button>

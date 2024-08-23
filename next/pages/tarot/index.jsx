@@ -285,10 +285,10 @@ export default function Course() {
           </button>
         </div>
         {/* 抽牌區
-              <div class="pick-card-area row justify-content-center align-items-center px-0 m-0 flex-nowrap d-none" style="overflow-x: hidden">
-                  <div class="col-auto d-flex flex-column justify-content-centercard-1 px-0 m-0">
-                      <div class="tarot_card_div card_unactive">
-                          <img class="tarot_card_front" src="/images/course_and_tarot/theHangedMan.png" alt="" />
+              <div className="pick-card-area row justify-content-center align-items-center px-0 m-0 flex-nowrap d-none" style="overflow-x: hidden">
+                  <div className="col-auto d-flex flex-column justify-content-centercard-1 px-0 m-0">
+                      <div className="tarot_card_div card_unactive">
+                          <img className="tarot_card_front" src="/images/course_and_tarot/theHangedMan.png" alt="" />
                       </div>
                   </div>
               </div> */}

@@ -1,15 +1,19 @@
 import React from "react";
-import styles from "./Depiction.module.css"
+import styles from "./Depiction.module.css";
+import { useProduct } from "@/context/ProductContext";
 
 export default function Depiction() {
+  const { product, loading, error } = useProduct();
+
+  if (loading) return <div>加載中...</div>;
+  if (error) return <div>{error}</div>;
+  if (!product) return <div>查無此商品</div>;
+
   return (
     <>
-      <div className={`${styles["product-taste"]}`}>
-        風味：酒體清香⼤膽，撲⿐⽽來覆盆⼦、櫻桃、香料和⾁桂的味道，並帶有美妙的泥⼟礦物味。⼝感清新和透明的⽔果味，酸度細膩，⼝感集中。
-      </div>
-      <div className={`${styles["product-recommend"]}`}>
-        建議搭配：適合搭配野禽、乳鴿、⽜犢排等料理。
-      </div>
+      {product[0].descriptions.map((d) => (
+        <div className={`${styles["product-part"]}`}>{d.part}</div>
+      ))}
     </>
   );
 }
