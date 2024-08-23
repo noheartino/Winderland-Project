@@ -5,10 +5,10 @@ export default function CourseNav({setSearchWord}) {
   const [searchTerm, setSearchTerm] = useState("");
   const searchInputRef = useRef(null);
 
-  const router = useRouter();
-    const onChangeInput= (e)=>{
-        setSearchWord(e.target.value);
-    }
+  // const router = useRouter();
+  //   const onChangeInput= (e)=>{
+  //       setSearchWord(e.target.value);
+  //   }
   // 處理搜尋輸入
   const handleSearch = () => {
     if (searchTerm.trim()) {

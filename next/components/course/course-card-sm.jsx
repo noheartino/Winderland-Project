@@ -14,8 +14,8 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
   const isOnline = parseInt(online) === 0 ? false : true;
   return (
     <>
-      <div className="d-flex flex-column align-items-center justify-content-between">
-        <div className="row px-0 m-0 flex-row flex-md-column w-100 sm-card-minH cursor-pointer">
+      <div className="d-flex flex-column align-items-center justify-content-between cursor-pointer">
+        <div className="row px-0 m-0 flex-row flex-md-column w-100 sm-card-minH">
           <div className="col-4 col-md-12 px-0">
             <div className="course-video-video overflow-hidden">
               <img

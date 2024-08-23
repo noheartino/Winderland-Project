@@ -13,7 +13,7 @@ export default function CourseList({ myBox, classAssigns, onClickMore }) {
                 <div className="course-video-video overflow-hidden position-relative">
                     <img
                         className="course-img21"
-                        src={`/images/course_and_tarot/${myBox?.path}`}
+                        src={`/images/course_and_tarot/${myBox?.class_path}`}
                         alt=""
                     />
                     <div className="d-flex d-md-none justify-content-center align-items-center w-100 h-100 absolute-t0-l0">
