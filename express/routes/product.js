@@ -47,7 +47,7 @@ LEFT JOIN
 WHERE product.id=?`
 
 // 取得商品的總數
-const getProductsTotal = `SELECT COUNT(*) as total FROM product`;
+const getProductsTotal = `SELECT COUNT(*) as total FROM product`
 
 // 取得detail
 const getProductsDetails = `SELECT * FROM product_detail WHERE product_id IN (?)`
@@ -59,7 +59,7 @@ const getImages = `SELECT * FROM images_product WHERE product_id IN (?)`
 const getDescription = `SELECT * FROM description WHERE product_id IN (?)`
 
 // 取得基礎分類
-const getCategories = "SELECT * FROM category";
+const getCategories = 'SELECT * FROM category'
 
 // 取得variet
 const getVariet = `SELECT * FROM variet WHERE category_id IN (?)`
@@ -137,56 +137,53 @@ const tidyProduct = async (product) => {
 }
 
 const tidyCategories = async (categories) => {
-    try{
-        // 取得所有category id
-        const cids = categories.map((c) => c.id);
+  try {
+    // 取得所有category id
+    const cids = categories.map((c) => c.id)
 
-        // 取得相對應的variet
-        const[variets] = await db.query(getVariet,[cids]);
+    // 取得相對應的variet
+    const [variets] = await db.query(getVariet, [cids])
 
-        // 加到對應的category_id
-        return categories.map((category) => ({
-            ...category,
-            variets:variets.filter((v) => v.category_id === category.id)
-        }))
-    }catch(error){
-        console.error('Error in tidyCategories:', error)
-        throw error;
-    }
+    // 加到對應的category_id
+    return categories.map((category) => ({
+      ...category,
+      variets: variets.filter((v) => v.category_id === category.id),
+    }))
+  } catch (error) {
+    console.error('Error in tidyCategories:', error)
+    throw error
+  }
 }
 
 // 商品首頁,取得所有商品的內容
 router.get('/', async (req, res) => {
   try {
-
     // 設定預設頁數1，limit一頁限制多少筆，offset要跳過幾筆
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 16;
-    const offset = (page - 1) * limit;
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 16
+    const offset = (page - 1) * limit
 
     // 獲取分頁後商品的基本訊息
-    const [products] = await db.query(getProducts,[limit,offset]);
-    const [categories] = await db.query(getCategories);
-    const [productsTotal] = await db.query(getProductsTotal);
+    const [products] = await db.query(getProducts, [limit, offset])
+    const [categories] = await db.query(getCategories)
+    const [productsTotal] = await db.query(getProductsTotal)
 
-    const total = productsTotal[0].total;
-    const totalPages = Math.ceil(total / limit);
-    
+    const total = productsTotal[0].total
+    const totalPages = Math.ceil(total / limit)
 
-    const productWithDetails = await tidyProducts(products);
+    const productWithDetails = await tidyProducts(products)
     const categoryWithVarieds = await tidyCategories(categories)
 
     res.json({
-        products:productWithDetails,
-        categories:categoryWithVarieds,
-        pagination:{
-            currentPage:page,
-            totalPages:totalPages,
-            totalItems:total,
-            itemsPerPage:limit
-        }
-    });
-
+      products: productWithDetails,
+      categories: categoryWithVarieds,
+      pagination: {
+        currentPage: page,
+        totalPages: totalPages,
+        totalItems: total,
+        itemsPerPage: limit,
+      },
+    })
   } catch (error) {
     res.status(500).json({
       error: 'fail',
