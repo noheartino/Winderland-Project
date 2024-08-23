@@ -3,8 +3,7 @@ import React from "react";
 export default function ListPageNation() {
   return (
     <>
-    
-      {/* <nav aria-label="...">
+      <nav aria-label="...">
         <ul class="pagination">
           <li class="page-item disabled">
             <span class="page-link">Previous</span>
@@ -28,7 +27,7 @@ export default function ListPageNation() {
             </a>
           </li>
         </ul>
-      </nav> */}
+      </nav>
     </>
   );
 }

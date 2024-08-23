@@ -161,7 +161,7 @@ router.get('/', async (req, res) => {
 
     // 設定預設頁數1，limit一頁限制多少筆，offset要跳過幾筆
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 16;
     const offset = (page - 1) * limit;
 
     // 獲取分頁後商品的基本訊息

@@ -13,6 +13,10 @@ export default function ProductIndex() {
 
   const [products,setProducts] = useState([]);
   const [categories,setCategoryies] = useState([]);
+  const [currentPage,setCurrentPage] = useState(1);
+  const [totalPages,setTotalPages] = useState(0);
+  const [itemsPerPage,setItemsPerPage] = useState(16);
+  const [totalItems,setTotalItems] = useState(0);
   const [loading,setLoading] = useState(true);
   const [error,setError] = useState(null);
 
