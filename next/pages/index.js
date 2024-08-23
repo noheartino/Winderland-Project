@@ -7,6 +7,7 @@ import Nav from '@/components/Header/Header'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  
   return (
     <>
       <Head>

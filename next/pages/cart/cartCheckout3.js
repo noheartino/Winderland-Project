@@ -64,8 +64,6 @@ export default function CartCheckout3() {
                   </div>
                 </div>
                 <CartProductDetail />
-                <CartProductDetail />
-                <CartProductDetail />
               </div>
               <div className="col-4">
                 <CartMoneyTotal />
@@ -109,7 +107,6 @@ export default function CartCheckout3() {
               </div>
             </div>
             <div className="cartProductDetailListM">
-              <CartProductDetailM />
               <CartProductDetailM />
             </div>
             <CartMoneyTotal />

@@ -1,25 +1,32 @@
 import React from 'react';
-import { useRouter } from 'next/router'; // 导入 useRouter
+import { useRouter } from 'next/router';
 import css from '@/components/cart/cart1/cartMoney.module.css';
 
-export default function CartMoneyM({ totalAmount = 0, selectedCoupon, userId }) {
+export default function CartMoneyM({ totalAmount = 0, selectedCoupon, userId, productData, classData }) {
   const router = useRouter();
   let discountAmount = 0;
 
   if (selectedCoupon) {
     const discount = parseFloat(selectedCoupon.coupon_discount) || 0;
-    if (discount > 1) {
-      discountAmount = discount;
-    } else {
-      discountAmount = totalAmount * (1 - discount);
-    }
+    discountAmount = discount > 1 ? discount : totalAmount * (1 - discount);
   }
 
   const finalAmount = Math.max(0, totalAmount - discountAmount);
 
   const confirmOrder = () => {
-    sessionStorage.setItem('user_id', userId); // 存储 user_id 到 sessionStorage
-    router.push('/cart/cartCheckout2'); // 跳转到 CartCheckout2 页
+    if (productData.length > 0 || classData.length > 0) {
+      sessionStorage.setItem('user_id', userId); // 儲存 user_id 到 sessionStorage
+      sessionStorage.setItem('totalAmount', totalAmount);
+      sessionStorage.setItem('discountAmount', discountAmount);
+      sessionStorage.setItem('finalAmount', finalAmount);
+      sessionStorage.setItem('productData', JSON.stringify(productData));
+      sessionStorage.setItem('classData', JSON.stringify(classData));
+
+      router.push('/cart/cartCheckout2'); // 跳轉到 CartCheckout2 頁
+    } else {
+      // Optionally, you could show an alert or notification here
+      alert('請選擇商品或課程。');
+    }
   };
 
   return (
@@ -41,7 +48,13 @@ export default function CartMoneyM({ totalAmount = 0, selectedCoupon, userId }) 
             <b>NT$ {Math.floor(finalAmount)}</b>
           </div>
           <div>
-            <button className={css.cartTotalMRBTN} onClick={confirmOrder}>確認</button>
+            <button 
+              className={css.cartTotalMRBTN} 
+              onClick={confirmOrder}
+              disabled={productData.length === 0 && classData.length === 0}
+            >
+              確認
+            </button>
           </div>
         </div>
       </div>
