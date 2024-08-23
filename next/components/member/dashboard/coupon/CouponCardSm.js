@@ -5,7 +5,7 @@ export default function CouponCardSm() {
   return (
     <>
       {/* 一組優惠券 */}
-      <div className={`col-auto d-lg-none px-3 py-2`}>
+      <div className={`col-12 d-lg-none px-3 py-2`}>
           <div className={`${style.couponCard} row px-2 py-3`}>
             <div
               className={`col d-flex justify-content-center align-items-center`}
