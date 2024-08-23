@@ -1,6 +1,5 @@
 import CourseList from "@/components/course/course-list";
 import CourseNav from "@/components/course/course-nav";
-import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/router";
 import CourseBox from "@/components/course/course-courseBox";
 import { useState, useEffect } from "react";
@@ -8,8 +7,8 @@ import CourseCardSm from '@/components/course/course-card-sm'
 
 export default function CourseIndex() {
   const router = useRouter();
-  const { search } = router.query;
-
+  const { search, view } = router.query;
+  const [ apiUrl, setApiUrl ] = useState(`http://localhost:3005/api/courseList`)
   const [courses, setCourses] = useState([]);
   const [comments, setComments] = useState([]);
   const [classAssigns, setClassAssigns] = useState([]);
@@ -22,10 +21,17 @@ export default function CourseIndex() {
 
   useEffect(() => {
     // const includeImages = false;
-    const apiUrl = search
-      ? `http://localhost:3005/api/courseList?search=${search}`
-      : "http://localhost:3005/api/courseList";
-    // 當組件掛載時執行 fetch 請求
+    if(!search && !view){
+      setApiUrl(`http://localhost:3005/api/courseList`)
+    }
+    if(search){
+      setApiUrl(`http://localhost:3005/api/courseList?search=${search}`)
+    }
+    if(view){
+      setApiUrl(`http://localhost:3005/api/courseList?view=${view}`)
+    }
+    console.log(apiUrl);
+    // 當組件掛載時執行 fetch 請求 紀錄0823
     fetch(apiUrl)
       .then((response) => {
         if (!response.ok) {
@@ -49,15 +55,19 @@ export default function CourseIndex() {
         setMyCourse(myCourse);
         setmyFirstFavoriteCourse(...myFavoriteCourse.slice(0, 1));
         setFirstMyCourse(...myCourse.slice(0, 1));
+        if(isHomePage){clearBtnHref()}
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [search]);
+  }, [search, view]);
   // console.log(myFirstFavoriteCourse[0]);
 
-  function onClickMore(){
+  function toggleIsHomePage(){
     setIsHomePage(!isHomePage);
+  }
+  function handleHomeTrue(){
+    setIsHomePage(true);
   }
 
   function clickCourseBtn(e) {
@@ -74,6 +84,12 @@ export default function CourseIndex() {
       });
     }
   }
+  function clearBtnHref() {
+      router.push({
+        pathname: '/course',
+        query: {},
+      });
+  }
 
   
   return (
@@ -88,7 +104,7 @@ export default function CourseIndex() {
       <div className="course_wrap">
         <header></header>
 
-        <CourseNav />
+        <CourseNav handleHomeTrue={handleHomeTrue} />
 
         {/* first page start */}
         <div className={`container-fluid course-first-page ${isHomePage?'d-block':'d-none'}`}>
@@ -119,7 +135,7 @@ export default function CourseIndex() {
                   </div>
                   {/* mycourse box underline start */}
                   <div className="row px-0 m-0 h-100 course-mycourse d-flex align-items-start">
-                    <CourseBox myBox={firstMyCourse} classAssigns={classAssigns} onClickMore={onClickMore} />
+                    <CourseBox myBox={firstMyCourse} classAssigns={classAssigns} toggleIsHomePage={toggleIsHomePage} />
                     {/* {console.log(myCourse[0].name)} */}
                   </div>
                   {/* mycourse box underline end */}
@@ -166,7 +182,7 @@ export default function CourseIndex() {
         </div>
         {/* first page end */}
 
-        {/* page two 我的課程&我的收藏 start */}
+        {/* page two 我的課程 start */}
         <div className={`container-fluid px-0 ${isHomePage?'d-none':'d-block'}`}>
           <div className="container-sm px-0 my-5">
             <div className="px-10px">
@@ -191,9 +207,9 @@ export default function CourseIndex() {
               </div>
             </div>
             <div className="row px-0 m-0 course-mycourse-box row-gap-5">
-              {/* 課程卡片 start */}
               {/* card-sm online start */}
-              {myCourse.map((course) => {
+              {myCourse && myCourse.length>0 ? 
+                myCourse.map((course) => {
                 const { class_id } = course;
                 let averageRating = 0;
                 let classAssignsQ = 0;
@@ -215,13 +231,14 @@ export default function CourseIndex() {
                   <CourseCardSm course={course} averageRating={averageRating} classAssignsQ={classAssignsQ}/>
                 </div> 
               );
-            })}
+            })
+               :
+               <div className='col-12 col-md-4 col-lg-3 px-10px'><h5 className="spac-1 text-gray">目前尚無課程<i className="ms-2 fa-solid fa-wine-glass-empty"></i></h5></div>}
               {/* card-sm online end */}
-              {/* 課程卡片 end */}
             </div>
           </div>
         </div>
-        {/* page two 我的課程&我的收藏 end */}
+        {/* page two 我的課程 end */}
 
         {/* page three course-detail start */}
         <div className="container-fluid px-0 m-0 d-none">

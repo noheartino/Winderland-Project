@@ -79,11 +79,14 @@ router.get('/', async (req, res) => {
   if (!view) {
     courseBtnSQLwords = `AND orders_detail.class_id > 0`
     console.log(courseBtnSQLwords)
+  } else if (view === '全部') {
+    courseBtnSQLwords = `AND orders_detail.class_id > 0`
+    console.log(courseBtnSQLwords)
   } else if (view === '實體') {
-    courseBtnSQLwords = `AND orders_detail.class_id > 0 AND class.online = 1`
+    courseBtnSQLwords = `AND orders_detail.class_id > 0 AND class.online = 0`
     console.log(courseBtnSQLwords)
   } else {
-    courseBtnSQLwords = `AND orders_detail.class_id > 0 AND class.online = 0`
+    courseBtnSQLwords = `AND orders_detail.class_id > 0 AND class.online = 1`
     console.log(courseBtnSQLwords)
   }
   let querySQLMyCourse = `SELECT orders_detail.order_uuid, orders_detail.class_id, orders.user_id, orders.order_uuid, class.*, class.id AS class_id, images_class.class_id, images_class.path AS class_path, class.name AS class_name, teacher.id AS teacher_id, teacher.name AS teacher_name
@@ -99,6 +102,19 @@ router.get('/', async (req, res) => {
                                 teacher ON class.teacher_id = teacher.id
                             WHERE orders.user_id = ${userId}
                                 ${courseBtnSQLwords}
+                            ORDER BY orders.order_uuid ASC;`
+  let queryCourseDetail = `SELECT orders_detail.order_uuid, orders_detail.class_id, orders.user_id, orders.order_uuid, class.*, class.id AS class_id, images_class.class_id, images_class.path AS class_path, class.name AS class_name, teacher.id AS teacher_id, teacher.name AS teacher_name
+                            FROM
+                                orders_detail
+                            JOIN
+                                orders ON orders_detail.order_uuid = orders.order_uuid
+                            JOIN
+                                class ON orders_detail.class_id = class.id
+                            JOIN
+                                images_class ON class.id = images_class.class_id
+                            JOIN
+                                teacher ON class.teacher_id = teacher.id
+                            WHERE class.id = ?
                             ORDER BY orders.order_uuid ASC;`
   try {
     const [courses] = await connection.execute(querySQL, querySQLParams)

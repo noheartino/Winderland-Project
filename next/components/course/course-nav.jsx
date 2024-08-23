@@ -1,27 +1,25 @@
 import React,{ useState, useEffect, useRef } from 'react'
 import { useRouter } from "next/router";
 
-export default function CourseNav({setSearchWord}) {
+export default function CourseNav({handleHomeTrue}) {
   const [searchTerm, setSearchTerm] = useState("");
   const searchInputRef = useRef(null);
 
-  // const router = useRouter();
-  //   const onChangeInput= (e)=>{
-  //       setSearchWord(e.target.value);
-  //   }
-  // 處理搜尋輸入
+  const router = useRouter();
   const handleSearch = () => {
     if (searchTerm.trim()) {
       router.push({
         pathname: '/course',
         query: { search: searchTerm },
       });
+      handleHomeTrue()
     }
     if(searchTerm.trim().length<1){
       router.push({
         pathname: '/course',
-        query: {},
+        query: {search:"ssss"},
       });
+      handleHomeTrue()
     }
   };
 
@@ -30,9 +28,9 @@ export default function CourseNav({setSearchWord}) {
     setSearchTerm("")
     router.push({
       pathname: '/course',
-      query: {},
+      query: {search:""},
     });
-    
+    handleHomeTrue()
   }
   // 處理鍵盤事件
   const handleKeyDown = (e) => {
@@ -41,8 +39,8 @@ export default function CourseNav({setSearchWord}) {
     }
   };
   const handleClick = (e) => {
-    e.preventDefault();
     const tagText = e.target.textContent;
+    handleHomeTrue()
     if (tagText.trim()) {
       router.push({
         pathname: '/course',
@@ -51,7 +49,6 @@ export default function CourseNav({setSearchWord}) {
     }
   };
   const handleClickSearchIcon = (e) => {
-    e.preventDefault();
     searchInputRef.current.focus()
     setSearchTerm(searchInputRef.current.value)
     handleSearch();
@@ -107,7 +104,7 @@ export default function CourseNav({setSearchWord}) {
                 CIVA
               </span>
               <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
-                阿爾薩斯
+                阿爾蕯斯
               </span>
               <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
                 葡萄牙公會

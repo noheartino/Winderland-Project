@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
 
-export default function CourseList({ myBox, classAssigns, onClickMore }) {
+export default function CourseList({ myBox, classAssigns, toggleIsHomePage }) {
     const assigns = classAssigns?.filter((assign) => {
         return assign.class_id === myBox?.id;
       });
     const assignedQ = assigns?.length;
-    console.log(assigns.length);
     return (
         <>
             <div className={`course-leftcontent col-12 col-md-8 h-100 px-0 ${myBox ? 'd-block' : 'd-none'}`} type="button">
@@ -53,7 +52,7 @@ export default function CourseList({ myBox, classAssigns, onClickMore }) {
                     
                 </div>
             </div>
-            <div className={`course-more col h-100 ms-3 justify-content-center align-items-center cursor-pointer ${myBox ? 'd-none d-md-flex' : 'd-none'}`} onClick={onClickMore}>
+            <div className={`course-more col h-100 ms-3 justify-content-center align-items-center cursor-pointer ${myBox ? 'd-none d-md-flex' : 'd-none'}`} onClick={toggleIsHomePage}>
                 <div className="spac-2 text-prim-dark h6">查看更多</div>
                 <div
                     className="ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark d-flex align-items-center justify-content-center"
