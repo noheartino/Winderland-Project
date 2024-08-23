@@ -8,8 +8,8 @@ export default function CategoryTitle() {
       <div className={styles["shop-header-img"]}>
         <div className={styles["shop-header-title"]}>
           {/* 到時候內容要跑資料庫的Category */}
-          <h1 className="h3">紅酒</h1>
-          <h5>(Red Wine)</h5>
+          <h1 className="h3">全部商品</h1>
+          <h5>(All Wine)</h5>
         </div>
       </div>
     </>

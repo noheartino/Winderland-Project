@@ -41,6 +41,7 @@
             color: var(--text_primary);
 
             & .average-rating{
+                padding-left: 1.5%;
                 font-size: 50px;
                 font-weight: 600;
                 letter-spacing: 0.5rem;
