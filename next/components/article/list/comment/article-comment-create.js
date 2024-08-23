@@ -39,7 +39,7 @@ export default function ArticleCommentCreate({ articleId }) {
       }
     } catch (error) {
       console.error("Error submitting comment:", error);
-      alert("提交評論時發生錯誤");
+      alert("發生錯誤，請聯繫管理員");
     }
   };
   return (

@@ -66,4 +66,46 @@ router.get('/:id', async (req, res) => {
   }
 })
 
+// 新增文章
+router.post('/new', async (req, res) => {
+  try {
+    const { title, content, author, update_time, valid, images } = req.body
+
+    // Insert the new article into the `article` table
+    const query = `
+      INSERT INTO article (title, content, author, update_time, valid)
+      VALUES (?, ?, ?, ?, ?)
+    `
+
+    // Execute the query to insert the article
+    const [result] = await connection.execute(query, [
+      title,
+      content,
+      author,
+      update_time,
+      valid,
+    ])
+
+    // If there are images, insert them into the `images_article` table
+    if (images && images.length > 0) {
+      const articleId = result.insertId // Get the newly inserted article's ID
+      const imageQuery = `
+        INSERT INTO images_article (article_id, path)
+        VALUES (?, ?)
+      `
+
+      for (const path of images) {
+        await connection.execute(imageQuery, [articleId, path])
+      }
+    }
+
+    res
+      .status(201)
+      .json({ message: '文章新增成功', articleId: result.insertId })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: '無法新增文章' })
+  }
+})
+
 export default router

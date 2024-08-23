@@ -1,0 +1,10 @@
+.ACbg{
+  background-color: var(--light);
+}
+.AcreatePage{
+  border-radius: 15px;
+  .ACnav{
+    .ACicon{
+    }
+  }
+}

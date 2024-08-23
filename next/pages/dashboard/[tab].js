@@ -11,6 +11,7 @@ import DashboardFavorite from '@/components/member/dashboard/favorite'
 import DashboardTitle from '@/components/member/dashboard/dashboardTitle'
 import Nav from '@/components/Header/Header'
 import Footer from '@/components/footer/footer'
+import DashboardCoupon from '@/components/member/dashboard/coupon'
 
 
 // @ 預設導出
@@ -59,6 +60,7 @@ export default function DashboardIndex() {
                             </Tab>
                             <Tab eventKey="coupon" title="優惠券庫">
                                 {/* 優惠券內容 */}
+                                <DashboardCoupon />
                             </Tab>
                             <Tab eventKey="favorite" title="經典收藏">
                                 <div className="tab-pane active favorite-content">
@@ -90,6 +92,7 @@ export default function DashboardIndex() {
                             </Tab>
                             <Tab eventKey="coupon" title="優惠券庫">
                                 {/* 優惠券內容 */}
+                                <DashboardCoupon />
                             </Tab>
                             <Tab eventKey="favorite" title="經典收藏">
                                 {/* tab內容 */}
