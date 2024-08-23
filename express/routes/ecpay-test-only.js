@@ -19,9 +19,9 @@ router.get('/', function (req, res, next) {
   //二、輸入參數
   const TotalAmount = amount
   const TradeDesc = '商店線上付款'
-  const ItemName = 'xx商店購買一批'
+  const ItemName = '購買商品結帳'
   const ReturnURL = 'https://www.ecpay.com.tw'
-  const OrderResultURL = 'http://localhost:3000/payment/callback' //前端成功頁面
+  const OrderResultURL = 'http://localhost:3000/cart/cartCheckout3' //前端成功頁面
   const ChoosePayment = 'ALL'
 
   ////////////////////////以下參數不用改////////////////////////
@@ -121,50 +121,50 @@ router.get('/', function (req, res, next) {
   const AllParams = { ...ParamsBeforeCMV, CheckMacValue }
   const inputs = Object.entries(AllParams)
     .map(function (param) {
-      return `<input name=${param[0]} value="${param[1].toString()}"><br/>`
+      return `<input name=${param[0]} value="${param[1].toString()}" style="display: none"><br/>`
     })
     .join('')
 
   //六、製作送出畫面
-  const htmlContent = `
-  <!DOCTYPE html>
-  <html>
-  <head>
-      <title>全方位金流-測試</title>
-  </head>
-  <body>
-      <form method="post" action="${APIURL}">
-  ${inputs}
-  <input type ="submit" value = "送出參數">
-      </form>
-  </body>
-  </html>
-  `
+  // const htmlContent = `
+  // <!DOCTYPE html>
+  // <html>
+  // <head>
+  //     <title>全方位金流-測試</title>
+  // </head>
+  // <body>
+  //     <form method="post" action="${APIURL}">
+  // ${inputs}
+  // <input type ="submit" value = "送出參數">
+  //     </form>
+  // </body>
+  // </html>
+  // `
 
-  res.send(htmlContent)
+  // res.send(htmlContent)
 
-  //   const htmlContent = `
-  //   <!DOCTYPE html>
-  //   <html>
-  //   <head>
-  //       <title></title>
-  //   </head>
-  //   <body>
-  //       <form method="post" action="${APIURL}">
-  //   ${inputs}
-  //   <input type="submit" value="送出參數" style="display:none">
-  //       </form>
-  //   <script>
-  //     document.forms[0].submit();
-  //   </script>
-  //   </body>
-  //   </html>
-  //   `
+    const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <form method="post" action="${APIURL}">
+    ${inputs}
+    <input type="submit" value="送出參數" style="display:none">
+        </form>
+    <script>
+      document.forms[0].submit();
+    </script>
+    </body>
+    </html>
+    `
 
-  //   res.send(htmlContent)
+    res.send(htmlContent)
 
-  // 叫react送form的作法
-  //res.json({ htmlContent })
+  叫react送form的作法
+  res.json({ htmlContent })
 })
 
 export default router

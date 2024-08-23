@@ -10,15 +10,21 @@
     border: 1px solid #d4c0c0;
     overflow: hidden;
     box-sizing: border-box;
+    position: relative;
 }
 
 .cartProductDetailImg img {
-    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: auto;
     height: 100%;
     object-fit: cover;
     object-position: center;
+    transform: translate(-50%, -50%);
     display: block;
 }
+
 
 .cartProductDetailContent {
     padding-left: 10px;
@@ -72,6 +78,8 @@
     place-items: center;
     font-size: 20px;
     color: #ff4f4f;
+    margin-left: -10px;
+    white-space: nowrap;
 }
 
 @media screen and (max-width: 1400px) and (min-width: 1200px) {
@@ -154,6 +162,7 @@
     display: flex;
     align-items: center;
     color: #ff4f4f;
+    white-space: nowrap;
 }
 
 @media screen and (max-width: 768px) {
@@ -170,4 +179,8 @@
         padding-left: 90px;
         font-size: 16px;
     }
+}
+
+.formatCcM{
+    white-space: nowrap;
 }

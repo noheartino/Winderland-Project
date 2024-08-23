@@ -9,9 +9,11 @@ import CartMoneyM from "@/components/cart/cart1/cartMoneyM";
 import CartCouponM from "@/components/cart/cart1/cartCouponM";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
+import CartZero from "@/components/cart/cartObject/cartZero";
+
 
 export default function CartCheckout1() {
-  const userId = 3; // 假设的用户 ID
+  const userId = 3; // 用户 ID
   const [allChecked, setAllChecked] = useState(false);
   const [productChecked, setProductChecked] = useState(false);
   const [classChecked, setClassChecked] = useState(false);
@@ -171,6 +173,10 @@ export default function CartCheckout1() {
         content="width=device-width, initial-scale=1, shrink-to-fit=no"
       />
       <Nav />
+      {productData.length === 0 && classData.length === 0 ? (
+          <CartZero />
+        ) : (
+
       <main>
         <div className="container mb-5 d-none d-lg-block">
           <div className="row">
@@ -239,10 +245,13 @@ export default function CartCheckout1() {
             </div>
             <div className="col-1" />
             <div className="col-4">
+              {/* 仅在商品或课程勾选时传递数据 */}
               <CartMoney
                 totalAmount={totalAmount}
                 selectedCoupon={selectedCoupon}
-                userId={userId} // 添加 userId 传递给 CartMoney 组件
+                productData={productChecked ? productData : []}
+                classData={classChecked ? classData : []}
+                userId={userId}
               />
               <CartCoupon
                 userId={userId}
@@ -278,8 +287,10 @@ export default function CartCheckout1() {
             />
             <label htmlFor="allM">全部</label>
           </div>
-          <div>
-            {productData.length > 0 && (
+
+          {/* 商品和课程部分 */}
+          {productData.length > 0 && (
+            <div>
               <div className="checkProductBox">
                 <input
                   type="checkbox"
@@ -290,17 +301,15 @@ export default function CartCheckout1() {
                 />
                 <label htmlFor="productCheckM">酒類商品</label>
               </div>
-            )}
-            {productData.length > 0 && (
               <CartProductM
                 cartItems={productData}
                 onRemove={handleRemoveItem}
                 onUpdateQuantity={handleUpdateQuantity}
               />
-            )}
-          </div>
-          <div>
-            {classData.length > 0 && (
+            </div>
+          )}
+          {classData.length > 0 && (
+            <div>
               <div className="checkClassBox">
                 <input
                   type="checkbox"
@@ -311,21 +320,31 @@ export default function CartCheckout1() {
                 />
                 <label htmlFor="classCheckM">課程商品</label>
               </div>
-            )}
-            {classData.length > 0 && (
               <CartClassM classItems={classData} onRemove={handleRemoveItem} />
-            )}
+            </div>
+          )}
+
+          <div style={{ height: "150px"}}>
           </div>
-          <CartCouponM />
-          <div style={{ height: "150px" }}></div>
+
+          {/* 仅在商品或课程勾选时传递数据 */}
+          <CartMoneyM
+            totalAmount={totalAmount}
+            selectedCoupon={selectedCoupon}
+            productData={productChecked ? productData : []}
+            classData={classChecked ? classData : []}
+            userId={userId}
+          />
+          <CartCouponM
+            userId={userId}
+            selectedCoupon={selectedCoupon}
+            totalAmount={totalAmount}
+            onCouponChange={handleCouponChange}
+          />
         </div>
-        <Footer showMobileFooter={false} />
       </main>
-      <CartMoneyM
-        totalAmount={totalAmount}
-        selectedCoupon={selectedCoupon}
-        userId={userId} // 传递 userId
-      />
+    )}
+      <Footer showMobileFooter={false} />
     </>
   );
 }
