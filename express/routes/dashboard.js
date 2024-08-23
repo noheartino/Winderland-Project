@@ -63,7 +63,6 @@ router.get('/profile', authenticate, async function (req, res) {
   }
 
   try {
-    // const id = 1
     const [rows] = await connection.query('SELECT * FROM users WHERE id = ?', [
       id,
     ])
@@ -181,59 +180,160 @@ router.put('/profile/:id/password', authenticate, async function (req, res) {
 })
 
 // @ PUT - 更新會員資料(排除更新密碼)
-router.put('/:id/profile', authenticate, async function (req, res) {
-  const id = getIdParam(req)
+// router.put('/:id/profile', authenticate, async function (req, res) {
+//   const id = getIdParam(req)
 
-  // 檢查是否為授權會員，只有授權會員可以存取自己的資料
-  if (req.user.id !== id) {
-    return res.json({ status: 'error', message: '存取會員資料失敗' })
-  }
+//   // 檢查是否為授權會員，只有授權會員可以存取自己的資料
+//   if (req.user.id !== id) {
+//     return res.json({ status: 'error', message: '存取會員資料失敗' })
+//   }
 
-  // user為來自前端的會員資料(準備要修改的資料)
-  const user = req.body
+//   // user為來自前端的會員資料(準備要修改的資料)
+//   const user = req.body
 
-  // 檢查從前端瀏覽器來的資料，哪些為必要(name, ...)
-  if (!id || !user.user_name) {
-    return res.json({ status: 'error', message: '缺少必要資料' })
-  }
-  try {
-    let query = 'UPDATE users SET name = ?, email = ?'
-    let params = [user.user_name, user.email]
+//   // 檢查從前端瀏覽器來的資料，哪些為必要(name, ...)
+//   if (!id || !user.user_name) {
+//     return res.json({ status: 'error', message: '缺少必要資料' })
+//   }
+//   try {
+//     let query = 'UPDATE users SET name = ?, email = ?'
+//     let params = [user.user_name, user.email]
 
-    if (user.birthday) {
-      query += ', birthday = ?'
-      params.push(user.birthday)
-    }
+//     if (user.birthday) {
+//       query += ', birthday = ?'
+//       params.push(user.birthday)
+//     }
 
-    query += ' WHERE id = ?'
-    params.push(id)
+//     query += ' WHERE id = ?'
+//     params.push(id)
 
-    const [result] = await connection.query(query, params)
+//     const [result] = await connection.query(query, params)
 
-    if (result.affectedRows === 0) {
-      return res.json({ status: 'error', message: '更新失敗或沒有資料被更新' })
-    }
+//     if (result.affectedRows === 0) {
+//       return res.json({ status: 'error', message: '更新失敗或沒有資料被更新' })
+//     }
 
-    const [updatedRows] = await connection.query(
-      'SELECT * FROM users WHERE id = ?',
-      [id]
-    )
-    const updatedUser = updatedRows[0]
-    delete updatedUser.password
+//     const [updatedRows] = await connection.query(
+//       'SELECT * FROM users WHERE id = ?',
+//       [id]
+//     )
+//     const updatedUser = updatedRows[0]
+//     delete updatedUser.password
 
-    return res.json({ status: 'success', data: { user: updatedUser } })
-  } catch (error) {
-    console.error('Error updating user profile:', error)
-    return res
-      .status(500)
-      .json({ status: 'error', message: '更新會員資料失敗' })
-  }
-})
+//     return res.json({ status: 'success', data: { user: updatedUser } })
+//   } catch (error) {
+//     console.error('Error updating user profile:', error)
+//     return res
+//       .status(500)
+//       .json({ status: 'error', message: '更新會員資料失敗' })
+//   }
+// })
 
 // 有些特殊欄位的值沒有時要略過更新，不然會造成資料庫錯誤
 // if (!user.birth_date) {
 //   delete user.birth_date
 // }
+
+router.put('/profile', authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id
+    const { user_name, birthday, gender, phone, address, email } = req.body
+
+    console.log('接收到的數據:', req.body)
+
+    // 檢查用戶是否有權限更新這個資料
+    if (!userId) {
+      return res
+        .status(403)
+        .json({ status: 'error', message: '無權限存取此會員資料' })
+    }
+
+    // 檢查必要資料
+    if (!user_name) {
+      return res.status(400).json({ status: 'error', message: '缺少必要資料' })
+    }
+
+    console.log('更新會員id:', userId)
+    // console.log('Updated user data:', {
+    //   user_name,
+    //   birthday,
+    //   gender,
+    //   phone,
+    //   address,
+    //   email,
+    // })
+
+    // 構建動態 SQL 查詢
+    let query = 'UPDATE users SET '
+    const updateFields = []
+    const params = []
+
+    if (user_name !== undefined) {
+      updateFields.push('user_name = ?')
+      params.push(user_name)
+    }
+    if (birthday !== undefined) {
+      updateFields.push('birthday = ?')
+      params.push(birthday)
+    }
+    if (gender !== undefined) {
+      updateFields.push('gender = ?')
+      params.push(gender)
+    }
+    if (phone !== undefined) {
+      updateFields.push('phone = ?')
+      params.push(phone)
+    }
+    if (address !== undefined) {
+      updateFields.push('address = ?')
+      params.push(address)
+    }
+    if (email !== undefined) {
+      updateFields.push('email = ?')
+      params.push(email)
+    }
+
+    if (updateFields.length === 0) {
+      return res
+        .status(400)
+        .json({ status: 'error', message: '沒有提供任何更新數據' })
+    }
+
+    query += updateFields.join(', ') + ' WHERE id = ?'
+    params.push(userId)
+
+    console.log('更新後query:', query)
+    console.log('更新後params:', params)
+
+    const [result] = await connection.execute(query, params)
+    console.log('資料庫更新結果:', result)
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ status: 'error', message: '會員不存在或沒有資料被更新' })
+    }
+    // 獲取更新後的用戶資料
+    const [updatedUsers] = await connection.execute(
+      'SELECT id, user_name, email, account, birthday, gender, phone, address, member_level_id FROM users WHERE id = ?',
+      [userId]
+    )
+
+    const updatedUser = updatedUsers[0]
+    console.log('更新後會員數據:', updatedUser)
+
+    res.json({
+      status: 'success',
+      message: '會員資料更新成功',
+      data: {
+        user: updatedUser,
+      },
+    })
+  } catch (error) {
+    console.error('更新會員資料時發生錯誤:', error)
+    res.status(500).json({ status: 'error', message: '更新會員資料失敗' })
+  }
+})
 
 // @ DELETE - 刪除會員資料
 router.delete('/:id', async function (req, res) {

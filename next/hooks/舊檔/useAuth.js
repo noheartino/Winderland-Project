@@ -16,57 +16,57 @@ const useAuth = () => {
 
     // * 登入邏輯
     const login = async (account, password) => {
-        try {
-            const url = 'http://localhost:3005/api/member/login'
-            const res = await fetch(url, {
-                credentials: 'include', // 設定cookie或是存取隱私資料時要加這個參數
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    // 記住登入
-                    account: user.account,
-                    password: user.password,
-                    rememberMe: rememberMe
-                }),
-            })
+    try {
+      const url = 'http://localhost:3005/api/member/login'
+      const res = await fetch(url, {
+        credentials: 'include', // 設定cookie或是存取隱私資料時要加這個參數
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          // 記住登入
+          account: user.account,
+          password: user.password,
+          rememberMe: rememberMe
+        }),
+      })
 
-            const resData = await res.json()
+      const resData = await res.json()
 
-            if (res.ok) {
-                if (resData.status === 'success') {
-                    const { accessToken } = resData.data;
+      if (res.ok) {
+        if (resData.status === 'success') {
+          const { accessToken } = resData.data;
 
-                    if (accessToken) {
-                        localStorage.setItem('authToken', accessToken);
-                    }
+          if (accessToken) {
+            localStorage.setItem('authToken', accessToken);
+          }
 
-                    alert('登入成功')
-                    router.push('/dashboard')
-                } else {
-                    alert('登入失敗：' + resData.message)
-                }
-            } else {
-                switch (res.status) {
-                    case 400:
-                        alert('登入失敗：缺少必要資料')
-                        break
-                    case 401:
-                        alert('登入失敗：帳號或密碼錯誤')
-                        break
-                    case 404:
-                        alert('登入失敗：使用者不存在')
-                        break
-                    default:
-                        alert('登入失敗：' + (resData.message || '未知錯誤'))
-                }
-            }
-        } catch (e) {
-            console.error(e)
-            alert('登入過程中發生錯誤')
+          alert('登入成功')
+          router.push('/dashboard')
+        } else {
+          alert('登入失敗：' + resData.message)
         }
+      } else {
+        switch (res.status) {
+          case 400:
+            alert('登入失敗：缺少必要資料')
+            break
+          case 401:
+            alert('登入失敗：帳號或密碼錯誤')
+            break
+          case 404:
+            alert('登入失敗：使用者不存在')
+            break
+          default:
+            alert('登入失敗：' + (resData.message || '未知錯誤'))
+        }
+      }
+    } catch (e) {
+      console.error(e)
+      alert('登入過程中發生錯誤')
+    }
         // try {Ｆ
         //     const response = await fetch("http://localhost:3005/api/member/login", {
         //         method: "POST",

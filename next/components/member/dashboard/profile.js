@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { useAuth } from '@/hooks/use-auth'
+import { useRouter } from 'next/router'
 
 import ProfileUpdateUser from './profile/ProfileUpdateUser'
 import ProfileUpdatePwd from './profile/ProfileUpdatePwd'
@@ -9,10 +11,13 @@ import ProfileUpdateUserRWD from './profile/ProfileUpdateUserRWD'
 import ProfileUpdatePwdRWD from './profile/ProfileUpdatePwdRWD'
 
 export default function DashboardProfile() {
+  // 驗證登入
+  const { auth, updateUserInfo } = useAuth();
+  const router = useRouter();
 
-  const [userData, setUserData] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
+  // const [auth.userData, setauth.userData] = useState(null)
+  // const [isLoading, setIsLoading] = useState(true)
+  // const [error, setError] = useState(null)
 
   const [formData, setFormData] = useState({
     user_name: '',
@@ -31,52 +36,26 @@ export default function DashboardProfile() {
   })
 
   useEffect(() => {
-    fetchUserData()
-  }, [])
-
-  const fetchUserData = async () => {
-    setIsLoading(true)
-    try {
-      // 從 localStorage 獲取令牌
-      // const token = localStorage.getItem('authToken');
-      // console.log('Token:', token);  // 打印出Token的值
-
-      const response = await fetch('http://localhost:3005/api/dashboard/profile', {
-        method: 'GET',
-        credentials: 'include', // 這將包含cookies
-        headers: {
-          // 'Authorization': `Bearer ${token}`,// 添加授權頭
-          'Content-Type': 'application/json',
-        }
-      })
-      if (!response.ok) {
-        throw new Error('獲取用戶數據失敗')
-      }
-      const data = await response.json()
-      console.log('獲取的數據:', data);
-
-      if (data.status === 'success' && data.data && data.data.user) {
-        const user = data.data.user;
-        setUserData(user);
-        setFormData({
-          user_name: user.user_name,
-          account: user.account,
-          birthday: user.birthday,
-          gender: user.gender,
-          phone: user.phone,
-          address: user.address,
-          member_level_id: user.member_level_id,
-        });
-      } else {
-        throw new Error('用戶數據不可用或格式不正確');
-      }
-    } catch (err) {
-      console.error("獲取用戶數據時出錯:", err);
-      setError(err.message);
-    } finally {
-      setIsLoading(false)
+    if (!auth.isAuth) {
+      router.push('/member/login');
+    } else if (auth.userData) {
+      console.log('auth.userData:', auth.userData);
+      setFormData({
+        user_name: auth.userData.user_name || '',
+        account: auth.userData.account || '',
+        birthday: auth.userData.birthday || '',
+        gender: auth.userData.gender || '',
+        phone: auth.userData.phone || '',
+        address: auth.userData.address || '',
+        member_level_id: auth.userData.member_level_id || '',
+      });
     }
+  }, [auth, router]);
+
+  if (!auth.isAuth || !auth.userData) {
+    return null;
   }
+
 
   const handleInputChange = (e) => {
     setFormData({
@@ -92,63 +71,87 @@ export default function DashboardProfile() {
     })
   }
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault()
+  //   try {
+  //     // const token = localStorage.getItem('token');
+  //     const response = await fetch('http://localhost:3005/api/dashboard/profile', {
+  //       method: 'PUT',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         // 'Authorization': `Bearer ${token}`
+  //       },
+  //       credentials: 'include',
+  //       body: JSON.stringify(formData)
+  //     })
+  //     if (!response.ok) {
+  //       throw new Error('Failed to update profile')
+  //     }
+  //     // 更新成功後的操作，例如顯示成功消息
+  //     alert('Profile updated successfully')
+  //     fetchauth.userData() // 重新獲取用戶數據以刷新頁面
+  //   } catch (err) {
+  //     setError(err.message)
+  //   }
+  // }
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      // const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3005/api/dashboard/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Authorization': `Bearer ${token}`
-        },
-        credentials: 'include',
-        body: JSON.stringify(formData)
-      })
-      if (!response.ok) {
-        throw new Error('Failed to update profile')
-      }
-      // 更新成功後的操作，例如顯示成功消息
-      alert('Profile updated successfully')
-      fetchUserData() // 重新獲取用戶數據以刷新頁面
+      await updateUserInfo(formData);
+      alert('個人資料更新成功');
     } catch (err) {
-      setError(err.message)
+      alert('更新個人資料失敗：' + err.message);
     }
   }
 
+  // const handlePasswordSubmit = async (e) => {
+  //   e.preventDefault()
+  //   if (passwordData.newPassword !== passwordData.confirmPassword) {
+  //     setError('新密碼不匹配')
+  //     return
+  //   }
+  //   try {
+  //     // const token = localStorage.getItem('token');
+  //     const response = await fetch('http://localhost:3005/api/dashboard/password', {
+  //       method: 'PUT',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         // 'Authorization': `Bearer ${token}`
+  //       },
+  //       credentials: 'include',
+  //       body: JSON.stringify({
+  //         oldPassword: passwordData.oldPassword,
+  //         newPassword: passwordData.newPassword
+  //       })
+  //     })
+  //     if (!response.ok) {
+  //       throw new Error('Failed to update password')
+  //     }
+  //     // 密碼更新成功後的操作
+  //     alert('Password updated successfully')
+  //     setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' })
+  //   } catch (err) {
+  //     setError(err.message)
+  //   }
+  // }
   const handlePasswordSubmit = async (e) => {
     e.preventDefault()
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setError('New passwords do not match')
-      return
+      alert('新密碼不匹配');
+      return;
     }
     try {
-      // const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3005/api/dashboard/password', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Authorization': `Bearer ${token}`
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          oldPassword: passwordData.oldPassword,
-          newPassword: passwordData.newPassword
-        })
-      })
-      if (!response.ok) {
-        throw new Error('Failed to update password')
-      }
-      // 密碼更新成功後的操作
-      alert('Password updated successfully')
-      setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' })
+      // 假設 useAuth 提供了更新密碼的方法
+      await updatePassword(passwordData.oldPassword, passwordData.newPassword);
+      alert('密碼更新成功');
+      setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' });
     } catch (err) {
-      setError(err.message)
+      alert('更新密碼失敗：' + err.message);
     }
   }
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error: {error}</div>
+  // if (isLoading) return <div>Loading...</div>
+  // if (error) return <div>Error: {error}</div>
 
   // 前端換算顯示
   // * 性別
@@ -156,7 +159,7 @@ export default function DashboardProfile() {
     Male: '男性',
     Female: '女性',
   };
-  const userGender = genderMapping[userData.gender] || '其他';
+  const userGender = genderMapping[auth.userData.gender] || '其他';
 
   // * 歲數
   const calculateAge = (birthday) => {
@@ -172,7 +175,7 @@ export default function DashboardProfile() {
 
     return age;
   };
-  const userAge = calculateAge(userData.birthday);
+  const userAge = calculateAge(auth.userData.birthday);
 
   // * 會員等級
   const membershipMapping = {
@@ -181,10 +184,10 @@ export default function DashboardProfile() {
     3: '黃金會員',
     4: '白金會員',
   };
-  const userMembership = membershipMapping[userData.member_level_id] ;
+  const userMembership = membershipMapping[auth.userData.member_level_id] ;
 
   // * 會員頭像
-  // const avatarPath = `/public/member/avatar/${userData.img.split('/').pop()}`;
+  // const avatarPath = `/public/member/avatar/${auth.userData.img.split('/').pop()}`;
 
   return (
     <>
@@ -195,9 +198,9 @@ export default function DashboardProfile() {
           <section className="name-card d-flex row">
             {/* 會員資料 */}
             <div className="name col-5">
-              <div className="userName">{userData.user_name}</div>
-              <div className="userID">ID：{userData.account}</div>
-              <div className="userAge">{userGender} / {userAge}歲 / {userData.birthday}</div>
+              <div className="userName">{auth.userData.user_name}</div>
+              <div className="userID">ID：{auth.userData.account}</div>
+              <div className="userAge">{userGender} / {userAge}歲 / {auth.userData.birthday}</div>
               <div className="user-img" style={{ backgroundImage: `url($)` }} />
               <div className="membership">{userMembership}</div>
             </div>
@@ -217,15 +220,6 @@ export default function DashboardProfile() {
             <ProfileUpdateUser />
             <ProfileUpdatePwd />
           </div>
-          {/* 按鈕區 */}
-          <form onSubmit={handleSubmit}>
-            <div className="btn-group d-flex justify-content-end mb-5">
-              <button type="button" onClick={() => setFormData({ ...userData })}>清空</button>
-              <button type="submit" className="button-send">
-                送出更改
-              </button>
-            </div>
-          </form>
         </div>
 
         {/* rwd */}
@@ -238,9 +232,9 @@ export default function DashboardProfile() {
             {/* 會員資料 */}
             <div className="d-flex">
               <div className="name-rwd">
-                <div className="userName-rwd">{userData.user_name}</div>
-                <div className="userID-rwd">ID：{userData.account}</div>
-                <div className="userAge-rwd">{userGender} / {userAge}歲 / {userData.birthday}</div>
+                <div className="userName-rwd">{auth.userData.user_name}</div>
+                <div className="userID-rwd">ID：{auth.userData.account}</div>
+                <div className="userAge-rwd">{userGender} / {userAge}歲 / {auth.userData.birthday}</div>
               </div>
               <div className="user-img-rwd" />
             </div>
@@ -256,13 +250,7 @@ export default function DashboardProfile() {
             <ProfileUpdateUserRWD />
             <ProfileUpdatePwdRWD />
           </div>
-          {/* 按鈕區 */}
-          <div className="btn-group-rwd d-flex justify-content-center d-block d-lg-none mb-5">
-            <button>清空</button>
-            <button type="submit" className="button-send">
-              送出更改
-            </button>
-          </div>
+       
         </div>
       </>
 

@@ -1,12 +1,11 @@
 // # context－管理全局認證狀態
 
 // @ 導入
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext,useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-// import jwt from "jsonwebtoken"
 
 // @ 預設導出
-export const  AuthContext = createContext(null)
+const  AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
     // 管理狀態變數
@@ -38,7 +37,7 @@ export const AuthProvider = ({ children }) => {
 
     const checkAuth = async () => {
         try {
-            const response = await fetch('http://localhost:3005/api/dashboard/profile', {
+            const response = await fetch('http://localhost:3005/api/member/check', {
                 method: 'GET',
                 credentials: 'include' // 這確保了 cookies 會被發送
             });
@@ -145,7 +144,5 @@ export const AuthProvider = ({ children }) => {
     )
 }
 
+export const useAuth = () => useContext(AuthContext);
 
-// export const useAuth = () => {
-//     return useContext(AuthContext);
-// };

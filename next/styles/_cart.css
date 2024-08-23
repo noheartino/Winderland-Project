@@ -748,7 +748,7 @@ body {
 /* 隱藏原有的 checkbox 和 radio */
 input[type="checkbox"],
 input[type="radio"] {
-  display: none;
+  /* display: none; */
 }
 
 /* 自訂 checkbox 和 radio 的標籤樣式 */
