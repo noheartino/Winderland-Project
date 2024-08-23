@@ -1,8 +1,11 @@
-import CourseBox from "@/components/course/course-box"
+import CourseList from "@/components/course/course-list"
 import CourseNav from "@/components/course/course-nav"
+import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from 'next/router';
 
 export default function CourseIndex() {
-  const userId = 1
+  const { auth, login, logout } = useAuth();
+  const currentUserId=auth.userData.id;
   return (
     <>
       <title>課程首頁</title>
@@ -36,8 +39,8 @@ export default function CourseIndex() {
                     <span className="col-auto text-gray-light spac-1 px-0 mb-1 h7">正在學習中的課程內容</span>
                   </div>
                   {/* mycourse box underline start */}
-                  <CourseBox />
-                  {/* <div className="row px-0 m-0 h-100 course-mycourse d-flex align-items-start d-none">
+                  
+                  <div className="row px-0 m-0 h-100 course-mycourse d-flex align-items-start d-none">
                     <a
                       className="course-leftcontent col-12 col-md-8 px-0"
                       type="button"
@@ -102,7 +105,6 @@ export default function CourseIndex() {
                       </div>
                     </div>
                   </div>
-                  <CourseBox CourseOnLine setCourseOnLine CourseBox setCourseBox NoneFavorite setNoneFavorite NoneMycourse setNoneMycourse UserCourseData/> */}
                   {/* mycourse box underline end */}
                 </div>
 
@@ -178,199 +180,7 @@ export default function CourseIndex() {
             </div>
           </div>
           {/* page one 我的課程&收藏課程 end */}
-          {/* page one 推薦課程 start */}
-          <div className="container-fluid px-0">
-            <div className="container-sm px-0 mb-5">
-              <div className="row px-0 m-0 px-10px justify-content-center">
-                <div className="col-auto col-md-12 course-card-header d-flex align-items-center">
-                  <span className="col-auto h4 pe-2 spac-2 m-0">
-                    <strong>推薦課程</strong>
-                  </span>
-                  <span className="col-auto text-gray-light spac-1">
-                    ｜&nbsp;推薦您可能感興趣的課程
-                  </span>
-                </div>
-              </div>
-              <div className="row px-0 m-0 course-mycourse-box row-gap-5">
-                {/* card-sm online start */}
-                <a
-                  href="/"
-                  className="col-12 col-md-4 col-lg-3 course-mycourse px-10px d-flex flex-column align-items-center"
-                >
-                  <div className="row px-0 m-0 flex-row flex-md-column w-100">
-                    <div className="col-4 col-md-12 px-0">
-                      <div className="course-video-video overflow-hidden">
-                        <img
-                          className="course-img21"
-                          src="/images/course_and_tarot/rectangle128.png"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                    <div className="card-md-body col-8 col-md-12">
-                      <div className="course-body-header px-0">
-                        <span className="online-tag d-none d-md-inline-block">
-                          線上
-                        </span>
-                        <span
-                          className="h6 spac-1 text-justify"
-                          style={{ lineHeight: "35px" }}
-                        >
-                          迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
-                        </span>
-                        <p className="text-gray-light mt-2 d-none d-md-block">
-                          by 王淇
-                        </p>
-                        <div className="sm-card-secondLine d-flex d-md-none justify-content-between mt-2">
-                          <span className="sm-card-secondLine-left">
-                            <span className="online-tag">線上</span>
-                            <span className="text-gray-light">by 王淇</span>
-                          </span>
-                          <span className="sm-card-secondLine-right">
-                            <i className="fa-solid fa-star star-with-score" />
-                            <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
-                              4.8
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                      <div className="course-body-footer d-none d-md-block">
-                        <div className="stars mt-2 d-flex align-items-center">
-                          <i className="fa-solid fa-star star-with-score" />
-                          <i className="fa-solid fa-star star-with-score" />
-                          <i className="fa-solid fa-star star-with-score" />
-                          <i className="fa-solid fa-star star-with-score" />
-                          <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
-                            4.8
-                          </span>
-                        </div>
-                        <div className="location mt-2 d-flex align-items-center d-none">
-                          <i className="fa-solid fa-location-dot text-sec-dark-blue" />
-                          <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
-                            上課縣市-台北市
-                          </span>
-                        </div>
-                        <div className="course-process-footer mt-2">
-                          <span className="h5 spac-2 me-3">NT$3,500</span>
-                          <span className="h6 text-gray-light spac-2 origin-price">
-                            <del>NT$5,500</del>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row px-0 m-0 w-100">
-                    <div className="col-12 course-process-header d-flex justify-content-between mt-3 px-0">
-                      <span className="h6 text-sec-blue spac-1">
-                        課程時長-5小時
-                      </span>
-                      <span className="h6 text-sec-blue spac-1 d-none">
-                        已完成70%
-                      </span>
-                    </div>
-                    <div
-                      className="progress mt-2 bg-sec-blue px-0 d-none"
-                      role="progressbar"
-                      aria-label=""
-                      aria-valuenow={75}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      style={{ height: "5px" }}
-                    >
-                      <div
-                        className="progress-bar bg-sec-blue-dark"
-                        style={{ width: "70%" }}
-                      />
-                    </div>
-                  </div>
-                </a>
-                {/* card-sm online end */}
-                {/* card-sm underline start */}
-                <a
-                  href="/"
-                  className="col-12 col-md-4 col-lg-3 course-mycourse px-10px d-flex flex-column align-items-center"
-                >
-                  <div className="row px-0 m-0 flex-row flex-md-column w-100">
-                    <div className="col-4 col-md-12 px-0">
-                      <div className="course-video-video overflow-hidden">
-                        <img
-                          className="course-img21"
-                          src="/images/course_and_tarot/rectangle128.png"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                    <div className="card-md-body col-8 col-md-12">
-                      <div className="course-body-header px-0">
-                        <span className="underline-tag d-none d-md-inline-block">
-                          實體
-                        </span>
-                        <span
-                          className="h6 spac-1 text-justify"
-                          style={{ lineHeight: "35px" }}
-                        >
-                          迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
-                        </span>
-                        <p className="text-gray-light mt-2 d-none d-md-block">
-                          by 王淇
-                        </p>
-                        <div className="sm-card-secondLine d-flex d-md-none justify-content-between mt-2">
-                          <span className="sm-card-secondLine-left">
-                            <span className="underline-tag">實體</span>
-                            <span className="text-gray-light">by 王淇</span>
-                          </span>
-                          <span className="sm-card-secondLine-right">
-                            <i className="fa-solid fa-star star-with-score" />
-                            <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
-                              4.8
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                      <div className="course-body-footer d-none d-md-block">
-                        <div className="location mt-2 d-flex align-items-center">
-                          <i className="fa-solid fa-location-dot text-sec-dark-blue" />
-                          <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
-                            上課縣市-台北市
-                          </span>
-                        </div>
-                        <div className="course-process-footer mt-2">
-                          <span className="h5 spac-2 me-3">NT$3,500</span>
-                          <span className="h6 text-gray-light spac-2 origin-price">
-                            <del>NT$5,500</del>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row px-0 m-0 w-100">
-                    <div className="col-12 course-process-header d-flex justify-content-between mt-3 px-0">
-                      <span className="h6 text-sec-blue spac-1">
-                        限額總數-20人
-                      </span>
-                      <span className="h6 text-sec-blue spac-1">70%</span>
-                    </div>
-                    <div
-                      className="progress mt-2 bg-sec-blue px-0"
-                      role="progressbar"
-                      aria-label=""
-                      aria-valuenow={75}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      style={{ height: "5px" }}
-                    >
-                      <div
-                        className="progress-bar bg-sec-blue-dark"
-                        style={{ width: "70%" }}
-                      />
-                    </div>
-                  </div>
-                </a>
-                {/* card-sm underline end */}
-              </div>
-            </div>
-          </div>
-          {/* page one 推薦課程 end */}
+          <CourseList />
         </div>
         {/* first page end */}
 
@@ -1016,7 +826,7 @@ export default function CourseIndex() {
             <div className="container-sm">
                 <div className="row justify-content-between">
                     <a className="col-auto" href="">
-                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i class="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
+                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i className="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
                     </a>
                     <div className="col-auto">page-nav</div>
                 </div>

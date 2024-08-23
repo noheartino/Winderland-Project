@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import CartProduct from "@/components/cart/cart2/cartProduct";
-import CartCredicard from "@/components/cart/cart2/cartCredicard";
 import CartTransport from "@/components/cart/cart2/cartTransport";
 import CartWpoint from "@/components/cart/cart2/cartWpoint";
 import CartMoney from "@/components/cart/cart2/cartMoney";
 import CartPay from "@/components/cart/cart2/cartPay";
 import CartProductM from "@/components/cart/cart2/cartProductM";
-import CartCredicardM from "@/components/cart/cart2/cartCredicardM";
 import CartTransportM from "@/components/cart/cart2/cartTranportM";
 import CartWpointM from "@/components/cart/cart2/cartWpointM";
 import CartMoneyM from "@/components/cart/cart2/cartMoneyM";
@@ -14,17 +12,46 @@ import CartProductDetail from "@/components/cart/cart3/cartProductDetail";
 import CartProductDetailM from "@/components/cart/cart3/cartProductDetailM";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
+import CartClassDetail from "@/components/cart/cart3/cartClassDetail";
+import CartClassDetailM from "@/components/cart/cart3/cartClassDetailM";
+import CartTransportBlackCat from "@/components/cart/cart2/cartTransportBlackcat";
+import CartTransportBlackCatM from "@/components/cart/cart2/cartTransportBlackcatM";
 
 export default function CartCheckout2() {
   const [userId, setUserId] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState("");
   const [selectedTransport, setSelectedTransport] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+  const [pointsUsed, setPointsUsed] = useState(0);
+  const [originalPoints, setOriginalPoints] = useState(0); // 儲存原本點數
+  const [transportData, setTransportData] = useState({}); //運送資料7-11
+  const [transportBlackCatData, setTransportBlackCatData] = useState({}); // 新增狀態來儲存黑貓運送資料
 
   useEffect(() => {
     const storedUserId = sessionStorage.getItem("user_id");
+    const storedOriginalPoints = sessionStorage.getItem("originalPoints"); // 讀取原本點數
+    const storedTransportData = sessionStorage.getItem("transportData");
+    const storedTransportBlackCatData = sessionStorage.getItem(
+      "transportBlackCatData"
+    );
+    const storedPoints = sessionStorage.getItem("pointsUsed");
+    console.log("Points from sessionStorage:", storedPoints);
+
     if (storedUserId) {
       setUserId(storedUserId);
+    }
+    if (storedOriginalPoints) {
+      setOriginalPoints(parseFloat(storedOriginalPoints));
+    }
+    if (storedTransportData) {
+      setTransportData(JSON.parse(storedTransportData));
+    }
+    if (storedTransportBlackCatData) {
+      setTransportData(JSON.parse(storedTransportBlackCatData));
+    }
+    if (storedPoints) {
+      setPointsUsed(JSON.parse(storedPoints));
     }
   }, []);
 
@@ -37,14 +64,60 @@ export default function CartCheckout2() {
   };
 
   const handleTransportChange = (event) => {
-    setSelectedTransport(event.target.id);
+    const value = event.target.value;
+    setSelectedTransport(value);
+    console.log("Pickup Name Updated:", value);
+
+    if (value === "blackCat") {
+      // 清除其他運送方式的資料
+      setTransportData({});
+      localStorage.removeItem("store711"); // 清除 store711 的資料
+    } else if (value === "other") {
+      // 清除黑貓運送方式的資料
+      setTransportBlackCatData({});
+      localStorage.removeItem("store711"); // 清除 store711 的資料
+    } else {
+      // 清除黑貓運送方式的資料
+      setTransportBlackCatData({});
+      localStorage.removeItem("store711"); // 清除 store711 的資料
+    }
+  };
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+  };
+
+  const handlePointsChange = (newPoints) => {
+    setPointsUsed(newPoints);
+    console.log("Updated Points:", newPoints); // 顯示點數變化
+    sessionStorage.setItem("pointsUsed", newPoints);
+  };
+
+  // 新增處理從 CartWpoint 獲取點數的函數
+  const handlePointsFetch = (fetchedPoints) => {
+    setOriginalPoints(fetchedPoints);
+  };
+
+  const handleTransportDataChange = (newTransportData) => {
+    setTransportData(newTransportData);
+    console.log("Updated Transport Data:", newTransportData); // 顯示運送資料變化
+    sessionStorage.setItem("transportData", JSON.stringify(newTransportData));
+  };
+  
+
+  const handleTransportBlackCatDataChange = (data) => {
+    setTransportBlackCatData(data);
+    sessionStorage.setItem("transportBlackCatData", JSON.stringify(data)); // 存儲到 sessionStorage
   };
 
   return (
     <>
       <title>Cart3</title>
       <meta charSet="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no"
+      />
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -89,6 +162,7 @@ export default function CartCheckout2() {
                     </div>
                   </div>
                   <CartProductDetail />
+                  <CartClassDetail />
                 </>
               ) : (
                 <div className="cartProductDetailBox">
@@ -122,46 +196,35 @@ export default function CartCheckout2() {
                   className="styled-checkbox"
                 />
                 <label htmlFor="creditpay">信用卡</label>
-                <input
-                  type="radio"
-                  id="linepay"
-                  name="payment"
-                  value="linepay"
-                  checked={selectedPayment === "linepay"}
-                  onChange={handlePaymentChange}
-                  className="styled-checkbox"
-                />
-                <label htmlFor="linepay">Line Pay</label>
               </div>
-              {selectedPayment === "creditpay" && <CartCredicard />}
               <div className="checkBoxTransport">
                 <b>運送方式</b>
                 <input
                   type="radio"
                   id="transprot711"
                   name="transport"
-                  className="styled-checkbox"
+                  value="transprot711"
                   checked={selectedTransport === "transprot711"}
                   onChange={handleTransportChange}
+                  className="styled-checkbox"
                 />
                 <label htmlFor="transprot711">7-11</label>
                 <input
                   type="radio"
                   id="blackcat"
                   name="transport"
-                  className="styled-checkbox"
+                  value="blackcat"
                   checked={selectedTransport === "blackcat"}
                   onChange={handleTransportChange}
+                  className="styled-checkbox"
                 />
                 <label htmlFor="blackcat">黑貓宅急便</label>
               </div>
-              {selectedTransport === "blackcat" ? (
-                <CartTransport
-                  addressLabel="地址"
-                  hideSelectButton={true}
+              {selectedTransport === "transprot711" && <CartTransport handleTransportDataChange={handleTransportDataChange} />}
+              {selectedTransport === "blackcat" && (
+                <CartTransportBlackCat
+                  onTransportBlackCatDataChange={handleTransportBlackCatDataChange}
                 />
-              ) : (
-                <CartTransport />
               )}
               <div className="checkBoxWpoint">
                 <img src="/images/cart/wPoint.png" alt="" />
@@ -169,16 +232,35 @@ export default function CartCheckout2() {
                   type="checkbox"
                   id="wPointcheck"
                   className="styled-checkbox"
+                  checked={isChecked}
+                  onChange={handleCheckboxChange}
                 />
                 <label htmlFor="wPointcheck">
                   <b>W Point 扣抵</b>
                 </label>
               </div>
-              <CartWpoint />
+              <CartWpoint
+                userId={userId}
+                isChecked={isChecked}
+                onPointsChange={handlePointsChange}
+                onPointsFetch={handlePointsFetch}
+              />
             </div>
             <div className="col-4">
               <CartMoney />
-              <CartPay />
+              <CartPay
+                userId={userId}
+                pointsUsed={pointsUsed}
+                originalPoints={originalPoints}
+                selectedPayment={selectedPayment}
+                selectedTransport={selectedTransport}
+                transportData={
+                  selectedTransport === "transprot711" ? transportData : {}
+                }
+                transportBlackCatData={
+                  selectedTransport === "blackcat" ? transportBlackCatData : {}
+                }
+              />
             </div>
           </div>
         </div>
@@ -209,6 +291,7 @@ export default function CartCheckout2() {
                 </div>
               </div>
               <CartProductDetailM />
+              <CartClassDetailM />
             </>
           ) : (
             <div className="cartProductDetailBox">
@@ -226,8 +309,8 @@ export default function CartCheckout2() {
               type="radio"
               id="productpayM"
               name="paymentM"
-              value="productpayM"
-              checked={selectedPayment === "productpayM"}
+              value="productpay"
+              checked={selectedPayment === "productpay"}
               onChange={handlePaymentChange}
               className="styled-checkbox"
             />
@@ -236,68 +319,62 @@ export default function CartCheckout2() {
               type="radio"
               id="creditpayM"
               name="paymentM"
-              value="creditpayM"
-              checked={selectedPayment === "creditpayM"}
+              value="creditpay"
+              checked={selectedPayment === "creditpay"}
               onChange={handlePaymentChange}
               className="styled-checkbox"
             />
             <label htmlFor="creditpayM">信用卡</label>
-            <input
-              type="radio"
-              id="linepayM"
-              name="paymentM"
-              value="linepayM"
-              checked={selectedPayment === "linepayM"}
-              onChange={handlePaymentChange}
-              className="styled-checkbox"
-            />
-            <label htmlFor="linepayM">Line Pay</label>
           </div>
-          {selectedPayment === "creditpayM" && <CartCredicardM />}
           <div className="checkBoxTransport">
             <b>運送方式</b>
             <input
               type="radio"
               id="transprot711M"
               name="transportM"
-              className="styled-checkbox"
-              checked={selectedTransport === "transprot711M"}
+              value="transprot711"
+              checked={selectedTransport === "transprot711"}
               onChange={handleTransportChange}
+              className="styled-checkbox"
             />
             <label htmlFor="transprot711M">7-11</label>
             <input
               type="radio"
               id="blackcatM"
               name="transportM"
-              className="styled-checkbox"
-              checked={selectedTransport === "blackcatM"}
+              value="blackcat"
+              checked={selectedTransport === "blackcat"}
               onChange={handleTransportChange}
+              className="styled-checkbox"
             />
             <label htmlFor="blackcatM">黑貓宅急便</label>
           </div>
-          {selectedTransport === "blackcatM" ? (
-            <CartTransportM
-              addressLabel="地址"
-              hideSelectButton={true}
-            />
-          ) : (
-            <CartTransportM />
-          )}
-          <div className="wPointTitle">            
+          {selectedTransport === "transprot711" && <CartTransportM />}
+          {selectedTransport === "blackcat" && <CartTransportBlackCatM />}
+          <div className="checkBoxWpoint">
+            <img src="/images/cart/wPoint.png" alt="" />
             <input
               type="checkbox"
               id="wPointcheckM"
               className="styled-checkbox"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
             />
             <label htmlFor="wPointcheckM">
               <b>W Point 扣抵</b>
             </label>
           </div>
-          <CartWpointM />
+          <CartWpointM
+            userId={userId}
+            isChecked={isChecked}
+            onPointsChange={handlePointsChange}
+            onPointsFetch={handlePointsFetch}
+          />
+          <div style={{ height: "150px" }}></div>
           <CartMoneyM />
         </div>
       </main>
-      <Footer />
+      <Footer showMobileFooter={false} />
     </>
   );
 }
