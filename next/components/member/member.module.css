@@ -1,11 +1,11 @@
 /* desk */
 /* 登入login */
-.main .bg {
-  background: var(--primary_color-light, #f4ebeb);
+ .bg {
+  background: var(--light, #f4ebeb);
   overflow: hidden;
 }
 
-.main .loginBox {
+ .loginBox {
   width: 500px;
   height: 100%;
   background: #fffdfd;
@@ -18,26 +18,41 @@
   margin-bottom: 200px;
 }
 
-.navTabs{
+ .navTabs {
   width: 100%;
   font-size: medium;
   margin-bottom: 20px;
-  /* margin-top: 8%; */
-  border-bottom: 5px solid var(--primary_color-light);
-  /* justify-content: space-around; */
+  border: none;
+  border-bottom: 5px solid var(--light);
+  justify-content: space-around;
+  font-weight: 700;
+  color: #A66E7B;
+  text-decoration: none;
+
 }
-.main .navLink {
-    color: var(--primary_color-purple);
-    border: none;
-    background: none;
-    margin: 0;
-    position: relative;
-    display: inline-block;
-    font-size: large;
-    width: 100%;
+
+.nav-link  {
+   /* padding: 15px; */
+        /* 移除预设样式 */
+        width: 100%;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border: none;
+        background: none;
+        margin: 0;
+        position: relative;
+        display: inline-block;
+        font-size: 15px;
+        margin-top: 10px;
+
+        color: #A66E7B;
+        font-weight: 700;
+        letter-spacing: 2px;
+        border: none;
   }
   
-  .main .navLink::after {
+.nav-link::after {
     content: '';
     position: absolute;
     left: 25%;
@@ -46,37 +61,41 @@
     width: 50%;
     background-color: transparent;
     transition: background-color 0.3s;
+    color: #A66E7B;
+    border: none;
   }
   
-  .main .navLink:hover::after,
-  .main .navLink.active::after {
-    background-color: var(--primary_color-purple);
+.nav-link:hover::after,
+.nav-link.active::after {
+    color: #A66E7B;
     width:10%;
     height: 5px;
     left: -10;
     bottom: -1;
+    border: none;
   }
-  
+ 
 
-.main .tabContent {
-  color: var(--primary_color-purple_light, #a66e7b);
+
+.tabContent {
+  color:  #a66e7b;
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 1.4px;
   margin-right: -25px;
 }
 
-.main .loginContent .label {
-  color: var(--primary_color-purple_light, #a66e7b);
+.loginContent .label {
+  color: #a66e7b;
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 1.4px;
 }
 
-.main .loginContent .loginInput {
+.loginContent .loginInput {
   width: 80%;
   border: none;
-  border-bottom: 2px solid var(--primary_color-purple_light, #a66e7b);
+  border-bottom: 2px solid #a66e7b;
   margin-bottom: 10px;
   margin-top: 10px;
   font-size: x-large;
@@ -84,23 +103,23 @@
   outline: none;
 }
 
-.main .loginContent .span {
-  color: var(--info-orange, #ff4f4f);
+.loginContent .span {
+  color: var(--orange, #ff4f4f);
   display: block;
   margin-bottom: 5px;
 }
 
-.main .loginContent .notice {
-  color: var(--info-orange, #ff4f4f);
+.loginContent .notice {
+  color: var(--orange, #ff4f4f);
   text-decoration: none;
 }
 
-.main .loginContent .pwdNotice {
+.loginContent .pwdNotice {
   margin-right: 20%;
 }
 
 /* 隱藏預設的 checkbox 樣式 */
-.main .loginContent .pwdNotice .formCheck .formCheckInput {
+.formCheckInput {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -114,13 +133,12 @@
 }
 
 /* 自定義 checkbox 選中狀態 */
-.main .loginContent .pwdNotice .formCheck .formCheckInput:checked {
+.formCheckInput:checked {
   background-color: #9a5b69;
   border-color: #ccc;
 }
 
-/* 偽元素來表示選中狀態的外觀 */
-.main .loginContent .pwdNotice .formCheck .formCheckInput:checked::after {
+ .formCheckInput:checked::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -132,13 +150,13 @@
   border-radius: 2px;
 }
 
-.main .loginContent .forgetPwd {
+.loginContent .forgetPwd {
   margin-right: 20%;
   margin-top: 20px;
   margin-bottom: 20px;
 }
 /* 隱藏預設的 checkbox 樣式 */
-.main .loginContent .forgetPwd .formCheck .formCheckInput {
+.loginContent .forgetPwd .formCheck .formCheckInput {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -152,13 +170,13 @@
 }
 
 /* 自定義 checkbox 選中狀態 */
-.main .loginContent .forgetPwd .formCheck .formCheckInput:checked {
+.loginContent .forgetPwd .formCheck .formCheckInput:checked {
   background-color: #9a5b69;
   border-color: #ccc;
 }
 
 /* 偽元素來表示選中狀態的外觀 */
-.main .loginContent .forgetPwd .formCheck .formCheckInput:checked::after {
+.loginContent .forgetPwd .formCheck .formCheckInput:checked::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -170,12 +188,12 @@
   border-radius: 2px;
 }
 
-.main .loginContent .noAccount {
+.loginContent .noAccount {
   margin-right: 20%;
   margin-top: 10px;
 }
 
-.main .loginContent .button {
+.loginContent .button {
   width: 80%;
   height: 60px;
   border-radius: 4px;
@@ -189,11 +207,11 @@
   margin-top: 10px;
 }
 
-.main .loginContent .fastLogin {
+.loginContent .fastLogin {
   width: 80%;
 }
 
-.main .loginContent .fastLogin .hr {
+.loginContent .fastLogin .hr {
   color: var(--text_color-text_primary);
   border: 0;
   font-size: 12px;
@@ -202,7 +220,7 @@
   margin-bottom: 30px;
 }
 
-.main .loginContent .fastLogin .hr::before {
+.loginContent .fastLogin .hr::before {
   content: '快速登入';
   position: absolute;
   padding: 0 10px;
@@ -214,14 +232,13 @@
   transform: translateX(-50%);
 }
 
-.main .loginContent .fastLogin .buttonGruop {
+.loginContent .fastLogin .buttonGruop {
   margin-bottom: 50px;
 }
-
-.main .loginContent .fastLogin .buttonGruop .googleLogin {
+.loginContent .fastLogin .buttonGruop .googleLogin {
   width: 100%;
   font-size: 16px;
-  background-color: var(--primary_color-primary);
+  background-color: var(--primary);
   margin-bottom: 30px;
   white-space: nowrap;
   height: 60px;
@@ -234,10 +251,10 @@
   margin-top: 10px;
 }
 
-.main .loginContent .fastLogin .buttonGruop .googleLogin .img {
+.loginContent .fastLogin .buttonGruop .googleLogin .img {
   object-fit: scale-down;
 }
-.main .loginContent .fastLogin .buttonGruop .lineLogin {
+.loginContent .fastLogin .buttonGruop .lineLogin {
   width: 100%;
   font-size: 16px;
   background-color: #06c755;
@@ -252,11 +269,11 @@
 }
 
 /* 註冊register */
-.main .registerContent {
+.registerContent {
   width: 100%;
 }
 
-.main .registerContent .label {
+.registerContent .label {
   color: var(--primary_color-purple_light, #a66e7b);
   font-size: 18px;
   font-weight: 600;
@@ -264,14 +281,14 @@
   margin-top: 15px;
 }
 
-.main .registerContent .span {
+.registerContent .span {
   color: var(--info-orange, #ff4f4f);
   display: block;
   margin-right: 80px;
   margin-top: 7px;
 }
 
-.main .registerContent .registerInput {
+.registerContent .registerInput {
   width: 80%;
   border: none;
   border-bottom: 2px solid var(--primary_color-purple_light, #a66e7b);
@@ -282,29 +299,29 @@
   outline: none;
 }
 
-.main .registerContent .rRegisterInput::placeholder {
-  color: var(--info-dark_blue);
-  font-size: large;
+ .registerContent .rRegisterInput::placeholder {
+  color: var(--blue);
+  font-size: medium;
 }
 
-.main .registerContent .registerInput::placeholder {
-  color: var(--info-dark_blue);
-  font-size: large;
+.registerContent .registerInput::placeholder {
+  color: var(--blue);
+  font-size: medium;
 }
 
-.main .registerContent .labelName {
+.registerContent .labelName {
   margin-right: 35%;
 }
 
-.main .registerContent .labelTel {
+.registerContent .labelTel {
   margin-left: -30px;
 }
 
-.main .registerContent .labelGender {
+.registerContent .labelGender {
   margin-left: -10px;
 }
 
-.main .registerContent .registerInput2 {
+.registerContent .registerInput2 {
   width: 37%;
   border: none;
   border-bottom: 2px solid var(--primary_color-purple_light, #a66e7b);
@@ -315,17 +332,17 @@
   outline: none;
 }
 
-.main .registerContent .registerInput2.rRegisterInput {
+.registerContent .registerInput2.rRegisterInput {
   display: inline-block;
   margin-left: -30px;
 }
 
-.main .registerContent input[type='date'] {
+.registerContent input[type='date'] {
   font-size: 18px;
   margin-top: 20px;
 }
 
-.main .registerContent select {
+.registerContent select {
   width: 170%;
   border-radius: 0%;
   border: none;
@@ -336,7 +353,7 @@
   margin-left: -35px;
 }
 
-.main .registerContent .button {
+  .registerContent .button {
   width: 80%;
   height: 60px;
   border-radius: 4px;
@@ -351,13 +368,13 @@
   margin-bottom: 30px;
 }
 
-.main .registerContent .btnBack {
+  .registerContent .btnBack {
   margin-top: -20px;
   margin-left: 45%;
   margin-bottom: 30px;
 }
 
-.main .registerContent .btnBack .notice {
+  .registerContent .btnBack .notice {
   color: var(--primary_color-purple_light);
   text-decoration: none;
 }
@@ -558,7 +575,7 @@
   border-radius: 4px;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
   border: none;
-  color: var(--primary_color-light, #f4ebeb);
+  color: var(--light, #f4ebeb);
   font-weight: 400;
   margin-top: 10px;
 }
@@ -566,7 +583,7 @@
 .googleLogin {
     width: 100%;
   font-size: 16px;
-  background-color: var(--primary_color-primary);
+  background-color: var(--primary);
   margin-bottom: 30px;
   white-space: nowrap;
   height: 60px;
@@ -623,7 +640,7 @@
 }
 
 .registerInput::placeholder {
-    color: var(--info-dark_blue);
+    color: var(--dark_blue);
     font-size: small;
 }
 
@@ -695,11 +712,66 @@
 }
 
 .red{
-  color: var(--info-orange, #ff4f4f);
+  color: var(--orange, #ff4f4f);
   text-decoration: none;
 }
 
 .btnBack Link .notice {
-  color: var(--info-orange, #ff4f4f);
+  color: var(--orange, #ff4f4f);
   text-decoration: none;
+}
+
+.error {
+  color: red;
+  display: none;
+  font-size: 0.9em;
+  margin-top: 5px;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+}
+.errorAccount {
+  color: red;
+  display: none;
+  font-size: 0.9em;
+  margin-top: 5px;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+}
+.errorPwd {
+  color: red;
+  display: none;
+  font-size: 0.9em;
+  margin-top: 5px;
+  position: absolute;
+  top: 35%;
+  left: 20%;
+  
+}
+.error .show {
+  display: block;
+}
+
+/* 重設密碼 */
+.resetNotice{
+  color: var(--blue);
+  font-weight: 500;
+}
+
+  .loginInput::placeholder {
+  color: #A66E7B;
+  font-size: medium;
+}
+
+/* 忘記密碼 */
+.message{
+  color: var(--orange);
+  font-weight: 600;
+
+}
+
+  .forgetPWD::placeholder {
+  color: #A66E7B;
+  font-size: small;
 }

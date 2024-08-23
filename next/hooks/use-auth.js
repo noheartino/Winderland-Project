@@ -21,13 +21,13 @@ export function AuthProvider({ children }) {
 
   // 會員使用的認証&授權狀態
   const [auth, setAuth] = useState({
-    isAuth: false, // 會員是否有登入的信號值
+    isAuth: true, // 會員是否有登入的信號值
     // 會員資料
     userData: {
-      id: 0,
-      user_name: '',
-      email: '',
-      account: '',
+      id: 12,
+      user_name: 'Sophie',
+      email: 'Sophie',
+      account: 'sophie',
     },
   })
 
@@ -37,9 +37,9 @@ export function AuthProvider({ children }) {
       isAuth: true,
       userData: {
         id: 1,
-        user_name: '哈利',
-        email: 'herry@test.com',
-        account: 'herry',
+        user_name: '黃柏翰',
+        email: 'gobo_dogg@test.com',
+        account: 'gobo_dogg',
       },
     })
     alert('登入成功！')

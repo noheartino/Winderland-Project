@@ -48,6 +48,14 @@
             margin-left: 7%;
         }
     }
+
+    .d-none {
+        display: none;
+    }
+
+    .d-flex {
+        display: flex;
+    }
 }
 
 @media screen and (max-width: 992px) {

@@ -1,0 +1,84 @@
+/* cartPayDividend.module.css */
+.payDividendTotal {
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(119, 119, 119, 0.2);
+}
+
+.payDividendTitle {
+    height: 75px;
+    background-color: #851931;
+    font-size: 20px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+}
+
+.payDividendContent {
+    padding: 30px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 20px;
+    color: #60464c;
+    background-color: #fcfcfc;
+}
+
+.dividendContent {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dividendWpoint {
+    color: #ff4f4f;
+}
+
+.dividendDetail {
+    font-size: 12px;
+    color: #d4c0c0;
+}
+
+/* 媒體查詢 */
+@media screen and (max-width: 1200px) and (min-width: 992px) {
+    .payDividendTitle {
+        font-size: 16px;
+    }
+
+    .payDividendContent {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 992px) and (min-width: 768px) {
+    .payDividendTotal {
+        width: 100%;
+        max-width: 1000px;
+        margin-bottom: 40px;
+    }
+
+    .payDividendTitle {
+        font-size: 20px;
+    }
+
+    .payDividendContent {
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .payDividendTotal {
+        width: 100%;
+        max-width: 1000px;
+        margin-bottom: 40px;
+    }
+
+    .payDividendTitle {
+        font-size: 20px;
+    }
+
+    .payDividendContent {
+        font-size: 24px;
+    }
+}
