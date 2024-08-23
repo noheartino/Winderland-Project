@@ -8,22 +8,20 @@ export default function CartMoneyTotal({ userId }) {
     const [pointsUsed, setPointsUsed] = useState(0);
     const [currentDate, setCurrentDate] = useState('');
     const [orderUuid, setOrderUuid] = useState('');
-    const storedPoints = sessionStorage.getItem("pointsUsed");
-    const discountedAmount = parseFloat(sessionStorage.getItem('discountedAmount')) || 0;
+    const [discountedAmount, setDiscountedAmount] = useState(0); // Add this state
 
     useEffect(() => {
+        const storedPoints = sessionStorage.getItem("pointsUsed");
+        const storedDiscountAmount = parseFloat(sessionStorage.getItem('discountAmount')) || 0;
+        const storedDiscountedAmount = parseFloat(sessionStorage.getItem('discountedAmount')) || 0;
+
         console.log('Received userId in CartMoneyTotal:', userId);
 
-        // 從 sessionStorage 讀取資料
-        const storedDiscountAmount = parseFloat(sessionStorage.getItem('discountAmount')) || 0;
-        setDiscountAmount(storedDiscountAmount);
 
-        if (storedPoints) {
-            setPointsUsed(JSON.parse(storedPoints));
-        } else {
-            // 如果 sessionStorage 中沒有必要的數據，則導向首頁
-            router.push("/");
-        }
+        // 更新狀態
+        setDiscountAmount(storedDiscountAmount);
+        setPointsUsed(JSON.parse(storedPoints));
+        setDiscountedAmount(storedDiscountedAmount); // Set discountedAmount state
 
         // 獲取並格式化台灣時間
         const now = new Date();
@@ -32,9 +30,14 @@ export default function CartMoneyTotal({ userId }) {
             month: '2-digit',
             day: '2-digit',
         });
-        const [{ value: year }, { value: month }, { value: day }] = formatter.formatToParts(now);
+        const formattedParts = formatter.formatToParts(now);
+        const year = formattedParts.find(part => part.type === 'year').value;
+        const month = formattedParts.find(part => part.type === 'month').value;
+        const day = formattedParts.find(part => part.type === 'day').value;
+        
         const formattedDate = `${year}.${month}.${day}`;
         setCurrentDate(formattedDate);
+        
 
         // 獲取最新訂單編號
         const fetchOrderDetails = async () => {
@@ -58,6 +61,18 @@ export default function CartMoneyTotal({ userId }) {
         };
 
         fetchOrderDetails();
+
+        // 清除點數資料
+        const handleBeforeUnload = () => {
+            sessionStorage.removeItem('pointsUsed');
+            sessionStorage.removeItem('discountAmount');
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
     }, [router, userId]);
 
     const distotal = Math.floor(discountAmount) + pointsUsed;
@@ -80,7 +95,7 @@ export default function CartMoneyTotal({ userId }) {
                 </div>
                 <div className={`${css.cartContent3} ${css.cartContentTotal1}`}>
                     <div className={css.cartContentTotal1}>實付金額</div>
-                    <div className={css.cartContentTotal2}>NT$ {discountedAmount}</div>
+                    <div className={css.cartContentTotal2}>NT$ {discountedAmount}</div> {/* Use discountedAmount state */}
                 </div>
             </div>
         </div>

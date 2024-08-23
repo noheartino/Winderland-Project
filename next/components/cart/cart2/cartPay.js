@@ -45,7 +45,7 @@ export default function CartPay({
   const validateForm = () => {
     let valid = true;
     let errorMessages = [];
-
+  
     if (!selectedPayment || !selectedTransport) {
       valid = false;
       errorMessages.push("請選擇付款方式和運送方式");
@@ -55,48 +55,45 @@ export default function CartPay({
           valid = false;
           errorMessages.push("請填寫7-11資料");
         } else {
-          const { storeName, storeAddress, pickupName, pickupPhone } =
-            transportData;
-          if (!storeName || !storeAddress || !pickupName || !pickupPhone) {
+          const { storeName, storeAddress, pickupName, pickupPhone } = transportData;
+          if (!storeName || !storeAddress || !pickupName) {
             valid = false;
             errorMessages.push("7-11資料不完整");
           }
-          if (pickupPhone.length < minLength.pickupPhone) {
+          // 如果 pickupPhone 是 undefined 或空字串，設為空字串
+          const validPickupPhone = pickupPhone || "";
+          if (validPickupPhone.length < minLength.pickupPhone) {
             valid = false;
             errorMessages.push("7-11格式不正確");
           }
         }
       }
-
+  
       if (selectedTransport === "blackcat") {
-        if (
-          !transportBlackCatData ||
-          Object.keys(transportBlackCatData).length === 0
-        ) {
+        if (!transportBlackCatData || Object.keys(transportBlackCatData).length === 0) {
           valid = false;
           errorMessages.push("請填寫黑貓宅急便資料");
         } else {
-          const {
-            address: blackCatAddress,
-            name,
-            phone: blackCatPhoneNumber,
-          } = transportBlackCatData;
-          if (!blackCatAddress || !name || !blackCatPhoneNumber) {
+          const { address: blackCatAddress, name, phone: blackCatPhoneNumber } = transportBlackCatData;
+          if (!blackCatAddress || !name) {
             valid = false;
             errorMessages.push("黑貓宅急便資料不完整");
           }
-          if (blackCatPhoneNumber.length < minLength.blackCatPhoneNumber) {
+          // 如果 blackCatPhoneNumber 是 undefined 或空字串，設為空字串
+          const validBlackCatPhoneNumber = blackCatPhoneNumber || "";
+          if (validBlackCatPhoneNumber.length < minLength.blackCatPhoneNumber) {
             valid = false;
             errorMessages.push("黑貓宅急便格式不正確");
           }
         }
       }
     }
-
+  
     setIsFormValid(valid);
     setFormError(errorMessages.join(" / ").replace(/ \//g, " <br />"));
     return valid;
   };
+  
 
   useEffect(() => {
     validateForm();

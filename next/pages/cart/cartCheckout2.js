@@ -16,8 +16,10 @@ import CartClassDetail from "@/components/cart/cart3/cartClassDetail";
 import CartClassDetailM from "@/components/cart/cart3/cartClassDetailM";
 import CartTransportBlackCat from "@/components/cart/cart2/cartTransportBlackcat";
 import CartTransportBlackCatM from "@/components/cart/cart2/cartTransportBlackcatM";
+import { useRouter } from "next/router";
 
 export default function CartCheckout2() {
+  const router = useRouter();
   const [userId, setUserId] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState("");
@@ -27,6 +29,7 @@ export default function CartCheckout2() {
   const [originalPoints, setOriginalPoints] = useState(0); // 儲存原本點數
   const [transportData, setTransportData] = useState({}); //運送資料7-11
   const [transportBlackCatData, setTransportBlackCatData] = useState({}); // 新增狀態來儲存黑貓運送資料
+  console.log(userId);
 
   useEffect(() => {
     const storedUserId = sessionStorage.getItem("user_id");
@@ -52,6 +55,10 @@ export default function CartCheckout2() {
     }
     if (storedPoints) {
       setPointsUsed(JSON.parse(storedPoints));
+    }
+    // 檢查是否為直接輸入網址
+    if (!document.referrer && !storedUserId) {
+      router.push("/member/login");
     }
   }, []);
 
@@ -103,7 +110,6 @@ export default function CartCheckout2() {
     console.log("Updated Transport Data:", newTransportData); // 顯示運送資料變化
     sessionStorage.setItem("transportData", JSON.stringify(newTransportData));
   };
-  
 
   const handleTransportBlackCatDataChange = (data) => {
     setTransportBlackCatData(data);
@@ -220,10 +226,16 @@ export default function CartCheckout2() {
                 />
                 <label htmlFor="blackcat">黑貓宅急便</label>
               </div>
-              {selectedTransport === "transprot711" && <CartTransport handleTransportDataChange={handleTransportDataChange} />}
+              {selectedTransport === "transprot711" && (
+                <CartTransport
+                  handleTransportDataChange={handleTransportDataChange}
+                />
+              )}
               {selectedTransport === "blackcat" && (
                 <CartTransportBlackCat
-                  onTransportBlackCatDataChange={handleTransportBlackCatDataChange}
+                  onTransportBlackCatDataChange={
+                    handleTransportBlackCatDataChange
+                  }
                 />
               )}
               <div className="checkBoxWpoint">

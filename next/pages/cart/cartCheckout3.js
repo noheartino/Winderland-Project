@@ -13,38 +13,38 @@ import Nav from "@/components/Header/Header";
 
 export default function CartCheckout3() {
   const [userId, setUserId] = useState(null);
-  const [isClient, setIsClient] = useState(false); // 用來檢查是否為客戶端
   const [isExpanded, setIsExpanded] = useState(false);
   const router = useRouter();
   console.log(userId);
 
   useEffect(() => {
-    // 確保代碼只在客戶端執行
-    setIsClient(true);
     const storedUserId = sessionStorage.getItem("user_id");
     if (storedUserId) {
       setUserId(storedUserId);
     }
-    console.log(userId); 
+    console.log(userId);
+    // 檢查是否為直接輸入網址
+    if (!document.referrer && !storedUserId) {
+      router.push("/member/login");
+    }
   }, [router]);
 
   const goHome = () => {
     router.push("/");
-  }
+  };
 
   const toggleDetails = () => {
     setIsExpanded(!isExpanded);
   };
 
-  if (!isClient) {
-    return null; // 或者返回一個加載狀態
-  }
-
   return (
     <>
       <title>Cart4</title>
       <meta charSet="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no"
+      />
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -107,10 +107,12 @@ export default function CartCheckout3() {
             </div>
             <div className="col-4">
               <CartMoneyTotal userId={userId} />
-              <CartPayDividend />
+              <CartPayDividend userId={userId} />
               <div className="checkOutEnd">
                 <button className="goOrder">訂單查詢</button>
-                <button className="goPage" onClick={goHome}>回首頁</button>
+                <button className="goPage" onClick={goHome}>
+                  回首頁
+                </button>
               </div>
             </div>
           </div>
@@ -133,7 +135,9 @@ export default function CartCheckout3() {
           </div>
           <div className="checkOutEnd">
             <button className="goOrder">訂單查詢</button>
-            <button className="goPage" onClick={goHome}>回首頁</button>
+            <button className="goPage" onClick={goHome}>
+              回首頁
+            </button>
           </div>
           <CartProductTotalM />
           {isExpanded ? (
@@ -161,8 +165,8 @@ export default function CartCheckout3() {
               </div>
             </div>
           )}
-          <CartMoneyTotal />
-          <CartPayDividend />
+          <CartMoneyTotal userId={userId} />
+          <CartPayDividend userId={userId} />
           <div style={{ height: "20px" }}></div> {/* 占位元素 */}
         </div>
       </main>

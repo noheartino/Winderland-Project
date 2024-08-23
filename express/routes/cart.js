@@ -53,7 +53,8 @@ SELECT
     coupon.discount AS coupon_discount,
     coupon.category AS coupon_category,
     coupon.min_spend AS min_spend,
-    orders.order_uuid AS order_uuid
+    orders.order_uuid AS order_uuid,
+    orders.earned_points AS earned_points
 FROM 
     users
 LEFT JOIN user_points ON users.id = user_points.user_id

@@ -11,9 +11,15 @@ import CartCouponM from "@/components/cart/cart1/cartCouponM";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 import CartZero from "@/components/cart/cartObject/cartZero";
+import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from "next/router";
+import BounceLoader from "react-spinners/BounceLoader";
 
 export default function CartCheckout1() {
-  const userId = 1; // 用户 ID
+  const { auth } = useAuth();
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const userId = auth.userData ? auth.userData.id : null; // 用户 ID
   const [allChecked, setAllChecked] = useState(false);
   const [productChecked, setProductChecked] = useState(false);
   const [classChecked, setClassChecked] = useState(false);
@@ -23,27 +29,47 @@ export default function CartCheckout1() {
   const [coupons, setCoupons] = useState([]);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
 
+  console.log("User ID:", userId);
+
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`http://localhost:3005/api/cart/${userId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setProductData(
-          data.items.filter((item) => item.product_detail_id !== null)
+      try {
+        const response = await fetch(
+          `http://localhost:3005/api/cart/${userId}`
         );
-        setClassData(data.items.filter((item) => item.class_id !== null));
-        setCoupons(data.coupons);
-      } else {
-        const errorData = await response.json();
-        console.error("请求失败:", errorData);
+        if (response.ok) {
+          const data = await response.json();
+          setProductData(
+            data.items.filter((item) => item.product_detail_id !== null)
+          );
+          setClassData(data.items.filter((item) => item.class_id !== null));
+          setCoupons(data.coupons);
+        } else {
+          const errorData = await response.json();
+          console.error("请求失败:", errorData);
+        }
+      } catch (error) {
+        console.error("请求错误:", error);
+      } finally {
+        setLoading(false); // 数据加载完成
       }
     };
+
     fetchData();
   }, [userId]);
 
   useEffect(() => {
-    calculateTotalAmount(productChecked, classChecked, selectedCoupon);
-  }, [productData, classData, selectedCoupon, productChecked, classChecked]);
+    if (!loading) {
+      calculateTotalAmount(productChecked, classChecked, selectedCoupon);
+    }
+  }, [
+    productData,
+    classData,
+    selectedCoupon,
+    productChecked,
+    classChecked,
+    loading,
+  ]);
 
   const calculateTotalAmount = (isProductChecked, isClassChecked, coupon) => {
     let newTotalAmount = 0;
@@ -163,6 +189,31 @@ export default function CartCheckout1() {
       console.error("更新数量时发生错误:", error);
     }
   };
+  const override = {
+    display: 'block',
+    margin: '0 auto',
+    // borderColor: 'red',
+  }
+
+  if (loading) {
+    return (
+      <div>
+        <BounceLoader
+          color="#851931"
+          loading={loading}
+          cssOverride={override}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    ); // 或者返回一個更具體的 loading 元素
+  }
+
+  if (!userId) {
+    router.push("/member/login");
+    return; // 防止继续执行下面的代码
+  }
 
   return (
     <>
