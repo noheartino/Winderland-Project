@@ -46,20 +46,25 @@ router.get('/:user_id', async (request, response) => {
 
   // 查詢點數和優惠券
   const queryToFetchPointsAndCoupons = `
-  SELECT 
-      user_points.points_balance AS user_have_points,
-      coupon.id AS coupon_id,
-      coupon.name AS coupon_name,
-      coupon.discount AS coupon_discount,
-      coupon.category AS coupon_category,
-      coupon.min_spend AS min_spend
-  FROM 
-      users
-  LEFT JOIN user_points ON users.id = user_points.user_id
-  LEFT JOIN user_coupon ON users.id = user_coupon.user_id
-  LEFT JOIN coupon ON user_coupon.coupon_id = coupon.id
-  WHERE 
-      users.id = ?;
+SELECT 
+    user_points.points_balance AS user_have_points,
+    coupon.id AS coupon_id,
+    coupon.name AS coupon_name,
+    coupon.discount AS coupon_discount,
+    coupon.category AS coupon_category,
+    coupon.min_spend AS min_spend,
+    orders.order_uuid AS order_uuid
+FROM 
+    users
+LEFT JOIN user_points ON users.id = user_points.user_id
+LEFT JOIN user_coupon ON users.id = user_coupon.user_id
+LEFT JOIN coupon ON user_coupon.coupon_id = coupon.id
+LEFT JOIN orders ON users.id = orders.user_id
+WHERE 
+    users.id = ?
+ORDER BY
+    orders.created_at DESC
+LIMIT 1;
   `
 
   try {
@@ -166,9 +171,9 @@ router.delete('/:id', async (request, response) => {
 
 // 新增訂單 (Cash On Delivery)
 router.post('/cashOnDelivery', async (req, res) => {
-  console.log('Request Body:', req.body)
-  const couponId = req.body.couponData ? req.body.couponData.id : null
-  console.log('Coupon ID:', couponId)
+  console.log('Request Body:', req.body);
+  const couponId = req.body.couponData ? req.body.couponData.id : null;
+  console.log('Coupon ID:', couponId);
   const {
     userId, // 使用從前端傳來的 userId
     pointsUsed,
@@ -179,22 +184,22 @@ router.post('/cashOnDelivery', async (req, res) => {
     couponData,
     cartItems,
     discountedAmount,
-  } = req.body
+  } = req.body;
 
   try {
     // 生成訂單編號
     const generateOrderNumber = () => {
       const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()'
-      let result = ''
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
+      let result = '';
       for (let i = 0; i < 7; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length)
-        result += characters[randomIndex]
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters[randomIndex];
       }
-      return result.toUpperCase()
-    }
+      return result.toUpperCase();
+    };
 
-    const orderNumber = generateOrderNumber()
+    const orderNumber = generateOrderNumber();
 
     // 計算總金額並無條件捨去
     const totalAmount = Math.floor(
@@ -202,25 +207,25 @@ router.post('/cashOnDelivery', async (req, res) => {
         const productPrice =
           item.product_sale_price > 0
             ? item.product_sale_price
-            : item.product_price
+            : item.product_price;
         const classPrice =
-          item.class_sale_price > 0 ? item.class_sale_price : item.class_price
+          item.class_sale_price > 0 ? item.class_sale_price : item.class_price;
         if (item.product_detail_id) {
-          return sum + Math.floor(productPrice * item.product_quantity)
+          return sum + Math.floor(productPrice * item.product_quantity);
         }
         if (item.class_id) {
-          return sum + Math.floor(classPrice)
+          return sum + Math.floor(classPrice);
         }
-        return sum
+        return sum;
       }, 0)
-    )
+    );
 
     // 計算回饋點數
     const [userLevel] = await conn.query(
       'SELECT member_level_id FROM users WHERE id = ?',
       [userId]
-    ) // 從 req.body 中獲取會員等級
-    const memberLevelId = userLevel[0].member_level_id // 提取等級ID
+    );
+    const memberLevelId = userLevel[0].member_level_id;
 
     const earnedPoints = Math.floor(
       discountedAmount *
@@ -233,17 +238,17 @@ router.post('/cashOnDelivery', async (req, res) => {
               : memberLevelId === 4
                 ? 0.035
                 : 0)
-    )
-    console.log('Earned Points:', earnedPoints)
+    );
+    console.log('Earned Points:', earnedPoints);
 
     // 插入訂單資料
     const insertOrderQuery = `
       INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, earned_points, pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, created_at, updated_at)
       VALUES (?, ?, 'pending', '貨到付款', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
-    `
+    `;
     const [orderResult] = await conn.query(insertOrderQuery, [
       orderNumber,
-      userId, // 使用從前端傳來的 userId
+      userId,
       60, // 固定運費，已無條件捨去
       couponData?.coupon_id || null,
       earnedPoints,
@@ -260,16 +265,16 @@ router.post('/cashOnDelivery', async (req, res) => {
         : selectedTransport === 'transprot711'
           ? '7-11'
           : null,
-    ])
-    console.log('Order Insert Result:', orderResult)
+    ]);
+    console.log('Order Insert Result:', orderResult);
 
-    const orderId = orderResult.insertId
+    const orderId = orderResult.insertId;
 
     // 插入商品和課程
     const insertOrderItemsQuery = `
       INSERT INTO order_details (order_uuid, product_id, product_detail_id, class_id, product_quantity, created_at)
       VALUES (?, ?, ?, ?, ?, NOW());
-    `
+    `;
     for (const item of cartItems) {
       await conn.query(insertOrderItemsQuery, [
         orderNumber,
@@ -277,21 +282,21 @@ router.post('/cashOnDelivery', async (req, res) => {
         item.product_detail_id || null,
         item.class_id || null,
         item.product_quantity,
-      ])
+      ]);
     }
 
     // 刪除已使用的優惠券
     if (couponData?.coupon_id) {
       const deleteCouponQuery = `
         DELETE FROM user_coupon WHERE user_id = ? AND coupon_id = ?;
-      `
-      await conn.query(deleteCouponQuery, [userId, couponData.coupon_id])
+      `;
+      await conn.query(deleteCouponQuery, [userId, couponData.coupon_id]);
       console.log(
         'Deleting coupon for user:',
         userId,
         'with coupon id:',
         couponData.coupon_id
-      )
+      );
     }
 
     // 更新會員點數
@@ -299,43 +304,45 @@ router.post('/cashOnDelivery', async (req, res) => {
       INSERT INTO user_points (user_id, points_balance, last_updated)
       VALUES (?, ?, NOW())
       ON DUPLICATE KEY UPDATE points_balance = VALUES(points_balance), last_updated = NOW();
-    `
+    `;
     const newPointsBalance = Math.floor(
       originalPoints - pointsUsed + earnedPoints
-    ) // 無條件捨去
-    await conn.query(userPointsQuery, [userId, newPointsBalance])
-    console.log('New Points Balance:', newPointsBalance)
+    );
+    await conn.query(userPointsQuery, [userId, newPointsBalance]);
+    console.log('New Points Balance:', newPointsBalance);
 
     // 記錄點數變化
-    const pointChange = earnedPoints - pointsUsed
+    const pointChange = earnedPoints - pointsUsed;
     const insertPointTransactionsQuery = `
       INSERT INTO point_transactions (user_id, point_change, transaction_type, description, created_at)
       VALUES (?, ?, '消費', '購物消費的點數使用獲得量', NOW());
-    `
-    await conn.query(insertPointTransactionsQuery, [userId, pointChange])
+    `;
+    await conn.query(insertPointTransactionsQuery, [userId, pointChange]);
 
-    // 新增功能：刪除購物車內的已購買商品或課程
+    // 刪除購物車內的已購買商品或課程
     const deleteCartItemsQuery = `
         DELETE FROM cart_items WHERE user_id = ? AND (product_detail_id = ? OR class_id = ?);
-      `
+      `;
     for (const item of cartItems) {
       await conn.query(deleteCartItemsQuery, [
         userId,
         item.product_detail_id || null,
         item.class_id || null,
-      ])
+      ]);
     }
-    console.log('已刪除購物車內的已購買商品或課程')
+    console.log('已刪除購物車內的已購買商品或課程');
 
     // 返回成功訊息
-    res.json({ message: '訂單已成功建立', orderNumber })
+    console.log('訂單已成功建立，準備發送回應');
+    res.json({ message: '訂單已成功建立', orderNumber });
   } catch (error) {
-    console.error('建立訂單時發生錯誤:', error)
+    console.error('建立訂單時發生錯誤:', error);
     res
       .status(500)
-      .json({ error: '建立訂單時發生錯誤', details: error.message })
+      .json({ error: '建立訂單時發生錯誤', details: error.message });
   }
-})
+});
+
 
 // 新增訂單 (CreditCard Payment)
 router.post('/creditCardPayment', async (req, res) => {
@@ -343,7 +350,7 @@ router.post('/creditCardPayment', async (req, res) => {
   const couponId = req.body.couponData ? req.body.couponData.id : null
   console.log('Coupon ID:', couponId)
   const {
-    userId, // 使用從前端傳來的 userId
+    userId,
     pointsUsed,
     originalPoints,
     selectedTransport,
@@ -357,8 +364,7 @@ router.post('/creditCardPayment', async (req, res) => {
   try {
     // 生成訂單編號
     const generateOrderNumber = () => {
-      const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()'
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()'
       let result = ''
       for (let i = 0; i < 7; i++) {
         const randomIndex = Math.floor(Math.random() * characters.length)
@@ -368,16 +374,13 @@ router.post('/creditCardPayment', async (req, res) => {
     }
 
     const orderNumber = generateOrderNumber()
+    console.log('Generated Order Number:', orderNumber)
 
     // 計算總金額並無條件捨去
     const totalAmount = Math.floor(
       cartItems.reduce((sum, item) => {
-        const productPrice =
-          item.product_sale_price > 0
-            ? item.product_sale_price
-            : item.product_price
-        const classPrice =
-          item.class_sale_price > 0 ? item.class_sale_price : item.class_price
+        const productPrice = item.product_sale_price > 0 ? item.product_sale_price : item.product_price
+        const classPrice = item.class_sale_price > 0 ? item.class_sale_price : item.class_price
         if (item.product_detail_id) {
           return sum + Math.floor(productPrice * item.product_quantity)
         }
@@ -392,8 +395,8 @@ router.post('/creditCardPayment', async (req, res) => {
     const [userLevel] = await conn.query(
       'SELECT member_level_id FROM users WHERE id = ?',
       [userId]
-    ) // 從 req.body 中獲取會員等級
-    const memberLevelId = userLevel[0].member_level_id // 提取等級ID
+    )
+    const memberLevelId = userLevel[0].member_level_id
 
     const earnedPoints = Math.floor(
       discountedAmount *
@@ -416,8 +419,8 @@ router.post('/creditCardPayment', async (req, res) => {
     `
     const [orderResult] = await conn.query(insertOrderQuery, [
       orderNumber,
-      userId, // 使用從前端傳來的 userId
-      60, // 固定運費，已無條件捨去
+      userId,
+      60,
       couponData?.coupon_id || null,
       earnedPoints,
       selectedTransport === 'blackcat'
@@ -459,12 +462,7 @@ router.post('/creditCardPayment', async (req, res) => {
         DELETE FROM user_coupon WHERE user_id = ? AND coupon_id = ?;
       `
       await conn.query(deleteCouponQuery, [userId, couponData.coupon_id])
-      console.log(
-        'Deleting coupon for user:',
-        userId,
-        'with coupon id:',
-        couponData.coupon_id
-      )
+      console.log('Deleting coupon for user:', userId, 'with coupon id:', couponData.coupon_id)
     }
 
     // 更新會員點數
@@ -475,7 +473,7 @@ router.post('/creditCardPayment', async (req, res) => {
     `
     const newPointsBalance = Math.floor(
       originalPoints - pointsUsed + earnedPoints
-    ) // 無條件捨去
+    )
     await conn.query(userPointsQuery, [userId, newPointsBalance])
     console.log('New Points Balance:', newPointsBalance)
 
@@ -501,6 +499,7 @@ router.post('/creditCardPayment', async (req, res) => {
     console.log('已刪除購物車內的已購買商品或課程')
 
     // 返回成功訊息
+    console.log('訂單已成功建立，準備發送回應')
     res.json({ message: '訂單已成功建立', orderNumber })
   } catch (error) {
     console.error('建立訂單時發生錯誤:', error)
@@ -510,4 +509,4 @@ router.post('/creditCardPayment', async (req, res) => {
   }
 })
 
-export default router
+export default router;

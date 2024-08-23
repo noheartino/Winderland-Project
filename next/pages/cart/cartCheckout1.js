@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Head from "next/head";
 import CartProduct from "@/components/cart/cart1/cartProduct";
 import CartClass from "@/components/cart/cart1/cartClass";
 import CartMoney from "@/components/cart/cart1/cartMoney";
@@ -11,9 +12,8 @@ import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 import CartZero from "@/components/cart/cartObject/cartZero";
 
-
 export default function CartCheckout1() {
-  const userId = 3; // 用户 ID
+  const userId = 1; // 用户 ID
   const [allChecked, setAllChecked] = useState(false);
   const [productChecked, setProductChecked] = useState(false);
   const [classChecked, setClassChecked] = useState(false);
@@ -166,7 +166,9 @@ export default function CartCheckout1() {
 
   return (
     <>
-      <title>Cart2</title>
+      <Head>
+        <title>Cart2</title>
+      </Head>
       <meta charSet="utf-8" />
       <meta
         name="viewport"
@@ -174,176 +176,177 @@ export default function CartCheckout1() {
       />
       <Nav />
       {productData.length === 0 && classData.length === 0 ? (
-          <CartZero />
-        ) : (
+        <CartZero />
+      ) : (
+        <main>
+          <div className="container mb-5 d-none d-lg-block">
+            <div className="row">
+              <div className="col-7">
+                <div className="progressTitle">
+                  <div className="progressText1">確認訂單</div>
+                  <div className="progressText2">填寫訂單詳情</div>
+                  <div className="progressText3">完成訂單</div>
+                </div>
+                <div className="progressBar">
+                  <div className="progressCircle progressCircle1" />
+                  <div className="progressLine progressLine1" />
+                  <div className="progressCircle progressCircle2" />
+                  <div className="progressLine progressLine2" />
+                  <div className="progressCircle progressCircle3" />
+                </div>
+                <div className="checkAllBox">
+                  <input
+                    type="checkbox"
+                    id="all"
+                    checked={allChecked}
+                    onChange={handleAllCheck}
+                    className="styled-checkbox"
+                  />
+                  <label htmlFor="all">全部</label>
+                </div>
 
-      <main>
-        <div className="container mb-5 d-none d-lg-block">
-          <div className="row">
-            <div className="col-7">
-              <div className="progressTitle">
-                <div className="progressText1">確認訂單</div>
-                <div className="progressText2">填寫訂單詳情</div>
-                <div className="progressText3">完成訂單</div>
+                {/* 商品和课程部分 */}
+                {productData.length > 0 && (
+                  <div>
+                    <div className="checkProductBox">
+                      <input
+                        type="checkbox"
+                        id="productCheck"
+                        checked={productChecked}
+                        onChange={handleProductCheck}
+                        className="styled-checkbox"
+                      />
+                      <label htmlFor="productCheck">酒類商品</label>
+                    </div>
+                    <CartProduct
+                      cartItems={productData}
+                      onRemove={handleRemoveItem}
+                      onUpdateQuantity={handleUpdateQuantity}
+                    />
+                  </div>
+                )}
+                {classData.length > 0 && (
+                  <div>
+                    <div className="checkClassBox">
+                      <input
+                        type="checkbox"
+                        id="classCheck"
+                        checked={classChecked}
+                        onChange={handleClassCheck}
+                        className="styled-checkbox"
+                      />
+                      <label htmlFor="classCheck">課程商品</label>
+                    </div>
+                    <CartClass
+                      classItems={classData}
+                      onRemove={handleRemoveItem}
+                    />
+                  </div>
+                )}
               </div>
-              <div className="progressBar">
-                <div className="progressCircle progressCircle1" />
-                <div className="progressLine progressLine1" />
-                <div className="progressCircle progressCircle2" />
-                <div className="progressLine progressLine2" />
-                <div className="progressCircle progressCircle3" />
-              </div>
-              <div className="checkAllBox">
-                <input
-                  type="checkbox"
-                  id="all"
-                  checked={allChecked}
-                  onChange={handleAllCheck}
-                  className="styled-checkbox"
+              <div className="col-1" />
+              <div className="col-4">
+                {/* 仅在商品或课程勾选时传递数据 */}
+                <CartMoney
+                  totalAmount={totalAmount}
+                  selectedCoupon={selectedCoupon}
+                  productData={productChecked ? productData : []}
+                  classData={classChecked ? classData : []}
+                  userId={userId}
                 />
-                <label htmlFor="all">全部</label>
+                <CartCoupon
+                  userId={userId}
+                  selectedCoupon={selectedCoupon}
+                  totalAmount={totalAmount}
+                  onCouponChange={handleCouponChange}
+                />
               </div>
-
-              {/* 商品和课程部分 */}
-              {productData.length > 0 && (
-                <div>
-                  <div className="checkProductBox">
-                    <input
-                      type="checkbox"
-                      id="productCheck"
-                      checked={productChecked}
-                      onChange={handleProductCheck}
-                      className="styled-checkbox"
-                    />
-                    <label htmlFor="productCheck">酒類商品</label>
-                  </div>
-                  <CartProduct
-                    cartItems={productData}
-                    onRemove={handleRemoveItem}
-                    onUpdateQuantity={handleUpdateQuantity}
-                  />
-                </div>
-              )}
-              {classData.length > 0 && (
-                <div>
-                  <div className="checkClassBox">
-                    <input
-                      type="checkbox"
-                      id="classCheck"
-                      checked={classChecked}
-                      onChange={handleClassCheck}
-                      className="styled-checkbox"
-                    />
-                    <label htmlFor="classCheck">課程商品</label>
-                  </div>
-                  <CartClass
-                    classItems={classData}
-                    onRemove={handleRemoveItem}
-                  />
-                </div>
-              )}
-            </div>
-            <div className="col-1" />
-            <div className="col-4">
-              {/* 仅在商品或课程勾选时传递数据 */}
-              <CartMoney
-                totalAmount={totalAmount}
-                selectedCoupon={selectedCoupon}
-                productData={productChecked ? productData : []}
-                classData={classChecked ? classData : []}
-                userId={userId}
-              />
-              <CartCoupon
-                userId={userId}
-                selectedCoupon={selectedCoupon}
-                totalAmount={totalAmount}
-                onCouponChange={handleCouponChange}
-              />
             </div>
           </div>
-        </div>
 
-        {/* 手机版 */}
-        <div className="container d-block d-lg-none">
-          <div className="progressTitle">
-            <div className="progressText1">確認訂單</div>
-            <div className="progressText2">填寫訂單詳情</div>
-            <div className="progressText3">完成訂單</div>
-          </div>
-          <div className="progressBar">
-            <div className="progressCircle progressCircle1" />
-            <div className="progressLine progressLine1" />
-            <div className="progressCircle progressCircle2" />
-            <div className="progressLine progressLine2" />
-            <div className="progressCircle progressCircle3" />
-          </div>
-          <div className="checkAllBox">
-            <input
-              type="checkbox"
-              id="allM"
-              checked={allChecked}
-              onChange={handleAllCheck}
-              className="styled-checkbox"
+          {/* 手机版 */}
+          <div className="container d-block d-lg-none">
+            <div className="progressTitle">
+              <div className="progressText1">確認訂單</div>
+              <div className="progressText2">填寫訂單詳情</div>
+              <div className="progressText3">完成訂單</div>
+            </div>
+            <div className="progressBar">
+              <div className="progressCircle progressCircle1" />
+              <div className="progressLine progressLine1" />
+              <div className="progressCircle progressCircle2" />
+              <div className="progressLine progressLine2" />
+              <div className="progressCircle progressCircle3" />
+            </div>
+            <div className="checkAllBox">
+              <input
+                type="checkbox"
+                id="allM"
+                checked={allChecked}
+                onChange={handleAllCheck}
+                className="styled-checkbox"
+              />
+              <label htmlFor="allM">全部</label>
+            </div>
+
+            {/* 商品和课程部分 */}
+            {productData.length > 0 && (
+              <div>
+                <div className="checkProductBox">
+                  <input
+                    type="checkbox"
+                    id="productCheckM"
+                    checked={productChecked}
+                    onChange={handleProductCheck}
+                    className="styled-checkbox"
+                  />
+                  <label htmlFor="productCheckM">酒類商品</label>
+                </div>
+                <CartProductM
+                  cartItems={productData}
+                  onRemove={handleRemoveItem}
+                  onUpdateQuantity={handleUpdateQuantity}
+                />
+              </div>
+            )}
+            {classData.length > 0 && (
+              <div>
+                <div className="checkClassBox">
+                  <input
+                    type="checkbox"
+                    id="classCheckM"
+                    checked={classChecked}
+                    onChange={handleClassCheck}
+                    className="styled-checkbox"
+                  />
+                  <label htmlFor="classCheckM">課程商品</label>
+                </div>
+                <CartClassM
+                  classItems={classData}
+                  onRemove={handleRemoveItem}
+                />
+              </div>
+            )}
+
+            <div style={{ height: "150px" }}></div>
+
+            {/* 仅在商品或课程勾选时传递数据 */}
+            <CartMoneyM
+              totalAmount={totalAmount}
+              selectedCoupon={selectedCoupon}
+              productData={productChecked ? productData : []}
+              classData={classChecked ? classData : []}
+              userId={userId}
             />
-            <label htmlFor="allM">全部</label>
+            <CartCouponM
+              userId={userId}
+              selectedCoupon={selectedCoupon}
+              totalAmount={totalAmount}
+              onCouponChange={handleCouponChange}
+            />
           </div>
-
-          {/* 商品和课程部分 */}
-          {productData.length > 0 && (
-            <div>
-              <div className="checkProductBox">
-                <input
-                  type="checkbox"
-                  id="productCheckM"
-                  checked={productChecked}
-                  onChange={handleProductCheck}
-                  className="styled-checkbox"
-                />
-                <label htmlFor="productCheckM">酒類商品</label>
-              </div>
-              <CartProductM
-                cartItems={productData}
-                onRemove={handleRemoveItem}
-                onUpdateQuantity={handleUpdateQuantity}
-              />
-            </div>
-          )}
-          {classData.length > 0 && (
-            <div>
-              <div className="checkClassBox">
-                <input
-                  type="checkbox"
-                  id="classCheckM"
-                  checked={classChecked}
-                  onChange={handleClassCheck}
-                  className="styled-checkbox"
-                />
-                <label htmlFor="classCheckM">課程商品</label>
-              </div>
-              <CartClassM classItems={classData} onRemove={handleRemoveItem} />
-            </div>
-          )}
-
-          <div style={{ height: "150px"}}>
-          </div>
-
-          {/* 仅在商品或课程勾选时传递数据 */}
-          <CartMoneyM
-            totalAmount={totalAmount}
-            selectedCoupon={selectedCoupon}
-            productData={productChecked ? productData : []}
-            classData={classChecked ? classData : []}
-            userId={userId}
-          />
-          <CartCouponM
-            userId={userId}
-            selectedCoupon={selectedCoupon}
-            totalAmount={totalAmount}
-            onCouponChange={handleCouponChange}
-          />
-        </div>
-      </main>
-    )}
+        </main>
+      )}
       <Footer showMobileFooter={false} />
     </>
   );
