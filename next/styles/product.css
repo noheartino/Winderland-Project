@@ -17,11 +17,6 @@
 
 
     /* header start*/
-    nav {
-        height: 90px;
-        background-color: pink;
-    }
-
     .main-content {
         display: flex;
         height: auto;

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./PcFliterAside.module.css";
+import Link from "next/link";
 
-export default function PcFliterAside() {
+export default function PcFliterAside({ categories }) {
   // 雙滑塊js start//
   const minLimit = 500;
   const maxLimit = 100000;
@@ -18,14 +19,14 @@ export default function PcFliterAside() {
   const minChange = (e) => {
     const rawValue = Number(e.target.value);
     const steppedValue = getStep(rawValue);
-    const newMinValue = Math.min(steppedValue, maxValue - (4*step));
+    const newMinValue = Math.min(steppedValue, maxValue - 4 * step);
     setMinValue(newMinValue);
   };
 
   const maxChange = (e) => {
     const rawValue = Number(e.target.value);
     const steppedValue = getStep(rawValue);
-    const newMaxValue = Math.max(steppedValue, minValue + (4*step));
+    const newMaxValue = Math.max(steppedValue, minValue + 4 * step);
     setMaxValue(newMaxValue);
   };
 
@@ -41,30 +42,14 @@ export default function PcFliterAside() {
         <div className={`col ${styles["shop-category-fliter"]}`}>
           <p className={`${styles["shop-flite-p"]}`}>類型</p>
           <ul>
-            <a href="">
-              <li>Red 紅酒</li>
-            </a>
-            <a href="">
-              <li>Port Wine 波特酒</li>
-            </a>
-            <a href="">
-              <li>Cult Wine 美國膜拜酒</li>
-            </a>
-            <a href="">
-              <li>GCC 波爾多級數酒</li>
-            </a>
-            <a href="">
-              <li>Noble-Wine 貴腐甜酒</li>
-            </a>
-            <a href="">
-              <li>Rose 粉紅酒</li>
-            </a>
-            <a href="">
-              <li>Sherry 雪莉酒</li>
-            </a>
-            <a href="">
-              <li>Fortified 加烈酒</li>
-            </a>
+            <Link href={`/product`}>
+              <li>全部商品&nbsp;&nbsp;All Wine </li>
+            </Link>
+            {categories.map((c) => (
+              <Link key={c.id} href={`/category/${c.id}`}>
+                <li>{c.name}&nbsp;&nbsp;{c.name_en}</li>
+              </Link>
+            ))}
           </ul>
         </div>
         {/* 價格篩選 */}
