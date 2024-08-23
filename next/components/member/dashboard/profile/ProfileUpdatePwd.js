@@ -82,7 +82,6 @@ export default function ProfileUpdatePwd() {
           <label htmlFor="newPassword">新密碼 (6-12字元)</label>
           <input
             type="password"
-            id="newPassword"
             name="newPassword"
             value={passwordData.newPassword}
             onChange={handlePasswordChange}
@@ -95,7 +94,6 @@ export default function ProfileUpdatePwd() {
           <label htmlFor="confirmPassword">再次輸入新密碼</label>
           <input
             type="password"
-            id="confirmPassword"
             name="confirmPassword"
             value={passwordData.confirmPassword}
             onChange={handlePasswordChange}

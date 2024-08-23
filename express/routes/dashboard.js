@@ -155,7 +155,9 @@ router.put('/profile/password', authenticate, async function (req, res) {
     // 驗證舊密碼
     const isValidPassword = await compareHash(oldPassword, currentPasswordHash)
     if (!isValidPassword) {
-      return res.status(401).json({ status: 'error', message: '舊密碼不正確.ᐟ.ᐟ.ᐟ' })
+      return res
+        .status(401)
+        .json({ status: 'error', message: '舊密碼不正確.ᐟ.ᐟ.ᐟ' })
     }
 
     // 加密新密碼
@@ -183,7 +185,7 @@ router.put('/profile/password', authenticate, async function (req, res) {
 })
 
 // @ PUT - 更新會員資料(排除更新密碼)
-router.put('/profile', authenticate, async (req, res) => {
+router.put('/profile/update', authenticate, async (req, res) => {
   try {
     const userId = req.user.id
     const { user_name, birthday, gender, phone, address, email } = req.body

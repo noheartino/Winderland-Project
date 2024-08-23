@@ -17,7 +17,7 @@ export default function ProfileUpdateUser() {
     member_level_id: '',
     phone: '',
     address: '',
-    email:''
+    email: ''
   })
 
   const updateFormData = useCallback((userData) => {
@@ -38,6 +38,8 @@ export default function ProfileUpdateUser() {
       router.push('/member/login');
     } else if (auth.userData) {
       console.log('auth.userData:', auth.userData);
+      console.log('phone:', auth.userData.phone);
+      console.log('address:', auth.userData.address);
       updateFormData(auth.userData);
     }
   }, [auth, router, updateFormData]);

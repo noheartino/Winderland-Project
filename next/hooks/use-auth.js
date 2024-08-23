@@ -23,12 +23,6 @@ export function AuthProvider({ children }) {
   const [auth, setAuth] = useState({
     isAuth: false, // 會員是否有登入的信號值
     userData: null,
-    // 會員資料
-    // userData: {
-    //   id: 12,
-    //   user_name: 'Sophie',
-    //   email: 'Sophie',
-    //   account: 'sophie',
   })
 
   useEffect(() => {
@@ -44,6 +38,7 @@ export function AuthProvider({ children }) {
       })
       if (response.ok) {
         const { status, data } = await response.json();
+        console.log('Auth status response:', data);
         if (status === 'success') {
           setAuth({
             isAuth: data.isAuth,
@@ -52,6 +47,8 @@ export function AuthProvider({ children }) {
               gender: data.user.gender || '',
               birthday: data.user.birthday || '',
               member_level_id: data.user.member_level_id || '',
+              phone: data.user.phone || '',  // 確保設置 phone
+              address: data.user.address || '',  // 確保設置 address
             },
           })
         } else {
@@ -61,7 +58,7 @@ export function AuthProvider({ children }) {
           })
         }
       } else {
-        const errorData = await response.json()
+        // const errorData = await response.json()
         console.error('Auth check failed:', errorData)
         setAuth({
           isAuth: false,
@@ -78,35 +75,54 @@ export function AuthProvider({ children }) {
   }
 
   // @ 登入
-  const login = async (account, password) => {
+  const login = async (account, password, rememberMe) => {
     try {
       const response = await fetch('http://localhost:3005/api/member/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ account, password }),
+        body: JSON.stringify({ account, password, rememberMe }), 
         credentials: 'include',
       })
-      if (response.ok) {
-        const data = await response.json()
-        setAuth({
-          isAuth: true,
-          userData: {
-            ...data.user,
-            gender: data.user.gender,
-            birthday: data.user.birthday,
-            member_level_id: data.user.member_level_id,
-          },
-        })
-        alert('登入成功！')
-        router.push('/dashboard/profile') // 登入成功後導向首頁
+      const data = await response.json()
+      console.log('Login response:', data);
+
+      if (response.ok && data.status === 'success' && data.data && data.data.user) {
+        // 登錄成功後，立即獲取完整的用戶資料
+        const profileResponse = await fetch('http://localhost:3005/api/dashboard/profile', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        const profileData = await profileResponse.json();
+        console.log('Profile data:', profileData);
+  
+        if (profileResponse.ok && profileData.status === 'success') {
+          const userData = {
+            ...profileData.data.user,
+            gender: profileData.data.user.gender || '',
+            birthday: profileData.data.user.birthday || '',
+            member_level_id: profileData.data.user.member_level_id || '',
+            phone: profileData.data.user.phone || '',
+            address: profileData.data.user.address || '',
+          };
+          setAuth({
+            isAuth: true,
+            userData: userData,
+          });
+          console.log('Updated auth state after login:', { isAuth: true, userData });
+          router.push('/dashboard/profile');
+          return { success: true, message: '登入成功！' };
+        } else {
+          console.error('Failed to fetch complete profile data');
+          return { success: false, message: '獲取完整用戶資料失敗' };
+        }
       } else {
-        alert('登入失敗，請檢查帳號密碼。')
+        return { success: false, message: data.message || '登入失敗' };
       }
     } catch (error) {
-      console.error('登入時發生錯誤：', error)
-      alert('登入過程中發生錯誤，請稍後再試。')
+      console.error('登入時發生錯誤：', error);
+      return { success: false, message: '登入過程中發生錯誤，請稍後再試。' };
     }
   }
 
@@ -135,7 +151,7 @@ export function AuthProvider({ children }) {
   const updateUserInfo = async (updatedData) => {
     try {
       console.log('Sending update request with data:', updatedData);
-      const response = await fetch('http://localhost:3005/api/dashboard/profile', {
+      const response = await fetch('http://localhost:3005/api/dashboard/profile/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -152,10 +168,12 @@ export function AuthProvider({ children }) {
           ...prevAuth,
           userData: {
             ...prevAuth.userData,
-            ...result.data.user
+            ...result.data.user,
+            // phone: result.data.user.phone || '',  // 確保 phone 字段存在
+            // address: result.data.user.address || ''  // 確保 address 字段存在
           }
         }));
-        console.log('User data updated:', result.data.user); // 添加這行來檢查更新後的數據
+        console.log('User data updated:', result.data.user); // 檢查更新後的數據
         return { success: true, user: result.data.user };
       } else {
         throw new Error(result.message || '更新失敗');
