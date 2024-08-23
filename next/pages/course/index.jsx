@@ -31,7 +31,7 @@ export default function CourseIndex() {
       setApiUrl(`http://localhost:3005/api/courseList?view=${view}`)
     }
     console.log(apiUrl);
-    // 當組件掛載時執行 fetch 請求 紀錄0823
+    // 當組件掛載時執行 fetch 請求 紀錄0823 0451
     fetch(apiUrl)
       .then((response) => {
         if (!response.ok) {
