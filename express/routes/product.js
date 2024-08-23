@@ -22,7 +22,8 @@ LEFT JOIN
 LEFT JOIN
 	origin ON product.origin_id = origin.id
 LEFT JOIN 
-	country ON origin.country_id = country.id`
+	country ON origin.country_id = country.id
+LIMIT ? OFFSET ?`
 
 // 取得指定id的商品
 const getIdProduct = `SELECT 
@@ -44,6 +45,9 @@ LEFT JOIN
 LEFT JOIN 
 	country ON origin.country_id = country.id
 WHERE product.id=?`
+
+// 取得商品的總數
+const getProductsTotal = `SELECT COUNT(*) as total FROM product`;
 
 // 取得detail
 const getProductsDetails = `SELECT * FROM product_detail WHERE product_id IN (?)`
@@ -154,9 +158,19 @@ const tidyCategories = async (categories) => {
 // 商品首頁,取得所有商品的內容
 router.get('/', async (req, res) => {
   try {
-    // 獲取所有商品的基本訊息
-    const [products] = await db.query(getProducts)
+
+    // 設定預設頁數1，limit一頁限制多少筆，offset要跳過幾筆
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    // 獲取分頁後商品的基本訊息
+    const [products] = await db.query(getProducts,[limit,offset]);
     const [categories] = await db.query(getCategories);
+    const [productsTotal] = await db.query(getProductsTotal);
+
+    const total = productsTotal[0].total;
+    const totalPages = Math.ceil(total / limit);
     
 
     const productWithDetails = await tidyProducts(products);
@@ -164,7 +178,13 @@ router.get('/', async (req, res) => {
 
     res.json({
         products:productWithDetails,
-        categories:categoryWithVarieds
+        categories:categoryWithVarieds,
+        pagination:{
+            currentPage:page,
+            totalPages:totalPages,
+            totalItems:total,
+            itemsPerPage:limit
+        }
     });
 
   } catch (error) {
