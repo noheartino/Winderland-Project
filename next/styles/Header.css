@@ -133,29 +133,33 @@
 ::placeholder {
     color: var(--text_primary);
 }
-.HeaderCart{
-    position: relative;
-    & i{
-        color: white;
-        font-size: 20px;
-    }
-    & .dot{
-        font-size: 10px;
-        
-        width: 22px;
-        height: 14px;
-        text-align: center;
-        line-height: 14px;
-        background-color: white;
-        border-radius: 10px;
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        color: var(--wine);
-        position: absolute;
-        
-        /* box-shadow: -1px 2px 4px var(--text_gray); */
-        top: -3px;
-        left: 8px;
-    }
+.HeaderCart {  
+        button{
+            position: relative;
+            background-color: transparent;
+            border: 1px solid transparent;
+            & i{
+                color: white;
+                font-size: 30px;
+            }
+            & .dot{
+                font-size: 10px;
+                
+                width: 22px;
+                height: 14px;
+                text-align: center;
+                line-height: 14px;
+                background-color: white;
+                border-radius: 10px;
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                color: var(--wine);
+                position: absolute;
+                
+                /* box-shadow: -1px 2px 4px var(--text_gray); */
+                top: -3px;
+                left: 10px;
+            }
+        }
 
 }
 .HeaderCNavR{

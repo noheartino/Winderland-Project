@@ -86,3 +86,11 @@
         font-size: 28px;
     }
 }
+
+.errorMessage {
+    color: #ff4f4f;
+    margin-top: 30px; /* 調整顯示位置距離按鈕的間距 */
+    font-size: 18px;
+    padding-left: 20px;
+  }
+  
