@@ -136,7 +136,7 @@ export default function ProfileUpdateUserRWD() {
           <div className="btn-group-rwd d-flex justify-content-end d-block d-lg-none mb-5">
             {/* <button>清空</button> */}
             <button type="submit" className="button-send">
-              送出更改
+              送出修改
             </button>
           </div>
         </section>

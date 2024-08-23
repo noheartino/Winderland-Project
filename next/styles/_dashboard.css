@@ -412,9 +412,9 @@
         }
 
         .button-send {
-            /* background: var(--wine, #BA435D);
+            background: var(--wine, #BA435D);
             color: var(--light, #F4EBEB);
-            margin-left: 24px; */
+            margin-left: 24px;
         }
     }
 }
@@ -1507,3 +1507,22 @@
 
     }
 }
+
+
+.error-message-pwd , .success-message-pwd{
+ color: var(--orange);
+ font-size: medium;
+ /* margin-bottom: 90%; */
+ margin-top: -11%;
+ margin-left: 20%;
+}
+
+.error-message-pwd-rwd , .success-message-pwd-rwd{
+    color: var(--orange);
+    font-size: medium;
+    /* margin-bottom: 20%; */
+    /* margin-top: 20%; */
+    /* margin-top: -20%; */
+    margin-left: 5%;
+    white-space: nowrap;
+   }

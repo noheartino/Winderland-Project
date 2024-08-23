@@ -1,76 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import { useAuth } from '@/hooks/use-auth'
 
 export default function ProfileUpdatePwd() {
-  const [userData, setUserData] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const { auth } = useAuth();
   const [error, setError] = useState(null)
-
-  const [formData, setFormData] = useState({
-    user_name: '',
-    account: '',
-    gender: '',
-    birthday: '',
-    member_level_id: '',
-    phone: '',
-    address: ''
-  })
+  const [success, setSuccess] = useState(null)
 
   const [passwordData, setPasswordData] = useState({
     oldPassword: '',
     newPassword: '',
     confirmPassword: ''
   })
-
-  useEffect(() => {
-    fetchUserData()
-  }, [])
-
-  const fetchUserData = async () => {
-    setIsLoading(true)
-    try {
-
-      const response = await fetch('http://localhost:3005/api/dashboard/profile', {
-        method: 'GET',
-        credentials: 'include', // 這將包含cookies
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      })
-      if (!response.ok) {
-        throw new Error('獲取用戶數據失敗')
-      }
-      const data = await response.json()
-      console.log('獲取的數據:', data);
-
-      if (data.status === 'success' && data.data && data.data.user) {
-        const user = data.data.user;
-        setUserData(user);
-        setFormData({
-          user_name: user.user_name,
-          account: user.account,
-          birthday: user.birthday,
-          gender: user.gender,
-          phone: user.phone,
-          address: user.address,
-          member_level_id: user.member_level_id,
-        });
-      } else {
-        throw new Error('用戶數據不可用或格式不正確');
-      }
-    } catch (err) {
-      console.error("獲取用戶數據時出錯:", err);
-      setError(err.message);
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
 
   const handlePasswordChange = (e) => {
     setPasswordData({
@@ -81,14 +21,17 @@ export default function ProfileUpdatePwd() {
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault()
+    setError(null)
+    setSuccess(null)
+
     // 先檢查新密碼和確認密碼是否一致
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setError('新密碼與確認密碼不一致')
+      setError('新密碼與確認密碼不一致 .ᐟ.ᐟ.ᐟ')
       return
     }
 
     try {
-      const response = await fetch('http://localhost:3005/api/dashboard/profile', {
+      const response = await fetch('http://localhost:3005/api/dashboard/profile/password', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -99,62 +42,82 @@ export default function ProfileUpdatePwd() {
           newPassword: passwordData.newPassword
         })
       })
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || '密碼更新失敗');
+      const data = await response.json()
+
+      if (response.ok) {
+        setSuccess('密碼更新成功 .ᐟ.ᐟ.ᐟ')
+        setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' })
+      } else {
+        throw new Error(data.message || '密碼更新失敗')
       }
-      //  密碼更新成功後的操作
-      alert('密碼更新成功')
-      setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' })
     } catch (err) {
       setError(err.message)
     }
   }
+  if (!auth.isAuth) {
+    return <>
+      請先登入
+    </>
+  }
 
-
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error: {error}</div>
+  // if (isLoading) return <div>Loading...</div>
+  // if (error) return <div>Error: {error}</div>
 
   return (
     <>
       <form onSubmit={handlePasswordSubmit} className='form-update'>
         <section className="editPwd-card col-6">
           <h4 className="edit-card-title">修改密碼</h4>
-          <label htmlFor="">舊密碼</label> 
-          {/* <span>*舊密碼輸入錯誤</span> */}
+          <label htmlFor="">舊密碼</label>
+
           <input
             type="password"
             name="oldPassword"
             value={passwordData.oldPassword}
             onChange={handlePasswordChange}
-            // placeholder="請輸入舊密碼"
             style={{ width: "93%" }}
+            required
           />
           <br />
-          <label htmlFor="newPassword">新密碼 (6-12字元）</label>
+          <label htmlFor="newPassword">新密碼 (6-12字元)</label>
           <input
             type="password"
+            id="newPassword"
             name="newPassword"
             value={passwordData.newPassword}
             onChange={handlePasswordChange}
-            // placeholder="請輸入6-12字元新密碼"
             style={{ width: "93%" }}
+            minLength="6"
+            maxLength="12"
+            required
           />
           <br />
-          <label htmlFor="confirmPassword">再次輸入新密碼</label> 
-          {/* <span>*密碼內容輸入錯誤</span> */}
+          <label htmlFor="confirmPassword">再次輸入新密碼</label>
           <input
             type="password"
+            id="confirmPassword"
             name="confirmPassword"
             value={passwordData.confirmPassword}
             onChange={handlePasswordChange}
             // placeholder="請再次輸入新密碼"
             style={{ width: "93%" }}
+            minLength="6"
+            maxLength="12"
+            required
           />
+
+          <div className="btn-group d-flex justify-content-end mb-5">
+            <button type="submit" className="button-send">
+              修改密碼
+            </button>
+          </div>
         </section>
-        {error && <div className="error-message">{error}</div>}
-        {/* <button type="submit" className='btn-group'>更新密碼</button> */}
+
+        {error && <div className="error-message-pwd">{error}</div>}
+        {success && <div className="success-message-pwd">{success}</div>}
       </form>
+
+
     </>
   )
 }

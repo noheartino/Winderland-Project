@@ -156,11 +156,11 @@ export default function ProfileUpdateUser() {
                   // placeholder={`${userData.email}`}
                   style={{ width: "100%" }}
                 />
-              
+               
               <div className="btn-group d-flex justify-content-end mb-5">
               {/* <button type="button" onClick={() => setFormData({ ...auth.userData })}>清空</button> */}
               <button type="submit" className="button-send">
-                確認修改
+              送出修改
               </button>
             </div>
               </section>
