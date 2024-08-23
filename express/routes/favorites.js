@@ -3,10 +3,11 @@ const router = express.Router()
 
 // 資料庫使用
 import connection from '##/configs/mysql.js'
+// 中介軟體，存取隱私會員資料用
+import authenticate from '#middlewares/authenticate.js'
 
 // 檢查空物件, 轉換req.params為數字
 import { getIdParam } from '#db-helpers/db-tool.js'
-import authenticate from '#middlewares/authenticate.js'
 
 // @ 讀取我的最愛
 // 獲得某會員id的有加入到我的最愛清單中的商品id們
@@ -92,6 +93,82 @@ router.delete('/:id', authenticate, async (req, res, next) => {
 
   // 成功
   return res.json({ status: 'success', data: null })
+})
+
+// # 收藏文章區
+// @ 讀取收藏文章
+router.get('/articles', authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id
+    const [rows] = await connection.query(
+      `
+      SELECT 
+        a.id,
+        a.title,
+        a.category,
+        a.poster,
+        a.update_time
+      FROM user_like ul
+      JOIN article a ON ul.item_id = a.id
+      WHERE ul.user_id = ? AND ul.item_type = 'article'
+      ORDER BY a.update_time DESC
+    `,
+      [userId]
+    )
+    res.json({ status: 'success', data: rows })
+  } catch (error) {
+    console.error('獲取收藏文章時出錯:', error)
+    res.status(500).json({ status: 'error', message: '服務器錯誤' })
+  }
+})
+
+// @ 添加文章到收藏
+// router.post('/articles/:id', authenticate, async (req, res) => {
+//   try {
+//     const userId = req.user.id
+//     const articleId = req.params.id
+
+//     // 檢查是否已收藏
+//     const [existing] = await connection.query(
+//       'SELECT * FROM user_like WHERE user_id = ? AND item_id = ? AND item_type = "article"',
+//       [userId, articleId]
+//     )
+
+//     if (existing.length > 0) {
+//       return res
+//         .status(400)
+//         .json({ status: 'error', message: '文章已在收藏中' })
+//     }
+
+//     // 添加到收藏
+//     await connection.query(
+//       'INSERT INTO user_like (user_id, item_id, item_type) VALUES (?, ?, "article")',
+//       [userId, articleId]
+//     )
+
+//     res.json({ status: 'success', message: '文章已添加到收藏' })
+//   } catch (error) {
+//     console.error('添加文章到收藏時出錯:', error)
+//     res.status(500).json({ status: 'error', message: '服務器錯誤' })
+//   }
+// })
+
+// @ 從文章收藏中移除
+router.delete('/articles/:id', authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id
+    const articleId = req.params.id
+
+    await connection.query(
+      'DELETE FROM user_like WHERE user_id = ? AND item_id = ? AND item_type = "article"',
+      [userId, articleId]
+    )
+
+    res.json({ status: 'success', message: '文章已從收藏中移除' })
+  } catch (error) {
+    console.error('從收藏中移除文章時出錯:', error)
+    res.status(500).json({ status: 'error', message: '服務器錯誤' })
+  }
 })
 
 export default router

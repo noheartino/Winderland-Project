@@ -19,7 +19,7 @@ export default function DashboardFavorite() {
   return (
     <>
       {/* desk */}
-      <div className=" container d-lg-flex  d-none d-lg-block">
+      <div className=" container d-lg-flex  d-none d-lg-block mb-5">
         {/* 側欄 */}
         <FavoriteAside />
 

@@ -193,7 +193,7 @@ export default function DashboardProfile() {
     <>
       <>
         {/* desk */}
-        <div className="container d-none d-lg-block">
+        <div className="container d-none d-lg-block mb-5">
           {/* 個人資料區 */}
           <section className="name-card d-flex row">
             {/* 會員資料 */}

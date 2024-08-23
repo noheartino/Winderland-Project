@@ -5,7 +5,7 @@ import styles from '@/components/member/dashboard/order/OrderCardDetail.module.c
 export default function OrderCardDetailItem() {
     return (
         <>
-            <div className={`${styles.orderCard} card`}>
+            <div className={`${styles.orderCard} card mt-3`}>
                 <div className={`${styles.cardBody} d-flex`}>
                     <Image
                         src="/images/member/order-p1.png"
