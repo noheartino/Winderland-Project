@@ -220,7 +220,7 @@
         width: 115px;
         height: 115px;
         border-radius: 115px;
-        background: url(/images/member/user.jpg) lightgray 50% / cover no-repeat;
+        /* background: url(/images/member/user.jpg) lightgray 50% / cover no-repeat; */
     }
 
     .membership {
@@ -459,7 +459,7 @@
         width: 115px;
         height: 115px;
         border-radius: 115px;
-        background: url(/images/member/user.jpg) lightgray 50% / cover no-repeat;
+        /* background: url(/images/member/user.jpg) lightgray 50% / cover no-repeat; */
         position: relative;
         left: 20%;
         /* top: 90%; */

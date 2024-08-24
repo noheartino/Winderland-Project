@@ -57,99 +57,6 @@ export default function DashboardProfile() {
   }
 
 
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
-
-  const handlePasswordChange = (e) => {
-    setPasswordData({
-      ...passwordData,
-      [e.target.name]: e.target.value
-    })
-  }
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault()
-  //   try {
-  //     // const token = localStorage.getItem('token');
-  //     const response = await fetch('http://localhost:3005/api/dashboard/profile', {
-  //       method: 'PUT',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         // 'Authorization': `Bearer ${token}`
-  //       },
-  //       credentials: 'include',
-  //       body: JSON.stringify(formData)
-  //     })
-  //     if (!response.ok) {
-  //       throw new Error('Failed to update profile')
-  //     }
-  //     // 更新成功後的操作，例如顯示成功消息
-  //     alert('Profile updated successfully')
-  //     fetchauth.userData() // 重新獲取用戶數據以刷新頁面
-  //   } catch (err) {
-  //     setError(err.message)
-  //   }
-  // }
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    try {
-      await updateUserInfo(formData);
-      alert('個人資料更新成功');
-    } catch (err) {
-      alert('更新個人資料失敗：' + err.message);
-    }
-  }
-
-  // const handlePasswordSubmit = async (e) => {
-  //   e.preventDefault()
-  //   if (passwordData.newPassword !== passwordData.confirmPassword) {
-  //     setError('新密碼不匹配')
-  //     return
-  //   }
-  //   try {
-  //     // const token = localStorage.getItem('token');
-  //     const response = await fetch('http://localhost:3005/api/dashboard/password', {
-  //       method: 'PUT',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         // 'Authorization': `Bearer ${token}`
-  //       },
-  //       credentials: 'include',
-  //       body: JSON.stringify({
-  //         oldPassword: passwordData.oldPassword,
-  //         newPassword: passwordData.newPassword
-  //       })
-  //     })
-  //     if (!response.ok) {
-  //       throw new Error('Failed to update password')
-  //     }
-  //     // 密碼更新成功後的操作
-  //     alert('Password updated successfully')
-  //     setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' })
-  //   } catch (err) {
-  //     setError(err.message)
-  //   }
-  // }
-  const handlePasswordSubmit = async (e) => {
-    e.preventDefault()
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert('新密碼不匹配');
-      return;
-    }
-    try {
-      // 假設 useAuth 提供了更新密碼的方法
-      await updatePassword(passwordData.oldPassword, passwordData.newPassword);
-      alert('密碼更新成功');
-      setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' });
-    } catch (err) {
-      alert('更新密碼失敗：' + err.message);
-    }
-  }
-
   // if (isLoading) return <div>Loading...</div>
   // if (error) return <div>Error: {error}</div>
 
@@ -201,7 +108,15 @@ export default function DashboardProfile() {
               <div className="userName">{auth.userData.user_name}</div>
               <div className="userID">ID：{auth.userData.account}</div>
               <div className="userAge">{userGender} / {userAge}歲 / {auth.userData.birthday}</div>
-              <div className="user-img" style={{ backgroundImage: `url($)` }} />
+              <div className="user-img">
+              <Image
+                src={auth.userData.avatar_url || '/member/avatar/default-avatar.jpg'}
+                alt="User Avatar"
+                width={130}
+                height={130}
+                className="rounded-circle"
+              />
+            </div>
               <div className="membership">{userMembership}</div>
             </div>
             {/* 會員等級 */}
@@ -236,7 +151,15 @@ export default function DashboardProfile() {
                 <div className="userID-rwd">ID：{auth.userData.account}</div>
                 <div className="userAge-rwd">{userGender} / {userAge}歲 / {auth.userData.birthday}</div>
               </div>
-              <div className="user-img-rwd" />
+              <div className="user-img-rwd">
+              <Image
+                src={auth.userData.avatar_url || '/member/avatar/default-avatar.jpg'}
+                alt="User Avatar"
+                width={100}
+                height={100}
+                className="rounded-circle"
+              />
+            </div>
             </div>
             <hr style={{ border: "3px solid var(--primary_color-light)" }} />
             <div className="membership-detail-rwd d-flex">
