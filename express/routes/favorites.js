@@ -95,8 +95,89 @@ router.delete('/:id', authenticate, async (req, res, next) => {
   return res.json({ status: 'success', data: null })
 })
 
+// # 收藏課程區
+// @ 獲取收藏課程
+router.get('/courses', authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id
+    const [rows] = await connection.query(
+      `
+     SELECT 
+        c.id AS class_id,
+        c.name AS class_name,
+        t.name AS teacher_name,
+        c.price,
+        c.sale_price,
+        c.online,
+        ic.path AS image_path
+      FROM user_like ul
+      JOIN class c ON ul.item_id = c.id
+      JOIN teacher t ON c.teacher_id = t.id
+      LEFT JOIN images_class ic ON c.id = ic.class_id
+      WHERE ul.user_id = ? AND ul.item_type = 'class'
+      GROUP BY c.id
+    `,
+      [userId]
+    )
+
+    res.json({ status: 'success', data: rows })
+  } catch (error) {
+    console.error('獲取收藏課程時出錯:', error)
+    res.status(500).json({ status: 'error', message: '服務器錯誤' })
+  }
+})
+
+// @ 添加文章到收藏（用在課程頁面）
+// router.post('/courses/:id', authenticate, async (req, res) => {
+//   try {
+//     const userId = req.user.id
+//     const classId = req.params.id
+
+//     // 檢查是否已收藏
+//     const [existing] = await connection.query(
+//       'SELECT * FROM user_like WHERE user_id = ? AND item_id = ? AND item_type = "class"',
+//       [userId, classId]
+//     )
+
+//     if (existing.length > 0) {
+//       return res
+//         .status(400)
+//         .json({ status: 'error', message: '課程已在經典收藏中' })
+//     }
+
+//     // 添加到收藏
+//     await connection.query(
+//       'INSERT INTO user_like (user_id, item_id, item_type) VALUES (?, ?, "class")',
+//       [userId, classId]
+//     )
+
+//     res.json({ status: 'success', message: '課程已添加到經典收藏' })
+//   } catch (error) {
+//     console.error('添加課程到經典收藏時出錯:', error)
+//     res.status(500).json({ status: 'error', message: '服務器錯誤' })
+//   }
+// })
+
+// @ 從文章收藏中移除
+router.delete('/courses/:id', authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id
+    const classId = req.params.id
+
+    await connection.query(
+      'DELETE FROM user_like WHERE user_id = ? AND item_id = ? AND item_type = "class"',
+      [userId, classId]
+    )
+
+    res.json({ status: 'success', message: '課程已從經典收藏中移除' })
+  } catch (error) {
+    console.error('從經典收藏中移除課程時出錯:', error)
+    res.status(500).json({ status: 'error', message: '服務器錯誤' })
+  }
+})
+
 // # 收藏文章區
-// @ 讀取收藏文章
+// @ 獲取收藏文章
 router.get('/articles', authenticate, async (req, res) => {
   try {
     const userId = req.user.id
@@ -169,9 +250,9 @@ router.delete('/articles/:id', authenticate, async (req, res) => {
       [userId, articleId]
     )
 
-    res.json({ status: 'success', message: '文章已從收藏中移除' })
+    res.json({ status: 'success', message: '文章已從經典收藏中移除' })
   } catch (error) {
-    console.error('從收藏中移除文章時出錯:', error)
+    console.error('從經典收藏中移除文章時出錯:', error)
     res.status(500).json({ status: 'error', message: '服務器錯誤' })
   }
 })

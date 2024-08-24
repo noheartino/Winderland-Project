@@ -1091,12 +1091,14 @@
                     }
 
                     .online {
-                        width: 59.572px;
+                        /* width: 59.572px;
+                         */
+                         width: 25%;
                         height: 24.685px;
                         border-radius: 5.696px;
                         background: var(--blue, #A5D1DF);
 
-                        font-size: 10px;
+                        font-size: 12px;
                         color: var(--blue_dark, #5B839A);
                         display: flex;
                         justify-content: center;
@@ -1332,16 +1334,15 @@
             .favorite-c-card-rwd {
                 width: 60%;
                 /* 265.835px */
-                margin-left: 13.17px;
+                /* margin-left: 13.17px; */
                 /* margin-top: 37px; */
                 margin-bottom: 15px;
 
 
                 .favorite-c-img-rwd {
-                    width: 55%;
+                    width: 70%;
                     height: 105px;
                     border-radius: 5.947px;
-                    background: url(/images/member/fav-c1.jpg) lightgray 50% / cover no-repeat;
                     position: relative;
 
                     /* .svg-bookmark {
@@ -1357,22 +1358,24 @@
                 }
 
                 .favorite-c-detail-rwd {
-                    width: 90%;
-                    font-size: 12px;
+                    width: 100%;
+                    font-size: 14px;
                     font-weight: 400;
                     letter-spacing: 1.2px;
                     margin-left: 10px;
                     color: var(--text_primary, #60464C);
+                    white-space: nowrap;
 
 
                     .favorite-c-title-rwd {
                         margin-top: 5px;
+                        width: 200px;
 
                         .online {
-                            width: 59.572px;
-                            height: 24.685px;
-                            border-radius: 5.696px;
-                            background: var(--blue, #A5D1DF);
+                            white-space: nowrap;
+                            width: 50px;
+                            height: 20px;
+                            border-radius: 7.137px;                            background: var(--blue, #A5D1DF);
 
                             font-size: 13px;
                             color: var(--blue_dark, #5B839A);
@@ -1384,8 +1387,8 @@
                         }
 
                         .byTeacher {
-                            margin-top: 3px;
-                            margin-left: 1px;
+                            /* margin-top: 3px; */
+                            /* margin-left: 1px; */
                             margin-right: 28%;
                             color: var(--purple_light, #A66E7B);
                             white-space: nowrap;
@@ -1405,6 +1408,15 @@
                         margin-left: 25px;
 
                     }
+                    .nowPriceLeft{
+                        color: var(--text_primary, #60464C);
+                        font-size: 14px;
+                        font-weight: 500;
+                        letter-spacing: 0.7px;
+                        margin-left: 120px;
+                        /* display: flex;
+                        justify-content: end; */
+                    }
 
                     .oldPrice {
                         color: #BEBEBE;
@@ -1420,7 +1432,7 @@
                 }
 
                 .progressArea {
-                    width: 150%;
+                    width: 170%;
                 }
 
                 .progress-detail {
@@ -1431,9 +1443,7 @@
                     margin-bottom: 3px;
                 }
 
-                .progress {
-                    /* margin-top: -15px; */
-                }
+               
 
                 .progress-bar {
                     border-radius: 4.747px;
@@ -1510,6 +1520,12 @@
     }
 }
 
+.no-favorites {
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    color: #666;
+  }
 
 .error-message-pwd , .success-message-pwd{
  color: var(--orange);
