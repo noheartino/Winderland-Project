@@ -26,9 +26,12 @@ export default function ProductIndex() {
     const fetchProducts = async () => {
     try{
       // response取得axios的回應數據(內容有很多但我們只要data)
-      const response = await axios.get('http://localhost:3005/api/product');
+      const response = await axios.get(`http://localhost:3005/api/product?page=${currentPage}&limit=${itemsPerPage}`);
       setProducts(response.data.products);
       setCategoryies(response.data.categories);
+      setTotalPages(response.data.pagination.totalPages);
+      setTotalItems(response.data.pagination.totalItems);
+
 
       setLoading(false);
     }catch(err){
@@ -37,7 +40,11 @@ export default function ProductIndex() {
     }
   };
   fetchProducts();
-  },[]);
+  },[currentPage,itemsPerPage]);
+
+  const changePage = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
   if(loading) return <div>加載中...</div>;
   if(error) return <div>{error}</div>;
@@ -62,7 +69,11 @@ export default function ProductIndex() {
             {/* 商品list */}
             <ProductGroup products={products}/>
             {/* 分頁 */}
-            <ListPageNation />
+            <ListPageNation 
+            currentPage={currentPage}
+            totalPages={totalPages}
+            changePage={changePage}
+            />
           </div>
         </div>
         <Footer />
