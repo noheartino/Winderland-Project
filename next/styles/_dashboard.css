@@ -1492,6 +1492,10 @@
                         letter-spacing: 1.2px;
                     }
 
+                    span:hover{
+                        color: var(--primary); 
+                    }
+
                     p {
                         margin-top: 25px;
                         color: var(--text_dark, #3F3034);

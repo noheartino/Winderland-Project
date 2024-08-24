@@ -102,12 +102,17 @@ router.get('/articles', authenticate, async (req, res) => {
     const userId = req.user.id
     const [rows] = await connection.query(
       `
-      SELECT 
+   SELECT 
         a.id,
         a.title,
         a.category,
         a.poster,
-        a.update_time
+        a.update_time,
+        (SELECT ia.path 
+         FROM images_article ia 
+         WHERE ia.article_id = a.id 
+         ORDER BY ia.id ASC 
+         LIMIT 1) AS image_path
       FROM user_like ul
       JOIN article a ON ul.item_id = a.id
       WHERE ul.user_id = ? AND ul.item_type = 'article'
@@ -122,7 +127,7 @@ router.get('/articles', authenticate, async (req, res) => {
   }
 })
 
-// @ 添加文章到收藏
+// @ 添加文章到收藏（用在文章頁面）
 // router.post('/articles/:id', authenticate, async (req, res) => {
 //   try {
 //     const userId = req.user.id

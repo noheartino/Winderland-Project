@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useAuth } from '@/hooks/use-auth'
+import Link from 'next/link'
+import styles from '@/components/member/dashboard/favorite/FavoriteA.module.css';
 
 export default function FavoriteArwd() {
   const [favorites, setFavorites] = useState([])
@@ -55,8 +57,8 @@ export default function FavoriteArwd() {
 
           <div key={article.id} className="favorite-a-card d-flex">
             <Image
-              src="/images/member/fav-a1.jpeg"
-              alt=""
+             src={article.image_path ? `/images/article/${article.image_path}` : "/images/member/fav-a1.jpeg"}
+             alt={article.title}
               width={90}
               height={90}
               className="favorite-a-img"
@@ -80,9 +82,11 @@ export default function FavoriteArwd() {
                   />
                 </svg>
               </div>
-              <span >
+              <Link href={`/article/${article.id}`} className={styles.articleTitleLink}>
+              <span className={styles.articleTitle}>
               {article.title}
               </span>
+              </Link>
               <p >by {article.poster} l {new Date(article.update_time).toLocaleDateString()}</p>
             </div>
           </div>

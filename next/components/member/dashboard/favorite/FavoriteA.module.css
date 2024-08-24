@@ -33,17 +33,21 @@
   .favoriteAImgBox {
     position: relative;
     width: 100%;
-    /* padding-top: 51.5%; 保持 268:138 的寬高比 */
+    padding-top: 60%;  /* 保持 268:138 的寬高比 */
     border-radius: 4.75px;
     /* position: relative; */
   }
   
   .favoriteAImg {
-    /* position: absolute; */
-    top: 50;
-    left: 36;
-    width: 120%;
-    height: 110%;
+    position: absolute;
+    /* top: 50;
+    left: 36; */
+    /* width: 120%;
+    height: 110%; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     border-radius: 4.75px;
    
@@ -77,6 +81,19 @@
     margin-bottom: 11px;
   }
   
+  .articleTitleLink {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  .articleTitleLink:hover,
+.articleTitleLink:visited,
+.articleTitleLink:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+
   .articleTitle {
     /* font-size: 1rem; */
     /* font-weight: bold; */
@@ -89,6 +106,11 @@
     font-size: 16px;
     font-weight: 400;
     letter-spacing: 1.6px;
+
+  }
+
+  .articleTitle:hover {
+    color: var(--primary); /* 或者您想要的懸停顏色 */
   }
   
   .favoriteADetailP {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useAuth } from '@/hooks/use-auth'
 import styles from '@/components/member/dashboard/favorite/FavoriteA.module.css';
 
@@ -60,10 +61,10 @@ export default function FavoriteA() {
 
             <div className={styles.favoriteAImgBox}>
               <Image
-                src="/images/member/fav-a1.jpeg"
-                alt=""
-                width={3}
-                height={4}
+              src={article.image_path ? `/images/article/${article.image_path}` : "/images/member/fav-a1.jpeg"}
+              alt={article.title}
+                width={268}
+                height={138}
                 className={styles.favoriteAImg}
               />
               <svg
@@ -87,9 +88,13 @@ export default function FavoriteA() {
               <div className={styles.aCategory}>
                 ⬩{article.category}
               </div>
+
+              <Link href={`/article/${article.id}`} className={styles.articleTitleLink}>
               <div className={`${styles.articleTitle} ms-2`}>
                 {article.title}
               </div>
+              </Link>
+
               <p className={`${styles.favoriteADetailP} ms-2`}>
                 by {article.poster} l {new Date(article.update_time).toLocaleDateString()}
               </p>
