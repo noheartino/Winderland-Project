@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./ProductItem.module.css";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function ProductItem({ product }) {
@@ -17,12 +16,9 @@ export default function ProductItem({ product }) {
       <div className={`col-lg-3 col-md-3 col-6  ${styles["shop-card"]}`}>
         <Link className={`${styles['detail-link']}`} href={`/product/${product.id}`}>
           <div className={`${styles["shop-card-photo"]}`}>
-            <Image
-              className={`${styles["photo"]}`}
-              src={`/images/product/${product.images[1].path}`}
-              layout="fill"
-              objectFit="contain"
-            />
+            <img className={`${styles["photo"]}`} src={`/images/product/${product.images[1].path}`} alt="" />
+            {/* className={`${styles["photo"]}`}
+              src={`/images/product/${product.images[1].path}`} */}
           </div>
         </Link>
         <Link className={`${styles['detail-link']}`} href={`/product/${product.id}`}>

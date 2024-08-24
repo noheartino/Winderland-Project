@@ -39,9 +39,6 @@ export default function ListPageNation({
     if (totalPages > 1 && !pageNumbers.includes(totalPages)) {
       pageNumbers.push(totalPages);
     }
-    console.log("Current Page:", currentPage);
-    console.log("Total Pages:", totalPages);
-    console.log(pageNumbers);
     return pageNumbers;
   };
 
