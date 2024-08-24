@@ -244,7 +244,7 @@ router.post('/cashOnDelivery', async (req, res) => {
 
     // 插入訂單資料
     const insertOrderQuery = `
-      INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, earned_points, pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, created_at, updated_at)
+      INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, earned_points, pointUsed, pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, created_at, updated_at)
       VALUES (?, ?, 'pending', '貨到付款', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
     `;
     const [orderResult] = await conn.query(insertOrderQuery, [
@@ -253,6 +253,7 @@ router.post('/cashOnDelivery', async (req, res) => {
       60, // 固定運費，已無條件捨去
       couponData?.coupon_id || null,
       earnedPoints,
+      pointsUsed,
       selectedTransport === 'blackcat'
         ? transportBlackCatData.name
         : transportData.pickupName,
