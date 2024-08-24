@@ -54,7 +54,7 @@ export default function FavoriteA() {
 
       <hr />
       {/* 空收藏庫邏輯 */}
-      {fetchFavorites.length === 0 ? (
+      {favorites.length === 0 ? (
         <div className="no-favorites">目前還沒有任何收藏喔 .ᐟ.ᐟ.ᐟ </div>
       ) : (
       <div className={styles.favoriteAGroup}>
