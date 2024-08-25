@@ -85,6 +85,7 @@
   }
 
   /* 一張優惠券 */
+  /* 金額 */
   .couponCard {
     border-radius: 3px;
     box-shadow: -2px 3px 4px 0px rgba(0, 0, 0, 0.25);
@@ -114,6 +115,13 @@
       color: #fff;
       font-size: 10px;
     }
+  }
+  /* 折數 */
+  .couponDiscountCard {
+    background: linear-gradient(90deg, #f46274 0%, #851931 100%);
+  }
+  .couponDiscountCategory{
+    background: var(--primary) !important;
   }
 
   /* 紀錄區塊 */
@@ -233,5 +241,20 @@
       font-weight: 700;
       letter-spacing: 3.2px;
     }
+  }
+}
+
+.CPlusModal {
+  backdrop-filter: blur(2px);
+  .CModalContent {
+    background-color: #efefef;
+  }
+  .plusBottom {
+    text-decoration: none;
+    color: var(--blue_dark);
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 4px;
   }
 }

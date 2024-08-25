@@ -1,6 +1,8 @@
 import React from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import CouponCard from './CouponCard'
+import CouponPlusModal from "./CouponPlusModal";
+
 
 export default function CouponStorage() {
   return (
@@ -26,13 +28,16 @@ export default function CouponStorage() {
           <div
             className={`${style.couponNav} d-none d-lg-block col-lg-3 ms-auto text-end`}
           >
-            <a className={`${style.couponPlus}`}>領取本月會員優惠券+</a>
+            <a type="button"
+            className={`${style.couponPlus}`}
+            data-bs-toggle="modal"
+            data-bs-target="#couponPlusModal" >領取本月會員優惠券+</a>
             <div className={`${style.membership} mt-2`}>
               <p className={`${style.memberP} p-2`}>白金會員</p>
             </div>
           </div>
         </div>
-
+        <CouponPlusModal />
         {/* 手機上方nav */}
         <div className="coupon-navbar row my-3 d-lg-none">
           <div className={`${style.couponNav} col-12 col-lg-7`}>

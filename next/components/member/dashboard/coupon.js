@@ -7,7 +7,16 @@ import CouponExpired from "./coupon/CouponExpired";
 import CouponStorage from "./coupon/CouponStorage";
 import WPointRecord from "./coupon/WPointRecord";
 
+import { useAuth } from "@/hooks/use-auth";
+
 export default function DashboardCoupon() {
+  const { auth } = useAuth();
+  if (!auth.isAuth || !auth.userData) {
+    console.log("使用者尚未登入或用戶資料尚未載入");
+    return <p>請先登入再進行評論</p>;
+  }
+  console.log(auth);
+
   return (
     <>
       <div className={`container ${style["coupon-content"]} m-0 mx-auto`}>
@@ -16,12 +25,19 @@ export default function DashboardCoupon() {
 
         {/* 手機的領券的標題 */}
         <div className={`${style.couponNav} col-12 d-lg-none mt-5 mb-4`}>
-          <span className={`${style.CTitle} ${style.CTitleSm} row`}>
+          <span
+            type="button"
+            className={`${style.CTitle} ${style.CTitleSm} row`}
+            data-bs-toggle="modal"
+            data-bs-target="#couponPlusModal"
+          >
             <i className="fa-solid fa-ticket col-auto" />
             領取本月會員優惠券
             <i className={`fa-solid fa-angle-down ${style.pointDown} col`} />
           </span>
         </div>
+        
+        
 
         {/* 手機領券區塊 */}
         <div
