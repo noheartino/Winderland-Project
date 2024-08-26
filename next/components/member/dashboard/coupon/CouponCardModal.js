@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
+import { FaCircleCheck } from "react-icons/fa6";
 
 export default function CouponCardModal({ coupon }) {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheck = () => {
+    setIsChecked(true);
+  };
+
   const getCategoryClass = (category) => {
     switch (category) {
       case "倍數折扣":
@@ -22,21 +29,33 @@ export default function CouponCardModal({ coupon }) {
     <>
       {/* 一組優惠券 */}
 
-      <div className={`col-9 px-5 py-3`}>
+      <div
+        className={`col-9 ms-3 px-4 py-3`}
+        title={`低消＄${coupon.min_spend}`}
+      >
         <div
-          className={`${
-            style.couponCard
-          } row align-items-center py-3 ${couponcss.cardClass}`}
+          className={`${style.couponCard} row align-items-center py-3 ${couponcss.cardClass}`}
         >
           <div className={`col-auto pe-0`}>
-            <p className={`${style.couponC} p-2 m-0 ${couponcss.categoryClass}`}>{coupon.category}</p>
+            <p
+              className={`${style.couponC} p-2 m-0 ${couponcss.categoryClass}`}
+            >
+              {coupon.category}
+            </p>
           </div>
           <div className={`col p-0`}>
             <p className={`${style.couponN} m-0`}>{coupon.name}</p>
           </div>
         </div>
       </div>
-      <a className={`${style.plusBottom} col-auto`}>+領取</a>
+
+      <a
+        className={`${style.plusBottom} col-auto`}
+        title={`低消＄${coupon.min_spend}`}
+        onClick={handleCheck}
+      >
+        {isChecked ? <FaCircleCheck className="ms-3" style={{ fontSize: '40px' , color: "var(--blue)" }}  /> : "+領取"}
+      </a>
     </>
   );
 }
