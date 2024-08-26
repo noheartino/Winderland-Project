@@ -9,9 +9,9 @@ export default function CartMoney() {
 
   useEffect(() => {
     // 從 sessionStorage 讀取資料
-    const storedTotalAmount = parseFloat(sessionStorage.getItem('totalAmount')) || 0;
-    const storedDiscountAmount = parseFloat(sessionStorage.getItem('discountAmount')) || 0;
-    const storedFinalAmount = parseFloat(sessionStorage.getItem('finalAmount')) || 0;
+    const storedTotalAmount = Math.floor(parseFloat(sessionStorage.getItem('totalAmount')) || 0);
+    const storedDiscountAmount = Math.floor(parseFloat(sessionStorage.getItem('discountAmount')) || 0);
+    const storedFinalAmount = Math.floor(parseFloat(sessionStorage.getItem('finalAmount')) || 0);
 
     setTotalAmount(storedTotalAmount);
     setDiscountAmount(storedDiscountAmount);
@@ -19,7 +19,7 @@ export default function CartMoney() {
   }, []);
 
   // 計算包含運費的最終金額
-  const finalTotalAmount = finalAmount + shippingCost;
+  const finalTotalAmount = Math.floor(finalAmount + shippingCost);
 
   return (
     <div className={css.cartMoneyTotal2}>

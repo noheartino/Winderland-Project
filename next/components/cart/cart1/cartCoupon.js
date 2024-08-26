@@ -19,6 +19,7 @@ export default function CartCoupon({ userId, onCouponChange, totalAmount }) {
       const response = await fetch(`http://localhost:3005/api/cart/${userId}`);
       if (response.ok) {
         const data = await response.json();
+        console.log("Fetched Coupons:", data.coupons); // 檢查優惠券數據
         setCoupons(data.coupons);
       } else {
         console.error("請求優惠券失敗:", await response.json());

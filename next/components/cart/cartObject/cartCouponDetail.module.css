@@ -5,7 +5,6 @@
     width: 100%;
     max-width: 373px;
     height: 78px;
-    background: linear-gradient(to right, #a5d1df, #597179);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     border-radius: 3px;
     color: #fff;
@@ -16,10 +15,25 @@
     width: 100%;
     max-width: 104px;
     height: 38px;
-    background-color: #5b839a;
     display: grid;
     place-items: center;
     border-radius: 10px;
+}
+
+.multiplierDiscount {
+    background: linear-gradient(to right, #a5d1df, #597179);
+}
+
+.multiplierDiscountBox {
+    background-color: #5b839a;
+}
+
+.amountDiscount {
+    background: linear-gradient(to right, #F46274, #851931);
+}
+
+.amountDiscountBox {
+    background-color: #851931;
 }
 
 .cartCouponText {

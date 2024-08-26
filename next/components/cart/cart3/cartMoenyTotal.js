@@ -17,7 +17,6 @@ export default function CartMoneyTotal({ userId }) {
 
         console.log('Received userId in CartMoneyTotal:', userId);
 
-
         // 更新狀態
         setDiscountAmount(storedDiscountAmount);
         setPointsUsed(JSON.parse(storedPoints));
@@ -37,7 +36,6 @@ export default function CartMoneyTotal({ userId }) {
         
         const formattedDate = `${year}.${month}.${day}`;
         setCurrentDate(formattedDate);
-        
 
         // 獲取最新訂單編號
         const fetchOrderDetails = async () => {
@@ -50,8 +48,8 @@ export default function CartMoneyTotal({ userId }) {
                 const data = await response.json();
                 console.log('Fetched order details:', data); // 打印數據以調試
 
-                if (data && data.coupons && data.coupons.length > 0) {
-                    setOrderUuid(data.coupons[0].order_uuid); // 從 coupons 陣列中提取 order_uuid
+                if (data && data.latestOrder) {
+                    setOrderUuid(data.latestOrder.order_uuid); // 從 latestOrder 中提取 order_uuid
                 } else {
                     console.error('Order UUID not found in response');
                 }

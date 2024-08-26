@@ -52,17 +52,25 @@ SELECT
     coupon.name AS coupon_name,
     coupon.discount AS coupon_discount,
     coupon.category AS coupon_category,
-    coupon.min_spend AS min_spend,
-    orders.order_uuid AS order_uuid,
-    orders.earned_points AS earned_points
+    coupon.min_spend AS min_spend
 FROM 
     users
 LEFT JOIN user_points ON users.id = user_points.user_id
 LEFT JOIN user_coupon ON users.id = user_coupon.user_id
 LEFT JOIN coupon ON user_coupon.coupon_id = coupon.id
-LEFT JOIN orders ON users.id = orders.user_id
 WHERE 
     users.id = ?
+  `
+
+  // 查詢最新訂單資訊
+  const queryToFetchLatestOrder = `
+SELECT 
+    orders.order_uuid AS order_uuid,
+    orders.earned_points AS earned_points
+FROM 
+    orders
+WHERE 
+    orders.user_id = ?
 ORDER BY
     orders.created_at DESC
 LIMIT 1;
@@ -72,6 +80,10 @@ LIMIT 1;
     const [cartResults] = await conn.query(queryToFetchCartContents, [userId])
     const [pointsAndCouponsResults] = await conn.query(
       queryToFetchPointsAndCoupons,
+      [userId]
+    )
+    const [latestOrderResults] = await conn.query(
+      queryToFetchLatestOrder,
       [userId]
     )
 
@@ -117,11 +129,17 @@ LIMIT 1;
         ? pointsAndCouponsResults[0].user_have_points
         : 0
 
+    // 提取最新訂單資訊
+    const latestOrder = latestOrderResults.length > 0
+      ? latestOrderResults[0]
+      : {}
+
     response.json({
       items: formattedCartResults,
       totalAmount,
       coupons: validCoupons,
       user_have_points: userPoints,
+      latestOrder, // 將最新訂單資訊返回到前端
     })
   } catch (error) {
     console.error('查詢失敗:', error)
@@ -130,6 +148,7 @@ LIMIT 1;
       .json({ error: '查詢失敗', details: error.message })
   }
 })
+
 
 // 更新購物車中的項目數量 (Update)
 router.put('/:id', async (request, response) => {
@@ -245,7 +264,7 @@ router.post('/cashOnDelivery', async (req, res) => {
     // 插入訂單資料
     const insertOrderQuery = `
       INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, earned_points, pointUsed, pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, created_at, updated_at)
-      VALUES (?, ?, 'pending', '貨到付款', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
+      VALUES (?, ?, 'pending', '貨到付款', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
     `;
     const [orderResult] = await conn.query(insertOrderQuery, [
       orderNumber,
@@ -416,8 +435,8 @@ router.post('/creditCardPayment', async (req, res) => {
 
     // 插入訂單資料
     const insertOrderQuery = `
-      INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, earned_points, pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, created_at, updated_at)
-      VALUES (?, ?, 'pending', '信用卡', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
+      INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, earned_points, pointUsed,pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, created_at, updated_at)
+      VALUES (?, ?, 'pending', '信用卡', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
     `
     const [orderResult] = await conn.query(insertOrderQuery, [
       orderNumber,
@@ -425,6 +444,7 @@ router.post('/creditCardPayment', async (req, res) => {
       60,
       couponData?.coupon_id || null,
       earnedPoints,
+      pointsUsed,
       selectedTransport === 'blackcat'
         ? transportBlackCatData.name
         : transportData.pickupName,

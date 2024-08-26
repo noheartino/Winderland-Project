@@ -16,8 +16,9 @@ export default function CartPayDividend({ userId }) {
         const data = await response.json();
         console.log('Fetched order details:', data); // 打印數據以調試
 
-        if (data && data.coupons && data.coupons.length > 0) {
-          setEarnedPoints(data.coupons[0].earned_points || 0); // 從 coupons 陣列中提取 earned_points
+        // 確保 data 中有 latestOrder 並從中提取 earned_points
+        if (data && data.latestOrder) {
+          setEarnedPoints(data.latestOrder.earned_points || 0); // 從 latestOrder 中提取 earned_points
         } else {
           console.error('Earned points not found in response');
         }
