@@ -16,7 +16,8 @@ export default function ProductIndex() {
   const [totalPages, setTotalPages] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(16);
   const [totalItems, setTotalItems] = useState(0);
-  const [currentSort, setCurrentSort] = useState("");
+  const [currentSort, setCurrentSort] = useState("id_asc");
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -27,12 +28,13 @@ export default function ProductIndex() {
       try {
         // response取得axios的回應數據(內容有很多但我們只要data)
         const response = await axios.get(
-          `http://localhost:3005/api/product?sort=${currentSort}&page=${currentPage}&limit=${itemsPerPage}`
+          `http://localhost:3005/api/product?sort=${currentSort}&page=${currentPage}&limit=${itemsPerPage}&search=${search}`
         );
         setProducts(response.data.products);
         setCategoryies(response.data.categories);
         setTotalPages(response.data.pagination.totalPages);
         setTotalItems(response.data.pagination.totalItems);
+        console.log(search)
 
         setLoading(false);
       } catch (err) {
@@ -41,7 +43,7 @@ export default function ProductIndex() {
       }
     };
     fetchProducts();
-  }, [currentPage, itemsPerPage, currentSort]);
+  }, [currentPage, itemsPerPage, currentSort,search]);
 
   // 更改頁數的函式
   const changePage = (newPage) => {
@@ -52,6 +54,13 @@ export default function ProductIndex() {
   const changeSort = (newSort) => {
     setCurrentSort(newSort);
     setCurrentPage(1);
+  };
+
+  // 搜尋功能
+  const changeSearch = (newSearch) => {
+    setSearch(newSearch);
+    setCurrentPage(1);
+    setCurrentSort("id_asc");
   };
 
   if (loading) return <div>加載中...</div>;
@@ -67,7 +76,13 @@ export default function ProductIndex() {
         </header>
         <div className="container">
           {/* 排序跟搜尋 */}
-          <SortSearch changeSort={changeSort} currentSort={currentSort} />
+          <SortSearch
+            changeSort={changeSort}
+            currentSort={currentSort}
+            search={search}
+            changeSearch={changeSearch}
+            totalItems={totalItems}
+          />
           {/* 手機&平板版的開關aside */}
           <MobileFliterAside />
           {/* 主要內容 */}

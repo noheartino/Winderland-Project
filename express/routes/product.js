@@ -163,11 +163,27 @@ router.get('/', async (req, res) => {
     const page = parseInt(req.query.page) || 1
     const limit = parseInt(req.query.limit) || 16
     const sort = req.query.sort || 'id_asc'
+    const search = req.query.search || ''
+
+    // 取得搜尋參數塞進搜尋商品的sql語法
+    let getSearch = getProducts
+    if (search) {
+      getSearch += `WHERE product.name LIKE ?`
+    }
+
+    // 取得搜尋後的頁數
+    let getSearchTotal = getProductsTotal
+    if (search) {
+      getSearchTotal += ` WHERE product.name LIKE ?`
+    }
 
     // 獲取分頁後商品的基本訊息
-    const [products] = await db.query(getProducts)
+    const [products] = await db.query(getSearch, search ? [`%${search}%`] : [])
     const [categories] = await db.query(getCategories)
-    const [productsTotal] = await db.query(getProductsTotal)
+    const [productsTotal] = await db.query(
+      getSearchTotal,
+      search ? [`%${search}%`] : []
+    )
 
     const total = productsTotal[0].total
     const totalPages = Math.ceil(total / limit)
@@ -176,8 +192,16 @@ router.get('/', async (req, res) => {
     const productWithDetails = await tidyProducts(products)
     const categoryWithVarieds = await tidyCategories(categories)
 
+    // 新增有搜尋參數後的篩選條件
+    let fliterProduct = productWithDetails
+    if (search) {
+      fliterProduct = productWithDetails.filter((product) =>
+        product.name.toLowerCase().includes(search.toLowerCase())
+      )
+    }
+
     // 取得了product + detail後再排序
-    productWithDetails.sort((a, b) => {
+    fliterProduct.sort((a, b) => {
       switch (sort) {
         case 'name_asc':
           return a.name.localeCompare(b.name)
@@ -194,7 +218,7 @@ router.get('/', async (req, res) => {
 
     // 手動分頁
     const startIndex = (page - 1) * limit
-    const paginatedProducts = productWithDetails.slice(
+    const paginatedProducts = fliterProduct.slice(
       startIndex,
       startIndex + limit
     )
