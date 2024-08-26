@@ -122,6 +122,8 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:courseId', async (req, res) => {
+  const { series } = req.query
+
   const courseId = req.params.courseId
   let courseSQL = `SELECT 
                     class.*,
@@ -155,12 +157,24 @@ router.get('/:courseId', async (req, res) => {
                             ON 
                                 order_details.order_uuid = orders.order_uuid
                             WHERE order_details.class_id=${courseId};`
-  let commentsSQL = `SELECT comments.* FROM comments WHERE comments.entity_type = 'class' AND comments.entity_id = ${courseId}`
+
+  let commentSQLparams = `comments.created_at DESC`
+  if (series === 'timeOldToNew') {
+    commentSQLparams = `comments.created_at ASC`
+  } else if (series && series === 'scoreHtoL') {
+    commentSQLparams = `comments.rating DESC, comments.created_at DESC`
+  } else if (series && series === 'scoreLtoH') {
+    commentSQLparams = `comments.rating ASC, comments.created_at DESC`
+  } else {
+    commentSQLparams = `comments.created_at DESC`
+  }
+  let commentsSQL = `SELECT comments.*, users.account, users.id AS user_id FROM comments JOIN users ON comments.user_id = users.id WHERE comments.entity_type = 'class' AND comments.entity_id = ${courseId} ORDER BY ${commentSQLparams}`
   try {
     const [course] = await connection.execute(courseSQL)
     const [theCourseAssigned] = await connection.execute(theCourseAssignedSQL)
     const [comments] = await connection.execute(commentsSQL)
     res.json({ course, theCourseAssigned, comments })
+    console.log('測試:' + req.originalUrl)
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
   }

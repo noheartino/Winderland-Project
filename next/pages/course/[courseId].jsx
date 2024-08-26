@@ -1,22 +1,74 @@
-import React from "react";
 import Comment from "@/components/course/course-comment";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 
 export default function CourseIndex() {
   const router = useRouter();
-  const { courseId } = router.query;
+  const { courseId, series } = router.query;
   const [course, setCourse] = useState([]);
   const [theCourseAssigned, setCourseAssigned] = useState([]);
   const [comments, setComments] = useState([]);
   let averageRating = 0;
 
+  const seriesDefaultBtn = useRef(null);
+  
+
   let apiUrl = `http://localhost:3005/api/course/${courseId}`;
+
+  function querySeries01(e) {
+    router.push({
+        pathname: `/course/${courseId}`,
+        query: {}
+    }, undefined, { scroll: false });
+    seriesDefaultBtn.current.focus();
+    seriesDefaultBtn.current.textContent = e.target.textContent;
+}
+
+function querySeries02(e) {
+    router.push({
+        pathname: `/course/${courseId}`,
+        query: { series: 'timeOldToNew' }
+    }, undefined, { scroll: false });
+    seriesDefaultBtn.current.focus();
+    seriesDefaultBtn.current.textContent = e.target.textContent;
+}
+
+function querySeries03(e) {
+    router.push({
+        pathname: `/course/${courseId}`,
+        query: { series: 'scoreHtoL' }
+    }, undefined, { scroll: false });
+    seriesDefaultBtn.current.focus();
+    seriesDefaultBtn.current.textContent = e.target.textContent;
+}
+
+function querySeries04(e) {
+    router.push({
+        pathname: `/course/${courseId}`,
+        query: { series: 'scoreLtoH' }
+    }, undefined, { scroll: false });
+    seriesDefaultBtn.current.focus();
+    seriesDefaultBtn.current.textContent = e.target.textContent;
+}
+
+
+  useEffect(()=>{
+    if(series==='timeOldToNew'){
+      apiUrl = `http://localhost:3005/api/course/${courseId}?series=timeOldToNew`;
+    }else if(series==='scoreHtoL'){
+      apiUrl = `http://localhost:3005/api/course/${courseId}?series=scoreHtoL`;
+    }else if(series==='scoreLtoH'){
+      apiUrl = `http://localhost:3005/api/course/${courseId}?series=scoreLtoH`;
+    }else{
+      apiUrl = `http://localhost:3005/api/course/${courseId}`;
+    }
+  }, [series])
 
   useEffect(() => {
     if (courseId) {
       fetch(apiUrl)
         .then((response) => {
+          console.log("送出fetch，URL="+apiUrl);
           if (!response.ok) {
             throw new Error("Network response not ok");
           }
@@ -32,12 +84,14 @@ export default function CourseIndex() {
           console.log(error);
         });
     }
-  }, [courseId]);
+  }, [courseId, series]);
 
-  if (comments) {
+  if (comments.length>0) {
     averageRating = (
       comments.reduce((acc, v) => acc + v.rating, 0) / comments.length
     ).toFixed(1);
+  } else {
+    averageRating = '0'
   }
   function handleStartTimeStr(startTime) {
     const startDate = new Date(startTime);
@@ -69,14 +123,10 @@ export default function CourseIndex() {
     const timeVar = String(timeStr)
     return timeVar.split(":").slice(0,2).join(":")
   }
-  
-  // if(courseId){
-  //   console.log(theCourseAssigned);
-  // }
 
   return (
     <>
-      <title>課程詳情</title>
+      <title>課程詳情{courseId}</title>
       {/* Required meta tags */}
       <meta charSet="utf-8" />
       <meta
@@ -235,7 +285,7 @@ export default function CourseIndex() {
                         </span>
                       </div>
                     </div>
-                    <div className="row mx-0 text-sec-dark-blue spac-1 mt-4">
+                    <div className={`row mx-0 text-sec-dark-blue spac-1 mt-4 ${course?.online===1 ? "d-none" :"d-flex"}`}>
                       <div className="col-12 p-0">
                         <p className="text-sec-dark-blue emmit1">
                           <i className="fa-regular fa-calendar-days me-1"></i>
@@ -243,7 +293,7 @@ export default function CourseIndex() {
                         </p>
                       </div>
                     </div>
-                    <div className="row mx-0 text-sec-dark-blue spac-1 mt-2">
+                    <div className={`row mx-0 text-sec-dark-blue spac-1 mt-2 ${course?.online===1 ? "d-none" :"d-flex"}`}>
                       <div className="col-12 p-0">
                         <p className="text-sec-dark-blue emmit1">
                           <i
@@ -254,7 +304,7 @@ export default function CourseIndex() {
                         </p>
                       </div>
                     </div>
-                    <div className="row mx-0 spac-1 mt-2">
+                    <div className={`row mx-0 spac-1 mt-2 ${course?.online===1 ? "d-none" :"d-flex"}`}>
                       <div className="col-12 p-0">
                         <p className="text-sec-dark-blue emmit1">
                           <i
@@ -395,12 +445,12 @@ export default function CourseIndex() {
                   <div className="row mx-0 text-sec-dark-blue spac-1 mt-4">
                     <div className="col-12 p-0">
                       <p className="text-sec-dark-blue">
-                        <i className="fa-regular fa-calendar-days me-1"></i>
+                        <i className={`fa-regular fa-calendar-days me-1 ${course?.online===1 ? "d-none" :"d-flex"}`}></i>
                         上課日期：{handleDateFormat(course?.course_start)}-{handleDateFormat(course?.course_end)}
                       </p>
                     </div>
                   </div>
-                  <div className="row mx-0 text-sec-dark-blue spac-1 mt-2">
+                  <div className={`row mx-0 text-sec-dark-blue spac-1 mt-2 ${course?.online===1 ? "d-none" :"d-flex"}`}>
                     <div className="col-12 p-0">
                       <p className="text-sec-dark-blue">
                         <i
@@ -411,7 +461,7 @@ export default function CourseIndex() {
                       </p>
                     </div>
                   </div>
-                  <div className="row mx-0 spac-1 mt-2">
+                  <div className={`row mx-0 spac-1 mt-2 ${course?.online===1 ? "d-none" :"d-flex"}`}>
                     <div className="col-12 p-0">
                       <p className="text-sec-dark-blue">
                         <i
@@ -582,43 +632,24 @@ export default function CourseIndex() {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    <span className="p spac-1 me-5 text-prim-prim">
-                      默認排序
+                    <span className="p spac-1 text-prim-prim" ref={seriesDefaultBtn}>
+                      預設排序     
                     </span>
                   </button>
                   <ul className="dropdown-menu dropdown-menu-end shadow">
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        <span className="p spac-1 me-3 text-prim-prim">
-                          依評分高→低
-                        </span>
-                        <i className="fa-solid fa-arrow-down-wide-short text-prim-prim"></i>
-                      </a>
+                    <li className="dropdown-item p spac-1 text-prim-prim px-2 py-2 cursor-pointer" onClick={querySeries01}>
+                          依時間新→舊<i className="fa-solid fa-sort-down text-prim-prim ms-2"></i>
                     </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        <span className="p spac-1 me-3 text-prim-prim">
-                          依評分低→高
-                        </span>
-                        <i className="fa-solid fa-arrow-up-wide-short text-prim-prim"></i>
-                      </a>
+                    <li className="dropdown-item p spac-1 text-prim-prim px-2 py-2 cursor-pointer" onClick={querySeries02}>
+                      依時間舊→新<i className="fa-solid fa-sort-up text-prim-prim ms-2"></i>
                     </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        <span className="p spac-1 me-3 text-prim-prim">
-                          依時間新→舊
-                        </span>
-                        <i className="fa-solid fa-sort-down text-prim-prim"></i>
-                      </a>
+                    <li className="dropdown-item p spac-1 text-prim-prim px-2 py-2 cursor-pointer" onClick={querySeries03}>
+                      依評分高→低<i className="fa-solid fa-arrow-down-wide-short text-prim-prim ms-2"></i>
                     </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        <span className="p spac-1 me-3 text-prim-prim">
-                          依時間舊→新
-                        </span>
-                        <i className="fa-solid fa-sort-up text-prim-prim"></i>
-                      </a>
+                    <li className="dropdown-item p spac-1 text-prim-prim px-2 py-2 cursor-pointer" onClick={querySeries04}>
+                      依評分低→高<i className="fa-solid fa-arrow-up-wide-short text-prim-prim ms-2"></i>
                     </li>
+                    
                   </ul>
                 </div>
               </div>
@@ -765,7 +796,14 @@ export default function CourseIndex() {
                   
                 </div>
               </div>
-              <Comment />
+              {comments?.map((comment, index)=>{
+                return(
+                    <div key={comment.id} className="course-comment-area" style={{margin: "0 0 40px 0"}}>
+                      <Comment comment={comment} index={index + 1}/>
+                    </div>
+                    )
+              })}
+              
             </div>
           </div>
           {/* course detail 評論 end */}
