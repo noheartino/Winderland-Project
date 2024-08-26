@@ -3,10 +3,10 @@ import 'dotenv/config.js'
 import connection from '##/configs/mysql.js'
 
 const router = express.Router()
+let userId = 1
 
 router.get('/', async (req, res) => {
   const { search, view } = req.query
-  let userId = 12
   let querySQL = null
   let querySQLParams = []
   if (!search) {
@@ -56,19 +56,19 @@ router.get('/', async (req, res) => {
                 ORDER BY class.id ASC;`
     querySQLParams = [`%${search}%`, `%${search}%`]
   }
-  console.log("送出的查詢詞語是: "+search);
+  console.log('送出的查詢詞語是: ' + search)
   let querySQLComments = `SELECT comments.* FROM comments`
   let querySQLClassAsign = `SELECT 
-                                order_detail.*, 
+                                order_details.*, 
                                 orders.*, 
-                                order_detail.id AS order_detail_id
+                                order_details.id AS order_details_id
                             FROM 
-                                order_detail 
+                                order_details 
                             JOIN 
                                 orders 
                             ON 
-                                order_detail.order_uuid = orders.order_uuid
-                            WHERE order_detail.class_id>0
+                                order_details.order_uuid = orders.order_uuid
+                            WHERE order_details.class_id>0
                             ORDER BY orders.order_uuid ASC;`
   let querySQLMyFavoriteCourse = `SELECT user_like.*, class.*, class.id AS class_id, user_like.id AS user_like_id, images_class.class_id, images_class.path AS class_path
                                     FROM user_like
@@ -78,22 +78,22 @@ router.get('/', async (req, res) => {
                                     AND user_like.user_id = ${userId};`
   let courseBtnSQLwords = ``
   if (!view || view === '全部') {
-    courseBtnSQLwords = `AND order_detail.class_id > 0`
-    console.log(courseBtnSQLwords+"點擊:"+view)
+    courseBtnSQLwords = `AND order_details.class_id > 0`
+    console.log(courseBtnSQLwords + '點擊:' + view)
   } else if (view === '實體') {
-    courseBtnSQLwords = `AND order_detail.class_id > 0 AND class.online = 0`
-    console.log(courseBtnSQLwords+"點擊:"+view)
+    courseBtnSQLwords = `AND order_details.class_id > 0 AND class.online = 0`
+    console.log(courseBtnSQLwords + '點擊:' + view)
   } else {
-    courseBtnSQLwords = `AND order_detail.class_id > 0 AND class.online = 1`
-    console.log(courseBtnSQLwords+"點擊:"+view)
+    courseBtnSQLwords = `AND order_details.class_id > 0 AND class.online = 1`
+    console.log(courseBtnSQLwords + '點擊:' + view)
   }
-  let querySQLMyCourse = `SELECT order_detail.order_uuid, order_detail.class_id, orders.user_id, orders.order_uuid, class.*, class.id AS class_id, images_class.class_id, images_class.path AS class_path, class.name AS class_name, teacher.id AS teacher_id, teacher.name AS teacher_name
+  let querySQLMyCourse = `SELECT order_details.order_uuid, order_details.class_id, orders.user_id, orders.order_uuid, class.*, class.id AS class_id, images_class.class_id, images_class.path AS class_path, class.name AS class_name, teacher.id AS teacher_id, teacher.name AS teacher_name
                             FROM
-                                order_detail
+                                order_details
                             JOIN
-                                orders ON order_detail.order_uuid = orders.order_uuid
+                                orders ON order_details.order_uuid = orders.order_uuid
                             JOIN
-                                class ON order_detail.class_id = class.id
+                                class ON order_details.class_id = class.id
                             JOIN
                                 images_class ON class.id = images_class.class_id
                             JOIN
@@ -101,19 +101,6 @@ router.get('/', async (req, res) => {
                             WHERE orders.user_id = ${userId}
                                 ${courseBtnSQLwords}
                             ORDER BY orders.order_uuid ASC;`
-//   let queryCourseDetail = `SELECT order_detail.order_uuid, order_detail.class_id, orders.user_id, orders.order_uuid, class.*, class.id AS class_id, images_class.class_id, images_class.path AS class_path, class.name AS class_name, teacher.id AS teacher_id, teacher.name AS teacher_name
-//                             FROM
-//                                 order_detail
-//                             JOIN
-//                                 orders ON order_detail.order_uuid = orders.order_uuid
-//                             JOIN
-//                                 class ON order_detail.class_id = class.id
-//                             JOIN
-//                                 images_class ON class.id = images_class.class_id
-//                             JOIN
-//                                 teacher ON class.teacher_id = teacher.id
-//                             WHERE class.id = ?
-//                             ORDER BY orders.order_uuid ASC;`
   try {
     const [courses] = await connection.execute(querySQL, querySQLParams)
     const [comments] = await connection.execute(querySQLComments)
@@ -128,7 +115,50 @@ router.get('/', async (req, res) => {
     //   }
     // 傳出去的資料庫資料
     res.json({ courses, comments, classAssigns, myFavoriteCourse, myCourse })
-    console.log({courses: courses},{comments:comments});
+    console.log({ courses: courses }, { comments: comments })
+  } catch (err) {
+    res.status(500).json({ error: 'error' + err.message })
+  }
+})
+
+router.get('/:courseId', async (req, res) => {
+  const courseId = req.params.courseId
+  let courseSQL = `SELECT 
+                    class.*,
+                    class.id AS class_id,
+                    class.name AS class_name,
+                    class.description AS class_description,
+                    teacher.*,
+                    teacher.id AS teacher_id,
+                    teacher.name AS teacher_name,
+                    images_class.class_id,
+                    images_class.path AS class_path,
+                    images_teacher.teacher_id,
+                    images_teacher.path AS teacher_path
+                FROM 
+                    class
+                LEFT JOIN
+                    teacher ON class.teacher_id = teacher.id
+                LEFT JOIN
+                    images_class ON class.id = images_class.class_id
+                LEFT JOIN
+                    images_teacher ON teacher.id = images_teacher.teacher_id
+                WHERE class.id = ${courseId};`
+  let theCourseAssignedSQL = `SELECT 
+                                order_details.*, 
+                                orders.*, 
+                                order_details.id AS order_details_id
+                            FROM 
+                                order_details 
+                            JOIN 
+                                orders 
+                            ON 
+                                order_details.order_uuid = orders.order_uuid
+                            WHERE order_details.class_id=${courseId};`
+  try {
+    const [course] = await connection.execute(courseSQL)
+    const [theCourseAssigned] = await connection.execute(theCourseAssignedSQL)
+    res.json({ course, theCourseAssigned })
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
   }

@@ -8,7 +8,7 @@ import CourseCardSm from '@/components/course/course-card-sm'
 export default function CourseIndex() {
   const router = useRouter();
   const { search, view } = router.query;
-  let apiUrl = `http://localhost:3005/api/courseList`
+  let apiUrl = `http://localhost:3005/api/course`
   const [courses, setCourses] = useState([]);
   const [comments, setComments] = useState([]);
   const [classAssigns, setClassAssigns] = useState([]);
@@ -27,15 +27,15 @@ export default function CourseIndex() {
     // const includeImages = false;
     console.log("search 或 view 偵測到變動");
     if(!search && !view){
-      apiUrl=`http://localhost:3005/api/courseList`
+      apiUrl=`http://localhost:3005/api/course`
       console.log("送出1");
     }
     if(search){
-      apiUrl=`http://localhost:3005/api/courseList?search=${search}`
+      apiUrl=`http://localhost:3005/api/course?search=${search}`
       console.log("送出2");
     }
     if(view){
-      apiUrl=`http://localhost:3005/api/courseList?view=${view}`
+      apiUrl=`http://localhost:3005/api/course?view=${view}`
       console.log("送出3, view值為"+view);
     }
     console.log(apiUrl);

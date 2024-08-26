@@ -1,7 +1,56 @@
 import React from "react";
 import Comment from "@/components/course/course-comment";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 export default function CourseIndex() {
+  const router = useRouter();
+  const { courseId } = router.query;
+  const [course, setCourse] = useState([]);
+  const [theCourseAssigned, setCourseAssigned] = useState([]);
+
+  let apiUrl = `http://localhost:3005/api/course/${courseId}`;
+
+  useEffect(() => {
+    if (courseId) {
+      fetch(apiUrl)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const { course, theCourseAssigned } = data;
+          setCourse(course[0]);
+          setCourseAssigned(theCourseAssigned[0]);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [courseId]);
+
+  function handleStartTimeStr(startTime) {
+    const startDate=new Date(startTime)
+    const today = new Date();
+    const sixMonthsAgo = new Date(today);
+    sixMonthsAgo.setMonth(today.getMonth() - 6);
+    const threeMonthsAgo = new Date(today);
+    threeMonthsAgo.setMonth(today.getMonth() - 3);
+    const oneMonthAgo = new Date(today);
+    oneMonthAgo.setMonth(today.getMonth() - 1);
+    if (startDate < sixMonthsAgo) {
+      return "半年前";
+    } else if (startDate < threeMonthsAgo) {
+      return "三個月前";
+    } else if (startDate < oneMonthAgo) {
+      return "一個月前";
+    } else {
+      return startTime;
+    }
+  }
+
   return (
     <>
       <title>課程詳情</title>
@@ -20,13 +69,19 @@ export default function CourseIndex() {
             <div className="container-sm px-0">
               <div className="row px-0 m-0 pt-5 mb-4 d-none d-md-flex">
                 <div className="col px-10px">
-                  <span className="online-tag me-4 py-2 px-3 h6">線上</span>
+                  <span
+                    className={`me-4 py-2 px-3 h6 ${
+                      course?.online === 1 ? "online-tag" : "underline-tag"
+                    }`}
+                  >
+                    {course?.online === 1 ? "線上" : "實體"}
+                  </span>
                   <span className="text-prim-dark spac-1 me-5 h6">
-                    迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
+                    {course?.class_name}
                   </span>
                   <span className="text-prim-dark spac-1 h6">
                     <i className="bi bi-clock-history me-2" />
-                    半年前
+                    {handleStartTimeStr(course?.appointment_start)}
                   </span>
                 </div>
               </div>
@@ -105,20 +160,35 @@ export default function CourseIndex() {
                     </div>
                     <div className="row mx-0 text-sec-dark-blue spac-1 mt-4">
                       <div className="col-12 p-0">
-                        <p className="text-sec-dark-blue emmit1"><i class="fa-regular fa-calendar-days me-1"></i>上課日期：2024年8月24日-2024年8月25日</p>
+                        <p className="text-sec-dark-blue emmit1">
+                          <i className="fa-regular fa-calendar-days me-1"></i>
+                          上課日期：2024年8月24日-2024年8月25日
+                        </p>
                       </div>
                     </div>
                     <div className="row mx-0 text-sec-dark-blue spac-1 mt-2">
                       <div className="col-12 p-0">
-                        <p className="text-sec-dark-blue emmit1"><i class="fa-regular fa-clock me-1" style={{fontSize:"0.7rem"}}></i>上課時間：每日9:00-10:00</p>
+                        <p className="text-sec-dark-blue emmit1">
+                          <i
+                            className="fa-regular fa-clock me-1"
+                            style={{ fontSize: "0.7rem" }}
+                          ></i>
+                          上課時間：每日9:00-10:00
+                        </p>
                       </div>
                     </div>
                     <div className="row mx-0 spac-1 mt-2">
                       <div className="col-12 p-0">
-                        <p className="text-sec-dark-blue emmit1"><i class="fa-regular fa-compass me-1" style={{fontSize:"0.7rem"}}></i>上課地點：台北市復興北路356號2F(酒訊品酒教室)</p>
+                        <p className="text-sec-dark-blue emmit1">
+                          <i
+                            className="fa-regular fa-compass me-1"
+                            style={{ fontSize: "0.7rem" }}
+                          ></i>
+                          上課地點：台北市復興北路356號2F(酒訊品酒教室)
+                        </p>
                       </div>
                     </div>
-                    
+
                     <div className="row mt-5 justify-content-between align-items-start">
                       <div className="col-auto">
                         <div className="h2 spac-2 text-sec-orange">
@@ -223,11 +293,16 @@ export default function CourseIndex() {
                             </h5>
                           </div>
                           <div className="teacher-starts col d-flex flex-column align-items-center justify-content-center pe-0">
-                            <h1 className="spac-2 text-prim-text-prim ms-2">4.8</h1>
+                            <h1 className="spac-2 text-prim-text-prim ms-2">
+                              4.8
+                            </h1>
                             {/* bigStar start */}
                             <div className="bigStar-box">
-                                <i className="fa-solid fa-star bigStar bigStar-beneath  text-light-wine-border"/>
-                                <i className="fa-solid fa-star bigStar bigStar-above" style={{ width: "65%" }}/>
+                              <i className="fa-solid fa-star bigStar bigStar-beneath  text-light-wine-border" />
+                              <i
+                                className="fa-solid fa-star bigStar bigStar-above"
+                                style={{ width: "65%" }}
+                              />
                             </div>
                             {/* bigStar end */}
                             <p className="text-prim-text-prim">教師平均評分</p>
@@ -267,20 +342,35 @@ export default function CourseIndex() {
                   </h1>
 
                   <div className="row mx-0 text-sec-dark-blue spac-1 mt-4">
-                      <div className="col-12 p-0">
-                        <p className="text-sec-dark-blue"><i class="fa-regular fa-calendar-days me-1"></i>上課日期：2024年8月24日-2024年8月25日</p>
-                      </div>
+                    <div className="col-12 p-0">
+                      <p className="text-sec-dark-blue">
+                        <i className="fa-regular fa-calendar-days me-1"></i>
+                        上課日期：2024年8月24日-2024年8月25日
+                      </p>
                     </div>
-                    <div className="row mx-0 text-sec-dark-blue spac-1 mt-2">
-                      <div className="col-12 p-0">
-                        <p className="text-sec-dark-blue"><i class="fa-regular fa-clock me-1" style={{fontSize:"0.9rem"}}></i>上課時間：每日9:00-10:00</p>
-                      </div>
+                  </div>
+                  <div className="row mx-0 text-sec-dark-blue spac-1 mt-2">
+                    <div className="col-12 p-0">
+                      <p className="text-sec-dark-blue">
+                        <i
+                          className="fa-regular fa-clock me-1"
+                          style={{ fontSize: "0.9rem" }}
+                        ></i>
+                        上課時間：每日9:00-10:00
+                      </p>
                     </div>
-                    <div className="row mx-0 spac-1 mt-2">
-                      <div className="col-12 p-0">
-                        <p className="text-sec-dark-blue"><i class="fa-regular fa-compass me-1" style={{fontSize:"0.9rem"}}></i>上課地點：台北市復興北路356號2F(酒訊品酒教室)</p>
-                      </div>
+                  </div>
+                  <div className="row mx-0 spac-1 mt-2">
+                    <div className="col-12 p-0">
+                      <p className="text-sec-dark-blue">
+                        <i
+                          className="fa-regular fa-compass me-1"
+                          style={{ fontSize: "0.9rem" }}
+                        ></i>
+                        上課地點：台北市復興北路356號2F(酒訊品酒教室)
+                      </p>
                     </div>
+                  </div>
 
                   <div className="row align-items-center mt-3 justify-content-between mx-0">
                     <h5 className="col-auto text-prim-text-prim spac-1">
@@ -519,73 +609,131 @@ export default function CourseIndex() {
                   <h1 className="spac-2 text-prim-text-prim ms-2">4.8</h1>
                   {/* bigStar start */}
                   <div className="bigStar-box">
-                    <i className="fa-solid fa-star bigStar bigStar-beneath  text-light-wine-border"/>
-                    <i className="fa-solid fa-star bigStar bigStar-above" style={{ width: "65%" }}/>
+                    <i className="fa-solid fa-star bigStar bigStar-beneath  text-light-wine-border" />
+                    <i
+                      className="fa-solid fa-star bigStar bigStar-above"
+                      style={{ width: "65%" }}
+                    />
                   </div>
                   {/* bigStar end */}
                   <p className="text-prim-text-prim">1531 則評論</p>
                 </div>
                 <div className="col course-comment-progress-bar d-flex flex-column justify-content-between">
-                    {/* 單條評分bar start */}
-                    <div className="row align-items-center">
-                        <div className="col-10">
-                            <div className="progress bg-light-gray light-wine-border" role="progressbar" aria-label="" aria-valuenow={0} aria-valuemin={0} aria-valuemax={100} style={{ height: "0.65rem" }}>
-                                <div className="progress-bar bg-sec-yellow" style={{ width: "80%" }}></div>
-                            </div>
-                        </div>
-                        <div className="col-2">
-                            <p className="text-sec-dark-blue">100</p>
-                        </div>
+                  {/* 單條評分bar start */}
+                  <div className="row align-items-center">
+                    <div className="col-10">
+                      <div
+                        className="progress bg-light-gray light-wine-border"
+                        role="progressbar"
+                        aria-label=""
+                        aria-valuenow={0}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        style={{ height: "0.65rem" }}
+                      >
+                        <div
+                          className="progress-bar bg-sec-yellow"
+                          style={{ width: "80%" }}
+                        ></div>
+                      </div>
                     </div>
-                    {/* 單條評分bar end */}
-                    {/* 單條評分bar start */}
-                    <div className="row align-items-center">
-                        <div className="col-10">
-                            <div className="progress bg-light-gray light-wine-border" role="progressbar" aria-label="" aria-valuenow={0} aria-valuemin={0} aria-valuemax={100} style={{ height: "0.65rem" }}>
-                                <div className="progress-bar bg-sec-yellow" style={{ width: "80%" }}></div>
-                            </div>
-                        </div>
-                        <div className="col-2">
-                            <p className="text-sec-dark-blue">100</p>
-                        </div>
+                    <div className="col-2">
+                      <p className="text-sec-dark-blue">100</p>
                     </div>
-                    {/* 單條評分bar end */}
-                    {/* 單條評分bar start */}
-                    <div className="row align-items-center">
-                        <div className="col-10">
-                            <div className="progress bg-light-gray light-wine-border" role="progressbar" aria-label="" aria-valuenow={0} aria-valuemin={0} aria-valuemax={100} style={{ height: "0.65rem" }}>
-                                <div className="progress-bar bg-sec-yellow" style={{ width: "80%" }}></div>
-                            </div>
-                        </div>
-                        <div className="col-2">
-                            <p className="text-sec-dark-blue">100</p>
-                        </div>
+                  </div>
+                  {/* 單條評分bar end */}
+                  {/* 單條評分bar start */}
+                  <div className="row align-items-center">
+                    <div className="col-10">
+                      <div
+                        className="progress bg-light-gray light-wine-border"
+                        role="progressbar"
+                        aria-label=""
+                        aria-valuenow={0}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        style={{ height: "0.65rem" }}
+                      >
+                        <div
+                          className="progress-bar bg-sec-yellow"
+                          style={{ width: "80%" }}
+                        ></div>
+                      </div>
                     </div>
-                    {/* 單條評分bar end */}
-                    {/* 單條評分bar start */}
-                    <div className="row align-items-center">
-                        <div className="col-10">
-                            <div className="progress bg-light-gray light-wine-border" role="progressbar" aria-label="" aria-valuenow={0} aria-valuemin={0} aria-valuemax={100} style={{ height: "0.65rem" }}>
-                                <div className="progress-bar bg-sec-yellow" style={{ width: "80%" }}></div>
-                            </div>
-                        </div>
-                        <div className="col-2">
-                            <p className="text-sec-dark-blue">100</p>
-                        </div>
+                    <div className="col-2">
+                      <p className="text-sec-dark-blue">100</p>
                     </div>
-                    {/* 單條評分bar end */}
-                    {/* 單條評分bar start */}
-                    <div className="row align-items-center">
-                        <div className="col-10">
-                            <div className="progress bg-light-gray light-wine-border" role="progressbar" aria-label="" aria-valuenow={0} aria-valuemin={0} aria-valuemax={100} style={{ height: "0.65rem" }}>
-                                <div className="progress-bar bg-sec-yellow" style={{ width: "80%" }}></div>
-                            </div>
-                        </div>
-                        <div className="col-2">
-                            <p className="text-sec-dark-blue">100</p>
-                        </div>
+                  </div>
+                  {/* 單條評分bar end */}
+                  {/* 單條評分bar start */}
+                  <div className="row align-items-center">
+                    <div className="col-10">
+                      <div
+                        className="progress bg-light-gray light-wine-border"
+                        role="progressbar"
+                        aria-label=""
+                        aria-valuenow={0}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        style={{ height: "0.65rem" }}
+                      >
+                        <div
+                          className="progress-bar bg-sec-yellow"
+                          style={{ width: "80%" }}
+                        ></div>
+                      </div>
                     </div>
-                    {/* 單條評分bar end */}
+                    <div className="col-2">
+                      <p className="text-sec-dark-blue">100</p>
+                    </div>
+                  </div>
+                  {/* 單條評分bar end */}
+                  {/* 單條評分bar start */}
+                  <div className="row align-items-center">
+                    <div className="col-10">
+                      <div
+                        className="progress bg-light-gray light-wine-border"
+                        role="progressbar"
+                        aria-label=""
+                        aria-valuenow={0}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        style={{ height: "0.65rem" }}
+                      >
+                        <div
+                          className="progress-bar bg-sec-yellow"
+                          style={{ width: "80%" }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="col-2">
+                      <p className="text-sec-dark-blue">100</p>
+                    </div>
+                  </div>
+                  {/* 單條評分bar end */}
+                  {/* 單條評分bar start */}
+                  <div className="row align-items-center">
+                    <div className="col-10">
+                      <div
+                        className="progress bg-light-gray light-wine-border"
+                        role="progressbar"
+                        aria-label=""
+                        aria-valuenow={0}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        style={{ height: "0.65rem" }}
+                      >
+                        <div
+                          className="progress-bar bg-sec-yellow"
+                          style={{ width: "80%" }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="col-2">
+                      <p className="text-sec-dark-blue">100</p>
+                    </div>
+                  </div>
+                  {/* 單條評分bar end */}
                 </div>
               </div>
               <Comment />
@@ -597,14 +745,17 @@ export default function CourseIndex() {
 
         {/* page-nav-bar start */}
         <div className="container-fluid py-3">
-            <div className="container-sm">
-                <div className="row justify-content-between">
-                    <a className="col-auto" href="">
-                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i className="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
-                    </a>
-                </div>
-              <div className="col-auto">page-nav</div>
+          <div className="container-sm">
+            <div className="row justify-content-between">
+              <a className="col-auto" href="">
+                <span className="h5 text-prim-text-prim spac-1">
+                  查看所有講師
+                  <i className="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i>
+                </span>
+              </a>
             </div>
+            <div className="col-auto">page-nav</div>
+          </div>
         </div>
         {/* page-nav-bar end */}
 
