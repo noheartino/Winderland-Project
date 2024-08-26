@@ -4,10 +4,11 @@ import CouponCard from "./CouponCard";
 import CouponPlusModal from "./CouponPlusModal";
 import { useAuth } from "@/hooks/use-auth";
 
-export default function CouponStorage() {
-  const { auth } = useAuth(); // 取得認證資訊
-  const userId = auth.userData.id; // 取得使用者 ID
-  console.log(auth.userData);
+export default function CouponStorage({userId}) {
+  // console.log(userId)
+  // const { auth } = useAuth(); // 取得認證資訊
+  // const userId = auth.userData.id; // 取得使用者 ID
+  // console.log(auth.userData);
   const [coupons, setCoupons] = useState([]);
   const [loading, setLoading] = useState(true); // 初始為 true，表示正在載入
   const [error, setError] = useState(null); // 用於處理錯誤
@@ -25,7 +26,7 @@ export default function CouponStorage() {
         }
 
         const response = await fetch(
-          "http://localhost:3005/api/coupon/user-coupon",
+          "http://localhost:3005/api/coupon/get-coupon",
           {
             method: "POST",
             headers: {

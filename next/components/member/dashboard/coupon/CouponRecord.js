@@ -1,8 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import CouponList1 from "./CouponList1";
+import { useAuth } from "@/hooks/use-auth";
 
-export default function CouponRecord() {
+export default function CouponRecord({userId}) {
+  // const { auth } = useAuth(); // 取得認證資訊
+  // const userId = auth.userData.id; // 取得使用者 ID
+  // console.log(userId)
+
+  const [coupons, setCoupons] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchCoupons() {
+      try {
+        const response = await fetch('http://localhost:3005/api/coupon/used-coupon', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ user_id: userId }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        setCoupons(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    }
+
+    fetchCoupons();
+  }, [userId]);
+
   return (
     <>
       <div className="couponRecordZone d-none d-lg-block col-lg-7 ">
@@ -33,9 +66,8 @@ export default function CouponRecord() {
             </div>
           </div>
           <div className={`${style.couponRecordMain} row py-1`}>
-            <CouponList1 />
-            <CouponList1 />
-            <CouponList1 />
+          {/* {console.log(coupons)} */}
+          {coupons.map(coupon=>(<CouponList1 key={coupon.id} coupon={coupon} coupons={coupons} />))}
           </div>
         </div>
       </div>
@@ -72,9 +104,7 @@ export default function CouponRecord() {
             className={`${style.couponRecordMain} row`}
             style={{ maxHeight: "150px" }}
           >
-            <CouponList1 />
-            <CouponList1 />
-            <CouponList1 />
+            {coupons.map(coupon=>(<CouponList1 key={coupon.id} coupon={coupon} coupons={coupons} />))}
           </div>
         </div>
       </div>

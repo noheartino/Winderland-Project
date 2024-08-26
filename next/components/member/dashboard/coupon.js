@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import CouponCard from "./coupon/CouponCard";
 import WPointShow from "./coupon/wPointShow";
@@ -8,20 +8,61 @@ import CouponStorage from "./coupon/CouponStorage";
 import WPointRecord from "./coupon/WPointRecord";
 
 import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from 'next/router';
 
 export default function DashboardCoupon() {
+  const router = useRouter();
   const { auth } = useAuth();
-  if (!auth.isAuth || !auth.userData) {
-    console.log("使用者尚未登入或用戶資料尚未載入");
-    return <p>請先登入再進行評論</p>;
-  }
-  console.log(auth);
+  const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const [coupons, setCoupons] = useState([]);
+
+  // 等待獲取userId
+  useEffect(() => {
+    // 模擬從 useAuth 中獲取 userId
+    const fetchUserId = () => {
+      setTimeout(() => {
+        const id = auth.userData?.id; // 從 auth 取得 userId
+        setUserId(id);
+        setLoading(false); // 完成加載
+      }, 1000); // 延遲 1 秒
+    };
+
+    fetchUserId();
+
+    // 清除定時器以防止內存洩漏
+    return () => clearTimeout();
+  }, [auth]);
+
+  useEffect(() => {
+    if (!loading) {
+      if (!userId) {
+        // 如果 userId 不存在，則進行重定向
+        router.push('/login');
+      }
+    }
+  }, [userId, loading, router]);
+
+
+  useEffect(() => {
+    // 使用 fetch 從後端 API 獲取資料
+    fetch("http://localhost:3005/api/coupon")
+      .then((response) => response.json())
+      .then((data) => {
+        setCoupons(data); // 將資料儲存在狀態中
+      })
+      .catch((error) => {
+        console.error("Error fetching coupons:", error);
+      });
+  }, []); 
 
   return (
     <>
       <div className={`container ${style["coupon-content"]} m-0 mx-auto`}>
         {/* 優惠券倉庫 */}
-        <CouponStorage />
+        {/* {console.log(userId)} */}
+        <CouponStorage userId={userId} />
 
         {/* 手機的領券的標題 */}
         <div className={`${style.couponNav} col-12 d-lg-none mt-5 mb-4`}>
@@ -56,19 +97,18 @@ export default function DashboardCoupon() {
               </p>
             </div>
           </div>
-          <CouponCard />
-          <CouponCard />
-          <CouponCard />
-          <CouponCard />
-          <CouponCard />
+          {coupons.map((coupon) => (
+          <CouponCard key={coupon.id} coupon={coupon}/>
+        ))}
+
         </div>
 
         <div className="row">
           {/* 優惠券使用紀錄 */}
-          <CouponRecord />
+          <CouponRecord userId={userId} />
 
           {/* 優惠券過期紀錄 */}
-          <CouponExpired />
+          <CouponExpired userId={userId} />
         </div>
         <hr
           className="d-none d-lg-block"
@@ -82,7 +122,7 @@ export default function DashboardCoupon() {
         {/* wpoints */}
         {/* wpoints 2 nav */}
         <div className="wpoint-navbar mt-5 mx-3 row">
-          <WPointShow />
+          <WPointShow userId={userId} />
 
           {/* 會員說明的區塊 */}
           <div
@@ -97,7 +137,7 @@ export default function DashboardCoupon() {
 
         {/* wpoints的使用紀錄 */}
         <div className="row">
-          <WPointRecord />
+          <WPointRecord userId={userId} />
         </div>
       </div>
     </>

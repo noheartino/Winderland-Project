@@ -7,8 +7,6 @@ export default function CouponCard({coupon}) {
     return null;
   }
 
-  // console.log(coupon);
-  
   const getCategoryClass = (category) => {
     switch (category) {
       case "倍數折扣":
@@ -24,6 +22,7 @@ export default function CouponCard({coupon}) {
     }
   };
   const couponcss = getCategoryClass(coupon.category);
+
   return (
     <>
       {/* 一組優惠券 */}

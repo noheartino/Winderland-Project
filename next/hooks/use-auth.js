@@ -16,7 +16,6 @@ const AuthContext = createContext(null)
 // * 2.建立AuthProvider元件
 // props.children屬性，代表包裹在Providers中的所有
 export function AuthProvider({ children }) {
-  console.log('AuthProvider rendered');
   // 建立路由器
   const router = useRouter()
 

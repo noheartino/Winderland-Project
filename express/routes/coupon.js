@@ -67,18 +67,8 @@ router.post('/save-coupons', async (req, res) => {
 })
 
 // 優惠券倉庫資料
-router.post('/user-coupon', async (req, res) => {
-  console.log('Request body:', req.body) // 打印請求體以調試
-
+router.post('/get-coupon', async (req, res) => {
   const { user_id } = req.body // 從請求體中獲取 user_id
-
-  // 檢查 user_id 是否存在且有效
-  // if (!user_id) {
-  //   return res.status(400).json({
-  //     status: 'error',
-  //     message: 'user_id 必須提供',
-  //   })
-  // }
 
   try {
     const query = `
@@ -91,6 +81,42 @@ router.post('/user-coupon', async (req, res) => {
       WHERE 
         uc.user_id = ?
         AND uc.status = 'get'
+        AND c.status = '已啟用'
+    `
+
+    // 使用參數化查詢以避免 SQL 注入
+    const [userCoupons] = await connection.execute(query, [user_id])
+
+    // 返回查詢結果
+    res.json(userCoupons)
+  } catch (err) {
+    console.error('SQL Error:', err.message)
+    res.status(500).json({
+      status: 'error',
+      message: '無法查詢資料',
+      error: err.message,
+    })
+  }
+})
+
+// 優惠券使用的
+router.post('/used-coupon', async (req, res) => {
+  console.log('Request body:', req.body)
+
+  const { user_id } = req.body // 從請求體中獲取 user_id
+
+  try {
+    const query = `
+      SELECT uc.*, 
+        c.name, 
+        c.category, 
+        c.min_spend,
+        c.discount
+      FROM user_coupon uc
+      JOIN coupon c ON uc.coupon_id = c.id
+      WHERE 
+        uc.user_id = ?
+        AND uc.status = 'used'
         AND c.status = '已啟用'
     `
 

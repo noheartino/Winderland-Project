@@ -2,7 +2,7 @@ import React from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import CouponList2 from "./CouponList2";
 
-export default function CouponExpired() {
+export default function CouponExpired({userId}) {
   return (
     <>
       <div className="couponExpiredZone d-none d-lg-block col-lg-5 px-4 ">
