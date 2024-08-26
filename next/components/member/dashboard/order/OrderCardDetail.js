@@ -5,7 +5,7 @@ import styles from '@/components/member/dashboard/order/OrderCardDetail.module.c
 import OrderCardDetailItem from './OrderCardDetailItem'
 import OrderCardDetailCoupon from './OrderCardDetailCoupon'
 import OrderCardDetailComment from './OrderCardDetailComment'
-
+import OrderCardDetailPickup from './OrderCardDetailPickup'
 export default function OrderCardDetail() {
     return (
         <>
@@ -14,7 +14,10 @@ export default function OrderCardDetail() {
                 <hr className={styles.hr}/>
                 <OrderCardDetailCoupon />
                 <hr className={styles.hr}/>
+                <OrderCardDetailPickup />
+                <hr className={styles.hr}/>
                 <OrderCardDetailComment />
+           
             </div>
         </>
     )

@@ -208,6 +208,19 @@
     letter-spacing: 3.6px;
 }
 
+/* 配送資訊 */
+.pickupArea {
+    margin-left: 56px;
+    margin-top: 32px;
+}
+.pickupDetail{
+    color: var(--text_primary);
+    font-size: medium;
+    font-weight: 400;
+    letter-spacing: 3.8px;
+    margin-left: 20px;
+    /* margin-bottom: 80px; */
+}
 /* 評論 */
 .orderComment {
     margin-bottom: 40px;
