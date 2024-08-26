@@ -82,7 +82,7 @@ const toggleDetails = (orderId) => {
                           </button>
                         </div>
                       </div>
-                      <OrderCardDetail orderId={order.order_uuid} />
+                      <OrderCardDetail orderUuid={ order.order_uuid} />
                     </>
                   ) : (
                     <div>
