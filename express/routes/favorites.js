@@ -132,6 +132,94 @@ router.get('/', authenticate, async (req, res) => {
 //   return res.json({ status: 'success', data: null })
 // })
 
+// # 收藏商品區
+// @ 獲取收藏商品
+router.get('/products', authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id
+    const [rows] = await connection.query(
+      `
+        SELECT 
+        p.id AS product_id,
+        p.name AS product_name,
+        pd.years,
+        pd.capacity,
+        c.name AS country_name,
+        pd.price,
+        (
+          SELECT ip.path
+          FROM images_product ip
+          WHERE ip.product_id = p.id
+          ORDER BY ip.id
+          LIMIT 1, 1
+        ) AS image_path
+      FROM user_like ul
+      JOIN product p ON ul.item_id = p.id
+      JOIN product_detail pd ON ul.product_detail_id = pd.id
+      JOIN origin o ON p.origin_id = o.id
+      JOIN country c ON o.country_id = c.id
+      WHERE ul.user_id = ? AND ul.item_type = 'product'
+      `,
+      [userId]
+    )
+    // 設置響應頭，防止緩存
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private')
+    res.json({ status: 'success', data: rows })
+  } catch (error) {
+    console.error('獲取收藏商品時出錯:', error)
+    res.status(500).json({ status: 'error', message: '服務器錯誤' })
+  }
+})
+
+// @ 添加商品到收藏（用在商品頁面）
+// router.post('/products', authenticate, async (req, res) => {
+//   try {
+//     const userId = req.user.id
+//     const { productId, productDetailId } = req.body
+
+//     // 檢查是否已收藏
+//     const [existing] = await connection.query(
+//       'SELECT * FROM user_like WHERE user_id = ? AND item_id = ? AND item_type = "product"',
+//       [userId, productId]
+//     )
+
+//     if (existing.length > 0) {
+//       return res
+//         .status(400)
+//         .json({ status: 'error', message: '商品已在收藏中' })
+//     }
+
+//     // 添加到收藏
+//     await connection.query(
+//       'INSERT INTO user_like (user_id, item_id, item_type, product_detail_id) VALUES (?, ?, "product", ?)',
+//       [userId, productId, productDetailId]
+//     )
+
+//     res.json({ status: 'success', message: '商品已添加到收藏' })
+//   } catch (error) {
+//     console.error('添加商品到收藏時出錯:', error)
+//     res.status(500).json({ status: 'error', message: '服務器錯誤' })
+//   }
+// })
+
+// @ 從商品收藏中移除
+router.delete('/products/:id', authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id
+    const productId = req.params.id
+
+    await connection.query(
+      'DELETE FROM user_like WHERE user_id = ? AND item_id = ? AND item_type = "product"',
+      [userId, productId]
+    )
+
+    res.json({ status: 'success', message: '商品已從收藏中移除' })
+  } catch (error) {
+    console.error('從收藏中移除商品時出錯:', error)
+    res.status(500).json({ status: 'error', message: '服務器錯誤' })
+  }
+})
+
 // # 收藏課程區
 // @ 獲取收藏課程
 router.get('/courses', authenticate, async (req, res) => {

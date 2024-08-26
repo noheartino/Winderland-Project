@@ -67,10 +67,10 @@ router.get('/profile', authenticate, async function (req, res) {
     const [rows] = await connection.query(
       `
       SELECT u.*, iu.img AS avatar_img, l.free_coupon
-FROM users u
-LEFT JOIN images_user iu ON u.id = iu.user_id
-LEFT JOIN levels l ON u.member_level_id = l.member_level_id
-WHERE u.id = ?
+      FROM users u
+      LEFT JOIN images_user iu ON u.id = iu.user_id
+      LEFT JOIN levels l ON u.member_level_id = l.member_level_id
+      WHERE u.id = ?
     `,
       [id]
     )

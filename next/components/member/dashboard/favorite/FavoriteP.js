@@ -9,9 +9,6 @@ export default function FavoriteP() {
             <hr />
             <div className="favorite-p-group d-flex">
               <FavoritePCard />
-              <FavoritePCard />
-              <FavoritePCard />
-              <FavoritePCard />
             </div>
     </>
   )
