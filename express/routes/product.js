@@ -23,6 +23,8 @@ LEFT JOIN
 	origin ON product.origin_id = origin.id
 LEFT JOIN 
 	country ON origin.country_id = country.id
+WHERE
+  valid = 1 
 `
 
 // 取得指定id的商品
@@ -50,7 +52,7 @@ WHERE product.id=?`
 const getProductsTotal = `SELECT COUNT(*) as total FROM product`
 
 // 取得detail
-const getProductsDetails = `SELECT * FROM product_detail WHERE product_id IN (?)`
+const getProductsDetails = `SELECT * FROM product_detail WHERE valid = 1 && product_id IN (?)`
 
 // 取得images
 const getImages = `SELECT * FROM images_product WHERE product_id IN (?)`
@@ -95,7 +97,7 @@ const tidyProduct = async (product) => {
 
     // 獲取所有商品詳細信息
     const [details] = await db.query(
-      'SELECT * FROM product_detail WHERE product_id = ?',
+      'SELECT * FROM product_detail WHERE valid = 1 && product_id = ?',
       [pid]
     )
     const [images] = await db.query(
@@ -168,7 +170,7 @@ router.get('/', async (req, res) => {
     // 取得搜尋參數塞進搜尋商品的sql語法
     let getSearch = getProducts
     if (search) {
-      getSearch += `WHERE product.name LIKE ?`
+      getSearch += `&& product.name LIKE ?`
     }
 
     // 取得搜尋後的頁數

@@ -17,8 +17,6 @@ export default function ProductItem({ product }) {
         <Link className={`${styles['detail-link']}`} href={`/product/${product.id}`}>
           <div className={`${styles["shop-card-photo"]}`}>
             <img className={`${styles["photo"]}`} src={`/images/product/${product.images[1].path}`} alt="" />
-            {/* className={`${styles["photo"]}`}
-              src={`/images/product/${product.images[1].path}`} */}
           </div>
         </Link>
         <Link className={`${styles['detail-link']}`} href={`/product/${product.id}`}>

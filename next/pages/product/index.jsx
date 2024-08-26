@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 import CategoryTitle from "@/components/product-list/header/CategoryTitle";
 import SortSearch from "@/components/product-list/sortSearch/SortSearch";
@@ -20,6 +21,15 @@ export default function ProductIndex() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    // 從URL讀取初始參數
+    const {page,sort,search:urlSearch} = router.query;
+    if(page) setCurrentPage(parseInt(page));
+    if(sort) setCurrentSort(sort);
+    if(urlSearch) setSearch(urlSearch);
+  },[router.query])
 
   // 掛載後執行一個獲取數據的副作用
   // 使用axios發送get訊息到指定URL API
@@ -34,7 +44,6 @@ export default function ProductIndex() {
         setCategoryies(response.data.categories);
         setTotalPages(response.data.pagination.totalPages);
         setTotalItems(response.data.pagination.totalItems);
-        console.log(search)
 
         setLoading(false);
       } catch (err) {
@@ -43,6 +52,15 @@ export default function ProductIndex() {
       }
     };
     fetchProducts();
+
+    // 更新URL
+    const query = {page:currentPage,sort:currentSort};
+    if(search) query.search = search;
+
+    router.push({
+      pathname:router.pathname,
+      query:query,
+    }, undefined, { shallow: true });
   }, [currentPage, itemsPerPage, currentSort,search]);
 
   // 更改頁數的函式
