@@ -173,7 +173,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
                         已報名 {classAssignsQ>0 ? classAssignsQ/student_limit*100 : '0'}%
                       </span> */}
             <span className="h6 text-sec-blue spac-1">
-            已報名 {classAssignsQ > 0 ? `${((classAssignsQ / student_limit) * 100).toFixed(0)}%` : '0%'}
+            已報名 {classAssignsQ > 0 ? `${((classAssignsQ / student_limit) * 100).toFixed(1)}%` : '0%'}
           </span>
           </div>
           <div

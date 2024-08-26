@@ -155,10 +155,12 @@ router.get('/:courseId', async (req, res) => {
                             ON 
                                 order_details.order_uuid = orders.order_uuid
                             WHERE order_details.class_id=${courseId};`
+  let commentsSQL = `SELECT comments.* FROM comments WHERE comments.entity_type = 'class' AND comments.entity_id = ${courseId}`
   try {
     const [course] = await connection.execute(courseSQL)
     const [theCourseAssigned] = await connection.execute(theCourseAssignedSQL)
-    res.json({ course, theCourseAssigned })
+    const [comments] = await connection.execute(commentsSQL)
+    res.json({ course, theCourseAssigned, comments })
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
   }

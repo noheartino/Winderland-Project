@@ -24,12 +24,6 @@ export default function ArticleComment() {
                     有幫助(???)
                   </span>
                 </a>
-                <a href="">
-                  <i className="fa-solid fa-reply me-1 text-sec-dark-blue" />
-                  <span className="d-none d-md-inline-block spac-1 text-sec-dark-blue p">
-                    回覆
-                  </span>
-                </a>
               </div>
               <div className="col-auto">
                 {/* more */}
