@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Head from "next/head";
 import CartProduct from "@/components/cart/cart1/cartProduct";
 import CartClass from "@/components/cart/cart1/cartClass";
@@ -190,10 +190,10 @@ export default function CartCheckout1() {
     }
   };
   const override = {
-    display: 'block',
-    margin: '0 auto',
+    display: "block",
+    margin: "0 auto",
     // borderColor: 'red',
-  }
+  };
 
   if (loading) {
     return (
@@ -395,6 +395,8 @@ export default function CartCheckout1() {
               totalAmount={totalAmount}
               onCouponChange={handleCouponChange}
             />
+            <div style={{ height: "150px" }}>
+            </div>
           </div>
         </main>
       )}

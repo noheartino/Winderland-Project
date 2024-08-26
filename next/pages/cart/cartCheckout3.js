@@ -10,6 +10,7 @@ import CartClassDetail from "@/components/cart/cart3/cartClassDetail";
 import CartClassDetailM from "@/components/cart/cart3/cartClassDetailM";
 import Footer from "@/components/footer/footer";
 import Nav from "@/components/Header/Header";
+import Head from "next/head";
 
 export default function CartCheckout3() {
   const [userId, setUserId] = useState(null);
@@ -39,7 +40,9 @@ export default function CartCheckout3() {
 
   return (
     <>
-      <title>Cart4</title>
+      <Head>
+        <title>Cart4</title>
+      </Head>
       <meta charSet="utf-8" />
       <meta
         name="viewport"

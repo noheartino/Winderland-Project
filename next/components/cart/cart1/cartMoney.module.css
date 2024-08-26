@@ -93,7 +93,7 @@
     position: fixed; /* 固定在視口 */
     bottom: 0; /* 在底部 */
     left: 0;
-    z-index: 1000;
+    z-index: 3;
 }
 
 .cartTotalMROW {
@@ -155,3 +155,17 @@
     }
 }
 
+
+.cartMoneyContainer {
+    display: flex;
+    flex-direction: column;
+    
+  }
+  
+  .cartCheckError {
+    color: red;
+    font-weight: bold;
+    margin-top: 20px; /* 調整與其他內容的間距 */
+
+  }
+  

@@ -17,6 +17,7 @@ import CartClassDetailM from "@/components/cart/cart3/cartClassDetailM";
 import CartTransportBlackCat from "@/components/cart/cart2/cartTransportBlackcat";
 import CartTransportBlackCatM from "@/components/cart/cart2/cartTransportBlackcatM";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function CartCheckout2() {
   const router = useRouter();
@@ -118,7 +119,9 @@ export default function CartCheckout2() {
 
   return (
     <>
-      <title>Cart3</title>
+      <Head>
+        <title>Cart3</title>
+      </Head>
       <meta charSet="utf-8" />
       <meta
         name="viewport"
@@ -382,7 +385,7 @@ export default function CartCheckout2() {
             onPointsChange={handlePointsChange}
             onPointsFetch={handlePointsFetch}
           />
-          <div style={{ height: "150px" }}></div>
+          <div style={{ height: "180px" }}></div>
           <CartMoneyM />
         </div>
       </main>

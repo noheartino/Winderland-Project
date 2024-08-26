@@ -1,13 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { CartContext } from "@/context/CartContext";
 
 export default function Nav() {
   const { logout } = useAuth();
   const router = useRouter();
   const [isOpen, setisOpen] = useState(false);
   const navRef = useRef(null);
+  const { cartQuantity } = useContext(CartContext); // 使用 CartContext
+  console.log('總數量',cartQuantity)
 
   const Data = useAuth().auth
   const userData = Data.userData
@@ -218,7 +221,7 @@ export default function Nav() {
               <button onClick={GoCart}>
                 <i className="fa-solid fa-cart-shopping" />
                 <div className="dot nonedot">沒有購物車內容</div>
-                <div className="dot">35</div>
+                <div className="dot">{cartQuantity}</div>
               </button>
             </div>
             <div className="nav_user">
@@ -282,7 +285,7 @@ export default function Nav() {
             <div className="HeaderCart">
               <button onClick={GoCart}>
                 <i className="fa-solid fa-cart-shopping" />
-                <div className="dot">35</div>
+                <div className="dot">{cartQuantity}</div>
               </button>
             </div>
         </div>
