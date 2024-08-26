@@ -16,7 +16,7 @@ router.get('/history', authenticate, async (req, res) => {
     console.log('Fetching orders for user:', userId)
     const [rows] = await connection.query(
       `
-      SELECT 
+    SELECT 
         o.order_uuid,
         o.status,
         o.payment_method,
@@ -34,7 +34,36 @@ router.get('/history', authenticate, async (req, res) => {
             COALESCE(COUNT(DISTINCT CASE WHEN od.class_id IS NOT NULL THEN od.class_id END), 0)
           FROM order_details od
           WHERE od.order_uuid = o.order_uuid
-        ) AS total_items
+        ) AS total_items,
+        (
+          SELECT 
+            CASE
+              WHEN od.product_id IS NOT NULL THEN 'product'
+              ELSE 'class'
+            END
+          FROM order_details od
+          WHERE od.order_uuid = o.order_uuid
+          LIMIT 1
+        ) AS firstItemType,
+        (
+          SELECT 
+            CASE
+              WHEN od.product_id IS NOT NULL THEN
+                (SELECT ip.path
+                 FROM images_product ip
+                 WHERE ip.product_id = od.product_id
+                 ORDER BY ip.id
+                 LIMIT 1 OFFSET 1)  -- 選擇第二張圖片
+              ELSE
+                (SELECT ic.path
+                 FROM images_class ic
+                 WHERE ic.class_id = od.class_id
+                 LIMIT 1)  -- 選擇第一張圖片
+            END
+          FROM order_details od
+          WHERE od.order_uuid = o.order_uuid
+          LIMIT 1
+        ) AS firstItemImage
       FROM orders o
       WHERE o.user_id = ?
       ORDER BY o.created_at DESC
@@ -78,7 +107,15 @@ router.get('/history/:orderUuid', authenticate, async (req, res) => {
         pd.capacity,
         pd.years,
         pd.price,
-        co.name AS country_name
+        co.name AS country_name,
+        (
+          SELECT ip.path
+          FROM (
+            SELECT path, product_id, ROW_NUMBER() OVER (PARTITION BY product_id ORDER BY id) as row_num
+            FROM images_product
+          ) ip
+          WHERE ip.product_id = p.id AND ip.row_num = 2
+        ) AS image_path
       FROM order_details od
       JOIN product p ON od.product_id = p.id
       JOIN product_detail pd ON od.product_detail_id = pd.id
@@ -96,14 +133,17 @@ router.get('/history/:orderUuid', authenticate, async (req, res) => {
         od.*,
         c.name AS class_name,
         c.price AS class_price,
-        t.name AS teacher_name
+        t.name AS teacher_name,
+        ic.path AS image_path
       FROM order_details od
       JOIN class c ON od.class_id = c.id
       JOIN teacher t ON c.teacher_id = t.id
+      LEFT JOIN images_class ic ON c.id = ic.class_id
       WHERE od.order_uuid = ? AND od.class_id IS NOT NULL
       ORDER BY od.id`,
       [orderUuid]
     )
+
     res.json({
       status: 'success',
       data: {

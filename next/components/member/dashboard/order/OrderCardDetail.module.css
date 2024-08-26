@@ -46,7 +46,7 @@
     width: 100%;
     height: 261px;
     /* margin-left: 50px; */
-    margin-bottom: -50px;
+    margin-bottom: -70px;
     /* margin-top: 15px; */
     background: none;
     border: none;
@@ -112,6 +112,26 @@
     margin-right: 25px;
 }
 
+.orderImg {
+    width: 150px;  /* 設置固定寬度 */
+    height: 150px; /* 設置固定高度，與寬度相等，創建正方形 */
+    border: 1px solid var(--wine_light, #D4C0C0);
+    margin-left: 50px;
+    margin-top: 20px;
+    overflow: hidden; /* 確保內容不會溢出容器 */
+    display: flex; /* 使用 flexbox 來居中內容 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    background: #ffffff;
+  }
+  
+  .orderImg img {
+    width: 100%; /* 圖片寬度填滿容器 */
+    height: 100%; /* 圖片高度填滿容器 */
+    object-fit: contain; /* 確保整個圖片都顯示，不被裁切 */
+    object-position: center; /* 圖片在容器中居中 */
+  }
+
 /* 優惠券 */
 .orderUsed {
     margin-left: 56px;
@@ -140,6 +160,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 30px;
+    margin-left: 60px;
 }
 
 .pointImg {
@@ -148,7 +169,7 @@
     background: url(/images/member/wpoint-used.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    margin-left: 70px;
+    margin-left: 90px;
     margin-top: 30px;
 }
 
