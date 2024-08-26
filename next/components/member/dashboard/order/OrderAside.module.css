@@ -1,0 +1,19 @@
+.orderAside {
+    /* 您可以在這裡添加側邊欄的整體樣式 */
+  }
+  
+  .statusItem {
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .statusItem:hover,
+  .statusItem.selected {
+    background: var(--light, #F4EBEB);
+  }
+  
+  /* 如果您想要在選中狀態下有額外的視覺提示，可以添加以下樣式 */
+  .statusItem.selected {
+    font-weight: bold;
+  }

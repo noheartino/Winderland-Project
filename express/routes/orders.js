@@ -10,20 +10,89 @@ import authenticate from '#middlewares/authenticate.js'
 // import { getIdParam } from '#db-helpers/db-tool.js'
 
 // @ 獲取歷史訂單
+// router.get('/history', authenticate, async (req, res) => {
+//   try {
+//     const userId = req.user.id
+//     console.log('Fetching orders for user:', userId)
+//     const [rows] = await connection.query(
+//       `
+//     SELECT
+//         o.order_uuid,
+//         o.status,
+//         o.payment_method,
+//         o.transport,
+//         o.created_at,
+//         o.totalMoney,
+//        (
+//           SELECT
+//             COALESCE(SUM(
+//               CASE
+//                 WHEN od.product_id IS NOT NULL THEN od.product_quantity
+//                 ELSE 0
+//               END
+//             ), 0) +
+//             COALESCE(COUNT(DISTINCT CASE WHEN od.class_id IS NOT NULL THEN od.class_id END), 0)
+//           FROM order_details od
+//           WHERE od.order_uuid = o.order_uuid
+//         ) AS total_items,
+//         (
+//           SELECT
+//             CASE
+//               WHEN od.product_id IS NOT NULL THEN 'product'
+//               ELSE 'class'
+//             END
+//           FROM order_details od
+//           WHERE od.order_uuid = o.order_uuid
+//           LIMIT 1
+//         ) AS firstItemType,
+//         (
+//           SELECT
+//             CASE
+//               WHEN od.product_id IS NOT NULL THEN
+//                 (SELECT ip.path
+//                  FROM images_product ip
+//                  WHERE ip.product_id = od.product_id
+//                  ORDER BY ip.id
+//                  LIMIT 1 OFFSET 1)  -- 選擇第二張圖片
+//               ELSE
+//                 (SELECT ic.path
+//                  FROM images_class ic
+//                  WHERE ic.class_id = od.class_id
+//                  LIMIT 1)  -- 選擇第一張圖片
+//             END
+//           FROM order_details od
+//           WHERE od.order_uuid = o.order_uuid
+//           LIMIT 1
+//         ) AS firstItemImage
+//       FROM orders o
+//       WHERE o.user_id = ?
+//       ORDER BY o.created_at DESC
+//       `,
+//       [userId]
+//     )
+//     console.log('Fetched orders:', rows)
+//     res.json({ status: 'success', data: rows })
+//   } catch (error) {
+//     console.error('獲取訂單歷史時出錯:', error)
+//     res
+//       .status(500)
+//       .json({ status: 'error', message: '服務器錯誤', error: error.message })
+//   }
+// })
 router.get('/history', authenticate, async (req, res) => {
   try {
     const userId = req.user.id
-    console.log('Fetching orders for user:', userId)
-    const [rows] = await connection.query(
-      `
-    SELECT 
+    const { status, startDate, endDate } = req.query
+
+    let query = `
+      SELECT 
         o.order_uuid,
         o.status,
         o.payment_method,
         o.transport,
         o.created_at,
         o.totalMoney,
-       (
+        (
           SELECT 
             COALESCE(SUM(
               CASE 
@@ -53,12 +122,12 @@ router.get('/history', authenticate, async (req, res) => {
                  FROM images_product ip
                  WHERE ip.product_id = od.product_id
                  ORDER BY ip.id
-                 LIMIT 1 OFFSET 1)  -- 選擇第二張圖片
+                 LIMIT 1 OFFSET 1)
               ELSE
                 (SELECT ic.path
                  FROM images_class ic
                  WHERE ic.class_id = od.class_id
-                 LIMIT 1)  -- 選擇第一張圖片
+                 LIMIT 1)
             END
           FROM order_details od
           WHERE od.order_uuid = o.order_uuid
@@ -66,11 +135,24 @@ router.get('/history', authenticate, async (req, res) => {
         ) AS firstItemImage
       FROM orders o
       WHERE o.user_id = ?
-      ORDER BY o.created_at DESC
-      `,
-      [userId]
-    )
-    console.log('Fetched orders:', rows)
+    `
+
+    const queryParams = [userId]
+
+    if (status && status.length > 0) {
+      query += ` AND o.status IN (?)`
+      queryParams.push(status.split(','))
+    }
+
+    if (startDate && endDate) {
+      query += ` AND o.created_at BETWEEN ? AND ?`
+      queryParams.push(startDate, endDate)
+    }
+
+    query += ` ORDER BY o.created_at DESC`
+
+    const [rows] = await connection.query(query, queryParams)
+
     res.json({ status: 'success', data: rows })
   } catch (error) {
     console.error('獲取訂單歷史時出錯:', error)

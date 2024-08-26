@@ -2,24 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 export default function OrderCard({ order }) {
-  // const [orderDetails, setOrderDetails] = useState(null)
-
-  // useEffect(() => {
-  //   const fetchOrderDetails = async () => {
-  //     try {
-  //       const response = await fetch(`http://localhost:3005/api/orders/${orderId}`, {
-  //         credentials: 'include', 
-  //       })
-  //       if (!response.ok) throw new Error('獲取訂單詳情失敗')
-  //       const data = await response.json()
-  //       setOrderDetails(data.data)
-  //     } catch (error) {
-  //       console.error('獲取訂單詳情時出錯:', error)
-  //     }
-  //   }
-
-  //   fetchOrderDetails()
-  // }, [orderId])
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -84,7 +66,9 @@ export default function OrderCard({ order }) {
                   <br />
                   {order.transport}
                 </td>
-                <td className={getStatusClass(order.status)}>{order.status}</td>
+                <td className={getStatusClass(order.status)}>
+                {order.status}
+                </td>
 
                 <td style={{ color: 'var(--orange)' }}>
                   NT$ {order.totalMoney.toLocaleString()}

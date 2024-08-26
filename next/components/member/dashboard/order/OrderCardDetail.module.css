@@ -233,15 +233,28 @@
     margin-bottom: 10px;
 }
 
-.noCoupon, .noPoints {
+.noCoupon {
     font-size: large;
     /* font-style: italic; */
     color: #888;
     margin-top: 5px;
-    margin-left: 98px;  /* 與優惠券對齊 */
+    margin-left: 50px;  
+    /* 與優惠券對齊 */
     font-weight: 700;
     letter-spacing: 1.6px;
 }
+
+.noPoints {
+    font-size: large;
+    /* font-style: italic; */
+    color: #888;
+    margin-top: 5px;
+    /* margin-left: 50px;   */
+    /* 與優惠券對齊 */
+    font-weight: 700;
+    letter-spacing: 1.6px;
+}
+
 
 /* 配送資訊 */
 .pickupArea {
