@@ -53,23 +53,43 @@ const upload = multer({ storage: storage })
 router.get('/profile', authenticate, async function (req, res) {
   // 轉為數字
   const id = req.user.id // 從已驗證的用戶資訊中獲取 ID
-  console.log('Extracted ID:', id)
+  // console.log('Extracted ID:', id)
 
   // 檢查是否為授權會員，只有授權會員可以存取自己的資料
   if (req.user.id !== id) {
     return res.json({ status: 'error', message: '存取會員資料失敗' })
   }
-
+  // SELECT u.*, iu.img AS avatar_img
+  // FROM users u
+  // LEFT JOIN images_user iu ON u.id = iu.user_id
+  // WHERE u.id = ?
   try {
-    const [rows] = await connection.query('SELECT * FROM users WHERE id = ?', [
-      id,
-    ])
+    const [rows] = await connection.query(
+      `
+      SELECT u.*, iu.img AS avatar_img, l.free_coupon
+FROM users u
+LEFT JOIN images_user iu ON u.id = iu.user_id
+LEFT JOIN levels l ON u.member_level_id = l.member_level_id
+WHERE u.id = ?
+    `,
+      [id]
+    )
+
     if (rows.length === 0) {
       return res.status(404).json({ status: 'error', message: '會員不存在' })
     }
+
     const user = rows[0]
     // 不回傳密碼
     delete user.password
+
+    // 處理頭像路徑
+    if (user.avatar_img) {
+      user.avatar_url = `/images/member/avatar/${user.avatar_img}`
+    } else {
+      user.avatar_url = '/images/member/avatar/default-avatar.jpg' // 設置默認頭像
+    }
+
     return res.json({ status: 'success', data: { user } })
   } catch (error) {
     console.error('Error fetching user:', error)

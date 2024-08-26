@@ -37,9 +37,9 @@ export default function ProfileUpdateUser() {
      if (!auth.isAuth) {
       router.push('/member/login');
     } else if (auth.userData) {
-      console.log('auth.userData:', auth.userData);
-      console.log('phone:', auth.userData.phone);
-      console.log('address:', auth.userData.address);
+      // console.log('auth.userData:', auth.userData);
+      // console.log('phone:', auth.userData.phone);
+      // console.log('address:', auth.userData.address);
       updateFormData(auth.userData);
     }
   }, [auth, router, updateFormData]);
@@ -79,11 +79,11 @@ export default function ProfileUpdateUser() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      console.log('Submitting form data:', formData);
+      // console.log('Submitting form data:', formData);
       const result = await updateUserInfo(formData);      
       if (result.success) {
         alert('個人資料更新成功');
-        console.log('Updated user data:', result.user);
+        // console.log('Updated user data:', result.user);
         updateFormData(result.user);
       } else {
         alert('更新個人資料失敗：' + (result.error || '未知錯誤'));

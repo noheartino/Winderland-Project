@@ -33,7 +33,7 @@ const toggleDetails = (orderId) => {
   return (
     <>
       {/* desk */}
-      <div className="container d-none d-lg-block">
+      <div className="container d-none d-lg-block mb-5">
         <div className=" d-flex">
           <OrderAside />
 
