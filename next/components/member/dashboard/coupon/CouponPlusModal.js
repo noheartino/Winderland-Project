@@ -10,15 +10,11 @@ export default function CouponPlusModal() {
   const memberLevelId = auth.userData.member_level_id; // 取得會員等級 ID
 
   const [coupons, setCoupons] = useState([]);
+  const [selectedCoupons, setSelectedCoupons] = useState([]);
+
   useEffect(() => {
     // 使用 fetch 從後端 API 獲取資料
-    fetch("http://localhost:3005/api/coupon", {
-      method: 'POST', // 使用 POST 請求
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ member_level_id: memberLevelId }), // 發送 memberLevelId 作為請求體
-    })
+    fetch("http://localhost:3005/api/coupon")
       .then((response) => response.json())
       .then((data) => {
         setCoupons(data); // 將資料儲存在狀態中
@@ -26,15 +22,64 @@ export default function CouponPlusModal() {
       .catch((error) => {
         console.error("Error fetching coupons:", error);
       });
-  }, [memberLevelId]); // 依賴 memberLevelId 確保它變化時重新獲取資料
+  }, []); // 依賴 memberLevelId 確保它變化時重新獲取資料
 
+  // 新增到user_coupon
+  const handleCouponSelect = (coupon) => {
+    setSelectedCoupons((prevSelected) => {
+      // 如果該優惠券已經被選擇，就將其從選擇列表中移除，否則加入
+      if (prevSelected.find((c) => c.id === coupon.id)) {
+        return prevSelected.filter((c) => c.id !== coupon.id);
+      } else {
+        return [...prevSelected, coupon];
+      }
+    });
+  };
+
+  const handleConfirm = async () => {
+    if (selectedCoupons.length === 0) {
+      alert("請先選擇優惠券");
+      return;
+    }
+    // 更改日期格式
+    const formatDate = (date) => {
+      return date.toISOString().slice(0, 19).replace('T', ' ');
+    };
+    try {
+      const response = await fetch("http://localhost:3005/api/coupon/save-coupons", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          coupons: selectedCoupons.map((coupon) => ({
+            coupon_id: coupon.id,
+            status: "get",
+            get_at: formatDate(new Date()), // 當前時間
+          })),
+        }),
+      });
+  
+      const result = await response.json();
+      if (response.ok && result.status === "success") {
+        alert("優惠券領取成功");
+        setSelectedCoupons([]); // 清空選擇列表
+      } else {
+        throw new Error(result.message || "領取失敗");
+      }
+    } catch (error) {
+      console.error("領取優惠券時發生錯誤：", error);
+      alert("發生錯誤，請稍後再試");
+    }
+  };
 
   return (
     <>
       <div
         className={`modal fade ${style.CPlusModal}`}
         id="couponPlusModal"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="couponPlusModalLabel"
         aria-hidden="true"
       >
@@ -64,9 +109,14 @@ export default function CouponPlusModal() {
             </div>
             {/* 電腦領取modal */}
             <div className="modal-body row align-items-center">
-            {console.log(coupons)}
+              {/* {console.log(selectedCoupons)} */}
               {coupons.map((coupon) => (
-                <CouponCardModal key={coupon.id} coupon={coupon} />
+                <CouponCardModal
+                  key={coupon.id}
+                  coupon={coupon}
+                  onSelect={handleCouponSelect}
+                  isChecked={selectedCoupons.some((c) => c.id === coupon.id)}
+                />
               ))}
             </div>
 
@@ -78,7 +128,11 @@ export default function CouponPlusModal() {
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleConfirm}
+              >
                 確認領取
               </button>
             </div>

@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import { FaCircleCheck } from "react-icons/fa6";
 
-export default function CouponCardModal({ coupon }) {
-  const [isChecked, setIsChecked] = useState(false);
-
+export default function CouponCardModal({ coupon, onSelect, isChecked }) {
   const handleCheck = () => {
-    setIsChecked(true);
+    onSelect(coupon); // 呼叫父元件的 onSelect 函式
   };
 
   const getCategoryClass = (category) => {
@@ -48,14 +46,22 @@ export default function CouponCardModal({ coupon }) {
           </div>
         </div>
       </div>
-
+      {/* {console.log(coupon)} */}
       <a
         className={`${style.plusBottom} col-auto`}
         title={`低消＄${coupon.min_spend}`}
         onClick={handleCheck}
       >
-        {isChecked ? <FaCircleCheck className="ms-3" style={{ fontSize: '40px' , color: "var(--blue)" }}  /> : "+領取"}
+        {isChecked ? (
+          <FaCircleCheck
+            className="ms-3"
+            style={{ fontSize: "40px", color: "var(--blue)" }}
+          />
+        ) : (
+          "+領取"
+        )}
       </a>
+      {/* {console.log(isChecked)} */}
     </>
   );
 }

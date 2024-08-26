@@ -1,25 +1,33 @@
 import React, { useState } from "react";
+import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from "next/router";
 
 export default function ArticleCommentCreate({ articleId }) {
   // console.log(articleId);
   const [commentText, setCommentText] = useState("");
 
   const handleSubmit = async () => {
-    const userId = 5; // 替換為實際的使用者 ID
+    const { auth, updateUserInfo } = useAuth(); // 取得認證資訊
+    const router = useRouter()
+    const userId = auth.userData.id; // 取得使用者 ID
+    console.log(userId)
     // const articleId = articleId; // 替換為實際的文章 ID
 
     try {
-      const response = await fetch(`http://localhost:3005/api/a-comment/${articleId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          comment_text: commentText,
-          parent_comment_id: null, // 如果這是一個回覆，則提供父評論的 ID
-        }),
-      });
+      const response = await fetch(
+        `http://localhost:3005/api/a-comment/${articleId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            comment_text: commentText,
+            parent_comment_id: null, // 如果這是一個回覆，則提供父評論的 ID
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -87,7 +95,11 @@ export default function ArticleCommentCreate({ articleId }) {
               >
                 返回
               </button>
-              <button type="button" className="btn btn-primary" onClick={handleSubmit}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleSubmit}
+              >
                 送出
               </button>
             </div>

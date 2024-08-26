@@ -40,7 +40,7 @@ const toggleDetails = (orderId) => {
           <div className="order-list">
           {orders.map(order => (
             <div className="order-card card mb-4">
-              <OrderCard />
+              <OrderCard/>
 
               {expandedStates[order.id] ? (
                 <>
