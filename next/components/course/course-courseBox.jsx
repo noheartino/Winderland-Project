@@ -1,14 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
 
-export default function CourseList({ myBox, classAssigns, toggleIsHomePage }) {
+export default function CourseList({ myBox, classAssigns, setIsHomePage }) {
+    const router = useRouter();
+    const {search} = router.query
     const assigns = classAssigns?.filter((assign) => {
         return assign.class_id === myBox?.id;
       });
     const assignedQ = assigns?.length;
+
+    function handlePressMore(){
+        setIsHomePage(false)
+        if(search){
+            router.push({
+                pathname: '/course',
+                query: {}
+            })
+        }
+    }
+    function handleHref(){
+        router.push({
+            pathname: `/course/${myBox?.class_id}`
+        })
+    }
     return (
         <>
-            <div className={`course-leftcontent col-12 col-md-8 h-100 px-0 ${myBox ? 'd-block' : 'd-none'}`} type="button">
+            <div className={`course-leftcontent col-12 col-md-8 h-100 px-0 cursor-pointer ${myBox ? 'd-block' : 'd-none'}`} onClick={handleHref} title={`${myBox?.name}`}>
                 <div className="course-video-video overflow-hidden position-relative">
                     <img
                         className="course-img21"
@@ -34,33 +51,31 @@ export default function CourseList({ myBox, classAssigns, toggleIsHomePage }) {
                         </span>
                     </div>
                     <div className="col-12">
-                    <div
-                        className="progress bg-sec-blue"
-                        role="progressbar"
-                        aria-label=""
-                        aria-valuenow={75}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                        style={{ height: "5px", marginTop: '15px' }}
-                    >
                         <div
-                        className="progress-bar bg-sec-blue-dark"
-                        style={{ width: `${assignedQ}%` }}
-                        />
-                    </div>
+                            className="progress bg-sec-blue"
+                            role="progressbar"
+                            aria-label=""
+                            aria-valuenow={75}
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                            style={{ height: "5px", marginTop: '15px' }}
+                        >
+                            <div
+                            className="progress-bar bg-sec-blue-dark"
+                            style={{ width: `${assignedQ}%` }}
+                            />
+                        </div>
                     </div>
                     
                 </div>
             </div>
-            <div className={`course-more col h-100 ms-3 justify-content-center align-items-center cursor-pointer ${myBox ? 'd-none d-md-flex' : 'd-none'}`} onClick={toggleIsHomePage}>
+            <div className={`course-more col h-100 ms-3 justify-content-center align-items-center cursor-pointer ${myBox ? 'd-none d-md-flex' : 'd-none'}`} onClick={handlePressMore}>
                 <div className="spac-2 text-prim-dark h6">查看更多</div>
                 <div
                     className="ms-2 rounded-circle overflow-hidden border-1 border border-prim-dark d-flex align-items-center justify-content-center"
                     style={{ width: "20px", height: "20px" }}
                 >
-                    <i
-                        className="fa-solid fa-chevron-right text-sec-orange"
-                        style={{ fontSize: "9px" }}
+                    <i className="fa-solid fa-chevron-right text-sec-orange" style={{ fontSize: "9px" }}
                     />
                 </div>
             </div>

@@ -87,11 +87,12 @@ export default function CourseIndex() {
                         迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                       </strong>
                     </h2>
-                    <div className="row align-items-center mt-3 justify-content-between">
+
+                    <div className="row align-items-center mt-3 justify-content-between mx-0">
                       <h5 className="col-auto text-prim-text-prim spac-1">
                         by 蔡孝倫
                       </h5>
-                      <div className="col-auto stars mt-2 d-flex align-items-center">
+                      <div className="col-auto stars mt-2 d-flex align-items-center px-0">
                         <i className="fa-solid fa-star star-with-score" />
                         <i className="fa-solid fa-star star-with-score" />
                         <i className="fa-solid fa-star star-with-score" />
@@ -102,6 +103,22 @@ export default function CourseIndex() {
                         </span>
                       </div>
                     </div>
+                    <div className="row mx-0 text-sec-dark-blue spac-1 mt-4">
+                      <div className="col-12 p-0">
+                        <p className="text-sec-dark-blue emmit1"><i class="fa-regular fa-calendar-days me-1"></i>上課日期：2024年8月24日-2024年8月25日</p>
+                      </div>
+                    </div>
+                    <div className="row mx-0 text-sec-dark-blue spac-1 mt-2">
+                      <div className="col-12 p-0">
+                        <p className="text-sec-dark-blue emmit1"><i class="fa-regular fa-clock me-1" style={{fontSize:"0.7rem"}}></i>上課時間：每日9:00-10:00</p>
+                      </div>
+                    </div>
+                    <div className="row mx-0 spac-1 mt-2">
+                      <div className="col-12 p-0">
+                        <p className="text-sec-dark-blue emmit1"><i class="fa-regular fa-compass me-1" style={{fontSize:"0.7rem"}}></i>上課地點：台北市復興北路356號2F(酒訊品酒教室)</p>
+                      </div>
+                    </div>
+                    
                     <div className="row mt-5 justify-content-between align-items-start">
                       <div className="col-auto">
                         <div className="h2 spac-2 text-sec-orange">
@@ -248,7 +265,24 @@ export default function CourseIndex() {
                       迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                     </strong>
                   </h1>
-                  <div className="row align-items-center mt-3 justify-content-between">
+
+                  <div className="row mx-0 text-sec-dark-blue spac-1 mt-4">
+                      <div className="col-12 p-0">
+                        <p className="text-sec-dark-blue"><i class="fa-regular fa-calendar-days me-1"></i>上課日期：2024年8月24日-2024年8月25日</p>
+                      </div>
+                    </div>
+                    <div className="row mx-0 text-sec-dark-blue spac-1 mt-2">
+                      <div className="col-12 p-0">
+                        <p className="text-sec-dark-blue"><i class="fa-regular fa-clock me-1" style={{fontSize:"0.9rem"}}></i>上課時間：每日9:00-10:00</p>
+                      </div>
+                    </div>
+                    <div className="row mx-0 spac-1 mt-2">
+                      <div className="col-12 p-0">
+                        <p className="text-sec-dark-blue"><i class="fa-regular fa-compass me-1" style={{fontSize:"0.9rem"}}></i>上課地點：台北市復興北路356號2F(酒訊品酒教室)</p>
+                      </div>
+                    </div>
+
+                  <div className="row align-items-center mt-3 justify-content-between mx-0">
                     <h5 className="col-auto text-prim-text-prim spac-1">
                       by 蔡孝倫
                     </h5>
@@ -263,7 +297,7 @@ export default function CourseIndex() {
                       </span>
                     </div>
                   </div>
-                  <div className="row justify-content-between align-items-center mt-4">
+                  <div className="row justify-content-between align-items-center mt-4 mx-0">
                     <span className="col-auto online-tag me-4 h6">線上</span>
                     <span className="col-auto h6">
                       <span className="p text-gray-light h5 spac-2 mt-3 me-4">

@@ -120,6 +120,10 @@
       background-color: var(--primary);
       color: var(--light) !important;
     }
+    &.active{
+      background-color: var(--primary);
+      color: var(--light) !important;
+    }
   }
   & .btn-prim-prim {
     background-color: var(--primary);
@@ -133,6 +137,15 @@
     background-color: transparent;
     border: 0.075rem solid var(--primary);
     color: var(--primary) !important;
+  }
+  & .btn-border-wine {
+    background-color: transparent;
+    border: 0.075rem solid var(--wine);
+    color: var(--wine) !important;
+    &:hover{
+      background-color: var(--wine) !important;
+      color: #ffffff !important;
+    }
   }
   & .btn-sec-blue {
     background-color: var(--blue);
