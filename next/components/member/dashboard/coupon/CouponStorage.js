@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 export default function CouponStorage() {
   const { auth } = useAuth(); // 取得認證資訊
   const userId = auth.userData.id; // 取得使用者 ID
-  console.log(auth.userData.id);
+  console.log(auth.userData);
   const [coupons, setCoupons] = useState([]);
   const [loading, setLoading] = useState(true); // 初始為 true，表示正在載入
   const [error, setError] = useState(null); // 用於處理錯誤
@@ -17,25 +17,30 @@ export default function CouponStorage() {
       console.log("Fetching user coupons...");
       try {
         // 模擬網絡延遲
-        await new Promise(resolve => setTimeout(resolve, 1000));
-  
+        // await new Promise((resolve) => setTimeout(resolve, 500));
+
         if (!userId) {
           setLoading(false);
           return;
         }
-  
-        const response = await fetch("http://localhost:3005/api/coupon/user-coupon", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ user_id: userId }),
-        });
-  
+
+        const response = await fetch(
+          "http://localhost:3005/api/coupon/user-coupon",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ user_id: userId }),
+          }
+        );
+
         if (!response.ok) {
-          throw new Error(`Network response was not ok. Status: ${response.status}`);
+          throw new Error(
+            `Network response was not ok. Status: ${response.status}`
+          );
         }
-  
+
         const data = await response.json();
         console.log("Coupons fetched:", data);
         setCoupons(data);
@@ -46,7 +51,7 @@ export default function CouponStorage() {
         setLoading(false);
       }
     };
-  
+
     fetchUserCoupons();
   }, [userId]);
 
@@ -66,6 +71,7 @@ export default function CouponStorage() {
             <p className={`${style.couponLimit} col-auto`}>
               本用戶等級最多可收藏12張優惠券
             </p>
+
             <p className={`${style.couponAlert} col`}>倉庫已滿!!</p>
           </div>
         </div>
@@ -107,21 +113,18 @@ export default function CouponStorage() {
       {/* 1 */}
       <div className={`${style.couponZone} row d-none d-lg-flex`}>
         {/* 桌機優惠券 */}
-        {console.log(coupons)}
+        {/* {console.log(coupons)} */}
         {coupons.map((coupon) => (
-            <CouponCard key={coupon.id} coupon={coupon} />
-          ))}
+          <CouponCard key={coupon.id} coupon={coupon} />
+        ))}
       </div>
       <div
         className={`${style.couponZoneSm} row d-lg-none py-4 mx-3 mt-3 mb-5`}
       >
         {/* 手機優惠券 */}
-        <CouponCard />
-        <CouponCard />
-        <CouponCard />
-        <CouponCard />
-        <CouponCard />
-        <CouponCard />
+        {coupons.map((coupon) => (
+          <CouponCard key={coupon.id} coupon={coupon} />
+        ))}
       </div>
     </>
   );
