@@ -59,14 +59,18 @@ router.get('/profile', authenticate, async function (req, res) {
   if (req.user.id !== id) {
     return res.json({ status: 'error', message: '存取會員資料失敗' })
   }
-
+  // SELECT u.*, iu.img AS avatar_img
+  // FROM users u
+  // LEFT JOIN images_user iu ON u.id = iu.user_id
+  // WHERE u.id = ?
   try {
     const [rows] = await connection.query(
       `
-      SELECT u.*, iu.img AS avatar_img
-      FROM users u
-      LEFT JOIN images_user iu ON u.id = iu.user_id
-      WHERE u.id = ?
+      SELECT u.*, iu.img AS avatar_img, l.free_coupon
+FROM users u
+LEFT JOIN images_user iu ON u.id = iu.user_id
+LEFT JOIN levels l ON u.member_level_id = l.member_level_id
+WHERE u.id = ?
     `,
       [id]
     )
