@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./SortSearch.module.css";
 import MobileFliterAside from "../aside/MobileFliterAside";
 
-export default function SortSearch() {
+export default function SortSearch({currentSort,changeSort}) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => setIsOpen(true);
@@ -16,14 +16,15 @@ export default function SortSearch() {
         <div className="col-7" />
         {/* top的排序欄 */}
         <div className={`col-2 ${styles["shop-fliter"]}`}>
-          <form action="" method="">
-            <select name="" id="">
-              <option value={0}>默認排序</option>
-              <option value={1}>選項1</option>
-              <option value={2}>選項2</option>
-              <option value={3}>選項3</option>
+            <select value={currentSort} onChange={
+              (e) => {changeSort(e.target.value)}
+            }>
+              <option value={"id_asc"}>默認排序</option>
+              <option value={"name_asc"}>商品名稱 A-Z</option>
+              <option value={"name_desc"}>商品名稱 Z-A</option>
+              <option value={"price_asc"}>商品金額 0-9</option>
+              <option value={"price_desc"}>商品金額 9-0</option>
             </select>
-          </form>
         </div>
         {/* top的search欄 */}
         <div className={`col-3 ${styles["shop-search"]}`}>

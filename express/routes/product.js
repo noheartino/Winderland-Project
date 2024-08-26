@@ -5,7 +5,7 @@ import db from '../configs/mysql.js'
 const router = express.Router()
 
 // 取得所有商品
-const getProducts = `SELECT 
+let getProducts = `SELECT 
     product.*,
     variet.name AS variet_name,
     category.id AS category_id,
@@ -23,7 +23,7 @@ LEFT JOIN
 	origin ON product.origin_id = origin.id
 LEFT JOIN 
 	country ON origin.country_id = country.id
-LIMIT ? OFFSET ?`
+`
 
 // 取得指定id的商品
 const getIdProduct = `SELECT 
@@ -155,27 +155,52 @@ const tidyCategories = async (categories) => {
   }
 }
 
+// 以下為路由們
 // 商品首頁,取得所有商品的內容
 router.get('/', async (req, res) => {
   try {
     // 設定預設頁數1，limit一頁限制多少筆，offset要跳過幾筆
     const page = parseInt(req.query.page) || 1
     const limit = parseInt(req.query.limit) || 16
-    const offset = (page - 1) * limit
+    const sort = req.query.sort || 'id_asc'
 
     // 獲取分頁後商品的基本訊息
-    const [products] = await db.query(getProducts, [limit, offset])
+    const [products] = await db.query(getProducts)
     const [categories] = await db.query(getCategories)
     const [productsTotal] = await db.query(getProductsTotal)
 
     const total = productsTotal[0].total
     const totalPages = Math.ceil(total / limit)
 
+    // 獲取所有商品跟商品的詳細數據、所有分類+品種
     const productWithDetails = await tidyProducts(products)
     const categoryWithVarieds = await tidyCategories(categories)
 
+    // 取得了product + detail後再排序
+    productWithDetails.sort((a, b) => {
+      switch (sort) {
+        case 'name_asc':
+          return a.name.localeCompare(b.name)
+        case 'name_desc':
+          return b.name.localeCompare(a.name)
+        case 'price_asc':
+          return a.details[0].price - b.details[0].price
+        case 'price_desc':
+          return b.details[0].price - a.details[0].price
+        default:
+          return a.id - b.id
+      }
+    })
+
+    // 手動分頁
+    const startIndex = (page - 1) * limit
+    const paginatedProducts = productWithDetails.slice(
+      startIndex,
+      startIndex + limit
+    )
+
     res.json({
-      products: productWithDetails,
+      products: paginatedProducts,
       categories: categoryWithVarieds,
       pagination: {
         currentPage: page,
