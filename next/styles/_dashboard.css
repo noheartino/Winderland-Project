@@ -658,9 +658,9 @@
 
     .order-list {
         width: 79%;
-        max-height: calc(100vh - 200px);
+        /* max-height: calc(100vh - 200px); */
         /* 調整這個值以適應您的頁面佈局 */
-        overflow-y: auto;
+        /* overflow-y: auto; */
     }
 
     .order-card {

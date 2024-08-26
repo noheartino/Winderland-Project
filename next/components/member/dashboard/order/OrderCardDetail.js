@@ -47,9 +47,26 @@ export default function OrderCardDetail({ orderUuid }) {
     return (
         <>
             <div className={styles.orderDetailContent}>
-            {orderData.orderDetails.map((item) => (
-                <OrderCardDetailItem key={item.id} item={item}/>
-            ))}
+               {/* 商品區 */}
+               {orderData.productDetails && orderData.productDetails.length > 0 && (
+                    <div className={styles.productSection}>
+                        {/* <h3>購買商品</h3> */}
+                        {orderData.productDetails.map((item) => (
+                            <OrderCardDetailItem key={item.id} item={item} type="product" />
+                        ))}
+                    </div>
+                )}
+                
+                {/* 課程區 */}
+                {orderData.classDetails && orderData.classDetails.length > 0 && (
+                    <div className={styles.classSection}>
+                        {/* <h3>購買課程</h3> */}
+                        {orderData.classDetails.map((item) => (
+                            <OrderCardDetailItem key={item.id} item={item} type="class" />
+                        ))}
+                    </div>
+                )}
+
                 <hr className={styles.hr}/>
                 <OrderCardDetailCoupon orderInfo={orderData.orderInfo} />
                 <hr className={styles.hr}/>

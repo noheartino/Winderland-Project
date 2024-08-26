@@ -5,7 +5,7 @@
     background: var(--primary, #851931);
 }
 .titleLabelNumber{
-    margin-left: 13%;
+    margin-left: 15%;
 }
 .titleLabel{
     color: var(--light, #F4EBEB);
@@ -211,7 +211,7 @@
 /* 配送資訊 */
 .pickupArea {
     margin-left: 56px;
-    margin-top: 32px;
+    /* margin-top: 32px; */
 }
 .pickupDetail{
     color: var(--text_primary);

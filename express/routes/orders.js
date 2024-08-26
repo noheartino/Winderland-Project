@@ -70,33 +70,46 @@ router.get('/history/:orderUuid', authenticate, async (req, res) => {
       return res.status(404).json({ status: 'error', message: '訂單不存在' })
     }
 
-    // 獲取訂單詳情
-    const [orderDetails] = await connection.query(
+    // 獲取商品訂單詳情
+    const [productDetails] = await connection.query(
       `SELECT 
         od.*,
         p.name AS product_name,
         pd.capacity,
         pd.years,
         pd.price,
-        c.name AS class_name,
-        c.price AS class_price,
         co.name AS country_name
       FROM order_details od
-      LEFT JOIN product p ON od.product_id = p.id
-      LEFT JOIN product_detail pd ON od.product_detail_id = pd.id
-      LEFT JOIN class c ON od.class_id = c.id
-      LEFT JOIN product pr ON pd.product_id = pr.id
-      LEFT JOIN origin o ON pr.origin_id = o.id
-      LEFT JOIN country co ON o.country_id = co.id
-      WHERE od.order_uuid = ?`,
+      JOIN product p ON od.product_id = p.id
+      JOIN product_detail pd ON od.product_detail_id = pd.id
+      JOIN product pr ON pd.product_id = pr.id
+      JOIN origin o ON pr.origin_id = o.id
+      JOIN country co ON o.country_id = co.id
+      WHERE od.order_uuid = ? AND od.product_id IS NOT NULL
+      ORDER BY od.id`,
       [orderUuid]
     )
 
+    // 獲取課程訂單詳情
+    const [classDetails] = await connection.query(
+      `SELECT 
+        od.*,
+        c.name AS class_name,
+        c.price AS class_price,
+        t.name AS teacher_name
+      FROM order_details od
+      JOIN class c ON od.class_id = c.id
+      JOIN teacher t ON c.teacher_id = t.id
+      WHERE od.order_uuid = ? AND od.class_id IS NOT NULL
+      ORDER BY od.id`,
+      [orderUuid]
+    )
     res.json({
       status: 'success',
       data: {
         orderInfo: orderInfo[0],
-        orderDetails,
+        productDetails,
+        classDetails,
       },
     })
   } catch (error) {
@@ -106,4 +119,5 @@ router.get('/history/:orderUuid', authenticate, async (req, res) => {
       .json({ status: 'error', message: '服務器錯誤', error: error.message })
   }
 })
+
 export default router
