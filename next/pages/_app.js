@@ -12,6 +12,7 @@ import '@/styles/Header.css'
 import '@/styles/home.css'
 import '@/styles/_tarot_and_course.css'
 import '@/styles/_cart.css'
+import '@/styles/event.css'
 
 import '@/styles/product.css'
 import '@/styles/product-detail.css'
