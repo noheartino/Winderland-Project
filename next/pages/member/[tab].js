@@ -27,9 +27,25 @@ export default function MemberPage() {
 
     return (
         <main className={styles.main}>
-            <div className={styles.bg}>
+            <div className={styles.bg} >
             <Nav />
-                <div className={styles.loginBox}>
+                <div className={`${styles.loginBox } d-none d-lg-block`}>
+                    <Tabs
+                        activeKey={activeTab}
+                        onSelect={(k) => handleTabChange(k)}
+                        id="member-tabs"
+                        className={styles.navTabs}
+                    >
+                        <Tab eventKey="login" title="會員登入" className={styles.loginTab} >
+                            <LoginForm />
+                        </Tab>
+                        <Tab eventKey="register" title="會員註冊" className={styles.registerTab}>
+                            <RegisterForm />
+                        </Tab> 
+                    </Tabs>
+                </div>
+
+                <div className={` d-block d-lg-none`}>
                     <Tabs
                         activeKey={activeTab}
                         onSelect={(k) => handleTabChange(k)}

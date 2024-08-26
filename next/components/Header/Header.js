@@ -1,11 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from "next/router";
 import Link from "next/link";
 
 export default function Nav() {
+  const { logout } = useAuth();
   const router = useRouter();
   const [isOpen, setisOpen] = useState(false);
   const navRef = useRef(null);
+
+  const Data = useAuth().auth
+  const userData = Data.userData
+
+  const memberLevels = {
+    1: '初級會員',
+    2: '白銀會員',
+    3: '黃金會員',
+    4: '白金會員'
+  }
 
   const GoCart = () => {
     router.push("/cart/cartCheckout1"); // 使用 router.push 直接導航到首頁
@@ -160,6 +172,16 @@ export default function Nav() {
       }
     });
   }, []);
+
+  // 登出
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push('/'); // 登出成功後導航到首頁或登錄頁面
+    } catch (error) {
+      console.error('登出失敗:', error);
+    }
+  };
   return (
     <>
       <div className="nav_margin"></div>
@@ -195,20 +217,23 @@ export default function Nav() {
             <div className="HeaderCart">
               <button onClick={GoCart}>
                 <i className="fa-solid fa-cart-shopping" />
+                <div className="dot nonedot">沒有購物車內容</div>
                 <div className="dot">35</div>
               </button>
             </div>
             <div className="nav_user">
-              <img src="/nav-footer/user_pic.png" alt="" />
+              <img src={userData ? '/nav-footer/user_pic.png' : '/nav-footer/default_user_pr.jpg'} alt="" />
             </div>
             <div className="user_area">
               <div className="user_area_t">
+                {userData && <div className={`userlvis lv${userData.member_level_id}`}>Lv.{userData.member_level_id}</div> }
+                {/* <div className={`userlvis lv${userData.member_level_id}`}>Lv.4</div> */}
                 <div className="user_area_tl">
-                  <img src="/nav-footer/user_pic.png" alt="" />
+                  <img src={userData ? '/nav-footer/user_pic.png' : '/nav-footer/default_user.jpg'} alt="" />
                 </div>
                 <div className="user_area_tr">
-                  <p>椎名林檎</p>
-                  <p>Ann_970412</p>
+                  <p>{userData ? userData.user_name : '訪客'}</p>
+                  <p>{userData ? userData.account : '--'}</p>
                 </div>
               </div>
               <div className="line" />
@@ -227,8 +252,7 @@ export default function Nav() {
                 </Link>
               </ul>
               <div className="user_area_btn">
-                <button disabled>註冊</button>
-                <button>登出</button>
+                {userData ? <button className="logout" onClick={handleLogout}>登出</button> : <Link href="/dashboard/profile"><button className="login">登入 / 註冊</button></Link>}
               </div>
             </div>
           </div>
@@ -351,18 +375,18 @@ export default function Nav() {
         <div className="nav_rwdArea_head">
           <div className="nav_rwdArea_head_t">
             <div className="nrht_l d-flex align-items-center">
-              <img src="/nav-footer/user_pic_md.png" alt="" width={60} />
+              <img className="rounded-circle" src={userData ? '/nav-footer/user_pic.png' : '/nav-footer/default_user.jpg'} alt="" width={60} />
               <div className="nrht_l_text ms-3">
-                <div>Ann_970412</div>
-                <div>椎名林檎</div>
+                <div>{userData ? userData.user_name : '訪客'}</div>
+                <div>{userData ? userData.account : '--'}</div>
               </div>
             </div>
-            <div className="nrht_r">白金會員</div>
+            {userData ? <div className={`nrht_r lv${userData.member_level_id}`}>{memberLevels[userData.member_level_id]}</div> : <div className="nrht_r">尚未登入</div>}
           </div>
           <div className="nav_rwdArea_head_b">
             <div className="nrhb_l">
               <i className="fa-solid fa-circle-dollar-to-slot me-1" />{" "}
-              <span className="me-3">578P</span>
+              <span className="me-3">78P</span>
               <i className="fa-solid fa-ticket-simple me-1" /> <span>x4</span>
             </div>
             <div className="nrhb_r">

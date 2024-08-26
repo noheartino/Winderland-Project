@@ -4,7 +4,7 @@ import Image from 'next/image'
 export default function OrderCard() {
   return (
     <>
-        <div className=" d-flex mb-4">
+        <div className=" mb-4 d-flex">
                 <Image
                   src="/images/member/order1.png"
                   alt=""
@@ -12,6 +12,7 @@ export default function OrderCard() {
                   height={50}
                   className="order-img mt-4 ms-4"
                 />
+
                 <div className="order-detail mt-4">
                   <table className="table ">
                     <thead>
