@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function TeacherIndex() {
+export default function TeacherDetail() {
   return (
     <>
       <div className="course_wrap">

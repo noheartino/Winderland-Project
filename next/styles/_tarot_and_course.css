@@ -314,6 +314,12 @@
       text-align: center;
     }
   }
+  & .course-search-box-width{
+    width: 35%;
+  }
+  & .course-search-box-width{
+    width: 50%;
+  }
   & .favorite-and-mycourse-area {
     margin-bottom: 80px;
   }
@@ -321,9 +327,6 @@
     & .favorite-and-mycourse-area {
       margin-bottom: 5px;
     }
-  }
-  & .course-search-box-width{
-    width: 35%;
   }
   & .course-search-input {
     text-align: left;
@@ -341,11 +344,24 @@
     color: var(--course_purple_light);
     cursor: pointer;
   }
-  & .fa-xmark{
+  & .teacher-search-icon{
+    top: 0.75rem;
+    right: 3rem;
+    color: var(--course_purple_light);
+    cursor: pointer;
+  }
+  & .fa-xmark-course{
     top: 0.75rem;
     right: 0.75rem;
     color: var(--course_purple_light);
     cursor: pointer;
+  }
+  & .fa-xmark-teacher{
+    top: 0.75rem;
+    right: 1.27rem;
+    color: var(--course_purple_light);
+    cursor: pointer;
+    font-size: 1rem;
   }
   @media screen and (max-width: 768px) {
     & .course-search-input {
@@ -363,9 +379,17 @@
         left: 5rem;
         color: var(--text_gray_light);
       }
-    & .course-search-box-width{
+      & .teacher-search-icon{
+        top: 0.75rem;
+        right: auto;
+        left: 5rem;
+        color: var(--course_purple_light);
+        cursor: pointer;
+      }
+    & .course-search-box-width, .teacher-search-box-width{
         width: 300px;
       }
+    
   }
   & .course-card-header {
     padding: 45px 0 45px 0;
@@ -501,6 +525,12 @@
   & .teacher-head {
     width: 200px;
     height: 200px;
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+    }
   }
   @media screen and (max-width: 768px) {
     & .course-detail-player {
@@ -562,15 +592,18 @@
       background-color: rgba(256, 256, 256, 0.1);
     }
   }
-  & .teacher-detail-contentBox-margin-minus-control {
-    margin-top: -100px;
-  }
   & .teacher-detail-content-box {
     background-color: #ffffff;
     padding: 50px 75px;
   }
   & .teacher-detail-suggest-course {
     padding: 25px 75px;
+  }
+  & .teacher-detail-contentBox-margin-minus-control {
+    margin-top: -100px;
+  }
+  & .teacher-index-contentBox-margin-minus-control {
+    margin-top: -550px;
   }
   @media screen and (max-width: 768px) {
     & .fourth-page-wrap {
@@ -599,6 +632,9 @@
     }
     & .teacher-detail-contentBox-margin-minus-control {
       margin-top: 0px;
+    }
+    & .teacher-index-contentBox-margin-minus-control {
+      margin-top: -250px;
     }
     & .teacher-detail-suggest-course {
       padding: 10px 10px;

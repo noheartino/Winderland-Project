@@ -126,7 +126,7 @@ function querySeries04(e) {
 
   return (
     <>
-      <title>課程詳情{courseId}</title>
+      <title>課程詳情</title>
       {/* Required meta tags */}
       <meta charSet="utf-8" />
       <meta

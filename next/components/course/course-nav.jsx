@@ -82,7 +82,7 @@ export default function CourseNav({setIsHomePage, isHomePage}) {
               onKeyDown={handleKeyDown}
             />
             <i className="fa-solid fa-magnifying-glass position-absolute course-search-icon" onClick={handleClickSearchIcon}></i>
-            <i className="fa-solid fa-xmark position-absolute" onClick={handleClear}></i>
+            <i className="fa-solid fa-xmark fa-xmark-course position-absolute" onClick={handleClear}></i>
           </div>
           <div className="row px-0 m-0 justify-content-center">
             <div className="col-11 col-md-6 d-flex justify-content-center flex-wrap">

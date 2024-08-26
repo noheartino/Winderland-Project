@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import CourseBox from "@/components/course/course-courseBox";
 import { useState, useEffect, useRef } from "react";
 import CourseCardSm from '@/components/course/course-card-sm'
+import Link from "next/link";
 
 export default function CourseIndex() {
   const router = useRouter();
@@ -266,10 +267,13 @@ export default function CourseIndex() {
           <div className="container-sm">
             <div className="row justify-content-between">
               <div className="col-auto">
+              <Link href="/course/teacher"> 
                 <span className="h5 text-prim-text-prim spac-1">
                   查看所有講師
                   <i className="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i>
                 </span>
+              </Link>
+                
               </div>
               <div className="col-auto">page-nav</div>
             </div>
