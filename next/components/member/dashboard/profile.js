@@ -110,7 +110,7 @@ export default function DashboardProfile() {
               <div className="userAge">{userGender} / {userAge}歲 / {auth.userData.birthday}</div>
               <div className="user-img">
               <Image
-                src={auth.userData.avatar_url || '/member/avatar/default-avatar.jpg'}
+                src={auth.userData.avatar_url || 'images/member/avatar/default-avatar.jpg'}
                 alt="User Avatar"
                 width={130}
                 height={130}
