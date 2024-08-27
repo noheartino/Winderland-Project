@@ -1,10 +1,55 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 
-export default function OrderCard() {
+export default function OrderCard({order}) {
+  // const [orderDetails, setOrderDetails] = useState(null)
+
+  // useEffect(() => {
+  //   const fetchOrderDetails = async () => {
+  //     try {
+  //       const response = await fetch(`http://localhost:3005/api/orders/${orderId}`, {
+  //         credentials: 'include', 
+  //       })
+  //       if (!response.ok) throw new Error('獲取訂單詳情失敗')
+  //       const data = await response.json()
+  //       setOrderDetails(data.data)
+  //     } catch (error) {
+  //       console.error('獲取訂單詳情時出錯:', error)
+  //     }
+  //   }
+
+  //   fetchOrderDetails()
+  // }, [orderId])
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case '出貨準備中':
+        return 'text-warning'
+      case '已出貨':
+        return 'text-info'
+      case '已送達':
+      case '已完成':
+        return 'text-success'
+      case '訂單已取消':
+        return 'text-danger'
+      case '尚未付款':
+        return 'text-secondary'
+      default:
+        return ''
+    }
+  }
+
+  if (!order) {
+    return (
+      <div className="mb-4 d-flex justify-content-center align-items-center" style={{ height: '200px' }}>
+        <h3>目前尚無訂單記錄</h3>
+      </div>
+    )
+  }
+
   return (
     <>
-        <div className=" d-flex mb-4">
+        <div className=" mb-4 d-flex">
                 <Image
                   src="/images/member/order1.png"
                   alt=""
@@ -12,6 +57,7 @@ export default function OrderCard() {
                   height={50}
                   className="order-img mt-4 ms-4"
                 />
+
                 <div className="order-detail mt-4">
                   <table className="table ">
                     <thead>
@@ -24,15 +70,16 @@ export default function OrderCard() {
                     </thead>
                     <tbody>
                       <tr>
-                        <td style={{ letterSpacing: 5 }}>共2件</td>
+                        <td style={{ letterSpacing: 5 }}>共{order.total_items}件</td>
                         <td>
-                          貨到付款
+                        {order.payment_method}
                           <br />
-                          7-11
+                          {order.transport}
                         </td>
-                        <td>已送達</td>
+                        <td className={getStatusClass(order.status)}>{order.status}</td>
+                  
                         <td style={{ color: 'var(--orange)' }}>
-                          NT$ 8,120
+                          NT$ {order.totalMoney.toLocaleString()}
                         </td>
                       </tr>
                     </tbody>

@@ -4,6 +4,13 @@
   background: var(--light, #f4ebeb);
   overflow: hidden;
 }
+/* 手機版樣式 */
+@media (max-width: 768px) {
+  .bg {
+    background: none; /* 去除背景 */
+  }
+}
+
 
  .loginBox {
   width: 500px;
@@ -22,23 +29,23 @@
   width: 100%;
   font-size: medium;
   margin-bottom: 20px;
-  border: none;
-  border-bottom: 5px solid var(--light);
+  border: none !important ;
+  border-bottom: 5px solid var(--light) !important ;
   justify-content: space-around;
   font-weight: 700;
-  color: #A66E7B;
-  text-decoration: none;
+  color: #A66E7B !important ;
+  text-decoration: none !important ;
 
 }
 
-.nav-link  {
+.navTabs .nav-link   {
    /* padding: 15px; */
         /* 移除预设样式 */
         width: 100%;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        border: none;
+        appearance: none !important ;
+        -webkit-appearance: none !important ;
+        -moz-appearance: none !important ;
+        border: none !important ;
         background: none;
         margin: 0;
         position: relative;
@@ -46,7 +53,7 @@
         font-size: 15px;
         margin-top: 10px;
 
-        color: #A66E7B;
+        color: #A66E7B !important ;
         font-weight: 700;
         letter-spacing: 2px;
         border: none;
@@ -61,18 +68,18 @@
     width: 50%;
     background-color: transparent;
     transition: background-color 0.3s;
-    color: #A66E7B;
-    border: none;
+    color: #A66E7B !important ;
+    border: none !important ;
   }
   
 .nav-link:hover::after,
 .nav-link.active::after {
-    color: #A66E7B;
+    color: #A66E7B !important ;
     width:10%;
     height: 5px;
     left: -10;
     bottom: -1;
-    border: none;
+    border: none !important ;
   }
  
 
@@ -300,12 +307,12 @@
 }
 
  .registerContent .rRegisterInput::placeholder {
-  color: var(--blue);
+  color:#afa6a6;
   font-size: medium;
 }
 
 .registerContent .registerInput::placeholder {
-  color: var(--blue);
+  color:#afa6a6;
   font-size: medium;
 }
 
@@ -678,7 +685,7 @@
 }
 
 .registerContent select {
-    width: 80%;
+    /* width: 80%; */
     border-radius: 0%;
     border: none;
     font-size: large;

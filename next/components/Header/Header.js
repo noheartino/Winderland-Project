@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from "next/router";
 import Link from "next/link";
 
 export default function Nav() {
+  const { logout } = useAuth();
   const router = useRouter();
   const [isOpen, setisOpen] = useState(false);
   const navRef = useRef(null);
@@ -160,6 +162,16 @@ export default function Nav() {
       }
     });
   }, []);
+
+  // 登出
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push('/'); // 登出成功後導航到首頁或登錄頁面
+    } catch (error) {
+      console.error('登出失敗:', error);
+    }
+  };
   return (
     <>
       <div className="nav_margin"></div>
@@ -228,7 +240,7 @@ export default function Nav() {
               </ul>
               <div className="user_area_btn">
                 <button disabled>註冊</button>
-                <button>登出</button>
+                <button onClick={handleLogout}>登出</button>
               </div>
             </div>
           </div>

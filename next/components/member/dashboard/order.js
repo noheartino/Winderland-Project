@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import Image from 'next/image'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,71 +13,99 @@ import OrderCardRWD from './order/OrderCardRWD'
 import styles from '@/components/member/dashboard/order/OrderCardDetail.module.css'
 
 export default function DashboardOrder() {
-  const [isExpanded, setIsExpanded] = useState(false);
+const [orders, setOrders] = useState([])
 
-  const toggleDetails = () => {
-    setIsExpanded(!isExpanded);
-  };
+// 使用對象來存儲每個訂單的展開狀態
+const [expandedStates, setExpandedStates] = useState({});
+const [error, setError] = useState(null)
+const [isLoading, setIsLoading] = useState(true)
+
+useEffect(() => {
+  const fetchOrders = async () => {
+    try {
+      setIsLoading(true)
+      const response = await fetch('http://localhost:3005/api/orders/history', {
+        credentials: 'include',
+      })
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || '獲取訂單失敗')
+      }
+      const data = await response.json()
+      setOrders(data.data)
+    } catch (error) {
+      console.error('獲取訂單時出錯:', error)
+      setError(error.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+
+  fetchOrders()
+}, [])
+
+const toggleDetails = (orderId) => {
+  setExpandedStates(prevStates => ({
+    ...prevStates,
+    [orderId]: !prevStates[orderId]
+  }));
+};
 
   return (
     <>
+    {error && <div className="alert alert-danger">{error}</div>}
       {/* desk */}
-      <div className="container d-none d-lg-block">
+      <div className="container d-none d-lg-block mb-5">
         <div className=" d-flex">
           <OrderAside />
+
           <div className="order-list">
-            <div className="order-card card">
-              <OrderCard />
+            {isLoading ? (
+              <div>載入中...</div>
+            ) : orders.length === 0 ? (
+              <OrderCard order={null} />
+            ) : (
+              orders.map(order => (
+                <div key={order.order_uuid} className="order-card card mb-4">
+                  <OrderCard order={order} />
 
-              {isExpanded ? (
-            <>
-
-            {/* <div className="order-detail-title d-flex p-3">
-                  <p style={{ marginRight: '60%', marginLeft: '5%' }}>品項</p>
-                  <p style={{ marginRight: '10%' }}>件數</p>
-                  <p style={{ marginRight: '10%' }}>小計</p>
-                  <i className="fa-solid fa-chevron-up" />
-                </div> */}
-
-              <div className={`${styles.orderDetailTitle} d-flex p-3`}>
-                <div className={`col-7  ${styles.titleLabel}`}>品項</div>
-                <div className={`col-2 ${styles.titleLabelNumber} ${styles.titleLabel}`}>件數</div>
-                <div className={`col-1 ${styles.titleLabel}`}>小計</div>
-                <div className={`col-1`}>
-                  <button onClick={toggleDetails} className={styles.iconBox}>
-                    <i className={`fa-solid fa-chevron-up ${styles.faChevronUp} `} />
-                  </button>
+                  {expandedStates[order.order_uuid] ? (
+                    <>
+                      <div className={`${styles.orderDetailTitle} d-flex p-3`}>
+                        <div className={`col-7  ${styles.titleLabel}`}>品項</div>
+                        <div className={`col-2 ${styles.titleLabelNumber} ${styles.titleLabel}`}>件數</div>
+                        <div className={`col-1 ${styles.titleLabel}`}>小計</div>
+                        <div className={`col-1`}>
+                          <button onClick={() => toggleDetails(order.order_uuid)} className={styles.iconBox}>
+                            <i className={`fa-solid fa-chevron-up ${styles.faChevronUp}`} />
+                          </button>
+                        </div>
+                      </div>
+                      <OrderCardDetail orderUuid={ order.order_uuid} />
+                    </>
+                  ) : (
+                    <div>
+                      <button
+                        type="button"
+                        className="card-footer text-muted d-flex justify-content-between align-items-center collapsible"
+                        onClick={() => toggleDetails(order.order_uuid)}
+                      >
+                        <div>{new Date(order.created_at).toLocaleDateString('zh-TW')}</div>
+                        <div>訂單編號 ＃{order.order_uuid}</div>
+                        <div>
+                          訂單詳情
+                          <i className="fa-solid fa-chevron-down" />
+                        </div>
+                      </button>
+                    </div>
+                  )}
                 </div>
-              </div>
-              <OrderCardDetail />
-            </>
-          ) : (
-            <div>
-            <button
-                type="button"
-                className="card-footer text-muted d-flex justify-content-between align-items-center collapsible"
-                onClick={toggleDetails}
-            >
-                <div>2024.07.10</div>
-                <div>訂單編號 ＃a441</div>
-                <div>
-                    訂單詳情
-                    <i className="fa-solid fa-chevron-down"/>
-                </div>
-            </button>
-              {/* <div>
-                <button onClick={toggleDetails}>
-                  <i className="fa-solid fa-chevron-down" />
-                </button>
-              </div> */}
-            </div>
-          )}
-
-            </div>           
+              ))
+            )}
           </div>
         </div>
       </div>
-
       {/* rwd */}
       <div className="d-block d-lg-none" id="order-content-rwd">
         <div className="d-flex align-items-center searchArea">

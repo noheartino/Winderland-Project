@@ -8,6 +8,7 @@ import ArticleRwdSidebar from "@/components/article/article-rwd-sidebar";
 import ArticleIndexList from "@/components/article/article-list";
 import ArticlePagination from "@/components/article/article-pagination";
 import Nav from "@/components/Header/Header";
+import Footer from "@/components/footer/footer";
 
 export default function Index() {
   const [articles, setArticles] = useState([]);
@@ -47,6 +48,7 @@ export default function Index() {
   const handleLink = () => {
     router.push(`/article`);
   };
+  console.log(articleHead)
   return (
     <>
       {/* Header */}
@@ -80,6 +82,8 @@ export default function Index() {
           </div>
         </div>
       </div>
+      {/* Footer */}
+      <Footer />
     </>
   );
 }
