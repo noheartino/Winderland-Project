@@ -26,16 +26,49 @@ import { createOtp, updatePassword } from '#db-helpers/otp.js'
 import transporter from '#configs/mail.js'
 
 // @ 檢查登入狀態用
-// router.get('/check', authenticate, async (req, res) => {
-// 查詢資料庫目前的資料
-//   const user = await User.findByPk(req.user.id, {
-//     raw: true, // 只需要資料表中資料
-//   })
+router.get('/auth-status', authenticate, async (req, res) => {
+  try {
+    const [users] = await connection.query(
+      `
+       SELECT id, user_name, email, account, gender, birthday, member_level_id, phone, address,total_spending
+        FROM users
+        WHERE id = ?
+    `,
+      [req.user.id]
+    )
 
-//   // 不回傳密碼值
-//   delete user.password
-//   return res.json({ status: 'success', data: { user } })
-// })
+    if (!users.length) {
+      return res.status(404).json({ status: 'fail', message: 'User not found' })
+    }
+    const user = users[0]
+
+    // 不回傳密碼值
+    // delete user.password
+    return res.json({
+      status: 'success',
+      data: {
+        isAuth: true,
+        user: {
+          id: user.id,
+          user_name: user.user_name,
+          member_level_id: user.member_level_id,
+          account: user.account,
+          email: user.email,
+          gender: user.gender,
+          phone: user.phone,
+          birthday: user.birthday,
+          address: user.address,
+          total_spending: user.total_spending,
+        },
+      },
+    })
+  } catch (error) {
+    console.error('Error checking auth status:', error)
+    return res
+      .status(500)
+      .json({ status: 'error', message: 'Internal Server Error' })
+  }
+})
 
 // @ 登入
 router.post('/login', async (req, res) => {
@@ -78,6 +111,11 @@ router.post('/login', async (req, res) => {
       account: user.account,
       google_uid: user.google_uid,
       line_uid: user.line_uid,
+      user_name: user.user_name,
+      email: user.email,
+      gender: user.gender,
+      birthday: user.birthday,
+      member_level_id: user.member_level_id,
     }
 
     // 產生存取令牌(access token)，其中包含會員資料

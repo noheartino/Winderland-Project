@@ -28,6 +28,7 @@ export default function ArticleIndexList({Article}) {
         return response.json();
       })
       .then((data) => {
+        console.log(data)
         // 處理 articles 資料，將 images 字段轉換為數組
         const processedArticles = data.map((article) => ({
           ...article,
@@ -53,6 +54,7 @@ export default function ArticleIndexList({Article}) {
         router.push(`/article/${Article.id}`);
       }
     };
+
   return (
     <>
       {/* 側邊欄 */}
@@ -74,6 +76,7 @@ export default function ArticleIndexList({Article}) {
           </div>
         </div>
         {/* 文章區塊大 */}
+    
         {firstTwoArticles.length > 0 ? (
           firstTwoArticles.map((article) => (
             <ArticleIndexCard key={article.id} article={article} />

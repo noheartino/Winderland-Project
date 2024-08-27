@@ -5,7 +5,7 @@
     background: var(--primary, #851931);
 }
 .titleLabelNumber{
-    margin-left: 13%;
+    margin-left: 15%;
 }
 .titleLabel{
     color: var(--light, #F4EBEB);
@@ -208,6 +208,33 @@
     letter-spacing: 3.6px;
 }
 
+.usedItem {
+    margin-bottom: 10px;
+}
+
+.noCoupon, .noPoints {
+    font-size: large;
+    /* font-style: italic; */
+    color: #888;
+    margin-top: 5px;
+    margin-left: 98px;  /* 與優惠券對齊 */
+    font-weight: 700;
+    letter-spacing: 1.6px;
+}
+
+/* 配送資訊 */
+.pickupArea {
+    margin-left: 56px;
+    /* margin-top: 32px; */
+}
+.pickupDetail{
+    color: var(--text_primary);
+    font-size: medium;
+    font-weight: 400;
+    letter-spacing: 3.8px;
+    margin-left: 20px;
+    /* margin-bottom: 80px; */
+}
 /* 評論 */
 .orderComment {
     margin-bottom: 40px;

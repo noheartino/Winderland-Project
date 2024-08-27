@@ -3,6 +3,7 @@ import ArticleListHeader from "@/components/article/list/article-list-header";
 import ArticleListNav from "@/components/article/list/article-list-nav";
 
 import ArticleCommentArea from "@/components/article/list/comment/article-comment-area";
+import Footer from "@/components/footer/footer";
 import Nav from "@/components/Header/Header";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -57,6 +58,8 @@ export default function ArticleDetail() {
       </div>
       {/* 評論區 */}
       <ArticleCommentArea articleId={article.id}  />
+      {/* Footer */}
+      <Footer />
     </>
   );
 }

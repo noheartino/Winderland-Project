@@ -4,7 +4,7 @@ export default function ArticleDateSearch() {
   return (
     <>
       <div className="a-date row mb-5">
-              <div className="a-date-block col">
+              <div className="a-date-block p-0 col">
                 <input
                   className="a-date-input py-2"
                   type="text"
@@ -12,7 +12,7 @@ export default function ArticleDateSearch() {
                 />
               </div>
               -
-              <div className="a-date-block col">
+              <div className="a-date-block p-0 col">
                 <input
                   className="a-date-input py-2"
                   type="text"

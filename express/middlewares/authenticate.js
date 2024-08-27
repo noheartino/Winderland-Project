@@ -8,13 +8,13 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
 
 // 中介軟體middleware，用於檢查授權(authenticate)
 export default function authenticate(req, res, next) {
-  const token = req.headers['authorization']
-  // const token = req.cookies.accessToken
+  // const token = req.headers['authorization']
+  const token = req.cookies.accessToken
   // console.log(token)
 
   // if no token
   if (!token) {
-    return res.json({
+    return res.status(401).json({
       status: 'error',
       message: '授權失敗，沒有存取令牌',
     })

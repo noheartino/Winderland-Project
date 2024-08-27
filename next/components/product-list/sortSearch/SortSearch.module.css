@@ -16,6 +16,25 @@
         text-align: end;
     }
 
+    .search-total{
+        display: flex;
+        justify-content: flex-start;
+        color: var(--text_primary);
+        padding-left: 1.5%;
+
+        & .search-span{
+            color: rgb(157, 60, 60);
+            font-weight: 600;
+        }
+
+        & .d-flex{
+            display: flex;
+        }
+
+        & .d-none{
+            display: none;
+        }
+    }
     .shop-fliter {
 
         & select {

@@ -1,0 +1,260 @@
+.coupon-content {
+  .couponNav {
+    font-weight: 400;
+    color: var(--blue_dark);
+
+    .CTitle {
+      font-size: 20px;
+      letter-spacing: 4.8px;
+      display: flex;
+      align-items: center;
+    }
+    .CTitleSm {
+      font-size: 14px;
+      letter-spacing: 4.8px;
+      display: flex;
+      align-items: center;
+    }
+
+    .couponLimit {
+      color: var(--primary_color-wine, #ba435d);
+      font-size: 14px;
+      letter-spacing: 2.8px;
+    }
+    .couponLimitSm {
+      color: var(--primary_color-wine, #ba435d);
+      font-size: 12px;
+      letter-spacing: 2.8px;
+    }
+
+    .couponAlert {
+      color: var(--orange, #ff4f4f);
+      font-size: 14px;
+      letter-spacing: 3.2px;
+    }
+    .couponAlertSm {
+      color: var(--orange, #ff4f4f);
+      font-size: 12px;
+      letter-spacing: 3.2px;
+    }
+
+    /* 領取優惠券 */
+    .couponPlus {
+      text-decoration: none;
+      font-size: 20px;
+      letter-spacing: 4.8px;
+      color: var(--blue_dark);
+      cursor: pointer;
+      text-wrap: nowrap;
+    }
+    .membership {
+      letter-spacing: 2px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      .memberP {
+        font-size: 20px;
+        letter-spacing: 2px;
+        color: var(--text_primary);
+        border-radius: 13.153px;
+        background: linear-gradient(
+          180deg,
+          #fbe09b 0%,
+          #fff1cf 47.5%,
+          #e5c369 100%
+        );
+      }
+    }
+    .pointDown {
+      text-align: right;
+      font-size: 12px;
+    }
+  }
+
+  /* 優惠券區塊一格格的那個 */
+  .couponZone {
+    margin-bottom: 25px;
+  }
+  .couponZoneSm {
+    background-color: #f5f5f5;
+    border-radius: 3px;
+    margin-bottom: 25px;
+    box-shadow: 0px 4px 4px -1px rgba(0, 0, 0, 0.25);
+    max-height: 300px;
+    overflow: auto;
+  }
+
+  /* 一張優惠券 */
+  /* 金額 */
+  .couponCard {
+    border-radius: 3px;
+    box-shadow: -2px 3px 4px 0px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(90deg, #a5d1df 0%, #597179 100%);
+    color: var(--text_primary);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 2px;
+
+    .couponC {
+      border-radius: 10px;
+      background: var(--blue_dark);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 400;
+      text-wrap: nowrap;
+      /* letter-spacing: 3.2px; */
+    }
+
+    .couponN {
+      color: #fff;
+      text-wrap: nowrap;
+      text-align: center;
+    }
+
+    .couponNSm {
+      color: #fff;
+      font-size: 10px;
+    }
+  }
+  /* 折數 */
+  .couponDiscountCard {
+    background: linear-gradient(90deg, #f46274 0%, #851931 100%);
+  }
+  .couponDiscountCategory{
+    background: var(--primary) !important;
+  }
+
+  /* 紀錄區塊 */
+  .couponRecordHeader {
+    background-color: var(--blue_dark);
+    font-size: 16px;
+    border-radius: 2px;
+
+    .couponRecordTitle {
+      margin: 0;
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: 3.2px;
+    }
+    .couponRecordTitleSm {
+      font-size: 10px;
+      margin: 0;
+      color: #fff;
+      font-weight: 500;
+      letter-spacing: 3.2px;
+    }
+  }
+  .couponRecordMain {
+    background-color: #f5f5f5;
+    border-radius: 0 0 3px 3px;
+    letter-spacing: 3.2px;
+    align-items: center;
+    box-shadow: 0px 4px 4px -1px rgba(0, 0, 0, 0.25);
+    max-height: 200px;
+    overflow: auto;
+
+    .couponRecordDate {
+      color: var(--blue_dark);
+      font-size: 16px;
+    }
+    .couponRecordDateSm {
+      color: var(--blue_dark);
+      font-size: 10px;
+    }
+    .couponRecordCost {
+      color: var(--orange);
+      font-size: 16px;
+    }
+    .couponRecordCostSm {
+      color: var(--orange);
+      font-size: 10px;
+    }
+  }
+
+  /* 過期區塊 */
+  .couponExpiredHeader {
+    background-color: var(--text_gray);
+    border-radius: 2px;
+    font-size: 16px;
+
+    .couponExpiredTitle {
+      margin: 0;
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: 3.2px;
+    }
+    .couponExpiredTitleSm {
+      font-size: 10px;
+      margin: 0;
+      color: #fff;
+      font-weight: 500;
+      letter-spacing: 3.2px;
+    }
+  }
+  .couponExpiredMain {
+    background-color: #f5f5f5;
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0px 4px 4px -1px rgba(0, 0, 0, 0.25);
+    max-height: 200px;
+    overflow: auto;
+  }
+
+  /* .coupon-ticket-y {
+    background: linear-gradient(90deg, #fff177 0%, #f6584e 100%);
+
+    .coupon-c {
+      background: var(--info-orange, #ff4f4f);
+    }
+  }
+
+  .coupon-ticket-r {
+    background: linear-gradient(90deg, #f46274 0%, #851931 100%);
+
+    .coupon-c {
+      background: var(--primary_color-primary, #851931);
+    }
+  } */
+
+  .wpoint {
+    color: var(--text_primary);
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 3.2px;
+  }
+  .totalPoints {
+    color: var(--orange);
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: 6.4px;
+  }
+
+  .wpointCard {
+    .listWpoint {
+      color: var(--text_primary);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+    .listUsedPoint {
+      color: var(--orange);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 3.2px;
+    }
+  }
+}
+
+.CPlusModal {
+  backdrop-filter: blur(2px);
+  .CModalContent {
+    background-color: #efefef;
+  }
+  .plusBottom {
+    text-decoration: none;
+    color: var(--blue_dark);
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 4px;
+  }
+}
