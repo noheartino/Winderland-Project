@@ -4,18 +4,14 @@ import CouponCard from "./CouponCard";
 import CouponPlusModal from "./CouponPlusModal";
 import { useAuth } from "@/hooks/use-auth";
 
-export default function CouponStorage({userId}) {
-  // console.log(userId)
-  // const { auth } = useAuth(); // 取得認證資訊
-  // const userId = auth.userData.id; // 取得使用者 ID
-  // console.log(auth.userData);
+export default function CouponStorage({ userId, freeCoupon }) {
   const [coupons, setCoupons] = useState([]);
   const [loading, setLoading] = useState(true); // 初始為 true，表示正在載入
   const [error, setError] = useState(null); // 用於處理錯誤
 
   useEffect(() => {
     const fetchUserCoupons = async () => {
-      console.log("Fetching user coupons...");
+      // console.log("Fetching user coupons...");
       try {
         // 模擬網絡延遲
         // await new Promise((resolve) => setTimeout(resolve, 500));
@@ -24,7 +20,7 @@ export default function CouponStorage({userId}) {
           setLoading(false);
           return;
         }
-
+        // 會員獲取的優惠券
         const response = await fetch(
           "http://localhost:3005/api/coupon/get-coupon",
           {
@@ -43,7 +39,7 @@ export default function CouponStorage({userId}) {
         }
 
         const data = await response.json();
-        console.log("Coupons fetched:", data);
+        // console.log("Coupons fetched:", data);
         setCoupons(data);
       } catch (error) {
         console.error("Error fetching coupons:", error);
@@ -93,7 +89,7 @@ export default function CouponStorage({userId}) {
           </div>
         </div>
       </div>
-      <CouponPlusModal />
+      <CouponPlusModal userId={userId} freeCoupon={freeCoupon} setCoupons={setCoupons} />
       {/* 手機上方nav */}
       <div className="coupon-navbar row my-3 d-lg-none">
         <div className={`${style.couponNav} col-12 col-lg-7`}>

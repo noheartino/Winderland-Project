@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import { FaCircleCheck } from "react-icons/fa6";
 
-export default function CouponCardModal({ coupon, onSelect, isChecked }) {
+export default function CouponCardModal({ coupon, onSelect, isChecked, isClaimed  }) {
   const handleCheck = () => {
+    if (isClaimed) {
+      return; // 已經領取過的優惠券不能再選
+    }
     onSelect(coupon); // 呼叫父元件的 onSelect 函式
   };
 
@@ -52,7 +55,7 @@ export default function CouponCardModal({ coupon, onSelect, isChecked }) {
         title={`低消＄${coupon.min_spend}`}
         onClick={handleCheck}
       >
-        {isChecked ? (
+        {isChecked | isClaimed ? (
           <FaCircleCheck
             className="ms-3"
             style={{ fontSize: "40px", color: "var(--blue)" }}

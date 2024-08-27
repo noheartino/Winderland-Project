@@ -21,7 +21,7 @@ export default function CouponList1({ coupon, coupons }) {
         };
     }
   };
-  console.log(coupons)
+  // console.log(coupons)
   const couponcss = getCategoryClass(coupon.category);
 
   const date = new Date(coupon.used_at);

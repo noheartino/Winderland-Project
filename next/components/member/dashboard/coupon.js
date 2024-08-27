@@ -14,6 +14,7 @@ export default function DashboardCoupon() {
   const router = useRouter();
   const { auth } = useAuth();
   const [userId, setUserId] = useState(null);
+  const [freeCoupon, setfreeCoupon] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [coupons, setCoupons] = useState([]);
@@ -25,6 +26,7 @@ export default function DashboardCoupon() {
       setTimeout(() => {
         const id = auth.userData?.id; // 從 auth 取得 userId
         setUserId(id);
+        setfreeCoupon(auth.userData?.free_coupon)
         setLoading(false); // 完成加載
       }, 1000); // 延遲 1 秒
     };
@@ -44,6 +46,7 @@ export default function DashboardCoupon() {
     }
   }, [userId, loading, router]);
 
+  
 
   useEffect(() => {
     // 使用 fetch 從後端 API 獲取資料
@@ -61,8 +64,8 @@ export default function DashboardCoupon() {
     <>
       <div className={`container ${style["coupon-content"]} m-0 mx-auto`}>
         {/* 優惠券倉庫 */}
-        {/* {console.log(userId)} */}
-        <CouponStorage userId={userId} />
+        {console.log(freeCoupon)}
+        <CouponStorage userId={userId} freeCoupon={freeCoupon} />
 
         {/* 手機的領券的標題 */}
         <div className={`${style.couponNav} col-12 d-lg-none mt-5 mb-4`}>
