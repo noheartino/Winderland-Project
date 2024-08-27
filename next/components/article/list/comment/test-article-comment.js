@@ -5,10 +5,17 @@ export default function TestArticleComment({ articleId, comments }) {
   const [commentText, setCommentText] = useState("");
   const [rows, setRows] = useState(2);
   // 這邊是使用hooks的useAuth測試
-  const { auth } = useAuth(); // 取得認證資訊
+  const { auth } = useAuth();
+
+  // 如果 auth.userData 不存在，提前處理避免錯誤
+  if (!auth.isAuth || !auth.userData) {
+    console.log("使用者尚未登入或用戶資料尚未載入");
+    return <p>請先登入再進行評論</p>;
+  }
+
   const userId = auth.userData.id; // 取得使用者 ID
   const account = auth.userData.account;
-  const entityType = 'article';
+  const entityType = "article";
 
   const firstTwoChars = account.slice(0, 2).toUpperCase();
 
@@ -92,7 +99,11 @@ export default function TestArticleComment({ articleId, comments }) {
                   id="message-text"
                 />
                 <div className="d-flex justify-content-end">
-                  <button type="button" className="btn btn-primary" onClick={handleCreate}>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleCreate}
+                  >
                     送出
                   </button>
                 </div>
