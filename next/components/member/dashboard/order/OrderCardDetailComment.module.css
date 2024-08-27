@@ -99,7 +99,18 @@
     margin-top: 60px;
     margin-left: 70px;
 }
+.commentDoneText{
+    /* height: px; */
+    width: 70%;
+    border-radius: 44px;
+    /* border: 1px solid grey; */
+    padding: 15px;
+    padding-left: 30px;
+    background: rgba(128, 128, 128, 0.308) ;
+}
 
+
+/* 評分星星 */
 .star {
     color: grey;
     font-size: 30px;
@@ -127,4 +138,15 @@
     content: "\2605";
     position: absolute;
     color: #9A5B69;
+}
+
+/* 已評分星星 */
+.ratingStars {
+    color: #9A5B69;
+    font-size: 25px; 
+    margin-left: 5px;
+}
+
+.ratingStar {
+    margin-right: 2px;
 }

@@ -188,49 +188,59 @@ router.get('/commentable-items/:orderUuid', authenticate, async (req, res) => {
         .json({ status: 'error', message: '無法評論此訂單' })
     }
 
-    // 獲取可評論的商品和課程
+    // 獲取可評論的商品和課程，並檢查是否已評論
     const [items] = await connection.query(
       `SELECT 
-        od.id as order_detail_id,
-        CASE 
-          WHEN od.product_id IS NOT NULL THEN od.product_id
-          ELSE od.class_id
-        END as item_id,
-        CASE 
-          WHEN od.product_id IS NOT NULL THEN p.name
-          ELSE c.name
-        END as item_name,
-        CASE 
-          WHEN od.product_id IS NOT NULL THEN 'product'
-          ELSE 'class'
-        END as item_type,
-        CASE
-          WHEN od.product_id IS NOT NULL THEN pd.capacity
-          ELSE NULL
-        END as capacity,
-        CASE
-          WHEN od.product_id IS NOT NULL THEN pd.years
-          ELSE NULL
-        END as years,
-        CASE
-          WHEN od.product_id IS NOT NULL THEN co.name
-          ELSE NULL
-        END as country_name,
-        CASE
-          WHEN od.class_id IS NOT NULL THEN t.name
-          ELSE NULL
-        END as teacher_name
-       FROM order_details od
-       LEFT JOIN product p ON od.product_id = p.id
-       LEFT JOIN product_detail pd ON od.product_detail_id = pd.id
-       LEFT JOIN product pr ON pd.product_id = pr.id
-       LEFT JOIN origin o ON pr.origin_id = o.id
-       LEFT JOIN country co ON o.country_id = co.id
-       LEFT JOIN class c ON od.class_id = c.id
-       LEFT JOIN teacher t ON c.teacher_id = t.id
-       WHERE od.order_uuid = ?
-       ORDER BY od.id`,
-      [orderUuid]
+      od.id as order_detail_id,
+      CASE 
+        WHEN od.product_id IS NOT NULL THEN od.product_id
+        ELSE od.class_id
+      END as item_id,
+      CASE 
+        WHEN od.product_id IS NOT NULL THEN p.name
+        ELSE c.name
+      END as item_name,
+      CASE 
+        WHEN od.product_id IS NOT NULL THEN 'product'
+        ELSE 'class'
+      END as item_type,
+      CASE
+        WHEN od.product_id IS NOT NULL THEN pd.capacity
+        ELSE NULL
+      END as capacity,
+      CASE
+        WHEN od.product_id IS NOT NULL THEN pd.years
+        ELSE NULL
+      END as years,
+      CASE
+        WHEN od.product_id IS NOT NULL THEN co.name
+        ELSE NULL
+      END as country_name,
+      CASE
+        WHEN od.class_id IS NOT NULL THEN t.name
+        ELSE NULL
+      END as teacher_name,
+      CASE
+        WHEN comments.id IS NOT NULL THEN 1
+        ELSE 0
+      END as is_commented,
+      comments.rating as existing_rating,
+      comments.comment_text as existing_comment
+     FROM order_details od
+     LEFT JOIN product p ON od.product_id = p.id
+     LEFT JOIN product_detail pd ON od.product_detail_id = pd.id
+     LEFT JOIN product pr ON pd.product_id = pr.id
+     LEFT JOIN origin o ON pr.origin_id = o.id
+     LEFT JOIN country co ON o.country_id = co.id
+     LEFT JOIN class c ON od.class_id = c.id
+     LEFT JOIN teacher t ON c.teacher_id = t.id
+     LEFT JOIN comments ON (
+       (od.product_id IS NOT NULL AND comments.entity_type = 'product' AND comments.entity_id = od.product_id) OR
+       (od.class_id IS NOT NULL AND comments.entity_type = 'class' AND comments.entity_id = od.class_id)
+     ) AND comments.user_id = ?
+     WHERE od.order_uuid = ?
+     ORDER BY od.id`,
+      [userId, orderUuid]
     )
 
     res.json({ status: 'success', data: items })
@@ -259,6 +269,19 @@ router.post('/submit-comment', authenticate, async (req, res) => {
       return res
         .status(403)
         .json({ status: 'error', message: '無法評論此訂單' })
+    }
+
+    // 檢查是否已經評論過
+    const [existingComment] = await connection.query(
+      `SELECT id FROM comments 
+   WHERE entity_type = ? AND entity_id = ? AND user_id = ?`,
+      [itemType, itemId, userId]
+    )
+
+    if (existingComment.length > 0) {
+      return res
+        .status(400)
+        .json({ status: 'error', message: '您已經評論過此項目' })
     }
 
     // 插入評論

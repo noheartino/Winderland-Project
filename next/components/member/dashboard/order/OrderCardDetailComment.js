@@ -25,7 +25,20 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
             if (!response.ok) throw new Error('Failed to fetch commentable items');
             const data = await response.json();
             setCommentableItems(data.data);
-            setComments(data.data.reduce((acc, item) => ({ ...acc, [item.item_id]: { rating: 0, text: '' } }), {}));
+            setComments(data.data.reduce((acc, item) => ({
+                ...acc,
+                [item.item_id]: {
+                    rating: item.existing_rating || 0,
+                    text: item.existing_comment || ''
+                }
+            }), {}));
+            setSubmittedComments(data.data.reduce((acc, item) => ({
+                ...acc,
+                [item.item_id]: item.is_commented ? {
+                    rating: item.existing_rating,
+                    text: item.existing_comment
+                } : null
+            }), {}));
         } catch (err) {
             setError(err.message);
         } finally {
@@ -33,25 +46,48 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
         }
     };
 
+    // 星星評價
     const handleRatingChange = (itemId, rating) => {
-        setComments(prev => ({ ...prev, [itemId]: { ...prev[itemId], rating } }));
-        setHoveredRatings(prev => ({ ...prev, [itemId]: null })); // Reset hover state
+        if (!submittedComments[itemId]) {
+            setComments(prev => ({ ...prev, [itemId]: { ...prev[itemId], rating } }));
+            setHoveredRatings(prev => ({ ...prev, [itemId]: null }));
+        }
     };
 
     const handleRatingHover = (itemId, rating) => {
-        setHoveredRatings(prev => ({ ...prev, [itemId]: rating }));
+        if (!submittedComments[itemId]) {
+            setHoveredRatings(prev => ({ ...prev, [itemId]: rating }));
+        }
     };
 
     const handleRatingLeave = (itemId) => {
-        setHoveredRatings(prev => ({ ...prev, [itemId]: null }));
+        if (!submittedComments[itemId]) {
+            setHoveredRatings(prev => ({ ...prev, [itemId]: null }));
+        }
     };
 
+    // 渲染評價星星的函數
+    const renderRatingStars = (rating) => {
+        return (
+            <span className={styles.ratingStars}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                    <span key={star} className={styles.ratingStar}>
+                        {star <= rating ? '★' : '☆'}
+                    </span>
+                ))}
+            </span>
+        );
+    };
 
     const handleCommentChange = (itemId, text) => {
-        setComments(prev => ({ ...prev, [itemId]: { ...prev[itemId], text } }));
+        if (!submittedComments[itemId]) {
+            setComments(prev => ({ ...prev, [itemId]: { ...prev[itemId], text } }));
+        }
     };
 
     const handleSubmit = async (itemId, itemType) => {
+        if (submittedComments[itemId]) return;
+
         try {
             const response = await fetch('http://localhost:3005/api/orders/submit-comment', {
                 method: 'POST',
@@ -96,8 +132,12 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
 
                         <div className={styles.commentDone}>
                             <p >已成功送出評論</p>
-                            <p className='ms-5'>評分: {submittedComments[item.item_id].rating}顆星</p>
-                            <p className='ms-5'>評論: {submittedComments[item.item_id].text}</p>
+                            <p className='ms-5'>
+                                {renderRatingStars(submittedComments[item.item_id].rating)}
+                            </p>
+                            <div className={`ms-5 ${styles.commentDoneText}`}>
+                                {submittedComments[item.item_id].text}
+                            </div>
                         </div>
                     ) : (
                         <div className="comment-area d-flex">
@@ -139,7 +179,7 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
                                             </span>
                                         ))}
                                     </div>
-                                    </div>
+                                </div>
                                 <div className="div">
                                     <button
                                         className={styles.commentBtn}
