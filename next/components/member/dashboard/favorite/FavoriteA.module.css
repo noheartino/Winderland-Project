@@ -1,0 +1,139 @@
+.favoriteAContainer {
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .favoriteATitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .favoriteAGroup {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin: -10px; /* 負邊距，用於抵消卡片的邊距 */
+  }
+  
+  .favoriteACard {
+    width: calc(25% - 20px); 
+    /* 確保每行正好四個卡片 */
+    /* width: 268px; */
+    /* height: 102px; */
+  margin: 10px; /* 給每個卡片一些間距 */
+  margin-top: 37px;
+  /* border: 1px solid #eaeaea; */
+  border-radius: 4.75px;  
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  }
+  
+  .favoriteAImgBox {
+    position: relative;
+    width: 100%;
+    padding-top: 60%;  /* 保持 268:138 的寬高比 */
+    border-radius: 4.75px;
+    /* position: relative; */
+  }
+  
+  .favoriteAImg {
+    position: absolute;
+    /* top: 50;
+    left: 36; */
+    /* width: 120%;
+    height: 110%; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4.75px;
+   
+  }
+  
+  .svgBookmark {
+    position: absolute;
+    top:10%;
+    right: 8%;
+    cursor: pointer;
+    font-size: 30px;
+    color: var(--orange);
+  }
+  
+  .favoriteADetail {
+    /* padding: 10px; */
+    color: var(--text_dark, #3F3034);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+  }
+  
+  .aCategory {
+    font-size: 0.8rem;
+    /* color: #666; */
+    /* margin-bottom: 5px; */
+    color: var(--purple_light, #A66E7B);
+    letter-spacing: 1.2px;
+    margin-top: 16px;
+    /* margin-left: -10px; */
+    margin-bottom: 11px;
+  }
+  
+  .articleTitleLink {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  .articleTitleLink:hover,
+.articleTitleLink:visited,
+.articleTitleLink:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+  .articleTitle {
+    /* font-size: 1rem; */
+    /* font-weight: bold; */
+    margin-bottom: 5px;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--text_dark, #3F3034);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 1.6px;
+
+  }
+
+  .articleTitle:hover {
+    color: var(--primary); /* 或者您想要的懸停顏色 */
+  }
+  
+  .favoriteADetailP {
+    font-size: 0.8rem;
+    color: val(--text_dark);
+    margin-top: 25px;
+  }
+  
+  /* 響應式設計 */
+  @media (max-width: 1200px) {
+    .favorite-a-card {
+      width: calc(33.33% - 20px);  /* 三列佈局 */
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .favorite-a-card {
+      width: calc(50% - 20px);  /* 兩列佈局 */
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .favorite-a-card {
+      width: 100%;  /* 單列佈局 */
+    }
+  }

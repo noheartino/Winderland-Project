@@ -1,0 +1,41 @@
+.cartCoupon1 {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 373px;
+    height: 78px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    border-radius: 3px;
+    color: #fff;
+    padding: 0 15px;
+}
+
+.cartCoupon1Box {
+    width: 100%;
+    max-width: 104px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+}
+
+.multiplierDiscount {
+    background: linear-gradient(to right, #a5d1df, #597179);
+}
+
+.multiplierDiscountBox {
+    background-color: #5b839a;
+}
+
+.amountDiscount {
+    background: linear-gradient(to right, #F46274, #851931);
+}
+
+.amountDiscountBox {
+    background-color: #851931;
+}
+
+.cartCouponText {
+    padding: 0 0 0 15px;
+}

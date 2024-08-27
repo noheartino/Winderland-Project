@@ -1,0 +1,273 @@
+/* order */
+.orderDetailTitle{
+    width: 100%;
+    height: 50px;
+    background: var(--primary, #851931);
+}
+.titleLabelNumber{
+    margin-left: 15%;
+}
+.titleLabel{
+    color: var(--light, #F4EBEB);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 1.6px;
+    white-space: nowrap;
+}
+.iconBox{
+    border: 0 ;
+    background-color: #851931;
+    color: none;
+}
+.faChevronUp {
+    color: var(--light, #F4EBEB);
+    font-size: 16px;
+    /* margin-bottom: 35px; */
+ 
+}
+/* detail */
+.orderDetailContent {
+    width: 100%;
+    height: auto;
+    background: linear-gradient(0deg, #FAFAFA 91.5%, #E4D8D8 100%);
+    /* margin-bottom: 43px; */
+}
+
+.hr {
+    border: 1px solid #D4C0C0;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+
+/* Item */
+.orderCard{
+    width: 100%;
+    height: 261px;
+    /* margin-left: 50px; */
+    margin-bottom: -70px;
+    /* margin-top: 15px; */
+    background: none;
+    border: none;
+    position: relative;
+}
+.cardBody{
+    padding: 0;
+}
+.orderDetail {
+    width: 90%;
+    height: 150px;
+    margin-left: 40px;
+    margin-top: 15px;
+}
+
+.orderDetailP {
+    width: 60%;
+    margin-right: 40px;
+}
+
+.orderDetailProductName {
+    color: #60464C;
+    font-family: Inter;
+    font-size: medium;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 2px;
+}
+
+.pDetail {
+    margin-top: 53px
+}
+
+.pCategory {
+    color: var(--purple, #9A5B69);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1.4px;
+}
+
+.pPprice {
+    color: var(--wine, #BA435D);
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+}
+
+.orderDetailNumber {
+    color: var(--purple, #9A5B69);
+    font-size: large;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-right: 9%;
+    margin-top: -10px;
+}
+
+.orderDetailTotal {
+    color: var(--orange, #FF4F4F);
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    margin-right: 25px;
+}
+
+.orderImg {
+    width: 150px;  /* 設置固定寬度 */
+    height: 150px; /* 設置固定高度，與寬度相等，創建正方形 */
+    border: 1px solid var(--wine_light, #D4C0C0);
+    margin-left: 50px;
+    margin-top: 20px;
+    overflow: hidden; /* 確保內容不會溢出容器 */
+    display: flex; /* 使用 flexbox 來居中內容 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    background: #ffffff;
+  }
+  
+  .orderImg img {
+    width: 100%; /* 圖片寬度填滿容器 */
+    height: 100%; /* 圖片高度填滿容器 */
+    object-fit: contain; /* 確保整個圖片都顯示，不被裁切 */
+    object-position: center; /* 圖片在容器中居中 */
+  }
+
+/* 優惠券 */
+.orderUsed {
+    margin-left: 56px;
+    margin-top: 32px;
+}
+
+.orderUsedLabel {
+    color: var(--text_gray, #6A6A6A);
+    font-size: medium;
+    font-weight: 400;
+    letter-spacing: 3.8px;
+    margin-top: 50px;
+}
+
+.couponTicket {
+    min-width: 229px;
+    min-height: 64px;
+    border-radius: 2.925px;
+    background: linear-gradient(90deg, #D0D0D0 0%, #717171 100%);
+    box-shadow: -1.95px 2.925px 3.9px 0px rgba(0, 0, 0, 0.25);
+    color: #FFF;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 3.2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    margin-left: 60px;
+}
+
+
+.pointImg {
+    min-width: 72px;
+    min-height: 72px;
+    background: url(/images/member/wpoint-used.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-left: 90px;
+    margin-top: 30px;
+}
+
+.pointText {
+    color: var(--text_gray, #6A6A6A);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    margin-left: 32px;
+    margin-top: 20px;
+}
+
+.pointUsed {
+    color: var(--orange, #FF4F4F);
+    font-size: xx-large;
+    letter-spacing: 3.6px;
+    white-space: nowrap;
+}
+
+.orderGet {
+    margin-left: 56px;
+    margin-top: 125px;
+}
+
+.orderGetLabel {
+    color: #6A6A6A;
+    font-size: medium;
+    font-weight: 400;
+    letter-spacing: 3.8px;
+    /* margin-bottom: 80px; */
+}
+
+.pointImgGet {
+    width: 72px;
+    height: 72px;
+    background: url(/images/member/wpoint.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-left: 70px;
+    align-items: center;
+    margin-top: -28px;
+}
+
+.pointTextGet {
+    color: #6A6A6A;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    margin-left: 32px;
+    margin-top: -30px;
+    margin-bottom: 50px;
+}
+
+.pointGet {
+    color: var(--orange, #FF4F4F);
+    font-size: xx-large;
+    letter-spacing: 3.6px;
+}
+
+.usedItem {
+    margin-bottom: 10px;
+    margin-left: 50px;
+}
+
+.noCoupon {
+    font-size: large;
+    /* font-style: italic; */
+    color: #888;
+    margin-top: 5px;
+    margin-left: 50px;  
+    /* 與優惠券對齊 */
+    font-weight: 700;
+    letter-spacing: 1.6px;
+}
+
+.noPoints {
+    font-size: large;
+    /* font-style: italic; */
+    color: #888;
+    margin-top: 5px;
+    /* margin-left: 50px;   */
+    /* 與優惠券對齊 */
+    font-weight: 700;
+    letter-spacing: 1.6px;
+}
+
+
+/* 配送資訊 */
+.pickupArea {
+    margin-left: 56px;
+    /* margin-top: 32px; */
+}
+.pickupDetail{
+    color: var(--text_primary);
+    font-size: medium;
+    font-weight: 400;
+    letter-spacing: 3.8px;
+    margin-left: 20px;
+    /* margin-bottom: 80px; */
+}

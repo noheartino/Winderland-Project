@@ -1,0 +1,46 @@
+:root {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    --purple_light: #A66E7B;
+    --text_primary: #60464C;
+    --primary: #851931;
+    --orange: #FF4F4F;
+    --wine_light: #D4C0C0;
+    --light: #F4EBEB;
+}
+
+/* 桌機size */
+
+@media (max-width: 1920px) {
+
+
+    /* header start*/
+    .main-content {
+        display: flex;
+        height: auto;
+        letter-spacing: 1px;
+    }
+
+
+}
+
+
+/* RWD 平版size */
+
+@media screen and (max-width: 992px) {
+
+    aside {
+        display: none;
+        line-height: 10px;
+    }
+
+}
+/* 手機rwd */
+
+@media screen and (max-width: 767px) {
+    nav {
+        height: 60px;
+    }
+}

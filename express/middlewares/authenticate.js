@@ -14,7 +14,7 @@ export default function authenticate(req, res, next) {
 
   // if no token
   if (!token) {
-    return res.json({
+    return res.status(401).json({
       status: 'error',
       message: '授權失敗，沒有存取令牌',
     })

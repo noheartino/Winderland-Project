@@ -1,0 +1,219 @@
+/* 文章主題 */
+.aid-header
+  .article-nav
+    margin: 0
+    align-items: center
+    font-size: 16px
+    gap: 25px
+    text-wrap: nowrap
+    letter-spacing: 1.6px
+    .aid-category
+      font-size: 14px
+      background-color: var(--text_primary)
+      color: #fff
+      border-radius: 7px
+
+    .aid-times
+      display: flex
+      gap: 12px
+
+    .aid-date
+      display: flex
+      gap: 12px
+
+  .aid-title
+    font-size: 48px
+    margin-bottom: 53px
+    margin-top: 20px
+    color: var(--text_primary)
+
+  .aid-pic
+    width: 100%
+    height: 500px
+    img
+      width: 100%
+      height: 100%
+      object-fit: contain
+
+/* 文章內容 */
+.aid-content-area
+  .aid-content-nav
+    margin: 0
+    align-items: center
+    text-wrap: nowrap
+    letter-spacing: 1.6px
+    justify-content: space-between
+    .aid-user-infoLeft
+      align-items: center
+      color: var(--text_primary)
+      .icon
+        width: 40px
+        height: 40px
+        border-radius: 50%
+        background-color: var(--wine)
+        display: flex
+        justify-content: center
+        align-items: center
+        padding: 0
+        p
+          font-size: 16px
+          color: #fff
+          margin: 0
+
+    .aid-bookmark
+      padding: 0
+      i
+        font-size: 28px
+        color: var(--text_primary)
+
+    .aid-category
+      font-size: 14px
+      background-color: var(--text_primary)
+      color: #fff
+      border-radius: 7px
+
+  .aid-title
+    font-size: 24px
+    color: var(--text_primary)
+    letter-spacing: 3.6px
+
+  .aid-pic
+    width: 100%
+    height: 45vw
+    max-height: 500px
+    img
+      width: 100%
+      height: 100%
+      object-fit: contain
+
+  // 文章文字
+  .aid-content-word
+    .aid-content-p
+      font-size: 20px
+      font-style: normal
+      font-weight: 400
+      line-height: 2em
+      letter-spacing: 2px
+      color: var(--text_dark)
+    .aid-content-p-sm
+      font-size: 14px
+      font-style: normal
+      font-weight: 400
+      line-height: 2em
+      letter-spacing: 2px
+      color: var(--text_dark)
+
+    .aid-content-pic
+      width: 100%
+      height: 45vw
+      max-height: 400px
+      img
+        width: 100%
+        height: 100%
+        object-fit: contain
+
+/* 評論區 */
+.aid-commentArea
+  background-color: var(--light)
+  color: var(--text_primary)
+  border-radius: 30px 30px 0px 0px
+  /* 上排按鈕區 */
+  .ac-topbtn
+    // justify-content: center
+    .addC-btn
+      background-color: var(--primary)
+      color: #fff
+      border-radius: 44px
+
+  /* 回覆區 */
+  .aid-reply-area
+    // justify-content: space-between
+    .send-comment
+      border-bottom: 1px solid var(--wine_light)
+    .aid-reply
+      .au-icon
+        background-color: var(--wine)
+        border-radius: 50%
+        height: 80px
+        width: 80px
+        display: flex
+        justify-content: center
+        align-items: center
+        p
+          color: #fff
+          font-size: 34px
+      .au-icon-sm
+        background-color: var(--wine)
+        border-radius: 50%
+        height: 40px
+        width: 40px
+        display: flex
+        justify-content: center
+        align-items: center
+        p
+          color: #fff
+          font-size: 16px
+
+      /* 樓主回覆區 */
+      .aucomment-section
+        /* 樓主名 */
+        .au-name
+          h5
+            color: var(--text_primary)
+
+        /* 評論的上排nav */
+        .au-nav-items
+          text-wrap: nowrap
+          li
+            padding: 0
+            text-align: center
+            list-style: none
+            border-right: 1px solid var(--blue_dark)
+            color: var(--blue_dark)
+            a
+              text-decoration: none
+              color: var(--blue_dark)
+        /* 回覆區more */
+        .aid-replymore
+          text-align: center
+          padding: 0
+          .aid-replymore-dropmenu
+            border: 0
+            border-radius: 0
+            box-shadow: -2px 7px 5.5px 0px rgba(0, 0, 0, 0.25)
+            li
+              a
+                text-align: center
+                color: var(--blue_dark)
+
+        /* 評論內容 */
+        .aucomment
+          border-radius: 10px
+          background-color: #fff
+
+          textarea
+            border: 0
+            outline: none
+            resize: none
+            box-shadow: none
+            padding: 0
+          button
+            background-color: var(--primary)
+            color: #fff
+            border-radius: 44px
+
+          p
+            font-size: 16px
+            letter-spacing: 1.6px
+            margin: 0
+            color: var(--text_dark)
+            overflow: auto
+            // display: -webkit-box
+            // -webkit-line-clamp: 5
+            // -webkit-box-orient: vertical
+            white-space: normal
+        .aucomment-time
+          p
+            font-size: 14px
+            margin: 0
+            color: var(--text_primary)

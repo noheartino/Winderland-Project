@@ -1,0 +1,171 @@
+/* cartMoney.module.css */
+.cartMoneyTotal {
+    margin-top: 150px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(119, 119, 119, 0.2);
+}
+
+.cartMoneyTotalTitle {
+    height: 75px;
+    background-color: #851931;
+    font-size: 20px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding-left: 40px;
+}
+
+.cartMoneyTotalContent {
+    padding: 35px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 20px;
+    color: #60464c;
+    background-color: #fcfcfc;
+}
+
+.cartContent {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cartContentCoupon {
+    color: #ff4f4f;
+}
+
+.cartContentTotal {
+    height: 70px;
+    position: relative;
+}
+
+.cartContentTotal1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.cartContentTotal2 {
+    font-size: 32px;
+    color: #851931;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.cartMoneyTotalContent button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 330px;
+    height: 75px;
+    background-color: #851931;
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 11px;
+}
+
+
+
+@media screen and (max-width: 1200px) and (min-width: 992px) {
+    .cartMoneyTotalTitle {
+        font-size: 16px;
+    }
+    
+    .cartMoneyTotalContent {
+        font-size: 16px;
+    }
+    
+    .cartContentTotal2 {
+        font-size: 28px;
+    }
+}
+
+/* cartTotal.module.css */
+.cartTotalM {
+    width: 100%;
+    background-color: #D4C0C0;
+    height: 150px;
+    padding: 10px;
+    position: fixed; /* 固定在視口 */
+    bottom: 0; /* 在底部 */
+    left: 0;
+    z-index: 3;
+}
+
+.cartTotalMROW {
+    padding-top: 10px;
+    width: 100%;
+}
+
+.cartTotalML {
+    padding: 15px 20px 0 30px;
+    margin: 0 10px;
+    font-size: 18px;
+}
+
+.cartTotalML1 {
+    display: flex;
+    justify-content: space-between;
+    color: #60464C;
+    padding: 8px 0;
+}
+
+.cartTotalML2 {
+    display: flex;
+    justify-content: space-between;
+    color: #A66E7B;
+    padding: 15px 0;
+}
+
+.cartTotalMR {
+    padding: 0;
+    height: 110px;
+    display: grid;
+    place-items: center;
+}
+
+.cartTotalMRTitle {
+    margin-left: -40px;
+    color: #60464C;
+}
+
+.cartTotalMRMoney {
+    color: #BA435D;
+    font-size: 20px;
+}
+
+.cartTotalMRBTN {
+    margin-left: -15px;
+    width: 100px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 1px solid transparent;
+    background-color: #60464C;
+    color: #D4C0C0;
+}
+
+@media screen and (max-width: 768px) {
+    .cartTotalML {
+        font-size: 14px;
+    }
+}
+
+
+.cartMoneyContainer {
+    display: flex;
+    flex-direction: column;
+    
+  }
+  
+  .cartCheckError {
+    color: red;
+    font-weight: bold;
+    margin-top: 20px; /* 調整與其他內容的間距 */
+
+  }
+  
