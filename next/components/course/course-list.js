@@ -28,7 +28,8 @@ export default function CourseList({courses, comments, classAssigns}) {
               </div>
               <div className="row px-0 m-0 course-mycourse-box row-gap-5">
 
-              {courses.map((course) => {
+              {courses && courses.length>0 ?
+              courses.map((course) => {
                 const { class_id } = course;
                 let averageRating = 0;
                 let classAssignsQ = 0;
@@ -50,11 +51,12 @@ export default function CourseList({courses, comments, classAssigns}) {
                 
                 
               return (
-                <div key={class_id} onClick={(e)=>handleHref(e, class_id)} className='col-12 col-md-4 col-lg-3 px-10px d-flex flex-column align-items-center justify-content-between'>
+                <div key={class_id} onClick={(e)=>handleHref(e, class_id)} className='col-12 col-md-4 col-lg-3 px-10px d-flex flex-column align-items-center justify-content-between' title={`${course.class_name}`}>
                   <CourseCardSm course={course} averageRating={averageRating} classAssigns={classAssigns} classAssignsQ={classAssignsQ}/>
                 </div> 
               );
-            })}
+            }) 
+          :<div className='col-12 col-md-4 col-lg-3 px-10px'><h5 className="spac-1 text-gray">尚無相關無課程<i className="ms-2 fa-solid fa-wine-glass-empty"></i></h5></div>}
                 
 
               </div>

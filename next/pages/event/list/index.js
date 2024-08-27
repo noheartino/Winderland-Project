@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Nav from '@/components/Header/Header'
 import Footer from '@/components/footer/footer'
 import EventHeader from '@/components/event/event-header'
+import Noresult from '@/components/event/noresult';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/use-auth';
 import Link from "next/link";
@@ -49,6 +50,10 @@ export default function Applyevent() {
     };
 
     if (!infodata) return <div>Loading...</div>;
+
+    function filtertheevent(index){
+        return myallevent.filter((i) => (i.id === index))[0]
+    }
     
 
 
@@ -56,39 +61,47 @@ export default function Applyevent() {
         <>
             <Nav />
             <EventHeader />
-            {myowner ? <pre>{JSON.stringify(myowner, null, 2)}</pre> : 'Loading...'}
+            {/* {myowner ? <pre>{JSON.stringify(myowner, null, 2)}</pre> : 'Loading...'} */}
+            
 
             <>
                 <div className="eventManageNav">
                     <div className="container">
                         <div className="ManageNavT">開團活動管理</div>
                         <div className="ManageNavList">
-                            <div className="NavListLi">新增活動</div>
-                            <div className="NavListLi NowUnderLI">活動管理</div>
-                            <div className="NavListLi">已結束活動</div>
+                            
+                        <Link href='/event/create' className='Armall'><div className="NavListLi">新增活動</div></Link>
+                        <Link href='/event/list' className='Armall'><div className="NavListLi NowUnderLI">活動管理</div></Link>
+                        <Link href='/event/list/end' className='Armall'><div className="NavListLi">已結束活動</div></Link>
+
                         </div>
                     </div>
                 </div>
 
+                {myowner.length === 0 && <Noresult text={'沒有任何結果'}/>}
 
-                <div className="eventMDetailArea">
+                <div className={`eventMDetailArea ${myowner.length === 0 && 'noheight'}`}>
                     <div className="container">
 
                     {
-                        arrt.map((t,i) => (
+                        myowner.map((t,i) => {
+                            const eventdata = filtertheevent(t.event_id)
+
+                            return(
                             <div className="eventDetailist">
                             <div className="DetailistBox">
-                                <img src="/event/e02.jpg" alt="" className="DetailistBoxPic" />
+                                <img src={`/event/${eventdata.event_cover_image}`} alt="" className="DetailistBoxPic" />
                                 <div className="DetailistBoxT">
                                     <div className="DetailistBoxTitle">
                                         <div className="Eventstatus">開放報名中</div>
                                         <div className="EventTitle">
-                                            桃園中壢新生酒店場一支會五周年狂歡派對
+                                            {eventdata.event_name}
                                         </div>
                                     </div>
                                     <div className="DetailistBoxInfo">
-                                        活動日期 - 08/24 19:00~22:00 <br />
-                                        活動地點 - 桃園市中壢區
+                                        活動日期 - {eventdata.event_date} {eventdata.event_time_start.substring(0, 5)}~{eventdata.event_time_end.substring(0, 5)}
+                                        <br />
+                                        活動地點 - {eventdata.event_city}
                                     </div>
                                 </div>
                                 <div className="DetailistBoxArr" onClick={() => handleClick(i)}>
@@ -104,12 +117,11 @@ export default function Applyevent() {
                                     <div className="col-10">
                                         <div className="ListInfoEventT">
                                             <div className="mb-3">
-                                                活動標題 : 桃園中壢新生酒店場一支會五周年狂歡派對
-                                                桃園中壢新生酒店場一支會五周年狂歡派對
+                                                活動標題 : {eventdata.event_name}
                                             </div>
-                                            <div>活動日期 : 2024/08/04 19:00~22:00</div>
-                                            <div>活動地點 : 台北市萬華區西寧南路82巷2號</div>
-                                            <div>活動地標 : ONCE Cafe&amp;Bar 無心戒酒互助會</div>
+                                            <div>活動日期 : {eventdata.event_date} {eventdata.event_time_start.substring(0, 5)}~{eventdata.event_time_end.substring(0, 5)}</div>
+                                            <div>活動地點 : {eventdata.event_address}</div>
+                                            <div>活動地標 : {eventdata.event_venue}</div>
                                         </div>
                                     </div>
                                     <div className="col-2">
@@ -211,7 +223,7 @@ export default function Applyevent() {
                                 </div>
                             </div>
                         </div>
-                        ))
+                        )})
                     }
                         
                         

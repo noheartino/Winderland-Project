@@ -303,7 +303,7 @@ router.post('/cashOnDelivery', async (req, res) => {
 
     // 插入商品和課程
     const insertOrderItemsQuery = `
-      INSERT INTO order_details (order_uuid, product_id, product_detail_id, class_id, product_quantity, created_at)
+      INSERT INTO order_detailss (order_uuid, product_id, product_detail_id, class_id, product_quantity, created_at)
       VALUES (?, ?, ?, ?, ?, NOW());
     `
     for (const item of cartItems) {
@@ -498,7 +498,7 @@ router.post('/creditCardPayment', async (req, res) => {
 
     // 插入商品和課程
     const insertOrderItemsQuery = `
-      INSERT INTO order_details (order_uuid, product_id, product_detail_id, class_id, product_quantity, created_at)
+      INSERT INTO order_detailss (order_uuid, product_id, product_detail_id, class_id, product_quantity, created_at)
       VALUES (?, ?, ?, ?, ?, NOW());
     `
     for (const item of cartItems) {

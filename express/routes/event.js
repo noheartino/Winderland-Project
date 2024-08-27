@@ -140,17 +140,22 @@ router.get('/list/:id', async (request, response) => {
 
   const infoId = request.params.id;
 
-  const queryToFetchmyin = `SELECT * FROM event_apply WHERE user_id = ?`;
+  const queryToFetchmyin = `SELECT * FROM event`;
 
-  const queryToFetchin = `WITH RankedEvents AS (
-    SELECT *,
-    ROW_NUMBER() OVER (PARTITION BY event_id ORDER BY id) AS rn
+  const queryToFetchin = `
+    WITH MinIdPerEvent AS (
+    SELECT event_id, MIN(id) AS min_id
     FROM event_apply
-    WHERE user_id = ?)
+    GROUP BY event_id),
 
-    SELECT * FROM RankedEvents WHERE rn = 1`;
-
-  
+    FilteredEvents AS (
+    SELECT ea.*
+    FROM event_apply ea
+    JOIN MinIdPerEvent mie ON ea.event_id = mie.event_id AND ea.id = mie.min_id)
+    
+    SELECT *
+    FROM FilteredEvents
+    WHERE user_id = ?;`;
 
   try {
     const [inResults, inviResults] = await Promise.all([
