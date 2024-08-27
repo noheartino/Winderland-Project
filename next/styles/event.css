@@ -1223,6 +1223,15 @@ a.Armallmt{
         position: relative;
         background: url(/event/Line\ 14.png) no-repeat bottom/100% 5%;
 
+       a{
+            /* border: 2px solid lightblue; */
+            @media screen and (max-width: 576px){
+                font-size: 14px;
+                width: 25%;
+                letter-spacing: 1px;
+            }
+       }
+
         .NavListLi{
             text-align: center;
             font-weight: 900;
@@ -1238,12 +1247,12 @@ a.Armallmt{
                 width: 110px;
                 letter-spacing: 1px;
             }
+
             @media screen and (max-width: 576px){
-                padding-block: 10px;
-                font-size: 12px;
-                width: 25%;
-                letter-spacing: 1px;
+                width: 100%;
             }
+
+            
         }
 
         .NowUnderLI{
@@ -1346,10 +1355,15 @@ a.Armallmt{
 
 /* list */
 
+.eventMDetailArea.noheight{
+    min-height: 0px;
+}
 
 .eventMDetailArea{
     margin-top: 20px;
     margin-bottom: 80px;
+    min-height: 500px;
+
 
     @media screen and (max-width: 992px){
         padding-inline: 15px;
