@@ -132,6 +132,12 @@
   font-size: x-large;
   color: var(--info-dark_blue);
   outline: none;
+  background-color: transparent; /* 添加這行 */
+}
+.loginContent .loginInput::placeholder {
+  color: #afa6a6;
+  font-size: medium;
+  background-color: transparent; /* 添加這行 */
 }
 
 .loginContent .span {
