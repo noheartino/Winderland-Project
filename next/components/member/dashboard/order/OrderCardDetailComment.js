@@ -87,13 +87,13 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
                 <div key={item.item_id} className={`mb-3 ${styles.productComment}`}>
 
                     <h3 className={styles.productTitle}>
-                    <span className={styles.itemType}>{item.item_type === 'product' ? '商品' : '課程'}－</span>
+                        <span className={styles.itemType}>{item.item_type === 'product' ? '商品' : '課程'}－</span>
                         {item.item_name}
-                       
+
                     </h3>
 
                     {submittedComments[item.item_id] ? (
-                        
+
                         <div className={styles.commentDone}>
                             <p >已成功送出評論</p>
                             <p className='ms-5'>評分: {submittedComments[item.item_id].rating}顆星</p>
@@ -113,32 +113,42 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
                                     onChange={(e) => handleCommentChange(item.item_id, e.target.value)}
                                 />
                             </div>
+
                             <div className={`mb-3 ${styles.commentRating}`}>
-                        <label htmlFor={`rating-${item.item_id}`} className={`form-label ${styles.ratingLabel}`}>
-                            {item.item_type === 'product' ? '商品評分' : '課程評分'}
-                        </label>
-                        <div 
-                            id={`rating-${item.item_id}`} 
-                            className={`${styles.star} ${styles.starRating}`}
-                            onMouseLeave={() => handleRatingLeave(item.item_id)}
-                        >
-                            {[5, 4, 3, 2, 1].map(star => (
-                                <span
-                                  key={star}
-                                            onClick={() => handleRatingChange(item.item_id, star)}
-                                            onMouseEnter={() => handleRatingHover(item.item_id, star)}
-                                            className={star <= (hoveredRatings[item.item_id] || comments[item.item_id]?.rating || 0) ? styles.active : ''}
-                                >
-                                    ★
-                                </span>
-                            ))}
-                        </div>
-                                <button
-                                    className={styles.commentBtn}
-                                    onClick={() => handleSubmit(item.item_id, item.item_type)}
-                                >
-                                    送出
-                                </button>
+
+
+                                {/* 星級評分 */}
+                                <label htmlFor={`rating-${item.item_id}`} className={`form-label ${styles.ratingLabel}`}>
+                                    {item.item_type === 'product' ? '商品評分' : '課程評分'}
+                                </label>
+
+                                <div className="div">
+                                    <div
+                                        id={`rating-${item.item_id}`}
+                                        className={`${styles.star} ${styles.starRating}`}
+                                        onMouseLeave={() => handleRatingLeave(item.item_id)}
+                                    >
+                                        {[5, 4, 3, 2, 1].map(star => (
+                                            <span
+                                                key={star}
+                                                onClick={() => handleRatingChange(item.item_id, star)}
+                                                onMouseEnter={() => handleRatingHover(item.item_id, star)}
+                                                className={star <= (hoveredRatings[item.item_id] || comments[item.item_id]?.rating || 0) ? styles.active : ''}
+                                            >
+                                                ★
+                                            </span>
+                                        ))}
+                                    </div>
+                                    </div>
+                                <div className="div">
+                                    <button
+                                        className={styles.commentBtn}
+                                        onClick={() => handleSubmit(item.item_id, item.item_type)}
+                                    >
+                                        送出
+                                    </button>
+                                </div>
+
                             </div>
                         </div>
                     )}
