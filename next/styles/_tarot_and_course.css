@@ -66,6 +66,14 @@
     height: 300px;
     background-color: #57021e;
   }
+  & .elipes01{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; /* 限制顯示的行數 */
+    line-clamp: 1;
+    text-overflow: ellipsis; /* 添加這一行來顯示省略號 */
+  }
   & .w-80 {
     width: 80%;
   }
@@ -426,7 +434,7 @@
     margin-right: 0.35rem;
   }
   & .star-without-score {
-    color: var(--shallow-light-gray);
+    color: var(--tarot_white_hover);
     font-size: 1.125rem;
     margin-right: 0.35rem;
   }

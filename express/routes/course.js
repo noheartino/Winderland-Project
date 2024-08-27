@@ -5,6 +5,32 @@ import connection from '##/configs/mysql.js'
 const router = express.Router()
 let userId = 1
 
+router.get('/teacher', async (req, res) => {
+  // teacher 列表
+  let teachersSQL = `SELECT teacher.*, images_teacher.teacher_id, images_teacher.path AS teacher_path FROM teacher JOIN images_teacher ON teacher.id = images_teacher.teacher_id`
+  let commentsSQL = `SELECT comments.*, comments.id AS comment_id, class.*, class.id AS class_id, class.description AS class_description, class.name AS class_name, teacher.*, teacher.id AS teacher_id, teacher.description AS teacher_description, teacher.name AS teacher_name, images_teacher.teacher_id, images_teacher.path AS teacher_path
+  FROM
+    comments
+  JOIN
+    class ON comments.entity_id = class.id
+  JOIN
+    teacher ON class.teacher_id = teacher.id
+  JOIN
+    images_teacher ON teacher.id = images_teacher.teacher_id
+  WHERE
+    comments.entity_type = 'class'`
+
+  try {
+    const [teachers] = await connection.execute(teachersSQL)
+    const [comments] = await connection.execute(commentsSQL)
+
+    res.json({ teachers, comments })
+    console.log('來源url:' + req.originalUrl)
+  } catch (err) {
+    res.status(500).json({ error: 'error' + err.message })
+  }
+})
+
 router.get('/', async (req, res) => {
   const { search, view } = req.query
   let querySQL = null

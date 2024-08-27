@@ -46,7 +46,7 @@ export default function CourseNav({setIsHomePage, isHomePage}) {
     }
   };
   const handleClick = (e) => {
-    const tagText = e.target.textContent;
+    const tagText = e.target.textContent.slice(1);
     setIsHomePage(true)
     if (tagText.trim()) {
       router.push({
@@ -87,40 +87,40 @@ export default function CourseNav({setIsHomePage, isHomePage}) {
           <div className="row px-0 m-0 justify-content-center">
             <div className="col-11 col-md-6 d-flex justify-content-center flex-wrap">
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                品酒
+                #品酒
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                挑選酒
+                #挑選酒
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                認證課程
+                #認證課程
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                法國
+                #法國
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                SFM
+                #SFM
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                BWC布根地
+                #BWC布根地
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                CIVB波爾多葡萄酒學院
+                #CIVB波爾多葡萄酒學院
               </span>
               <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
-                CIVA
+                #CIVA
               </span>
               <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
-                阿爾蕯斯
+                #阿爾蕯斯
               </span>
               <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
-                葡萄牙公會
+                #葡萄牙公會
               </span>
               <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
-                葡萄酒學者認證
+                #葡萄酒學者認證
               </span>
               <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
-                IWS
+                #IWS
               </span>
             </div>
           </div>

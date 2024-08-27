@@ -96,7 +96,7 @@ export default function CourseIndex() {
       router.push({
         pathname: '/course',
         query: { view: buttonText },
-      });
+      }, undefined, {scroll: false});
       console.log("推一個路由: /course?view="+buttonText+"，courseBtn="+courseBtn+"，buttonText="+buttonText);
   }
   function clearQuery() {
