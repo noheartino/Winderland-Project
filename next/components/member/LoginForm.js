@@ -172,6 +172,7 @@ export default function LoginForm() {
                     會員密碼
                   </label>{' '}
                   <br />
+
                   {/* 顯示密碼checkbox */}
                   <div
                     className={`${styles.formCheck} align-items-center d-flex`}
@@ -183,18 +184,8 @@ export default function LoginForm() {
                       onChange={() => {
                         setShowPassword(!showPassword)
                       }}
-                      defaultValue=""
                     />
-                    {/* <input
-                    
-                      type="radio"
-                      name="showPassword"
-                      checked={showPassword}
-                      onChange={() => {
-                        setShowPassword(!showPassword)
-                      }}
-                      className={`${styles.formCheckInput} styled-checkbox me-2`}
-                    /> */}
+                   
                     <label
                       className={styles.formCheckLabel}
                       htmlFor="showPassword"
@@ -211,13 +202,13 @@ export default function LoginForm() {
                   value={user.password}
                   onChange={handleFieldChange}
                 />
-                {/* <span className={`${styles.span} d-none`}>
-                          請輸入密碼。{errors.password}
-                        </span> */}
+            
                 {errors.password && <span className={`${styles.error} ${styles.show} ${styles.errorPwd}`}>{errors.password}</span>}
                 <div
                   className={`d-flex justify-content-between align-items-center ${styles.forgetPwd}`}
                 >
+
+                {/* 記住我的登入 */}
                   <div
                     className={`${styles.formCheck} align-items-center d-flex`}
                   >
@@ -231,13 +222,13 @@ export default function LoginForm() {
                       className={styles.formCheckLabel}
                       htmlFor="rememberMe"
                     >
-                      {' '}
+
                       記住我的登入
                     </label>
                   </div>
                   <Link
                     href="/member/forget-password"
-                    className={styles.red}
+                    className={styles.outlineButton}
                   >
                     忘記密碼？
                   </Link>
@@ -372,7 +363,7 @@ export default function LoginForm() {
 
                   <Link
                     href="/member/forget-password"
-                    className={styles.red}
+                    className={styles.outlineButton}
                   >
                     忘記密碼？
                   </Link>

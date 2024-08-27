@@ -27,8 +27,10 @@ export default function MemberPage() {
 
     return (
         <>
+        <div className={styles.bg} >
+        
             <main className={styles.main}>
-                <div className={styles.bg} >
+                
                     <Nav />
 
                     {/* desk */}
@@ -90,11 +92,11 @@ export default function MemberPage() {
                             </div>
                         </div>
                     </div>
-                </div>
+         
                 <Footer />
 
             </main>
-
+</div>
             <style jsx>
             {`
                     .main-m {
@@ -132,7 +134,7 @@ export default function MemberPage() {
                         color: var(--purple);
                         border-bottom: 10px solid var(--light);
                         white-space: nowrap;
-                        margin-bottom: 25px;
+                             margin-bottom: 25px;
                        
                     }
                     .nav-link {
@@ -179,17 +181,18 @@ export default function MemberPage() {
                         list-style: none;
                     }
                     .nav-tabs-rwd .nav-link {
-                        font-size: 12px;
+                        font-size: 18px;
                         letter-spacing: 1.8px;
                     }
                     .nav-tabs-rwd .nav-link::after {
-                        bottom: -18px;
+                        bottom: -15px;
+                        width:100%;
                     }
                     .nav-tabs-rwd .nav-link:hover::after,
                     .nav-tabs-rwd .nav-link.active::after {
                         border-bottom: 5px solid var(--purple);
-                        left: -10px;
-                        width: 170%;
+                        {/* left: -10px; */}
+                        {/* width: 170%; */}
                     }
                 `}</style>
         </>

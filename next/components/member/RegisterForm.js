@@ -392,7 +392,7 @@ export default function RegisterForm() {
               <br />
               <p>
                 已經是會員了嗎？
-                <Link href="/member/login" className={styles.red}>
+                <Link href="/member/login" className={styles.red} >
                   登入
                 </Link>。
               </p>

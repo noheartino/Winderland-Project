@@ -70,15 +70,15 @@ export default function ResetPasswordForm() {
       {/* desk */}
       <div className={`d-none d-lg-block`}>
         <main className={styles.main}>
-          <div className={styles.bg}>
-            <div className={styles.loginBox}>
+          <div className={styles.bgResetPwd}>
+            <div className={styles.resetPwdBox}>
 
               {message && <div className={` ms-5 mt-5 ${styles.message} ${message.includes('成功') ? styles.success : styles.error}`}>{message}</div>}
 
               <form onSubmit={handleSubmit}>
                 <div className={`${styles.tabContent} ms-5`}>
                   <div className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent}`}>
-                    <label className={`${styles.label} mt-5 mb-2`} htmlFor="newPassword">
+                    <label className={`${styles.resetLabel} mt-5 mb-2`} htmlFor="newPassword">
                       重設密碼
                     </label>{' '}
                     <p className={`${styles.resetNotice} me-5`}>請重新設定您的密碼，完成設定後用新密碼登入。

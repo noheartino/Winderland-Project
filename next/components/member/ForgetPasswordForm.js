@@ -39,8 +39,8 @@ export default function ForgetPasswordForm() {
             {/* desk */}
             <div className={` d-none d-lg-block`}>
                 <main className={styles.main}>
-                    <div className={styles.bg}>
-                        <div className={styles.loginBox}>
+                    <div className={styles.bgForget}>
+                        <div className={styles.forgetPwdBox}>
                             <form onSubmit={handleSubmit}>
                                 <div className={`${styles.tabContent} ms-5`}>
                                     {/* 忘記密碼 */}
@@ -54,7 +54,7 @@ export default function ForgetPasswordForm() {
                                         <input
                                             type="email"
                                             name="email"
-                                            className={styles.loginInput}
+                                            className={styles.forgetPwdInput}
                                             placeholder='請輸入Email'
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
