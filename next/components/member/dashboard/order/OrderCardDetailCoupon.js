@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import styles from '@/components/member/dashboard/order/OrderCardDetail.module.css'
+import styles from '@/components/member/dashboard/order/OrderCardDetailCoupon.module.css'
 
 
 export default function OrderCardDetailCoupon({ orderInfo }) {

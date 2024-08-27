@@ -1,78 +1,10 @@
 import express from 'express'
-const router = express.Router()
 import connection from '##/configs/mysql.js'
 import authenticate from '#middlewares/authenticate.js'
+const router = express.Router()
 
+// # 歷史訂單
 // @ 獲取歷史訂單
-// router.get('/history', authenticate, async (req, res) => {
-//   try {
-//     const userId = req.user.id
-//     console.log('Fetching orders for user:', userId)
-//     const [rows] = await connection.query(
-//       `
-//     SELECT
-//         o.order_uuid,
-//         o.status,
-//         o.payment_method,
-//         o.transport,
-//         o.created_at,
-//         o.totalMoney,
-//        (
-//           SELECT
-//             COALESCE(SUM(
-//               CASE
-//                 WHEN od.product_id IS NOT NULL THEN od.product_quantity
-//                 ELSE 0
-//               END
-//             ), 0) +
-//             COALESCE(COUNT(DISTINCT CASE WHEN od.class_id IS NOT NULL THEN od.class_id END), 0)
-//           FROM order_details od
-//           WHERE od.order_uuid = o.order_uuid
-//         ) AS total_items,
-//         (
-//           SELECT
-//             CASE
-//               WHEN od.product_id IS NOT NULL THEN 'product'
-//               ELSE 'class'
-//             END
-//           FROM order_details od
-//           WHERE od.order_uuid = o.order_uuid
-//           LIMIT 1
-//         ) AS firstItemType,
-//         (
-//           SELECT
-//             CASE
-//               WHEN od.product_id IS NOT NULL THEN
-//                 (SELECT ip.path
-//                  FROM images_product ip
-//                  WHERE ip.product_id = od.product_id
-//                  ORDER BY ip.id
-//                  LIMIT 1 OFFSET 1)  -- 選擇第二張圖片
-//               ELSE
-//                 (SELECT ic.path
-//                  FROM images_class ic
-//                  WHERE ic.class_id = od.class_id
-//                  LIMIT 1)  -- 選擇第一張圖片
-//             END
-//           FROM order_details od
-//           WHERE od.order_uuid = o.order_uuid
-//           LIMIT 1
-//         ) AS firstItemImage
-//       FROM orders o
-//       WHERE o.user_id = ?
-//       ORDER BY o.created_at DESC
-//       `,
-//       [userId]
-//     )
-//     console.log('Fetched orders:', rows)
-//     res.json({ status: 'success', data: rows })
-//   } catch (error) {
-//     console.error('獲取訂單歷史時出錯:', error)
-//     res
-//       .status(500)
-//       .json({ status: 'error', message: '服務器錯誤', error: error.message })
-//   }
-// })
 router.get('/history', authenticate, async (req, res) => {
   try {
     const userId = req.user.id
@@ -230,6 +162,115 @@ router.get('/history/:orderUuid', authenticate, async (req, res) => {
     })
   } catch (error) {
     console.error('獲取訂單詳情時出錯:', error)
+    res
+      .status(500)
+      .json({ status: 'error', message: '服務器錯誤', error: error.message })
+  }
+})
+
+// # 訂單評論
+// @ 獲取訂單可評論商品
+router.get('/commentable-items/:orderUuid', authenticate, async (req, res) => {
+  try {
+    const { orderUuid } = req.params
+    const userId = req.user.id
+
+    // 檢查訂單是否屬於該用戶且在30天內
+    const [orderCheck] = await connection.query(
+      `SELECT created_at FROM orders 
+       WHERE order_uuid = ? AND user_id = ? AND created_at > DATE_SUB(NOW(), INTERVAL 30 DAY)`,
+      [orderUuid, userId]
+    )
+
+    if (orderCheck.length === 0) {
+      return res
+        .status(403)
+        .json({ status: 'error', message: '無法評論此訂單' })
+    }
+
+    // 獲取可評論的商品和課程
+    const [items] = await connection.query(
+      `SELECT 
+        od.id as order_detail_id,
+        CASE 
+          WHEN od.product_id IS NOT NULL THEN od.product_id
+          ELSE od.class_id
+        END as item_id,
+        CASE 
+          WHEN od.product_id IS NOT NULL THEN p.name
+          ELSE c.name
+        END as item_name,
+        CASE 
+          WHEN od.product_id IS NOT NULL THEN 'product'
+          ELSE 'class'
+        END as item_type,
+        CASE
+          WHEN od.product_id IS NOT NULL THEN pd.capacity
+          ELSE NULL
+        END as capacity,
+        CASE
+          WHEN od.product_id IS NOT NULL THEN pd.years
+          ELSE NULL
+        END as years,
+        CASE
+          WHEN od.product_id IS NOT NULL THEN co.name
+          ELSE NULL
+        END as country_name,
+        CASE
+          WHEN od.class_id IS NOT NULL THEN t.name
+          ELSE NULL
+        END as teacher_name
+       FROM order_details od
+       LEFT JOIN product p ON od.product_id = p.id
+       LEFT JOIN product_detail pd ON od.product_detail_id = pd.id
+       LEFT JOIN product pr ON pd.product_id = pr.id
+       LEFT JOIN origin o ON pr.origin_id = o.id
+       LEFT JOIN country co ON o.country_id = co.id
+       LEFT JOIN class c ON od.class_id = c.id
+       LEFT JOIN teacher t ON c.teacher_id = t.id
+       WHERE od.order_uuid = ?
+       ORDER BY od.id`,
+      [orderUuid]
+    )
+
+    res.json({ status: 'success', data: items })
+  } catch (error) {
+    console.error('獲取可評論商品時出錯:', error)
+    res
+      .status(500)
+      .json({ status: 'error', message: '服務器錯誤', error: error.message })
+  }
+})
+
+// @ 提交評論
+router.post('/submit-comment', authenticate, async (req, res) => {
+  try {
+    const { orderUuid, itemId, itemType, rating, commentText } = req.body
+    const userId = req.user.id
+
+    // 檢查訂單是否屬於該用戶且在30天內
+    const [orderCheck] = await connection.query(
+      `SELECT created_at FROM orders 
+       WHERE order_uuid = ? AND user_id = ? AND created_at > DATE_SUB(NOW(), INTERVAL 30 DAY)`,
+      [orderUuid, userId]
+    )
+
+    if (orderCheck.length === 0) {
+      return res
+        .status(403)
+        .json({ status: 'error', message: '無法評論此訂單' })
+    }
+
+    // 插入評論
+    await connection.query(
+      `INSERT INTO comments (entity_type, entity_id, user_id, comment_text, rating) 
+       VALUES (?, ?, ?, ?, ?)`,
+      [itemType, itemId, userId, commentText, rating]
+    )
+
+    res.json({ status: 'success', message: '評論已成功提交' })
+  } catch (error) {
+    console.error('提交評論時出錯:', error)
     res
       .status(500)
       .json({ status: 'error', message: '服務器錯誤', error: error.message })
