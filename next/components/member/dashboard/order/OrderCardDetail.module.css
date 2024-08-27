@@ -163,6 +163,7 @@
     margin-left: 60px;
 }
 
+
 .pointImg {
     min-width: 72px;
     min-height: 72px;
@@ -231,6 +232,7 @@
 
 .usedItem {
     margin-bottom: 10px;
+    margin-left: 50px;
 }
 
 .noCoupon {
