@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
 
-export default function CourseList({ myBox, classAssigns, setIsHomePage }) {
+export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage }) {
     const router = useRouter();
     const {search} = router.query
     const assigns = classAssigns?.filter((assign) => {
@@ -10,13 +10,23 @@ export default function CourseList({ myBox, classAssigns, setIsHomePage }) {
     const assignedQ = assigns?.length;
 
     function handlePressMore(){
-        setIsHomePage(false)
-        if(search){
+        if(boxType==='mycourse'){
+            setIsHomePage(false)
+            if(search){
+                router.push({
+                    pathname: '/course',
+                    query: {}
+                })
+            }
+        }
+        if(boxType==='favorite'){
+            console.log("click myfavorite more");
             router.push({
                 pathname: '/course',
-                query: {}
+                query: {test: "123"}
             })
         }
+        
     }
     function handleHref(){
         router.push({

@@ -1,11 +1,68 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import TeacherListCard from "@/components/course/teacher-list-card"
+import Link from "next/link";
 
 export default function TeacherIndex() {
+  const router = useRouter()
 let apiUrl = `http://localhost:3005/api/course/teacher`
+const {searchT} = router.query
 const [comments, setComments] = useState([])
 const [teachers, setTeachers] = useState([])
+const [searchTerm, setSearchTerm] = useState(null)
+const searchInputRef = useRef(null);
+
+useEffect(()=>{
+  apiUrl = `http://localhost:3005/api/course/teacher?searchT=`
+}, [searchT])
+
+const handleSearch = () => {
+  if (searchTerm.trim()) {
+    router.push({
+      pathname: '/course',
+      query: { search: searchTerm },
+    });
+    setIsHomePage(true)
+  }
+  if(searchTerm.trim().length<1){
+    router.push({
+      pathname: '/course',
+      query: {search:"ssss"},
+    });
+    setIsHomePage(true)
+  }
+};
+
+//處理清空搜尋
+const handleClear=(e)=>{
+  setSearchTerm("")
+  router.push({
+    pathname: '/course',
+    query: {},
+  });
+  setIsHomePage(true)
+}
+// 處理鍵盤事件
+const handleKeyDown = (e) => {
+  if (e.key === 'Enter') {
+    handleSearch();
+  }
+};
+const handleClick = (e) => {
+  const tagText = e.target.textContent.slice(1);
+  setIsHomePage(true)
+  if (tagText.trim()) {
+    router.push({
+      pathname: '/course',
+      query: { search: tagText },
+    });
+  }
+};
+const handleClickSearchIcon = (e) => {
+  searchInputRef.current.focus()
+  setSearchTerm(searchInputRef.current.value)
+  handleSearch();
+};
     useEffect(()=>{
       fetch(apiUrl)
         .then((response) => {
@@ -30,7 +87,6 @@ const [teachers, setTeachers] = useState([])
     <>
     <div className="course_wrap">
         <header></header>
-        
 
         {/*teacher-detail start */}
         <div className="fourth-page-wrap pb-5">
@@ -63,9 +119,13 @@ const [teachers, setTeachers] = useState([])
                             placeholder="搜尋關鍵字"
                             aria-label="搜尋關鍵字"
                             aria-describedby="basic-addon2"
+                            value={searchTerm}
+                            onChange={(e)=>setSearchTerm(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            ref={searchInputRef}
                           />
-                          <i className="fa-solid fa-magnifying-glass position-absolute teacher-search-icon"></i>
-                          <i className="fa-solid fa-xmark fa-xmark-teacher position-absolute"></i>
+                          <i className="fa-solid fa-magnifying-glass position-absolute teacher-search-icon" onClick={handleClickSearchIcon}></i>
+                          <i className="fa-solid fa-xmark fa-xmark-teacher position-absolute" onClick={handleClear}></i>
                         </div>
                         </div>
 
@@ -80,15 +140,15 @@ const [teachers, setTeachers] = useState([])
                               teacherScore = 0
                             }
                             return (
-                              <div key={teacher.id} className="col-12 col-md-6 col-lg-4 col-xl-3 px-10px">
-                                <TeacherListCard teacher={teacher} teacherScore={teacherScore} />
-                              </div>
+                                <div key={teacher.id} className="col-12 col-md-6 col-lg-4 col-xl-3 px-10px">
+                                  <Link href={`/course/teacher/${teacher.id}`}>
+                                    <TeacherListCard teacher={teacher} teacherScore={teacherScore} />
+                                  </Link>
+                                </div>
                           ) 
                           })}
                           {/* teacher-list-card end */}
-                          
-                          
-                          
+
                         </div>
                       </div>
                     </div>

@@ -35,6 +35,7 @@ router.get('/', async (req, res) => {
   const { search, view } = req.query
   let querySQL = null
   let querySQLParams = []
+  let classSumSQL = `SELECT class.id FROM class`
   if (!search) {
     querySQL = `SELECT 
                     class.*,
@@ -129,6 +130,7 @@ router.get('/', async (req, res) => {
                             ORDER BY orders.order_uuid ASC;`
   try {
     const [courses] = await connection.execute(querySQL, querySQLParams)
+    const [classSum] = await connection.execute(classSumSQL)
     const [comments] = await connection.execute(querySQLComments)
     const [classAssigns] = await connection.execute(querySQLClassAsign)
     const [myFavoriteCourse] = await connection.execute(
@@ -140,7 +142,14 @@ router.get('/', async (req, res) => {
     //     return res.json({ courses: [], comments: [], classAssigns: [], myFavoriteCourse: [], myCourse: [] })
     //   }
     // 傳出去的資料庫資料
-    res.json({ courses, comments, classAssigns, myFavoriteCourse, myCourse })
+    res.json({
+      courses,
+      comments,
+      classAssigns,
+      myFavoriteCourse,
+      myCourse,
+      classSum,
+    })
     console.log({ courses: courses }, { comments: comments })
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })

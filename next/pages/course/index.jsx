@@ -149,7 +149,7 @@ export default function CourseIndex() {
                   </div>
                   {/* mycourse box underline start */}
                   <div className="row px-0 m-0 h-100 course-mycourse d-flex align-items-start">
-                    <CourseBox myBox={firstMyCourse} classAssigns={classAssigns} setIsHomePage={setIsHomePage} />
+                    <CourseBox boxType={'mycourse'} myBox={firstMyCourse} classAssigns={classAssigns} setIsHomePage={setIsHomePage} />
                     {/* {console.log(myCourse[0].name)} */}
                   </div>
                   {/* mycourse box underline end */}
@@ -179,7 +179,7 @@ export default function CourseIndex() {
                   {/* myfavorite course box online start */}
                   <div className="row px-0 m-0 h-100 course-myfavorite-course d-flex align-items-start">
                     {/* {<CourseBox myFirstFavoriteCourse={myFirstFavoriteCourse ? myFirstFavoriteCourse: '123'} />} */}
-                    {<CourseBox myBox={myFirstFavoriteCourse} classAssigns={classAssigns} />}
+                    {<CourseBox boxType={'favorite'} myBox={myFirstFavoriteCourse} classAssigns={classAssigns} />}
                   </div>
                   {/* myfavorite course box online end */}
                 </div>

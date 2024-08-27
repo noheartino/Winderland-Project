@@ -1,8 +1,28 @@
 import Comment from "@/components/course/course-comment";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function CourseIndex() {
+
+  const [classSum, setClassSum] = useState([])
+   useEffect(() => {
+    fetch(`http://localhost:3005/api/course`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const { classSum } = data;
+        setClassSum(classSum);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const router = useRouter();
   const { courseId, series } = router.query;
   const [course, setCourse] = useState([]);
@@ -11,7 +31,6 @@ export default function CourseIndex() {
   let averageRating = 0;
 
   const seriesDefaultBtn = useRef(null);
-  
 
   let apiUrl = `http://localhost:3005/api/course/${courseId}`;
 
@@ -65,10 +84,25 @@ function querySeries04(e) {
   }, [series])
 
   useEffect(() => {
-    if (courseId) {
+    if (courseId && classSum.length > 0) {
+      // let apiUrl = `http://localhost:3005/api/course/${courseId}`;
+
+      if (courseId > classSum.length) {
+        apiUrl = `http://localhost:3005/api/course/1`;
+        router.push(`/course/1`);
+      } else {
+        if (series === 'timeOldToNew') {
+          apiUrl += `?series=timeOldToNew`;
+        } else if (series === 'scoreHtoL') {
+          apiUrl += `?series=scoreHtoL`;
+        } else if (series === 'scoreLtoH') {
+          apiUrl += `?series=scoreLtoH`;
+        }
+      }
+
       fetch(apiUrl)
         .then((response) => {
-          console.log("送出fetch，URL="+apiUrl);
+          console.log("送出fetch，URL=" + apiUrl);
           if (!response.ok) {
             throw new Error("Network response not ok");
           }
@@ -84,7 +118,9 @@ function querySeries04(e) {
           console.log(error);
         });
     }
-  }, [courseId, series]);
+  }, [courseId, classSum, series]);
+
+
 
   if (comments.length>0) {
     averageRating = (
@@ -140,7 +176,12 @@ function querySeries04(e) {
         <div className="container-fluid px-0 m-0">
           <div className="container-fluid px-0">
             <div className="container-sm px-0">
-              <div className="row px-0 m-0 pt-5 mb-4 d-none d-md-flex">
+            <div className="row px-0 m-0 justify-content-center justify-content-md-start px-10px">
+              <Link className={`px-0 col-auto`} href={"/course"}>
+                <div className="spac-1 btn-border-wine btn mt-4 mb-3"><i className="fa-solid fa-chevron-left me-1"></i>回到課程首頁</div>
+              </Link>
+            </div>
+              <div className="row px-0 mx-0 pt-5 mb-4 d-none d-md-flex">
                 <div className="col px-10px">
                   <span
                     className={`me-4 py-2 px-3 h6 ${
@@ -319,7 +360,7 @@ function querySeries04(e) {
                     <div className="row mt-5 justify-content-between align-items-start">
                       <div className="col-auto">
                         <div className="h2 spac-2 text-sec-orange">
-                          <strong>NT${course.price && course.sale_price===0 ? course.price.toLocaleString() : course.sale_price>0 ? course.sale_price.toLocaleString() : 0 }</strong>
+                          <strong>NT${course.price && course.sale_price===0 ? course.price.toLocaleString() : course.sale_price && course.sale_price>0 ? course.sale_price.toLocaleString() : 0 }</strong>
                         </div>
                         <p className={`text-gray-light h5 spac-2 mt-3 ${course.sale_price===0 ? "d-none" :"d-block" }`}>
                           <del>NT${course.sale_price>0 ? course.price.toLocaleString() : 0}</del>
@@ -442,10 +483,10 @@ function querySeries04(e) {
                     </strong>
                   </h1>
 
-                  <div className="row mx-0 text-sec-dark-blue spac-1 mt-4">
+                  <div className={`row mx-0 text-sec-dark-blue spac-1 mt-4 ${course?.online===1 ? "d-none" :"d-flex"}`}>
                     <div className="col-12 p-0">
                       <p className="text-sec-dark-blue">
-                        <i className={`fa-regular fa-calendar-days me-1 ${course?.online===1 ? "d-none" :"d-flex"}`}></i>
+                        <i className={`fa-regular fa-calendar-days me-1`}></i>
                         上課日期：{handleDateFormat(course?.course_start)}-{handleDateFormat(course?.course_end)}
                       </p>
                     </div>
