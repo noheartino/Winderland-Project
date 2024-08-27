@@ -7,6 +7,8 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
     const [submittedComments, setSubmittedComments] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [hoveredRatings, setHoveredRatings] = useState({});
+
 
     useEffect(() => {
         fetchCommentableItems();
@@ -33,7 +35,17 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
 
     const handleRatingChange = (itemId, rating) => {
         setComments(prev => ({ ...prev, [itemId]: { ...prev[itemId], rating } }));
+        setHoveredRatings(prev => ({ ...prev, [itemId]: null })); // Reset hover state
     };
+
+    const handleRatingHover = (itemId, rating) => {
+        setHoveredRatings(prev => ({ ...prev, [itemId]: rating }));
+    };
+
+    const handleRatingLeave = (itemId) => {
+        setHoveredRatings(prev => ({ ...prev, [itemId]: null }));
+    };
+
 
     const handleCommentChange = (itemId, text) => {
         setComments(prev => ({ ...prev, [itemId]: { ...prev[itemId], text } }));
@@ -102,20 +114,25 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
                                 />
                             </div>
                             <div className={`mb-3 ${styles.commentRating}`}>
-                                <label htmlFor={`rating-${item.item_id}`} className={`form-label ${styles.ratingLabel}`}>
-                                    {item.item_type === 'product' ? '商品評分' : '課程評分'}
-                                </label>
-                                <div className={styles.star}>
-                                    {[1, 2, 3, 4, 5].map(star => (
-                                        <span
-                                            key={star}
+                        <label htmlFor={`rating-${item.item_id}`} className={`form-label ${styles.ratingLabel}`}>
+                            {item.item_type === 'product' ? '商品評分' : '課程評分'}
+                        </label>
+                        <div 
+                            id={`rating-${item.item_id}`} 
+                            className={`${styles.star} ${styles.starRating}`}
+                            onMouseLeave={() => handleRatingLeave(item.item_id)}
+                        >
+                            {[5, 4, 3, 2, 1].map(star => (
+                                <span
+                                  key={star}
                                             onClick={() => handleRatingChange(item.item_id, star)}
-                                            style={{ cursor: 'pointer', color: star <= (comments[item.item_id]?.rating || 0) ? 'gold' : 'gray' }}
-                                        >
-                                            ★
-                                        </span>
-                                    ))}
-                                </div>
+                                            onMouseEnter={() => handleRatingHover(item.item_id, star)}
+                                            className={star <= (hoveredRatings[item.item_id] || comments[item.item_id]?.rating || 0) ? styles.active : ''}
+                                >
+                                    ★
+                                </span>
+                            ))}
+                        </div>
                                 <button
                                     className={styles.commentBtn}
                                     onClick={() => handleSubmit(item.item_id, item.item_type)}

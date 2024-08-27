@@ -99,3 +99,32 @@
     margin-top: 60px;
     margin-left: 70px;
 }
+
+.star {
+    color: grey;
+    font-size: 30px;
+    margin-bottom: 45px;
+    margin-top: 10px;
+}
+
+.starRating {
+    display: inline-block;
+    unicode-bidi: bidi-override;
+    direction: rtl;
+}
+
+.starRating > span {
+    display: inline-block;
+    position: relative;
+    width: 1.1em;
+    cursor: pointer;
+}
+
+.starRating > span:hover:before,
+.starRating > span:hover ~ span:before,
+.starRating > span.active:before,
+.starRating > span.active ~ span:before {
+    content: "\2605";
+    position: absolute;
+    color: #9A5B69;
+}
