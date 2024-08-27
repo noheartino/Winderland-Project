@@ -242,7 +242,7 @@ export default function Homepage() {
         const mouseX = parseInt((e.clientX / window.innerWidth) * 100);
 
 
-        console.log(mouseX);
+        // console.log(mouseX);
 
 
         if (mouseX < 10) {

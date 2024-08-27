@@ -2,24 +2,14 @@ import React, { useState, useEffect } from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import CouponCard from "./CouponCard";
 import CouponPlusModal from "./CouponPlusModal";
-import { useAuth } from "@/hooks/use-auth";
 
-export default function CouponStorage({ userId, freeCoupon }) {
+export default function CouponStorage({ userId, freeCoupon, memberLevelName }) {
   const [coupons, setCoupons] = useState([]);
-  const [loading, setLoading] = useState(true); // 初始為 true，表示正在載入
-  const [error, setError] = useState(null); // 用於處理錯誤
-
+  const [error, setError] = useState(null);
+  
   useEffect(() => {
     const fetchUserCoupons = async () => {
-      // console.log("Fetching user coupons...");
       try {
-        // 模擬網絡延遲
-        // await new Promise((resolve) => setTimeout(resolve, 500));
-
-        if (!userId) {
-          setLoading(false);
-          return;
-        }
         // 會員獲取的優惠券
         const response = await fetch(
           "http://localhost:3005/api/coupon/get-coupon",
@@ -28,7 +18,9 @@ export default function CouponStorage({ userId, freeCoupon }) {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ user_id: userId }),
+            body: JSON.stringify({
+              user_id: userId,
+            }),
           }
         );
 
@@ -37,20 +29,16 @@ export default function CouponStorage({ userId, freeCoupon }) {
             `Network response was not ok. Status: ${response.status}`
           );
         }
-
         const data = await response.json();
-        // console.log("Coupons fetched:", data);
         setCoupons(data);
       } catch (error) {
         console.error("Error fetching coupons:", error);
         setError(error.message);
-      } finally {
-        setLoading(false);
       }
     };
-
     fetchUserCoupons();
   }, [userId]);
+
 
   return (
     <>
@@ -61,7 +49,9 @@ export default function CouponStorage({ userId, freeCoupon }) {
           <span className={`${style.CTitle} row py-2`}>
             <i className="fa-solid fa-ticket col-auto" />
             優惠券倉庫
-            <i className={`d-lg-none fa-solid fa-angle-down ${style.pointDown} col`} />
+            <i
+              className={`d-lg-none fa-solid fa-angle-down ${style.pointDown} col`}
+            />
           </span>
 
           <div className="row mt-2">
@@ -85,8 +75,9 @@ export default function CouponStorage({ userId, freeCoupon }) {
           >
             領取本月會員優惠券+
           </a>
+          {/* {console.log(coupons)} */}
           <div className={`${style.membership} mt-2`}>
-            <p className={`${style.memberP} p-2`}>白金會員</p>
+            {<p className={`${style.memberP} p-2`}>{memberLevelName}會員</p>}
           </div>
         </div>
       </div>
@@ -117,7 +108,7 @@ export default function CouponStorage({ userId, freeCoupon }) {
       {/* 1 */}
       <div className={`${style.couponZone} row d-none d-lg-flex`}>
         {/* 桌機優惠券 */}
-        {/* {console.log(coupons)} */}
+        {console.log(coupons)}
         {coupons.map((coupon) => (
           <CouponCard key={coupon.id} coupon={coupon} />
         ))}

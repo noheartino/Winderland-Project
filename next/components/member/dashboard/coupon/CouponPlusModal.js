@@ -1,17 +1,8 @@
 import React, { useState, useEffect } from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import CouponCardModal from "./CouponCardModal";
-// import { useRouter } from "next/router";
-import { useAuth } from "@/hooks/use-auth";
 
 export default function CouponPlusModal({ userId, freeCoupon, setCoupons }) {
-  // 這邊是使用hooks的useAuth測試
-  // const { auth } = useAuth(); // 取得認證資訊
-  // const userFreeCoupon = auth.userData.free_coupon; // 取得使用者 ID
-  // const memberLevelId = auth.userData.member_level_id; // 取得會員等級 ID
-  console.log(userId);
-  // const router = useRouter();
-
   const [plusCoupons, setplusCoupons] = useState([]);
   const [selectedCoupons, setSelectedCoupons] = useState([]);
   const [claimedCoupons, setClaimedCoupons] = useState([]);
@@ -29,16 +20,20 @@ export default function CouponPlusModal({ userId, freeCoupon, setCoupons }) {
       });
 
     // 獲取用戶已經領取的優惠券
-    fetch(`http://localhost:3005/api/user_coupon/${userId}`)
+    fetch(`http://localhost:3005/api/coupon/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        const usedClaimedCouponIds = data
+        const userCoupons = data.userCoupons
+        // console.log(userCoupons)
+        const usedClaimedCouponIds = userCoupons
           .filter((coupon) => coupon.status === "used") // 只選擇 status 為 'used' 的資料
           .map((coupon) => coupon.coupon_id); // 提取 coupon_id
+        // console.log(usedClaimedCouponIds)
         // 過濾出 status 為 'get' 的優惠券
-        const claimedCouponIds = data
+        const claimedCouponIds = userCoupons
           .filter((coupon) => coupon.status === "get") // 只選擇 status 為 'get' 的資料
           .map((coupon) => coupon.coupon_id); // 提取 coupon_id
+        // console.log(claimedCouponIds)
 
         setUsedClaimedCoupons(usedClaimedCouponIds);
         setClaimedCoupons(claimedCouponIds);
@@ -47,6 +42,7 @@ export default function CouponPlusModal({ userId, freeCoupon, setCoupons }) {
         console.error("Error fetching user coupons:", error);
       });
   }, [userId]);
+
   // console.log(freeCoupon)
   // 新增到會員擁有的優惠券空陣列
   const handleCouponSelect = (coupon) => {
@@ -111,16 +107,18 @@ export default function CouponPlusModal({ userId, freeCoupon, setCoupons }) {
         setSelectedCoupons([]); // 清空選擇列表
 
         // 重新 fetch 用戶已經領取的優惠券
-      fetch(`http://localhost:3005/api/user_coupon/${userId}`)
+      fetch(`http://localhost:3005/api/coupon/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        const usedClaimedCouponIds = data
-          .filter((coupon) => coupon.status === "used")
-          .map((coupon) => coupon.coupon_id);
-        const claimedCouponIds = data
-          .filter((coupon) => coupon.status === "get")
-          .map((coupon) => coupon.coupon_id);
-
+        const userCoupons = data.userCoupons
+        const usedClaimedCouponIds = userCoupons
+          .filter((coupon) => coupon.status === "used") // 只選擇 status 為 'used' 的資料
+          .map((coupon) => coupon.coupon_id); // 提取 coupon_id
+        // 過濾出 status 為 'get' 的優惠券
+        const claimedCouponIds = userCoupons
+          .filter((coupon) => coupon.status === "get") // 只選擇 status 為 'get' 的資料
+          .map((coupon) => coupon.coupon_id); // 提取 coupon_id
+        console.log(claimedCouponIds)
         setUsedClaimedCoupons(usedClaimedCouponIds);
         setClaimedCoupons(claimedCouponIds);
       })
@@ -182,7 +180,7 @@ export default function CouponPlusModal({ userId, freeCoupon, setCoupons }) {
                 const isChecked = selectedCoupons.some(
                   (c) => c.id === coupon.id
                 );
-                {/* {console.log(claimedCoupons);} */}
+                {/* {console.log(coupon);} */}
                 {/* {console.log(selectedCoupons)} */}
                 {/* console.log(`Coupon ID: ${coupon.id}, isChecked: ${isChecked}`); */}
 

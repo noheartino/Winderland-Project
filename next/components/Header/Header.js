@@ -10,7 +10,7 @@ export default function Nav() {
   const [isOpen, setisOpen] = useState(false);
   const navRef = useRef(null);
   const { cartQuantity } = useContext(CartContext); // 使用 CartContext
-  console.log('總數量',cartQuantity)
+  // console.log('總數量',cartQuantity)
 
   const Data = useAuth().auth
   const userData = Data.userData
