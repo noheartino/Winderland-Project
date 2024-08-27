@@ -1,0 +1,34 @@
+.noresult{
+    position: relative;
+    height: auto;
+    width: 100%;
+    .noresultpic{
+        margin-top: 50px;
+        width: 100%;
+        height: 700px;
+        /* border: 3px solid lightblue; */
+        background: url(/event/noresult.jpg) no-repeat center/contain;
+        position: relative;
+        @media screen and (max-width: 576px){
+            height: 400px;
+        }
+    }
+    
+    .noresulttext{
+        position: absolute;
+        z-index: 10;
+        top: 20px;
+        /* border: 2px solid lightblue; */
+        font-size: 32px;
+        letter-spacing: 5px;
+        font-weight: 900;
+        color: #355e7e;
+        width: 100%;
+        text-align: center;
+        @media screen and (max-width: 576px){
+            font-size: 24px;
+            top: 0px;
+        }
+    }
+}
+

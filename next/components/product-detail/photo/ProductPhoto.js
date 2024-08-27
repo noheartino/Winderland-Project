@@ -4,7 +4,7 @@ import { useProduct } from "@/context/ProductContext";
 
 export default function ProductPhoto() {
   const { product, loading, error } = useProduct();
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(1);
 
   useEffect(() => {
     if (
@@ -13,6 +13,8 @@ export default function ProductPhoto() {
       product[0].images &&
       product[0].images.length > 0
     ) {
+      product[0].images.reverse();
+      console.log(product[0].images)
       setCurrentImageIndex(0);
     }
   }, [product]);

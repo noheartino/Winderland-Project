@@ -4,6 +4,7 @@ import EventHeader from "@/components/event/event-header";
 import Footer from "@/components/footer/footer";
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Link from "next/link";
 
 export default function Einfo() {
 
@@ -22,10 +23,23 @@ export default function Einfo() {
 
   if (!infodata) return <div>Loading...</div>;
 
+  const eventinfo = infodata.eventinfo[0] || [];
+  const applyinfo = infodata.applyinfo || [];
+  // const applyamount = infodata.applyinfo[0].length || [];
+  const limitper = Math.round((applyinfo.length/eventinfo.people_limit)*100)
+
+  let age = 0
+  applyinfo.forEach(i => age += i.age )
+  let agesum = Math.round(age/applyinfo.length)
+
+  const females = applyinfo.filter(p => p.gender === 1).length
+  const males = applyinfo.filter(p => p.gender === 0).length
+  const gavg = Math.round((males/(males+females))*100)
+
   return (
     <>
       <Nav />
-      {/* {infodata ? <pre>{JSON.stringify(infodata, null, 2)}</pre> : 'Loading...'} */}
+      {/* {applyinfo ? <pre>{JSON.stringify(applyinfo, null, 2)}</pre> : 'Loading...'} */}
       <EventHeader />
       <div className="eventPageArea">
         <div className="eventPageAreaBg1 d-none d-lg-block" />
@@ -33,34 +47,37 @@ export default function Einfo() {
         <div className="container">
           <div className="row g-5">
             <div className="col-12 col-lg-5">
-              <img src={`/event/${infodata[0].event_cover_image}`} alt="" className="eventPageimg" />
+              <img src={`/event/${eventinfo.event_cover_image}`} alt="" className="eventPageimg" />
               <div className="eventduring">
-                <div className="eventduring_box">開放報名中</div>
-                <div className="eventduring_text">報名期間 : {infodata[0].apply_start.substring(5, 10).replace("-","/")}~{infodata[0].apply_end.substring(5, 10).replace("-","/")}</div>
+                <div className={`eventduring_box ${eventinfo.status === 1 ? 'applyend' : ''}`}>{eventinfo.status === 1 ? '報名已截止' : applyinfo.length >= eventinfo.people_limit ? '目前名額已滿' : '開放報名中'}</div>
+                {eventinfo.status === 2 && <div className="eventduring_text">報名期間 : {eventinfo.apply_start.substring(5, 10).replace("-","/")}~{eventinfo.apply_end.substring(5, 10).replace("-","/")}</div>}
               </div>
               <div className="eventLimit">
-                <div className="eventLimiText">
-                  <div>目前人數 : </div>
-                  <div>人數上限 : {infodata[0].people_limit}人</div>
+                <div className={`eventLimiText ${limitper>85 && 'limit'}`}>
+                
+                  <div>目前人數 : {applyinfo.length}人</div>
+                  <div>人數上限 : {eventinfo.people_limit}人</div>
                 </div>
-                <div className="eventLimitLine">
-                  <div className="eventLimitLinedata" />
+                <div className={`eventLimitLine ${limitper>85 && 'limit'}`}>
+                  <div className="eventLimitLinedata" style={{width: `${limitper}%`}} />
                 </div>
               </div>
             </div>
             <div className="col-12 col-lg-7">
               <div className="eventPageTexrArea">
-                <div className="eventPageTitle">{infodata[0].event_name}</div>
+                <div className="eventPageTitle">{eventinfo.event_name}</div>
                 <div className="eventPageInfo">
-                  活動日期 : {infodata[0].event_date} {infodata[0].event_time_start.substring(0, 5)}~{infodata[0].event_time_end.substring(0, 5)} <br />
-                  活動地點 : {infodata[0].event_address} <br />
-                  活動地標 : {infodata[0].event_venue}
+                  活動日期 : {eventinfo.event_date} {eventinfo.event_time_start.substring(0, 5)}~{eventinfo.event_time_end.substring(0, 5)} <br />
+                  活動地點 : {eventinfo.event_address} <br />
+                  活動地標 : {eventinfo.event_venue}
                 </div>
                 <div className="eventPageR">
                   *入場請帶一隻500元以上的「葡萄酒」
                   如果來不及準備，也可以現場購買喔～
                 </div>
-                <button className="eventJoinB">填寫報名表單</button>
+                
+                {eventinfo.status === 2 && applyinfo.length < eventinfo.people_limit && <Link href={`/event/apply/${id}`} className="Armallmt"><button className="eventJoinB">填寫報名表單</button></Link>}
+                {eventinfo.status === 2 && applyinfo.length >= eventinfo.people_limit && <button className="eventJoinB mta">名額已滿，目前停止開放報名</button>}
               </div>
             </div>
             <div className="col-12 col-lg-5">
@@ -68,19 +85,19 @@ export default function Einfo() {
                 <div className="eventStatisticsT">參加人統計</div>
                 <div className="eventAge">
                   <div className="eventAgeText">
-                    <div>平均年齡 : 28歲</div>
+                    <div>平均年齡 : {agesum}歲</div>
                   </div>
                   <div className="eventAgeLine">
-                    <div className="eventAgeLinedata" />
+                    <div className="eventAgeLinedata" style={{width: `${agesum*2}%`}}/>
                   </div>
                 </div>
                 <div className="eventGender">
                   <div className="eventGenderText">
-                    <div className="male">男性 : 12人</div>
-                    <div className="female">女性 : 8人</div>
+                    <div className="male">男性 : {males}人</div>
+                    <div className="female">女性 : {females}人</div>
                   </div>
                   <div className="eventGenderLine">
-                    <div className="eventGenderLinedata" />
+                    <div className="eventGenderLinedata" style={{width: `${gavg}%`}} />
                   </div>
                 </div>
               </div>
@@ -103,7 +120,7 @@ export default function Einfo() {
             <div className="col-12">
               <div className="eventIntroduceT">活動介紹</div>
               <div className="eventIntroduce">
-                <p style={{ whiteSpace: 'pre-wrap' }}>{infodata[0].event_introduce}</p>
+                <p style={{ whiteSpace: 'pre-wrap' }}>{eventinfo.event_introduce}</p>
               </div>
             </div>
           </div>

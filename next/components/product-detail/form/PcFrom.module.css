@@ -4,7 +4,7 @@
     & .product-amount {
         padding-left: var(--detail-left-padding);
         display: flex;
-        justify-content: start;
+        justify-content: flex-start;
         width: 100%;
         position: relative;
 

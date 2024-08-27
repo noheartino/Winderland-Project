@@ -232,7 +232,7 @@ export default function RegisterForm() {
                 <select
                   className={`form-select form-select-lg ${styles.select}`}
                   name="gender"
-                  defaultValue="option1"
+                  // defaultValue="option1"
                   value={formData.gender}
                   onChange={handleChange}
                 >
@@ -377,7 +377,7 @@ export default function RegisterForm() {
                   <select
                     className={`form-select form-select-lg ${styles.select}`}
                     name="gender"
-                    defaultValue="option1"
+                    // defaultValue="option1"
                     value={formData.gender}
                     onChange={handleChange}
                   >
