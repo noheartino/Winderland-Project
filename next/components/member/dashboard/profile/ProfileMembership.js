@@ -52,11 +52,13 @@ export default function ProfileMembership() {
         <span className="span-p">{membershipInfo.name}會員優惠</span>
 
         <ul className='levelGift'>
-          <li>生日回饋 
-            <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>{membershipInfo.birthday_points}</span> WPoints
+          <li>生日回饋   
+            <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>{membershipInfo.birthday_points}</span>WPoints
           </li>
           <li>WPoints 
-            <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>{membershipInfo.points_reward_percentage}</span>倍回饋
+            <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>
+            {Math.floor(membershipInfo.points_reward_percentage)}
+            </span>倍回饋
           </li>
           <li>每月
           <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>{membershipInfo.free_coupon}</span>張自選優惠券</li>
