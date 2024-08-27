@@ -39,9 +39,9 @@ export default function DashboardCoupon() {
 
   useEffect(() => {
     if (!loading) {
-      if (!userId) {
+      if (!userId | !freeCoupon) {
         // 如果 userId 不存在，則進行重定向
-        router.push('/login');
+        router.push('/member/login');
       }
     }
   }, [userId, loading, router]);
