@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import TeacherListCard from "@/components/course/teacher-list-card"
+import Nav from "@/components/Header/Header";
+import Footer from "@/components/footer/footer";
 
 export default function TeacherIndex() {
 let apiUrl = `http://localhost:3005/api/course/teacher`
@@ -29,7 +31,8 @@ const [teachers, setTeachers] = useState([])
     
     <>
     <div className="course_wrap">
-        <header></header>
+          {/* Header */}
+     <Nav />
         
 
         {/*teacher-detail start */}
@@ -100,9 +103,10 @@ const [teachers, setTeachers] = useState([])
         </div>
         {/*teacher-detail end */}
 
-        <footer></footer>
+     
       </div>
-
+    {/* Footer */}
+    <Footer />
     </>
   );
 }

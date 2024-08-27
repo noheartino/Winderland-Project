@@ -199,7 +199,7 @@ export default function Nav() {
             />
           </a>
           <ul id="nav_ul">
-            <a href="" id="shop_li">
+            {/* <a href="" id="shop_li">
               <li>商品列表+</li>
             </a>
             <a href="/article">
@@ -210,7 +210,22 @@ export default function Nav() {
             </a>
             <a href="">
               <li>活動專區</li>
-            </a>
+            </a> */}
+            <Link href="/product" id="shop_li">
+                  <li>商品列表+</li>
+            </Link>
+           
+            <Link href="/article" >
+                  <li>相關文章</li>
+            </Link>
+            <Link href="/course" >
+                  <li>品酒課程</li>
+            </Link>
+            <Link href="/event" >
+                  <li>活動專區</li>
+            </Link>
+           
+           
           </ul>
           <div className="HeaderCNavR">
             <div className="NavCSearch">

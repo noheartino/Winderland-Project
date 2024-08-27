@@ -5,6 +5,8 @@ import CourseBox from "@/components/course/course-courseBox";
 import { useState, useEffect, useRef } from "react";
 import CourseCardSm from '@/components/course/course-card-sm'
 import Link from "next/link";
+import Nav from "@/components/Header/Header";
+import Footer from "@/components/footer/footer";
 
 export default function CourseIndex() {
   const router = useRouter();
@@ -108,6 +110,8 @@ export default function CourseIndex() {
   
   return (
     <>
+    
+
       <title>課程首頁</title>
       {/* Required meta tags */}
       <meta charSet="utf-8" />
@@ -116,7 +120,8 @@ export default function CourseIndex() {
         content="width=device-width, initial-scale=1, shrink-to-fit=no"
       />
       <div className="course_wrap">
-        <header></header>
+     {/* Header */}
+     <Nav />
 
         <CourseNav setIsHomePage={setIsHomePage} isHomePage={isHomePage} />
 
@@ -280,9 +285,12 @@ export default function CourseIndex() {
           </div>
         </div>
         {/* page-nav-bar end */}
-        <footer></footer>
+        {/* <footer></footer> */}
         {/* Bootstrap JavaScript Libraries */}
       </div>
+
+       {/* Footer */}
+       <Footer />
     </>
   );
 }

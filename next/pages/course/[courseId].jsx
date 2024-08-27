@@ -1,6 +1,8 @@
 import Comment from "@/components/course/course-comment";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import Nav from "@/components/Header/Header";
+import Footer from "@/components/footer/footer";
 
 export default function CourseIndex() {
   const router = useRouter();
@@ -126,6 +128,7 @@ function querySeries04(e) {
 
   return (
     <>
+     
       <title>課程詳情</title>
       {/* Required meta tags */}
       <meta charSet="utf-8" />
@@ -134,7 +137,8 @@ function querySeries04(e) {
         content="width=device-width, initial-scale=1, shrink-to-fit=no"
       />
       <div className="course_wrap">
-        <header></header>
+      {/* Header */}
+     <Nav />
 
         {/* page three course-detail start */}
         <div className="container-fluid px-0 m-0">
@@ -826,9 +830,11 @@ function querySeries04(e) {
         </div>
         {/* page-nav-bar end */}
 
-        <footer></footer>
+        {/* <footer></footer> */}
         {/* Bootstrap JavaScript Libraries */}
       </div>
+        {/* Footer */}
+        <Footer />
     </>
   );
 }
