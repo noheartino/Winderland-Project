@@ -8,19 +8,17 @@ export default function CartMoneyTotal({ userId }) {
     const [pointsUsed, setPointsUsed] = useState(0);
     const [currentDate, setCurrentDate] = useState('');
     const [orderUuid, setOrderUuid] = useState('');
-    const [discountedAmount, setDiscountedAmount] = useState(0); // Add this state
+    const [discountedAmount, setDiscountedAmount] = useState(0);
 
     useEffect(() => {
         const storedPoints = sessionStorage.getItem("pointsUsed");
-        const storedDiscountAmount = parseFloat(sessionStorage.getItem('discountAmount')) || 0;
         const storedDiscountedAmount = parseFloat(sessionStorage.getItem('discountedAmount')) || 0;
 
         console.log('Received userId in CartMoneyTotal:', userId);
 
         // 更新狀態
-        setDiscountAmount(storedDiscountAmount);
         setPointsUsed(JSON.parse(storedPoints));
-        setDiscountedAmount(storedDiscountedAmount); // Set discountedAmount state
+        setDiscountedAmount(storedDiscountedAmount);
 
         // 獲取並格式化台灣時間
         const now = new Date();
@@ -37,7 +35,7 @@ export default function CartMoneyTotal({ userId }) {
         const formattedDate = `${year}.${month}.${day}`;
         setCurrentDate(formattedDate);
 
-        // 獲取最新訂單編號
+        // 獲取最新訂單編號和優惠券折扣
         const fetchOrderDetails = async () => {
             try {
                 const response = await fetch(`http://localhost:3005/api/cart/${userId}`);
@@ -46,12 +44,13 @@ export default function CartMoneyTotal({ userId }) {
                     return;
                 }
                 const data = await response.json();
-                console.log('Fetched order details:', data); // 打印數據以調試
+                console.log('Fetched order details:', data);
 
                 if (data && data.latestOrder) {
-                    setOrderUuid(data.latestOrder.order_uuid); // 從 latestOrder 中提取 order_uuid
+                    setOrderUuid(data.latestOrder.order_uuid); // 提取 order_uuid
+                    setDiscountAmount(data.latestOrder.coupon_amount || 0); // 使用 coupon_amount 設置 discountAmount
                 } else {
-                    console.error('Order UUID not found in response');
+                    console.error('Order UUID or Coupon Amount not found in response');
                 }
             } catch (error) {
                 console.error('Network error', error);
@@ -63,7 +62,6 @@ export default function CartMoneyTotal({ userId }) {
         // 清除點數資料
         const handleBeforeUnload = () => {
             sessionStorage.removeItem('pointsUsed');
-            sessionStorage.removeItem('discountAmount');
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
@@ -85,7 +83,7 @@ export default function CartMoneyTotal({ userId }) {
                 </div>
                 <div className={css.cartContent3}>
                     <div>訂單編號</div>
-                    <div className={css.cartContentCoupon}>{orderUuid}</div> {/* 填入 orderUuid */}
+                    <div className={css.cartContentCoupon}>{orderUuid}</div>
                 </div>
                 <div className={css.cartContent3}>
                     <div>總折抵</div>
@@ -93,7 +91,7 @@ export default function CartMoneyTotal({ userId }) {
                 </div>
                 <div className={`${css.cartContent3} ${css.cartContentTotal1}`}>
                     <div className={css.cartContentTotal1}>實付金額</div>
-                    <div className={css.cartContentTotal2}>NT$ {discountedAmount}</div> {/* Use discountedAmount state */}
+                    <div className={css.cartContentTotal2}>NT$ {discountedAmount}</div>
                 </div>
             </div>
         </div>

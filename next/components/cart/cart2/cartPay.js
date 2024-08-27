@@ -19,6 +19,7 @@ export default function CartPay({
   const [isFormValid, setIsFormValid] = useState(false);
   const [formError, setFormError] = useState("");
   const [orderNumber, setOrderNumber] = useState("");
+  const [discountAmounts, setDiscountAmounts] = useState(0); //優惠券折扣掉的金額
   const router = useRouter(); // 使用 useRouter 來進行導航
 
   useEffect(() => {
@@ -26,11 +27,13 @@ export default function CartPay({
     const storedProductData = sessionStorage.getItem("productData");
     const storedClassData = sessionStorage.getItem("classData");
     const storedCoupon = sessionStorage.getItem("selectedCoupon");
+    const storedDiscountAmounts = Math.floor(parseFloat(sessionStorage.getItem('discountAmount')) || 0)
 
     if (storedFinalAmount) setFinalAmount(parseFloat(storedFinalAmount));
     if (storedProductData) setProductData(JSON.parse(storedProductData));
     if (storedClassData) setClassData(JSON.parse(storedClassData));
     if (storedCoupon) setSelectedCoupon(JSON.parse(storedCoupon));
+    if(storedDiscountAmounts) setDiscountAmounts(JSON.parse(storedDiscountAmounts));
   }, []);
 
   const minLength = {
@@ -39,8 +42,8 @@ export default function CartPay({
   };
 
   const discountAmount = pointsUsed;
-  const finalTotalAmount = finalAmount + 60; // 假設運費為60元
-  const discountedAmount = finalTotalAmount - discountAmount;
+  const finalTotalAmount = Math.floor(finalAmount + 60); // 假設運費為60元
+  const discountedAmount = Math.floor(finalTotalAmount - discountAmount);
 
   const validateForm = () => {
     let valid = true;
@@ -132,6 +135,7 @@ export default function CartPay({
               couponData: selectedCoupon || null,
               cartItems: [...productData, ...classData],
               discountedAmount,
+              discountAmounts,
             }
           );
 
@@ -160,6 +164,7 @@ export default function CartPay({
               couponData: selectedCoupon || null,
               cartItems: [...productData, ...classData],
               discountedAmount,
+              discountAmounts,
             }
           );
 

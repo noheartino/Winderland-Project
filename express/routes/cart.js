@@ -67,7 +67,8 @@ router.get('/:user_id', async (request, response) => {
   const queryToFetchLatestOrder = `
   SELECT 
       orders.order_uuid AS order_uuid,
-      orders.earned_points AS earned_points
+      orders.earned_points AS earned_points,
+      orders.coupon_amount AS coupon_amount
   FROM 
       orders
   WHERE 
@@ -210,13 +211,14 @@ router.post('/cashOnDelivery', async (req, res) => {
     couponData,
     cartItems,
     discountedAmount,
+    discountAmounts,
   } = req.body
 
   try {
     // 生成訂單編號
     const generateOrderNumber = () => {
       const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()'
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
       let result = ''
       for (let i = 0; i < 7; i++) {
         const randomIndex = Math.floor(Math.random() * characters.length)
@@ -269,14 +271,15 @@ router.post('/cashOnDelivery', async (req, res) => {
 
     // 插入訂單資料
     const insertOrderQuery = `
-      INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, earned_points, pointUsed, pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, totalMoney, created_at, updated_at)
-      VALUES (?, ?, 'pending', '貨到付款', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
+      INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, coupon_amount, earned_points, pointUsed, pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, totalMoney, created_at, updated_at)
+      VALUES (?, ?, 'pending', '貨到付款', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
     `
     const [orderResult] = await conn.query(insertOrderQuery, [
       orderNumber,
       userId,
       60, // 固定運費，已無條件捨去
       couponData?.coupon_id || null,
+      discountAmounts || null,
       earnedPoints,
       pointsUsed,
       selectedTransport === 'blackcat'
@@ -402,13 +405,14 @@ router.post('/creditCardPayment', async (req, res) => {
     couponData,
     cartItems,
     discountedAmount,
+    discountAmounts,
   } = req.body
 
   try {
     // 生成訂單編號
     const generateOrderNumber = () => {
       const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()'
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
       let result = ''
       for (let i = 0; i < 7; i++) {
         const randomIndex = Math.floor(Math.random() * characters.length)
@@ -462,14 +466,15 @@ router.post('/creditCardPayment', async (req, res) => {
 
     // 插入訂單資料
     const insertOrderQuery = `
-      INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, earned_points, pointUsed,pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, totalMoney, created_at, updated_at)
-      VALUES (?, ?, 'pending', '信用卡', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
+      INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, coupon_amount, earned_points, pointUsed,pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, totalMoney, created_at, updated_at)
+      VALUES (?, ?, 'pending', '信用卡', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
     `
     const [orderResult] = await conn.query(insertOrderQuery, [
       orderNumber,
       userId,
       60,
       couponData?.coupon_id || null,
+      discountAmounts || null,
       earnedPoints,
       pointsUsed,
       selectedTransport === 'blackcat'
