@@ -23,8 +23,6 @@ LEFT JOIN
 	origin ON product.origin_id = origin.id
 LEFT JOIN 
 	country ON origin.country_id = country.id
-WHERE
-  valid = 1 
 `
 
 // 取得指定id的商品
@@ -49,7 +47,7 @@ LEFT JOIN
 WHERE product.id=?`
 
 // 取得商品的總數
-const getProductsTotal = `SELECT COUNT(*) as total FROM product`
+// const getProductsTotal = `SELECT COUNT(*) as total FROM product`
 
 // 取得detail
 const getProductsDetails = `SELECT * FROM product_detail WHERE valid = 1 && product_id IN (?)`
@@ -166,44 +164,52 @@ router.get('/', async (req, res) => {
     const limit = parseInt(req.query.limit) || 16
     const sort = req.query.sort || 'id_asc'
     const search = req.query.search || ''
+    const { category, variet, origin, country } = req.query
+
+    let query = getProducts
+    let conditions = ['product.valid = 1']
+    let params = []
 
     // 取得搜尋參數塞進搜尋商品的sql語法
-    let getSearch = getProducts
     if (search) {
-      getSearch += `&& product.name LIKE ?`
+      conditions.push('product.name LIKE ?')
+      params.push(`%${search}%`)
     }
 
-    // 取得搜尋後的頁數
-    let getSearchTotal = getProductsTotal
-    if (search) {
-      getSearchTotal += ` WHERE product.name LIKE ?`
+    if (category) {
+      conditions.push('category_id = ?')
+      params.push(category)
+    }
+
+    if (variet) {
+      conditions.push('variet_id = ?')
+      params.push(variet)
+    }
+
+    if (country) {
+      conditions.push('country_id = ?')
+      params.push(country)
+    }
+
+    if (origin) {
+      conditions.push('origin_id = ?')
+      params.push(origin)
+    }
+
+    if (conditions.length > 1) {
+      query += ' WHERE ' + conditions.join(' AND ')
     }
 
     // 獲取分頁後商品的基本訊息
-    const [products] = await db.query(getSearch, search ? [`%${search}%`] : [])
+    const [products] = await db.query(query, params)
     const [categories] = await db.query(getCategories)
-    const [productsTotal] = await db.query(
-      getSearchTotal,
-      search ? [`%${search}%`] : []
-    )
-
-    const total = productsTotal[0].total
-    const totalPages = Math.ceil(total / limit)
 
     // 獲取所有商品跟商品的詳細數據、所有分類+品種
     const productWithDetails = await tidyProducts(products)
     const categoryWithVarieds = await tidyCategories(categories)
 
-    // 新增有搜尋參數後的篩選條件
-    let fliterProduct = productWithDetails
-    if (search) {
-      fliterProduct = productWithDetails.filter((product) =>
-        product.name.toLowerCase().includes(search.toLowerCase())
-      )
-    }
-
     // 取得了product + detail後再排序
-    fliterProduct.sort((a, b) => {
+    productWithDetails.sort((a, b) => {
       switch (sort) {
         case 'name_asc':
           return a.name.localeCompare(b.name)
@@ -219,8 +225,10 @@ router.get('/', async (req, res) => {
     })
 
     // 手動分頁
+    const total = productWithDetails.length
+    const totalPages = Math.ceil(total / limit)
     const startIndex = (page - 1) * limit
-    const paginatedProducts = fliterProduct.slice(
+    const paginatedProducts = productWithDetails.slice(
       startIndex,
       startIndex + limit
     )
@@ -240,6 +248,29 @@ router.get('/', async (req, res) => {
       error: 'fail',
       message: '獲取產品列表失敗',
     })
+  }
+})
+
+// 獲取篩選選項的API
+router.get('/filters', async (req, res) => {
+  try {
+    // 取得所有國家、品種、產地
+    const [categories] = await db.query(getCategories)
+    const [countries] = await db.query('SELECT * FROM country')
+    const [origins] = await db.query('SELECT * FROM origin')
+    const [varieties] = await db.query(
+      'SELECT DISTINCT name,id,category_id FROM variet'
+    )
+
+    res.json({
+      categories: categories,
+      countries: countries,
+      origins: origins,
+      varieties: varieties,
+    })
+  } catch (error) {
+    console.log('Error Fetching filter options', error)
+    res.status(500).json({ error: 'Failed to fetch filter options' })
   }
 })
 
