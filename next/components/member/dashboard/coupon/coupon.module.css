@@ -17,12 +17,12 @@
     }
 
     .couponLimit {
-      color: var(--primary_color-wine, #ba435d);
+      color: var(--wine);
       font-size: 14px;
       letter-spacing: 2.8px;
     }
     .couponLimitSm {
-      color: var(--primary_color-wine, #ba435d);
+      color: var(--wine);
       font-size: 12px;
       letter-spacing: 2.8px;
     }

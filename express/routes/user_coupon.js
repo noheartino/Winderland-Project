@@ -10,7 +10,7 @@ router.get('/:userId', async (req, res) => {
     const { userId } = req.params
 
     const [userCoupon] = await connection.execute(
-      'SELECT coupon_id FROM user_coupon WHERE user_id = ? AND status = "get"',
+      'SELECT * FROM user_coupon WHERE user_id = ?',
       [userId]
     )
 

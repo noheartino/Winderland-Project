@@ -2,7 +2,6 @@ import React from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 
 export default function CouponCardSm({couponsm}) {
-  
   if (!couponsm || !couponsm.id) {
     // 如果 coupon 或 coupon.id 不存在，返回 null 或其他佔位符內容
     return null;

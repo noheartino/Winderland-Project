@@ -11,7 +11,7 @@ export default function CouponExpired({userId}) {
                 <i className="fa-solid fa-ticket col-auto" />
                 已過期優惠券
                 <i
-                  className={`fa-solid fa-angle-down ${style.pointDown} col`}
+                  className={`d-lg-none fa-solid fa-angle-down ${style.pointDown} col`}
                 />
               </span>
 

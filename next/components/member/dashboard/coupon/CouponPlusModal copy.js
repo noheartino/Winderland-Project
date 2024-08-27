@@ -109,26 +109,6 @@ export default function CouponPlusModal({ userId, freeCoupon, setCoupons }) {
         ]);
 
         setSelectedCoupons([]); // 清空選擇列表
-
-        // 重新 fetch 用戶已經領取的優惠券
-      fetch(`http://localhost:3005/api/user_coupon/${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        const usedClaimedCouponIds = data
-          .filter((coupon) => coupon.status === "used")
-          .map((coupon) => coupon.coupon_id);
-        const claimedCouponIds = data
-          .filter((coupon) => coupon.status === "get")
-          .map((coupon) => coupon.coupon_id);
-
-        setUsedClaimedCoupons(usedClaimedCouponIds);
-        setClaimedCoupons(claimedCouponIds);
-      })
-      .catch((error) => {
-        console.error("Error fetching user coupons:", error);
-      });
-
-
       } else {
         throw new Error(result.message || "領取失敗");
       }
@@ -182,10 +162,11 @@ export default function CouponPlusModal({ userId, freeCoupon, setCoupons }) {
                 const isChecked = selectedCoupons.some(
                   (c) => c.id === coupon.id
                 );
-                {/* {console.log(claimedCoupons);} */}
-                {/* {console.log(selectedCoupons)} */}
-                {/* console.log(`Coupon ID: ${coupon.id}, isChecked: ${isChecked}`); */}
-
+                {console.log(claimedCoupons);}
+                {console.log(selectedCoupons)}
+                {
+                  console.log(`Coupon ID: ${coupon.id}, isChecked: ${isChecked}`);
+                }
                 return (
                   <CouponCardModal
                     key={coupon.id}
@@ -208,14 +189,14 @@ export default function CouponPlusModal({ userId, freeCoupon, setCoupons }) {
                 {freeCoupon - claimedCoupons.length - selectedCoupons.length}
                 張優惠券
               </p>
-              {/* <button
+              <button
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
                 onClick={handleClear}
               >
                 Close
-              </button> */}
+              </button>
               <button
                 type="button"
                 className="btn btn-primary"

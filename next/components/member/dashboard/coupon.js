@@ -64,7 +64,7 @@ export default function DashboardCoupon() {
     <>
       <div className={`container ${style["coupon-content"]} m-0 mx-auto`}>
         {/* 優惠券倉庫 */}
-        {console.log(freeCoupon)}
+        {/* {console.log(freeCoupon)} */}
         <CouponStorage userId={userId} freeCoupon={freeCoupon} />
 
         {/* 手機的領券的標題 */}

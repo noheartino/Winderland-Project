@@ -61,15 +61,16 @@ export default function CouponStorage({ userId, freeCoupon }) {
           <span className={`${style.CTitle} row py-2`}>
             <i className="fa-solid fa-ticket col-auto" />
             優惠券倉庫
-            <i className={`fa-solid fa-angle-down ${style.pointDown} col`} />
+            <i className={`d-lg-none fa-solid fa-angle-down ${style.pointDown} col`} />
           </span>
 
           <div className="row mt-2">
             <p className={`${style.couponLimit} col-auto`}>
-              本用戶等級最多可收藏12張優惠券
+              本用戶等級最多可收藏{freeCoupon}張優惠券
             </p>
-
-            <p className={`${style.couponAlert} col`}>倉庫已滿!!</p>
+            {coupons.length == freeCoupon && (
+              <p className={`${style.couponAlert} col`}>倉庫已滿!!</p>
+            )}
           </div>
         </div>
         {/* 領券的區塊 */}
@@ -89,7 +90,11 @@ export default function CouponStorage({ userId, freeCoupon }) {
           </div>
         </div>
       </div>
-      <CouponPlusModal userId={userId} freeCoupon={freeCoupon} setCoupons={setCoupons} />
+      <CouponPlusModal
+        userId={userId}
+        freeCoupon={freeCoupon}
+        setCoupons={setCoupons}
+      />
       {/* 手機上方nav */}
       <div className="coupon-navbar row my-3 d-lg-none">
         <div className={`${style.couponNav} col-12 col-lg-7`}>
@@ -101,9 +106,11 @@ export default function CouponStorage({ userId, freeCoupon }) {
 
           <div className="row mt-2">
             <p className={`${style.couponLimitSm} col-auto`}>
-              本用戶等級最多可收藏12張優惠券
+              本用戶等級最多可收藏{freeCoupon}張優惠券
             </p>
-            <p className={`${style.couponAlertSm} col`}>倉庫已滿!!</p>
+            {coupons.length == freeCoupon && (
+              <p className={`${style.couponAlertSm} col`}>倉庫已滿!!</p>
+            )}
           </div>
         </div>
       </div>
