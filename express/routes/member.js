@@ -325,4 +325,31 @@ router.post('/reset-password', async (req, res) => {
   }
 })
 
+// @ 會員等級
+router.get('/membership-info/:levelId', async (req, res) => {
+  try {
+    const levelId = req.params.levelId
+    const [membershipInfo] = await connection.query(
+      `
+      SELECT ml.name, l.points_reward_percentage, l.free_coupon, l.birthday_points
+      FROM member_level ml
+      JOIN levels l ON ml.id = l.member_level_id
+      WHERE ml.id = ?
+    `,
+      [levelId]
+    )
+
+    if (membershipInfo.length > 0) {
+      res.json({ status: 'success', membershipInfo: membershipInfo[0] })
+    } else {
+      res
+        .status(404)
+        .json({ status: 'error', message: 'Membership info not found' })
+    }
+  } catch (error) {
+    console.error('Error fetching membership info:', error)
+    res.status(500).json({ status: 'error', message: 'Internal server error' })
+  }
+})
+
 export default router

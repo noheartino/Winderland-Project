@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import TeacherListCard from "@/components/course/teacher-list-card"
 import Link from "next/link";
+import Nav from "@/components/Header/Header";
+import Footer from "@/components/footer/footer";
 
 export default function TeacherIndex() {
   const router = useRouter()
@@ -86,7 +88,8 @@ const handleClickSearchIcon = (e) => {
     
     <>
     <div className="course_wrap">
-        <header></header>
+          {/* Header */}
+     <Nav />
 
         {/*teacher-detail start */}
         <div className="fourth-page-wrap pb-5">
@@ -160,9 +163,10 @@ const handleClickSearchIcon = (e) => {
         </div>
         {/*teacher-detail end */}
 
-        <footer></footer>
+     
       </div>
-
+    {/* Footer */}
+    <Footer />
     </>
   );
 }

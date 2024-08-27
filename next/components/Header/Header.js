@@ -1,13 +1,26 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { CartContext } from "@/context/CartContext";
 
 export default function Nav() {
   const { logout } = useAuth();
   const router = useRouter();
   const [isOpen, setisOpen] = useState(false);
   const navRef = useRef(null);
+  const { cartQuantity } = useContext(CartContext); // 使用 CartContext
+  console.log('總數量',cartQuantity)
+
+  const Data = useAuth().auth
+  const userData = Data.userData
+
+  const memberLevels = {
+    1: '初級會員',
+    2: '白銀會員',
+    3: '黃金會員',
+    4: '白金會員'
+  }
 
   const GoCart = () => {
     router.push("/cart/cartCheckout1"); // 使用 router.push 直接導航到首頁
@@ -186,7 +199,7 @@ export default function Nav() {
             />
           </a>
           <ul id="nav_ul">
-            <a href="" id="shop_li">
+            {/* <a href="" id="shop_li">
               <li>商品列表+</li>
             </a>
             <a href="/article">
@@ -197,7 +210,22 @@ export default function Nav() {
             </a>
             <a href="">
               <li>活動專區</li>
-            </a>
+            </a> */}
+            <Link href="/product" id="shop_li">
+                  <li>商品列表+</li>
+            </Link>
+           
+            <Link href="/article" >
+                  <li>相關文章</li>
+            </Link>
+            <Link href="/course" >
+                  <li>品酒課程</li>
+            </Link>
+            <Link href="/event" >
+                  <li>活動專區</li>
+            </Link>
+           
+           
           </ul>
           <div className="HeaderCNavR">
             <div className="NavCSearch">
@@ -207,20 +235,23 @@ export default function Nav() {
             <div className="HeaderCart">
               <button onClick={GoCart}>
                 <i className="fa-solid fa-cart-shopping" />
-                <div className="dot">35</div>
+                <div className="dot nonedot">沒有購物車內容</div>
+                <div className="dot">{cartQuantity}</div>
               </button>
             </div>
             <div className="nav_user">
-              <img src="/nav-footer/user_pic.png" alt="" />
+              <img src={userData ? '/nav-footer/user_pic.png' : '/nav-footer/default_user_pr.jpg'} alt="" />
             </div>
             <div className="user_area">
               <div className="user_area_t">
+                {userData && <div className={`userlvis lv${userData.member_level_id}`}>Lv.{userData.member_level_id}</div> }
+                {/* <div className={`userlvis lv${userData.member_level_id}`}>Lv.4</div> */}
                 <div className="user_area_tl">
-                  <img src="/nav-footer/user_pic.png" alt="" />
+                  <img src={userData ? '/nav-footer/user_pic.png' : '/nav-footer/default_user.jpg'} alt="" />
                 </div>
                 <div className="user_area_tr">
-                  <p>椎名林檎</p>
-                  <p>Ann_970412</p>
+                  <p>{userData ? userData.user_name : '訪客'}</p>
+                  <p>{userData ? userData.account : '--'}</p>
                 </div>
               </div>
               <div className="line" />
@@ -239,8 +270,7 @@ export default function Nav() {
                 </Link>
               </ul>
               <div className="user_area_btn">
-                <button disabled>註冊</button>
-                <button onClick={handleLogout}>登出</button>
+                {userData ? <button className="logout" onClick={handleLogout}>登出</button> : <Link href="/dashboard/profile"><button className="login">登入 / 註冊</button></Link>}
               </div>
             </div>
           </div>
@@ -270,7 +300,7 @@ export default function Nav() {
             <div className="HeaderCart">
               <button onClick={GoCart}>
                 <i className="fa-solid fa-cart-shopping" />
-                <div className="dot">35</div>
+                <div className="dot">{cartQuantity}</div>
               </button>
             </div>
         </div>
@@ -363,18 +393,18 @@ export default function Nav() {
         <div className="nav_rwdArea_head">
           <div className="nav_rwdArea_head_t">
             <div className="nrht_l d-flex align-items-center">
-              <img src="/nav-footer/user_pic_md.png" alt="" width={60} />
+              <img className="rounded-circle" src={userData ? '/nav-footer/user_pic.png' : '/nav-footer/default_user.jpg'} alt="" width={60} />
               <div className="nrht_l_text ms-3">
-                <div>Ann_970412</div>
-                <div>椎名林檎</div>
+                <div>{userData ? userData.user_name : '訪客'}</div>
+                <div>{userData ? userData.account : '--'}</div>
               </div>
             </div>
-            <div className="nrht_r">白金會員</div>
+            {userData ? <div className={`nrht_r lv${userData.member_level_id}`}>{memberLevels[userData.member_level_id]}</div> : <div className="nrht_r">尚未登入</div>}
           </div>
           <div className="nav_rwdArea_head_b">
             <div className="nrhb_l">
               <i className="fa-solid fa-circle-dollar-to-slot me-1" />{" "}
-              <span className="me-3">578P</span>
+              <span className="me-3">78P</span>
               <i className="fa-solid fa-ticket-simple me-1" /> <span>x4</span>
             </div>
             <div className="nrhb_r">

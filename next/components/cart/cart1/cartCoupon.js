@@ -19,6 +19,7 @@ export default function CartCoupon({ userId, onCouponChange, totalAmount }) {
       const response = await fetch(`http://localhost:3005/api/cart/${userId}`);
       if (response.ok) {
         const data = await response.json();
+        console.log("Fetched Coupons:", data.coupons); // 檢查優惠券數據
         setCoupons(data.coupons);
       } else {
         console.error("請求優惠券失敗:", await response.json());
@@ -95,24 +96,32 @@ export default function CartCoupon({ userId, onCouponChange, totalAmount }) {
         </div>
       </div>
 
-      <CartCouponAll isOpen={isOpen} onClose={toggleModal}>
-        <div className="container">
-          <div className={css.cartModalTitle}>
-            <i className="fa-solid fa-ticket" /> 優惠券倉庫
-          </div>
-          {coupons.length > 0 ? (
-            coupons.map((coupon) => (
+      {coupons.length > 0 && (
+        <CartCouponAll isOpen={isOpen} onClose={toggleModal}>
+          <div className="container">
+            <div className={css.cartModalTitle}>
+              <i className="fa-solid fa-ticket" /> 優惠券倉庫
+            </div>
+            {coupons.map((coupon) => (
               <div
                 key={coupon.coupon_id}
                 className="row justify-content-between align-items-center"
               >
                 <div className="col-10">
-                  <div className={css.cartModalCoupon}>
-                    <CartCouponDetail
-                      category={coupon.coupon_category}
-                      name={coupon.coupon_name}
-                    />
-                  </div>
+                  {/* 僅當優惠券有有效的名稱或類別時才顯示 CartCouponDetail */}
+                  {coupon.coupon_name && coupon.coupon_category ? (
+                    <div className={css.cartModalCoupon}>
+                      <CartCouponDetail
+                        category={coupon.coupon_category}
+                        name={coupon.coupon_name}
+                      />
+                    </div>
+                  ) : (
+                    <div className={css.cartModalCoupon}>
+                      {/* 顯示優惠券資訊為空的情況 */}
+                      <div>沒有優惠券</div>
+                    </div>
+                  )}
                 </div>
                 <div className="col-2 d-flex justify-content-end align-items-center">
                   <div className={css.cartModalUse}>
@@ -122,12 +131,10 @@ export default function CartCoupon({ userId, onCouponChange, totalAmount }) {
                   </div>
                 </div>
               </div>
-            ))
-          ) : (
-            <div>沒有可用的優惠券</div>
-          )}
-        </div>
-      </CartCouponAll>
+            ))}
+          </div>
+        </CartCouponAll>
+      )}
     </>
   );
 }

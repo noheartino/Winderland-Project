@@ -4,8 +4,9 @@ import ArticleSidebar from "@/components/article/article-sidebar";
 import ArticleIndexCard from "@/components/article/article-index-card";
 import ArticleIndexCardSm from "./article-index-card-sm";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
-export default function ArticleIndexList({Article}) {
+export default function ArticleIndexList({ Article }) {
   const router = useRouter();
   const { search } = router.query;
 
@@ -44,16 +45,16 @@ export default function ArticleIndexList({Article}) {
       });
   }, [search]);
 
-    // 取得背景圖片的路徑
-    const backgroundImage = Article?.images.length > 0
+  // 取得背景圖片的路徑
+  const backgroundImage = Article?.images.length > 0
     ? `url(/images/article/${Article.images[0]})`
     : `url(/images/article/titlePic.jpeg)`;
 
-    const handleLink = () => {
-      if (Article.id) {
-        router.push(`/article/${Article.id}`);
-      }
-    };
+  const handleLink = () => {
+    if (Article.id) {
+      router.push(`/article/${Article.id}`);
+    }
+  };
 
   return (
     <>
@@ -63,20 +64,23 @@ export default function ArticleIndexList({Article}) {
       <div className="a-content col-lg-9 row g-3">
         {/* 文章頭條 */}
         <div className="col-9 col-lg-8">
-          <div className="a-title" style={{backgroundImage: backgroundImage}} onClick={handleLink}>
+          <div className="a-title" style={{ backgroundImage: backgroundImage }} onClick={handleLink}>
             <h3>{Article ? Article.title : "..."}</h3>
           </div>
         </div>
         {/* 收藏 */}
         <div className="col-3 col-lg-4">
-          <div className="a-collection p-2">
+          <div className="a-collection p-2"><Link href="/dashboard/favorite"> 
             <h3>
-              <i className="fa-solid fa-bookmark" /> 我的收藏
+               <i className="fa-solid fa-bookmark" /> 我的收藏
+            
+
             </h3>
+            </Link>
           </div>
         </div>
         {/* 文章區塊大 */}
-    
+
         {firstTwoArticles.length > 0 ? (
           firstTwoArticles.map((article) => (
             <ArticleIndexCard key={article.id} article={article} />
