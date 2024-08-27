@@ -11,7 +11,7 @@ export default function OrderCardDetailCoupon({ orderInfo }) {
 
     return (
         <>
-            <div className={`${styles.orderUsed} d-flex`}>
+            <div className={`${styles.orderUsed} d-flex `}>
                 <h5 className={styles.orderUsedLabel}>本次使用</h5>
 
                  {/* 折價券區域 */}

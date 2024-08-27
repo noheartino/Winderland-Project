@@ -17,3 +17,38 @@
   .statusItem.selected {
     font-weight: bold;
   }
+
+  .button {
+    width: 100%;
+    height: 50px;
+    border-radius: 3.395px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1.4px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .button-filled {
+    border: none;
+    background: var(--light, #F4EBEB);
+    color: var(--text_primary, #60464C);
+  }
+
+  .button-outlined {
+    border: 1px solid var(--light, #F4EBEB);
+    background: transparent;
+    color: var(--text_primary, #60464C);
+  }
+
+  .button-filled:hover {
+    background: #E8DCDC;
+  }
+
+  .button-outlined:hover {
+    background: #F4EBEB;
+  }

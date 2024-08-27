@@ -1,13 +1,7 @@
 import express from 'express'
 const router = express.Router()
-
-// 資料庫使用
 import connection from '##/configs/mysql.js'
-// 中介軟體，存取隱私會員資料用
 import authenticate from '#middlewares/authenticate.js'
-
-// 檢查空物件, 轉換req.params為數字
-// import { getIdParam } from '#db-helpers/db-tool.js'
 
 // @ 獲取歷史訂單
 // router.get('/history', authenticate, async (req, res) => {

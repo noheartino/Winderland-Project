@@ -25,30 +25,6 @@ const [expandedStates, setExpandedStates] = useState({});
 const [error, setError] = useState(null)
 const [isLoading, setIsLoading] = useState(true)
 
-// useEffect(() => {
-//   const fetchOrders = async () => {
-//     try {
-//       setIsLoading(true)
-//       const response = await fetch('http://localhost:3005/api/orders/history', {
-//         credentials: 'include',
-//       })
-//       if (!response.ok) {
-//         const errorData = await response.json()
-//         throw new Error(errorData.message || '獲取訂單失敗')
-//       }
-//       const data = await response.json()
-//       setOrders(data.data)
-//     } catch (error) {
-//       console.error('獲取訂單時出錯:', error)
-//       setError(error.message)
-//     } finally {
-//       setIsLoading(false)
-//     }
-//   }
-
-
-//   fetchOrders()
-// }, [])
 useEffect(() => {
   fetchOrders()
 }, [filters])
@@ -97,10 +73,11 @@ const toggleDetails = (orderId) => {
     [orderId]: !prevStates[orderId]
   }));
 };
-
+// 篩選器
 const handleFilterChange = (newFilters) => {
   setFilters(newFilters)
 }
+
 
   return (
     <>
@@ -109,7 +86,7 @@ const handleFilterChange = (newFilters) => {
       <div className="container d-none d-lg-block mb-5">
         <div className=" d-flex">
         <OrderAside onFilterChange={handleFilterChange} />
-        
+
           <div className="order-list">
             {isLoading ? (
               <div>載入中...</div>
