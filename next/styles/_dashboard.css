@@ -252,9 +252,9 @@
         margin-top: 20px;
 
         .span-p {
-            font-size: 23px;
+            font-size: 22px;
             letter-spacing: 2px;
-            font-weight: 700;
+            font-weight: 500;
             /* margin-bottom: 50px; */
             margin-left: 20px;
         }
@@ -264,7 +264,8 @@
         width: 57px;
         height: 32px;
         border-radius: 3.977px;
-        background: var(--primary);
+        /* background: var(--primary); */
+        background-color: rgba(128, 128, 128, 0.434);
         color: #FFF;
         font-size: 14px;
         font-weight: 400;
@@ -1010,7 +1011,7 @@
         width: 69%;
 
         span {
-            color: var(--purple, #9A5B69);
+            /* color: var(--purple, #9A5B69); */
             font-size: 25px;
             font-weight: 700;
             letter-spacing: 2px;
@@ -1123,7 +1124,7 @@
                     }
 
                     span {
-                        color: #3C3C3C;
+                        color: var(--text_dark);
                         font-family: Inter;
                         font-size: 15.191px;
                         letter-spacing: 3.494px;
@@ -1150,9 +1151,6 @@
                         margin-top: 12px;
                     }
 
-                    .progress {
-                        /* margin-top: -15px; */
-                    }
 
                     .progress-bar {
                         border-radius: 4.747px;
@@ -1179,6 +1177,7 @@
                 }
             }
 
+            
         }
 
         .favorite-a {
@@ -1234,6 +1233,18 @@
 
     }
 
+}
+.classTitleLink {
+    text-decoration: none;
+    color: var(--wine);
+    cursor: pointer;
+  }
+  
+  .classTitleLink:hover,
+.classTitleLink:visited,
+.classTitleLink:active {
+  text-decoration: none;
+  color: var(--wine);
 }
 
 #favorite-content-rwd {

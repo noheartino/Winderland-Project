@@ -50,14 +50,7 @@
     margin-top: 10px;
 }
 
-.favoriteProductName {
-    color: #60464C;
-    font-family: Inter, sans-serif;
-    font-size: 14.298px;
-    font-weight: 400;
-    letter-spacing: 1.43px;
-    margin-bottom: 5px;
-}
+
 
 .price {
     color: var(--orange, #FF4F4F);
@@ -85,4 +78,30 @@
     .favoritesGrid {
         grid-template-columns: 1fr;
     }
+}
+
+
+
+.productTitleLink {
+    text-decoration: none !important;
+    /* color: var(--wine); */
+    cursor: pointer;
+  }
+  
+  .productTitleLink:hover,
+.productTitleLink:visited,
+.productTitleLink:active {
+  text-decoration: none !important;
+  color: var(--wine);
+}
+
+.favoriteProductName  {
+    color: #3F3034;
+    font-family: Inter, sans-serif;
+    font-size: 14.298px;
+    font-weight: 400;
+    letter-spacing: 1.43px;
+    margin-bottom: 5px;
+    text-decoration: none !important;
+    cursor: pointer;
 }
