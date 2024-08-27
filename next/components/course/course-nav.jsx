@@ -1,27 +1,32 @@
 import React,{ useState, useEffect, useRef } from 'react'
 import { useRouter } from "next/router";
 
-export default function CourseNav({setSearchWord}) {
+export default function CourseNav({setIsHomePage, isHomePage}) {
   const [searchTerm, setSearchTerm] = useState("");
   const searchInputRef = useRef(null);
+  
+  useEffect(()=>{
+    if(isHomePage===false){
+      setSearchTerm("")
+    }
+  }, [isHomePage])
+  
 
-  // const router = useRouter();
-  //   const onChangeInput= (e)=>{
-  //       setSearchWord(e.target.value);
-  //   }
-  // 處理搜尋輸入
+  const router = useRouter();
   const handleSearch = () => {
     if (searchTerm.trim()) {
       router.push({
         pathname: '/course',
         query: { search: searchTerm },
       });
+      setIsHomePage(true)
     }
     if(searchTerm.trim().length<1){
       router.push({
         pathname: '/course',
-        query: {},
+        query: {search:"ssss"},
       });
+      setIsHomePage(true)
     }
   };
 
@@ -32,7 +37,7 @@ export default function CourseNav({setSearchWord}) {
       pathname: '/course',
       query: {},
     });
-    
+    setIsHomePage(true)
   }
   // 處理鍵盤事件
   const handleKeyDown = (e) => {
@@ -41,8 +46,8 @@ export default function CourseNav({setSearchWord}) {
     }
   };
   const handleClick = (e) => {
-    e.preventDefault();
-    const tagText = e.target.textContent;
+    const tagText = e.target.textContent.slice(1);
+    setIsHomePage(true)
     if (tagText.trim()) {
       router.push({
         pathname: '/course',
@@ -51,7 +56,6 @@ export default function CourseNav({setSearchWord}) {
     }
   };
   const handleClickSearchIcon = (e) => {
-    e.preventDefault();
     searchInputRef.current.focus()
     setSearchTerm(searchInputRef.current.value)
     handleSearch();
@@ -78,45 +82,45 @@ export default function CourseNav({setSearchWord}) {
               onKeyDown={handleKeyDown}
             />
             <i className="fa-solid fa-magnifying-glass position-absolute course-search-icon" onClick={handleClickSearchIcon}></i>
-            <i className="fa-solid fa-xmark position-absolute" onClick={handleClear}></i>
+            <i className="fa-solid fa-xmark fa-xmark-course position-absolute" onClick={handleClear}></i>
           </div>
           <div className="row px-0 m-0 justify-content-center">
             <div className="col-11 col-md-6 d-flex justify-content-center flex-wrap">
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                品酒
+                #品酒
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                挑選酒
+                #挑選酒
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                認證課程
+                #認證課程
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                法國
+                #法國
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                SFM
+                #SFM
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                BWC布根地
+                #BWC布根地
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                CIVB波爾多葡萄酒學院
+                #CIVB波爾多葡萄酒學院
               </span>
               <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
-                CIVA
+                #CIVA
               </span>
               <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
-                阿爾薩斯
+                #阿爾蕯斯
               </span>
               <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
-                葡萄牙公會
+                #葡萄牙公會
               </span>
               <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
-                葡萄酒學者認證
+                #葡萄酒學者認證
               </span>
               <span className="nav-tag cursor-pointer d-none d-md-block" onClick={handleClick}>
-                IWS
+                #IWS
               </span>
             </div>
           </div>

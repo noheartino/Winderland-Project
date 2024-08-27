@@ -87,9 +87,9 @@ export default function DashboardProfile() {
   // * 會員等級
   const membershipMapping = {
     1: '銅瓶會員',
-    2: '白瓶會員',
-    3: '黃金會員',
-    4: '白金會員',
+    2: '銀瓶會員',
+    3: '金瓶會員',
+    4: '白金瓶會員',
   };
   const userMembership = membershipMapping[auth.userData.member_level_id] ;
 
@@ -110,7 +110,7 @@ export default function DashboardProfile() {
               <div className="userAge">{userGender} / {userAge}歲 / {auth.userData.birthday}</div>
               <div className="user-img">
               <Image
-                src={auth.userData.avatar_url || '/member/avatar/default-avatar.jpg'}
+                src={auth.userData.avatar_url || 'images/member/avatar/default-avatar.jpg'}
                 alt="User Avatar"
                 width={130}
                 height={130}
@@ -130,6 +130,7 @@ export default function DashboardProfile() {
             </div>
           </section>
           <hr style={{ border: "3px solid var(--light)" }} />
+
           {/* 修改區 */}
           <div className="edit-card d-flex  ">
             <ProfileUpdateUser />

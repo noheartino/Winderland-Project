@@ -1,10 +1,13 @@
 import React from "react";
+import Nav from "@/components/Header/Header";
+import Footer from "@/components/footer/footer";
 
-export default function TeacherIndex() {
+export default function TeacherDetail() {
   return (
     <>
       <div className="course_wrap">
-        <header></header>
+              {/* Header */}
+     <Nav />
 
         {/* page four teacher-detail start */}
         <div className="fourth-page-wrap">
@@ -324,8 +327,10 @@ export default function TeacherIndex() {
             </div>
         </div>
         {/* page-nav-bar end */}
-        <footer></footer>
+        {/* <footer></footer> */}
       </div>
+         {/* Footer */}
+    <Footer />
     </>
   );
 }

@@ -1,0 +1,46 @@
+
+.levelList .level {
+  /* 基本樣式 */
+}
+
+.levelList .levelA {
+  background-color: #CD7F32; /* 銅色 */
+}
+
+.levelList .levelB {
+  background-color: #C0C0C0; /* 銀色 */
+}
+
+.levelList .levelC {
+  background-color: #FFD700; /* 金色 */
+}
+
+.levelList .levelD {
+  background-color: #E5E4E2; /* 白金色 */
+}
+
+.emphasis {
+  font-weight: bold;
+}
+
+.birthdayPoints {
+  color: var(--wine)
+}
+
+.pointsReward {
+  color:var(--orange); 
+}
+
+.freeCoupon {
+  color: var(--orange); 
+}
+
+.levelDetail ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.levelDetail li {
+  margin-bottom: 8px;
+  font-size: 16px;
+}

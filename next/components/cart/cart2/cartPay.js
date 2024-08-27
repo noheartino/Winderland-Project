@@ -19,6 +19,7 @@ export default function CartPay({
   const [isFormValid, setIsFormValid] = useState(false);
   const [formError, setFormError] = useState("");
   const [orderNumber, setOrderNumber] = useState("");
+  const [discountAmounts, setDiscountAmounts] = useState(0); //優惠券折扣掉的金額
   const router = useRouter(); // 使用 useRouter 來進行導航
 
   useEffect(() => {
@@ -26,11 +27,13 @@ export default function CartPay({
     const storedProductData = sessionStorage.getItem("productData");
     const storedClassData = sessionStorage.getItem("classData");
     const storedCoupon = sessionStorage.getItem("selectedCoupon");
+    const storedDiscountAmounts = Math.floor(parseFloat(sessionStorage.getItem('discountAmount')) || 0)
 
     if (storedFinalAmount) setFinalAmount(parseFloat(storedFinalAmount));
     if (storedProductData) setProductData(JSON.parse(storedProductData));
     if (storedClassData) setClassData(JSON.parse(storedClassData));
     if (storedCoupon) setSelectedCoupon(JSON.parse(storedCoupon));
+    if(storedDiscountAmounts) setDiscountAmounts(JSON.parse(storedDiscountAmounts));
   }, []);
 
   const minLength = {
@@ -39,13 +42,13 @@ export default function CartPay({
   };
 
   const discountAmount = pointsUsed;
-  const finalTotalAmount = finalAmount + 60; // 假設運費為60元
-  const discountedAmount = finalTotalAmount - discountAmount;
+  const finalTotalAmount = Math.floor(finalAmount + 60); // 假設運費為60元
+  const discountedAmount = Math.floor(finalTotalAmount - discountAmount);
 
   const validateForm = () => {
     let valid = true;
     let errorMessages = [];
-
+  
     if (!selectedPayment || !selectedTransport) {
       valid = false;
       errorMessages.push("請選擇付款方式和運送方式");
@@ -55,48 +58,45 @@ export default function CartPay({
           valid = false;
           errorMessages.push("請填寫7-11資料");
         } else {
-          const { storeName, storeAddress, pickupName, pickupPhone } =
-            transportData;
-          if (!storeName || !storeAddress || !pickupName || !pickupPhone) {
+          const { storeName, storeAddress, pickupName, pickupPhone } = transportData;
+          if (!storeName || !storeAddress || !pickupName) {
             valid = false;
             errorMessages.push("7-11資料不完整");
           }
-          if (pickupPhone.length < minLength.pickupPhone) {
+          // 如果 pickupPhone 是 undefined 或空字串，設為空字串
+          const validPickupPhone = pickupPhone || "";
+          if (validPickupPhone.length < minLength.pickupPhone) {
             valid = false;
             errorMessages.push("7-11格式不正確");
           }
         }
       }
-
+  
       if (selectedTransport === "blackcat") {
-        if (
-          !transportBlackCatData ||
-          Object.keys(transportBlackCatData).length === 0
-        ) {
+        if (!transportBlackCatData || Object.keys(transportBlackCatData).length === 0) {
           valid = false;
           errorMessages.push("請填寫黑貓宅急便資料");
         } else {
-          const {
-            address: blackCatAddress,
-            name,
-            phone: blackCatPhoneNumber,
-          } = transportBlackCatData;
-          if (!blackCatAddress || !name || !blackCatPhoneNumber) {
+          const { address: blackCatAddress, name, phone: blackCatPhoneNumber } = transportBlackCatData;
+          if (!blackCatAddress || !name) {
             valid = false;
             errorMessages.push("黑貓宅急便資料不完整");
           }
-          if (blackCatPhoneNumber.length < minLength.blackCatPhoneNumber) {
+          // 如果 blackCatPhoneNumber 是 undefined 或空字串，設為空字串
+          const validBlackCatPhoneNumber = blackCatPhoneNumber || "";
+          if (validBlackCatPhoneNumber.length < minLength.blackCatPhoneNumber) {
             valid = false;
             errorMessages.push("黑貓宅急便格式不正確");
           }
         }
       }
     }
-
+  
     setIsFormValid(valid);
     setFormError(errorMessages.join(" / ").replace(/ \//g, " <br />"));
     return valid;
   };
+  
 
   useEffect(() => {
     validateForm();
@@ -112,12 +112,13 @@ export default function CartPay({
     if (validateForm()) {
       try {
         let response;
-        // 把必要的資料存入 sessionStorage
-        sessionStorage.setItem("productData", JSON.stringify(productData));
+                sessionStorage.setItem("productData", JSON.stringify(productData));
         sessionStorage.setItem("classData", JSON.stringify(classData));
         sessionStorage.setItem("selectedPayment", selectedPayment);
         sessionStorage.setItem("selectedTransport", selectedTransport);
         sessionStorage.setItem("discountedAmount", discountedAmount);
+        sessionStorage.setItem("pointsUsed", pointsUsed);
+        sessionStorage.setItem("userId", userId);
 
         if (selectedPayment === "productpay") {
           // 貨到付款
@@ -134,6 +135,7 @@ export default function CartPay({
               couponData: selectedCoupon || null,
               cartItems: [...productData, ...classData],
               discountedAmount,
+              discountAmounts,
             }
           );
 
@@ -143,7 +145,7 @@ export default function CartPay({
           router.push("/cart/cartCheckout3");
         } else if (selectedPayment === "creditpay") {
           const goECPayTestOnly = (discountedAmount) => {
-            if (window.confirm("確認要導向至ECPay進行付款?")) {
+            if (window.confirm('確認要導向至ECPay進行付款?')) {
               window.location.href = `http://localhost:3005/api/ecpay-test-only?amount=${discountedAmount}`;
             }
           };
@@ -162,6 +164,7 @@ export default function CartPay({
               couponData: selectedCoupon || null,
               cartItems: [...productData, ...classData],
               discountedAmount,
+              discountAmounts,
             }
           );
 

@@ -46,7 +46,7 @@
     width: 100%;
     height: 261px;
     /* margin-left: 50px; */
-    margin-bottom: -50px;
+    margin-bottom: -70px;
     /* margin-top: 15px; */
     background: none;
     border: none;
@@ -112,6 +112,26 @@
     margin-right: 25px;
 }
 
+.orderImg {
+    width: 150px;  /* 設置固定寬度 */
+    height: 150px; /* 設置固定高度，與寬度相等，創建正方形 */
+    border: 1px solid var(--wine_light, #D4C0C0);
+    margin-left: 50px;
+    margin-top: 20px;
+    overflow: hidden; /* 確保內容不會溢出容器 */
+    display: flex; /* 使用 flexbox 來居中內容 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    background: #ffffff;
+  }
+  
+  .orderImg img {
+    width: 100%; /* 圖片寬度填滿容器 */
+    height: 100%; /* 圖片高度填滿容器 */
+    object-fit: contain; /* 確保整個圖片都顯示，不被裁切 */
+    object-position: center; /* 圖片在容器中居中 */
+  }
+
 /* 優惠券 */
 .orderUsed {
     margin-left: 56px;
@@ -140,7 +160,9 @@
     justify-content: center;
     align-items: center;
     margin-top: 30px;
+    margin-left: 60px;
 }
+
 
 .pointImg {
     min-width: 72px;
@@ -148,7 +170,7 @@
     background: url(/images/member/wpoint-used.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    margin-left: 70px;
+    margin-left: 90px;
     margin-top: 30px;
 }
 
@@ -210,17 +232,31 @@
 
 .usedItem {
     margin-bottom: 10px;
+    margin-left: 50px;
 }
 
-.noCoupon, .noPoints {
+.noCoupon {
     font-size: large;
     /* font-style: italic; */
     color: #888;
     margin-top: 5px;
-    margin-left: 98px;  /* 與優惠券對齊 */
+    margin-left: 50px;  
+    /* 與優惠券對齊 */
     font-weight: 700;
     letter-spacing: 1.6px;
 }
+
+.noPoints {
+    font-size: large;
+    /* font-style: italic; */
+    color: #888;
+    margin-top: 5px;
+    /* margin-left: 50px;   */
+    /* 與優惠券對齊 */
+    font-weight: 700;
+    letter-spacing: 1.6px;
+}
+
 
 /* 配送資訊 */
 .pickupArea {
@@ -234,80 +270,4 @@
     letter-spacing: 3.8px;
     margin-left: 20px;
     /* margin-bottom: 80px; */
-}
-/* 評論 */
-.orderComment {
-    margin-bottom: 40px;
-}
-
-.formSelect {
-    margin-left: 40px;
-    margin-top: 40px;
-    width: 60%;
-    border-radius: 44px;
-    border: 1px solid var(--purple_light, #A66E7B);
-    background: #FFF;
-    color: var(--purple, #9A5B69);
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 1.4px;
-}
-
-.commentText {
-    width: 60%;
-    margin-left: 50px;
-    margin-top: 40px;
-}
-
-.formLabel {
-    color: var(--text_primary, #60464C);
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1.6px;
-    margin-bottom: 20px;
-}
-
-.textArea {
-    height: 80%;
-    border-radius: 7px;
-    border: 1px solid #D4C0C0;
-    background: #FFF;
-    resize: none;
-    margin-bottom: 40px;
-    color: var(--purple, #9A5B69);
-    font-size: 14px;
-}
-
-.commentRating {
-    margin-left: 50px;
-    margin-top: 40px;
-    white-space: nowrap;
-}
-
-.ratingLabel {
-    color: #60464C;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1.6px;
-    margin-bottom: 40px;
-}
-
-.star {
-    color: var(--purple, #9A5B69);
-    font-size: 30px;
-    margin-bottom: 45px;
-    margin-top: 10px;
-    margin-left: 30px;
-}
-
-.commentBtn {
-    width: 100%;
-    height: 79px;
-    border-radius: 9px;
-    background: var(--wine_light, #D4C0C0);
-    color: var(--ext_primary, #60464C);
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: 4.8px;
-    border: none;
 }
