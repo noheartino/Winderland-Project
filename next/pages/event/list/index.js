@@ -88,9 +88,9 @@ export default function Applyevent() {
                             const eventdata = filtertheevent(t.event_id)
 
                             return(
-                            <div className="eventDetailist">
+                            <div className="eventDetailist" key={i}>
                             <div className="DetailistBox">
-                                <img src={`/event/${eventdata.event_cover_image}`} alt="" className="DetailistBoxPic" />
+                                <img src={`http://localhost:3005/uploads/${eventdata.event_cover_image}`} alt="" className="DetailistBoxPic" />
                                 <div className="DetailistBoxT">
                                     <div className="DetailistBoxTitle">
                                         <div className="Eventstatus">開放報名中</div>

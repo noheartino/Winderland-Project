@@ -8,12 +8,40 @@ export default function Nav() {
   const { logout } = useAuth();
   const router = useRouter();
   const [isOpen, setisOpen] = useState(false);
+  const [infodata, setInfo] = useState(null);
   const navRef = useRef(null);
   const { cartQuantity } = useContext(CartContext); // 使用 CartContext
   console.log('總數量',cartQuantity)
 
   const Data = useAuth().auth
-  const userData = Data.userData
+  const userData = (Data && Data.userData) ? Data.userData : '';
+
+
+  const userId = userData ? userData.id : 0
+
+  
+  
+  useEffect(() => {
+    if (userId) {
+        fetch(`http://localhost:3005/api/header/${userId}`)
+            .then(response => response.json())
+            .then(infodata => setInfo(infodata))
+            .catch(error => console.error('Error:', error));
+    }
+  }, [userId]);
+
+
+
+  let userinfo = infodata?.userinfo?.[0].img || [];
+
+  if (typeof userinfo === 'string') {
+    userinfo = userinfo.replace(/[\r\n]+/g, '');
+  } else {
+    userinfo = ''
+  }
+
+
+
 
   const memberLevels = {
     1: '初級會員',
@@ -185,6 +213,8 @@ export default function Nav() {
       console.error('登出失敗:', error);
     }
   };
+
+
   return (
     <>
       <div className="nav_margin"></div>
@@ -240,14 +270,14 @@ export default function Nav() {
               </button>
             </div>
             <div className="nav_user">
-              <img src={userData ? '/nav-footer/user_pic.png' : '/nav-footer/default_user_pr.jpg'} alt="" />
+              <img src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user_pr.jpg'} alt="" />
             </div>
             <div className="user_area">
               <div className="user_area_t">
                 {userData && <div className={`userlvis lv${userData.member_level_id}`}>Lv.{userData.member_level_id}</div> }
                 {/* <div className={`userlvis lv${userData.member_level_id}`}>Lv.4</div> */}
                 <div className="user_area_tl">
-                  <img src={userData ? '/nav-footer/user_pic.png' : '/nav-footer/default_user.jpg'} alt="" />
+                  <img src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user.jpg'} alt="" />
                 </div>
                 <div className="user_area_tr">
                   <p>{userData ? userData.user_name : '訪客'}</p>
@@ -393,7 +423,7 @@ export default function Nav() {
         <div className="nav_rwdArea_head">
           <div className="nav_rwdArea_head_t">
             <div className="nrht_l d-flex align-items-center">
-              <img className="rounded-circle" src={userData ? '/nav-footer/user_pic.png' : '/nav-footer/default_user.jpg'} alt="" width={60} />
+              <img className="rounded-circle nrht_lpic" src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user.jpg'} alt="" width={60} height={60}/>
               <div className="nrht_l_text ms-3">
                 <div>{userData ? userData.user_name : '訪客'}</div>
                 <div>{userData ? userData.account : '--'}</div>
@@ -450,6 +480,9 @@ export default function Nav() {
           </ul>
         </div>
       </div>
+      {/* {userData ? <pre>{JSON.stringify(userData, null, 2)}</pre> : 'Loading...'}
+      {userinfo ? <pre>{JSON.stringify(userinfo, null, 2)}</pre> : 'Loading...'}
+      {userId} */}
     </>
   );
 }

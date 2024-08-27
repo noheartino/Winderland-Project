@@ -43,130 +43,15 @@ export default function Applyevent() {
 
 
     
-    // form
-
-    const [formData, setFormData] = useState({
-        event_name: '',
-        event_date: '',
-        event_time_start: '',
-        event_time_end: '',
-        apply_start: '',
-        apply_end: '',
-        event_city: '',
-        event_venue: '',
-        event_address: '',
-        people_limit: 20, 
-        event_introduce: '',
-        noweventid: 0,
-        useridis: 0,
-        myname: '',
-        gender: 0,
-        myage: 0,
-        kotoba: ''
-    });
-
-    const [file, setFile] = useState(null);
-
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
-
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-    
-        // 使用 FormData 处理表单数据和文件
-        const formDataToSend = new FormData();
-        formDataToSend.append('event_name', formData.event_name);
-        formDataToSend.append('event_date', formData.event_date);
-        formDataToSend.append('event_time_start', formData.event_time_start);
-        formDataToSend.append('event_time_end', formData.event_time_end);
-        formDataToSend.append('apply_start', formData.apply_start);
-        formDataToSend.append('apply_end', formData.apply_end);
-        formDataToSend.append('event_city', formData.event_city);
-        formDataToSend.append('event_venue', formData.event_venue);
-        formDataToSend.append('event_address', formData.event_address);
-        formDataToSend.append('people_limit', parseInt(formData.people_limit, 10));
-        formDataToSend.append('event_introduce', formData.event_introduce);
-        formDataToSend.append('noweventid', parseInt(noweventid, 10));
-        formDataToSend.append('useridis', parseInt(useridis, 10));
-        formDataToSend.append('myname', myname);
-        formDataToSend.append('gender', parseInt(mygender, 10));
-        formDataToSend.append('myage', parseInt(myage, 10));
-        formDataToSend.append('kotoba', '[開團人本人]');
-        if (file) formDataToSend.append('event_cover_image', file);
-    
-        try {
-          const response = await fetch('http://localhost:3005/api/event-create/upload', {
-            method: 'POST',
-            body: formDataToSend, // 不需要设置 Content-Type 头，FormData 会自动处理
-          });
-    
-          if (!response.ok) {
-            const errorData = await response.json(); // 获取详细的错误信息
-            throw new Error(`Failed to create event: ${errorData.error || response.statusText}`);
-        }
-            router.push('/event/invitation');
-
-        } catch (error) {
-            console.error('Error:', error.message); // 提供详细的错误信息
-        }
-    };
-
-
-    // const formDataConverted = {
-    //     event_name: formData.event_name,
-    //     event_date: formData.event_date,
-    //     event_time_start: formData.event_time_start,
-    //     event_time_end: formData.event_time_end,
-    //     apply_start: formData.apply_start,
-    //     apply_end: formData.apply_end,
-    //     event_city: formData.event_city,
-    //     event_venue: formData.event_venue,
-    //     event_address: formData.event_address,
-    //     people_limit: parseInt(formData.people_limit, 10),
-    //     event_introduce: formData.event_introduce,
-    //     noweventid: parseInt(noweventid, 10),
-    //     useridis: parseInt(useridis, 10),
-    //     myname: myname,
-    //     gender: parseInt(mygender, 10),
-    //     myage: parseInt(myage, 10),
-    //     kotoba: '[開團人本人]',
-    //     event_cover_image: file
-    // }
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         const response = await fetch('http://localhost:3005/api/event-create', {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify(formDataConverted),
-    //         });
-    //         if (response.ok) {
-    //             router.push('/event/invitation');
-    //         } else {
-    //             throw new Error('Failed to create event');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error:', error);
-    //     }
-    // };
-
-
     return (
         <>
             <Nav />
             <EventHeader />
             {/* {noweventid}
-            {myage}and{mygender}and{myname} */}
-            {/* {eventcount ? <pre>{JSON.stringify(eventcount, null, 2)}</pre> : 'Loading...'} */}
+            {myage}and{mygender}and{myname}
+            {eventcount ? <pre>{JSON.stringify(eventcount, null, 2)}</pre> : 'Loading...'} */}
             
-            <>
-                <div className="eventManageNav">
+            <div className="eventManageNav">
                     <div className="container">
                         <div className="ManageNavT">開團活動管理</div>
                         <div className="ManageNavList">
@@ -181,11 +66,19 @@ export default function Applyevent() {
 
                 <div className="eventCreateWrite">
                     <div className="container">
-                        <form onSubmit={handleSubmit}>
+                        <form action="http://localhost:3005/api/event-create/ap" method="post" encType="multipart/form-data">
                             <div className="row">
                                 <div className="col-12 col-lg-8">
                                     <div className="row gx-2 gx-lg-4">
                                         <div className="col-12">
+
+                                            <input type="hidden" name="noweventid" value={noweventid ? noweventid : ''} />
+                                            <input type="hidden" name="useridis" value={useridis ? useridis : ''} />
+                                            <input type="hidden" name="myname" value={myname ? myname : ''} />
+                                            <input type="hidden" name="mygender" value={mygender ? mygender : ''} />
+                                            <input type="hidden" name="myage" value={myage ? myage : ''} />
+                                            <input type="hidden" name="kotoba" value={`[開團人本人]`} />
+
                                             <label htmlFor="eventName" className="CreateWriteT">
                                                 活動標題
                                             </label>
@@ -194,8 +87,6 @@ export default function Applyevent() {
                                                 name="event_name"
                                                 id="eventName"
                                                 className="EventCreateInput"
-                                                value={formData.event_name}
-                                                onChange={handleChange}
                                             />
                                         </div>
                                         <div className="col-4">
@@ -207,8 +98,6 @@ export default function Applyevent() {
                                                 name="event_date"
                                                 id="eventDate"
                                                 className="EventCreateInput pe-2"
-                                                value={formData.event_date}
-                                                onChange={handleChange}
                                             />
                                         </div>
                                         <div className="col-4">
@@ -220,8 +109,6 @@ export default function Applyevent() {
                                                 name="event_time_start"
                                                 id="eventTimeS"
                                                 className="EventCreateInput pe-2"
-                                                value={formData.event_time_start}
-                                                onChange={handleChange}
                                             />
                                         </div>
                                         <div className="col-4">
@@ -233,8 +120,6 @@ export default function Applyevent() {
                                                 name="event_time_end"
                                                 id="eventTimeE"
                                                 className="EventCreateInput pe-2"
-                                                value={formData.event_time_end}
-                                                onChange={handleChange}
                                             />
                                         </div>
                                         <div className="col-4">
@@ -246,8 +131,6 @@ export default function Applyevent() {
                                                 name="apply_start"
                                                 id="eventApplyS"
                                                 className="EventCreateInput pe-2"
-                                                value={formData.apply_start}
-                                                onChange={handleChange}
                                             />
                                         </div>
                                         <div className="col-4">
@@ -259,8 +142,6 @@ export default function Applyevent() {
                                                 name="apply_end"
                                                 id="eventApplyE"
                                                 className="EventCreateInput pe-2"
-                                                value={formData.apply_end}
-                                                onChange={handleChange}
                                             />
                                         </div>
                                         <div className="col-4">
@@ -273,8 +154,6 @@ export default function Applyevent() {
                                                 id="eventLimit"
                                                 className="EventCreateInput pe-2"
                                                 min={5}
-                                                value={formData.people_limit}
-                                                onChange={handleChange}
                                             />
                                         </div>
                                         <div className="col-4">
@@ -287,8 +166,6 @@ export default function Applyevent() {
                                                 id="eventCity"
                                                 className="EventCreateInput"
                                                 placeholder="市+區"
-                                                value={formData.event_city}
-                                                onChange={handleChange}
                                             />
                                         </div>
                                         <div className="col-8">
@@ -301,8 +178,6 @@ export default function Applyevent() {
                                                 id="eventShop"
                                                 className="EventCreateInput"
                                                 placeholder="餐酒館的店名or地標"
-                                                value={formData.event_venue}
-                                                onChange={handleChange}
                                             />
                                         </div>
                                         <div className="col-12">
@@ -315,8 +190,6 @@ export default function Applyevent() {
                                                 id="eventAdress"
                                                 className="EventCreateInput"
                                                 placeholder="活動地點的具體地址"
-                                                value={formData.event_address}
-                                                onChange={handleChange}
                                             />
                                         </div>
                                     </div>
@@ -330,8 +203,7 @@ export default function Applyevent() {
                                         className="form-control"
                                         type="file"
                                         id="eventPic"
-                                        name="event_cover_image"
-                                        onChange={handleFileChange} 
+                                        name="myfile"
                                     />
                                 </div>
                                 <div className="col-12 mt-3 mt-lg-0">
@@ -342,8 +214,6 @@ export default function Applyevent() {
                                         name="event_introduce"
                                         id="eventIntro"
                                         placeholder="活動詳細說明"
-                                        value={formData.event_introduce}
-                                        onChange={handleChange}
                                     />
                                 </div>
                                 <div className="col-12 d-flex justify-content-end mt-3">
@@ -361,10 +231,9 @@ export default function Applyevent() {
                         </form>
                     </div>
                 </div>
+                <Footer />
             </>
 
-
-            <Footer />
-        </>
     );
 }
+
