@@ -31,24 +31,19 @@ export default function CourseIndex() {
     console.log("search 或 view 偵測到變動");
     if(!search && !view){
       apiUrl=`http://localhost:3005/api/course`
-      console.log("送出1");
     }
     if(search){
       apiUrl=`http://localhost:3005/api/course?search=${search}`
-      console.log("送出2");
     }
     if(view){
       apiUrl=`http://localhost:3005/api/course?view=${view}`
-      console.log("送出3, view值為"+view);
     }
-    console.log(apiUrl);
     // 當組件掛載時執行 fetch 請求 紀錄0823 0451
     fetch(apiUrl)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response not ok");
         }
-        console.log(response.json);
         return response.json();
       })
       .then((data) => {

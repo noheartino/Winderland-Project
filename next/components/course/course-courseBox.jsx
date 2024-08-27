@@ -20,10 +20,9 @@ export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage
             }
         }
         if(boxType==='favorite'){
-            console.log("click myfavorite more");
             router.push({
-                pathname: '/course',
-                query: {test: "123"}
+                pathname: '/dashboard/favorite',
+                query: {}
             })
         }
         
