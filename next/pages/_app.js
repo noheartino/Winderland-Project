@@ -41,6 +41,7 @@ export default function MyApp({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
+    
     <AuthProvider>
       <QueryClientProvider client={queryClient}> {/* 新增 QueryClientProvider */}
         <CartProvider>

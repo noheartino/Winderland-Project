@@ -9,10 +9,6 @@ import { createContext, useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
 
-// google登入
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { useFirebase } from './useFirebase';
-
 // * Context使用1.建立context與導出
 // 傳入參數為defaultValue，是在套用context時錯誤或失敗才會得到的值
 // 可以使用有意義的預設值，或使用null(通常目的是為了除錯)
@@ -23,7 +19,6 @@ const AuthContext = createContext(null)
 export function AuthProvider({ children }) {
   // 建立路由器
   const router = useRouter()
-  const { authFire } = useFirebase();
 
   // 會員使用的認証&授權狀態
   const [auth, setAuth] = useState({
@@ -206,52 +201,8 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // * google登入
-  const googleLogin = async () => {
-    if (!authFire) {
-      console.error('Firebase auth is not initialized');
-      return { success: false, message: 'Firebase auth is not initialized' };
-    }
-
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(authFire, provider);
-      const user = result.user;
-
-      // 向後端發送 Google 用戶資訊
-      const response = await fetch('http://localhost:3005/api/google-login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          displayName: user.displayName,
-          email: user.email,
-          uid: user.uid,
-          photoURL: user.photoURL
-        }),
-        credentials: 'include',
-      });
-
-      const data = await response.json();
-
-      if (data.status === 'success') {
-        setAuth({
-          isAuth: true,
-          userData: data.data.user,
-        });
-        return { success: true, message: 'Google 登入成功！' };
-      } else {
-        return { success: false, message: data.message || 'Google 登入失敗' };
-      }
-    } catch (error) {
-      console.error('Google 登入時發生錯誤：', error);
-      return { success: false, message: 'Google 登入過程中發生錯誤，請稍後再試。' };
-    }
-  };
-
   return (
-    <AuthContext.Provider value={{ auth, login, logout, checkAuth, updateUserInfo, googleLogin }}>
+    <AuthContext.Provider value={{ auth, login, logout, checkAuth, updateUserInfo }}>
       {children}
     </AuthContext.Provider>
   )

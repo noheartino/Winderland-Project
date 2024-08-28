@@ -12,7 +12,7 @@ import Swal from 'sweetalert2'
 
 // @ 預設導出
 export default function LoginForm() {
-  const { login } = useAuth();
+  const { login, googleLogin , isLoading } = useAuth();
   const router = useRouter()
 
   // 狀態設置
@@ -70,7 +70,7 @@ export default function LoginForm() {
     }
     // ! 表單檢查--- END ---
 
-    
+
     try {
       const loginResult = await login(user.account, user.password, rememberMe);
       if (loginResult && loginResult.success) {
@@ -85,8 +85,8 @@ export default function LoginForm() {
         });
         router.push('/dashboard');
       } else {
-         // 使用 SweetAlert2 替代 alert
-         await Swal.fire({
+        // 使用 SweetAlert2 替代 alert
+        await Swal.fire({
           icon: 'error',
           title: '登入失敗',
           text: loginResult ? loginResult.message : '未知錯誤',
@@ -94,14 +94,61 @@ export default function LoginForm() {
       }
     } catch (error) {
       console.error('登入過程中發生錯誤:', error);
-       // 使用 SweetAlert2 替代 alert
-       await Swal.fire({
+      // 使用 SweetAlert2 替代 alert
+      await Swal.fire({
         icon: 'error',
         title: '錯誤',
         text: '登入過程中發生錯誤',
       });
     }
   }
+
+  // 處理 Google 登入
+  const handleGoogleLogin = async () => {
+    if (isLoading) {
+      // 如果 auth 狀態正在加載，顯示一個加載消息或返回
+      Swal.fire({
+        title: '請稍候',
+        text: '正在初始化登入服務...',
+        icon: 'info',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      return;
+    }
+
+    try {
+      const result = await googleLogin();
+      if (result.success) {
+        await Swal.fire({
+          icon: 'success',
+          title: '登入成功',
+          text: 'Google 登入成功！',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        router.push('/dashboard');
+      } else {
+        await Swal.fire({
+          icon: 'error',
+          title: '登入失敗',
+          text: result.message || 'Google 登入失敗',
+        });
+      }
+    } catch (error) {
+      console.error('Google 登入過程中發生錯誤:', error);
+      await Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: 'Google 登入過程中發生錯誤',
+      });
+    }
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>; // 或者其他加載指示器
+  }
+
 
   // @ 渲染
   return (
@@ -153,7 +200,7 @@ export default function LoginForm() {
                         setShowPassword(!showPassword)
                       }}
                     />
-                   
+
                     <label
                       className={styles.formCheckLabel}
                       htmlFor="showPassword"
@@ -170,13 +217,13 @@ export default function LoginForm() {
                   value={user.password}
                   onChange={handleFieldChange}
                 />
-            
+
                 {errors.password && <span className={`${styles.error} ${styles.show} ${styles.errorPwd}`}>{errors.password}</span>}
                 <div
                   className={`d-flex justify-content-between align-items-center ${styles.forgetPwd}`}
                 >
 
-                {/* 記住我的登入 */}
+                  {/* 記住我的登入 */}
                   <div
                     className={`${styles.formCheck} align-items-center d-flex`}
                   >
@@ -228,6 +275,8 @@ export default function LoginForm() {
                   <div className={styles.buttonGruop}>
                     <button
                       className={`${styles.googleLogin} d-flex justify-content-center align-items-center`}
+                      onClick={handleGoogleLogin}
+                      type="button"  // 確保這不會觸發表單提交
                     >
                       <GoogleLogo className="mx-3" />
                       使用GOOGLE登入
