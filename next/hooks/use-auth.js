@@ -150,9 +150,10 @@ export function AuthProvider({ children }) {
           title: '登出成功',
           text: '醺迷仙園 期待下次再與您相見',
           showConfirmButton: false,
-          timer: 1500
+          timer: 2000
         });
-        router.push('/member') // 登出後導向登入頁面
+        // Swal 關閉後立即返回，不再等待額外的時間
+        return true; // 返回 true 表示登出成功
       }
     } catch (error) {
       console.error('登出時發生錯誤：', error)
@@ -164,6 +165,7 @@ export function AuthProvider({ children }) {
         showConfirmButton: false,
         timer: 1500
       });
+      return false; // 返回 false 表示登出失敗
     }
   }
 
