@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from '@/components/member/dashboard/order/OrderCardDetailComment.module.css'
+import Swal from 'sweetalert2'
 
 export default function OrderCardDetailComment({ orderUuid, items }) {
     const [commentableItems, setCommentableItems] = useState([]);
@@ -106,8 +107,26 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
 
             if (!response.ok) throw new Error('Failed to submit comment');
             setSubmittedComments(prev => ({ ...prev, [itemId]: comments[itemId] }));
+
+             // 使用 SweetAlert2 顯示成功訊息
+             await Swal.fire({
+                icon: 'success',
+                title: '評論提交成功',
+                text: '感謝您的寶貴意見！',
+                confirmButtonText: '確定',
+                confirmButtonColor: '#60464C',
+            });
         } catch (err) {
             setError(err.message);
+
+            // 使用 SweetAlert2 顯示錯誤訊息
+            await Swal.fire({
+                icon: 'error',
+                title: '評論提交失敗',
+                text: '抱歉，提交評論時發生錯誤。請稍後再試。',
+                confirmButtonText: '確定',
+                confirmButtonColor: '#60464C',
+            });
         }
     };
 

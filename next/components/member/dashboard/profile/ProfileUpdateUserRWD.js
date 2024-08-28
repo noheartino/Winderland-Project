@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '@/hooks/use-auth'
 import { useRouter } from 'next/router'
+import Swal from 'sweetalert2'
 
 export default function ProfileUpdateUserRWD() {
   // 驗證登入

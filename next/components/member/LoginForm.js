@@ -7,13 +7,14 @@ import Link from 'next/link'
 import GoogleLogo from '@/components/icons/google-logo'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useAuth } from '@/hooks/use-auth'
+import Swal from 'sweetalert2'
+
 
 // @ 預設導出
 export default function LoginForm() {
   const { login } = useAuth();
-
-  // 路由
   const router = useRouter()
+
   // 狀態設置
   const [user, setUser] = useState({
     account: '',
@@ -69,69 +70,36 @@ export default function LoginForm() {
     }
     // ! 表單檢查--- END ---
 
-    // 檢查都沒問題才會到這裡執行
-    // try {
-    //   const url = 'http://localhost:3005/api/member/login'
-    //   const res = await fetch(url, {
-    //     credentials: 'include', // 設定cookie或是存取隱私資料時要加這個參數
-    //     method: 'POST',
-    //     headers: {
-    //       Accept: 'application/json',
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       // 記住登入
-    //       account: user.account,
-    //       password: user.password,
-    //       rememberMe: rememberMe
-    //     }),
-    //   })
-
-    //   const resData = await res.json()
-
-    //   if (res.ok) {
-    //     if (resData.status === 'success') {
-    //       const { accessToken } = resData.data;
-
-    //       if (accessToken) {
-    //         localStorage.setItem('authToken', accessToken);
-    //       }
-
-    //       alert('登入成功')
-    //       router.push('/dashboard')
-    //     } else {
-    //       alert('登入失敗：' + resData.message)
-    //     }
-    //   } else {
-    //     switch (res.status) {
-    //       case 400:
-    //         alert('登入失敗：缺少必要資料')
-    //         break
-    //       case 401:
-    //         alert('登入失敗：帳號或密碼錯誤')
-    //         break
-    //       case 404:
-    //         alert('登入失敗：使用者不存在')
-    //         break
-    //       default:
-    //         alert('登入失敗：' + (resData.message || '未知錯誤'))
-    //     }
-    //   }
-    // } catch (e) {
-    //   console.error(e)
-    //   alert('登入過程中發生錯誤')
-    // }
+    
     try {
       const loginResult = await login(user.account, user.password, rememberMe);
       if (loginResult && loginResult.success) {
-        alert(loginResult.message);
+        // alert(loginResult.message);
+        // 使用 SweetAlert2 替代 alert
+        await Swal.fire({
+          icon: 'success',
+          title: '登入成功',
+          text: loginResult.message,
+          showConfirmButton: false,
+          timer: 1500
+        });
         router.push('/dashboard');
       } else {
-        alert('登入失敗：' + (loginResult ? loginResult.message : '未知錯誤'));
+         // 使用 SweetAlert2 替代 alert
+         await Swal.fire({
+          icon: 'error',
+          title: '登入失敗',
+          text: loginResult ? loginResult.message : '未知錯誤',
+        });
       }
     } catch (error) {
       console.error('登入過程中發生錯誤:', error);
-      alert('登入過程中發生錯誤');
+       // 使用 SweetAlert2 替代 alert
+       await Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '登入過程中發生錯誤',
+      });
     }
   }
 

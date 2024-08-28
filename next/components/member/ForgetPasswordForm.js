@@ -5,12 +5,13 @@ import React, { useState } from 'react'
 import styles from '@/components/member/member.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Link from 'next/link'
+import Swal from 'sweetalert2'
 
 
 // @ 預設導出
 export default function ForgetPasswordForm() {
     const [email, setEmail] = useState('')
-    const [message, setMessage] = useState('')
+    // const [message, setMessage] = useState('')
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -24,13 +25,28 @@ export default function ForgetPasswordForm() {
             })
             const data = await response.json()
             if (response.ok) {
-                setMessage('已將重設密碼連結寄送到所填寫的信箱!')
+                await Swal.fire({
+                    icon: 'success',
+                    title: '重設密碼郵件已發送',
+                    text: '請點擊信中連結完成密碼設定',
+                    confirmButtonText: '確定'
+                })
             } else {
-                setMessage(data.message || '發生錯誤,請稍後再試')
+                await Swal.fire({
+                    icon: 'error',
+                    title: '發送失敗',
+                    text: data.message || '發生錯誤,請稍後再試',
+                    confirmButtonText: '確定'
+                })
             }
         } catch (error) {
             console.error('Error:', error)
-            setMessage('發生錯誤,請稍後再試')
+            await Swal.fire({
+                icon: 'error',
+                title: '發生錯誤',
+                text: '請稍後再試',
+                confirmButtonText: '確定'
+            })
         }
     }
 
@@ -55,7 +71,7 @@ export default function ForgetPasswordForm() {
                                             type="email"
                                             name="email"
                                             className={styles.forgetPwdInput}
-                                            placeholder='請輸入Email'
+                                            placeholder='請輸入註冊時Email'
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             required
@@ -80,7 +96,7 @@ export default function ForgetPasswordForm() {
 
                                 </div>
                             </form>
-                            {message && <div className={`${styles.message} ms-5`}>{message}</div>}
+                            {/* {message && <div className={`${styles.message} ms-5`}>{message}</div>} */}
                         </div>
                     </div>
                 </main>
@@ -122,7 +138,7 @@ export default function ForgetPasswordForm() {
 
                             </div>
                         </form>
-                        {message && <div className={`${styles.message} ms-5`}>{message}</div>}
+                        {/* {message && <div className={`${styles.message} ms-5`}>{message}</div>} */}
                     </div>
                 </div>
             </div>

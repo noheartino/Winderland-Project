@@ -3,6 +3,7 @@ import Image from 'next/image'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useAuth } from '@/hooks/use-auth'
 import { useRouter } from 'next/router'
+import Swal from 'sweetalert2'
 
 import ProfileUpdateUser from './profile/ProfileUpdateUser'
 import ProfileUpdatePwd from './profile/ProfileUpdatePwd'
@@ -55,8 +56,6 @@ export default function DashboardProfile() {
     }
   }, [auth, router, updateAvatarUrl]);
 
-
-
   if (!auth.isAuth || !auth.userData) {
     return null;
   }
@@ -64,7 +63,6 @@ export default function DashboardProfile() {
   // @ 更換會員頭像
   const handleAvatarChange = async (event) => {
     // console.log('更換會員頭像函式');
-
     const file = event.target.files[0];
     if (!file) return;
 
@@ -91,20 +89,40 @@ export default function DashboardProfile() {
         console.log('會員頭像更換成功');
         const newAvatarUrl = result.data.avatar_url;
         const updateResult = await updateUserInfo({ ...auth.userData, avatar_url: newAvatarUrl });
+
         if (updateResult.success) {
           setAvatarUrl(`http://localhost:3005${newAvatarUrl}?t=${new Date().getTime()}`);
-          setUploadStatus('頭像已更換成功');
+          // setUploadStatus('頭像已更換成功');
           setKey(prevKey => prevKey + 1);
+
+          // 使用 SweetAlert2 顯示成功訊息
+          await Swal.fire({
+            icon: 'success',
+            title: '頭像更新成功',
+            text: '您的會員頭像已成功更新',
+            confirmButtonText: '確定',
+            confirmButtonColor: '#60464C',
+          });
+
         } else {
-          setUploadStatus('更新用戶資料失敗');
+          throw new Error('更新用戶資料失敗');
         }
       } else {
         console.error('頭像上傳失敗:', result.message);
-        setUploadStatus('上傳失敗: ' + result.message);
+        throw new Error(result.message || '頭像上傳失敗');
       }
     } catch (error) {
       console.error('頭像上傳出錯:', error);
-      setUploadStatus('上傳出錯: ' + error.message);
+
+      // setUploadStatus('上傳出錯: ' + error.message);
+      // 使用 SweetAlert2 顯示錯誤訊息
+      await Swal.fire({
+        icon: 'error',
+        title: '頭像更新失敗',
+        text: error.message || '上傳過程中發生錯誤，請稍後再試',
+        confirmButtonText: '確定',
+        confirmButtonColor: '#60464C',
+      });
     }
   };
 
@@ -231,7 +249,7 @@ export default function DashboardProfile() {
                 onChange={handleAvatarChange}
                 accept="image/*"
               />
-             {uploadStatus && <div className="uploadStatus">{uploadStatus}</div>}
+             {/* {uploadStatus && <div className="uploadStatus">{uploadStatus}</div>} */}
             </div>
 
 

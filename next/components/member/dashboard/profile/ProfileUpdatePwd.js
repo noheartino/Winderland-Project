@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useAuth } from '@/hooks/use-auth'
+import Swal from 'sweetalert2'
 
 export default function ProfileUpdatePwd() {
   const { auth } = useAuth();
-  const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(null)
+  // const [error, setError] = useState(null)
+  // const [success, setSuccess] = useState(null)
 
   const [passwordData, setPasswordData] = useState({
     oldPassword: '',
@@ -21,12 +22,17 @@ export default function ProfileUpdatePwd() {
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault()
-    setError(null)
-    setSuccess(null)
+    // setError(null)
+    // setSuccess(null)
 
     // 先檢查新密碼和確認密碼是否一致
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setError('新密碼與確認密碼不一致 .ᐟ.ᐟ.ᐟ')
+      Swal.fire({
+        icon: 'error',
+        title: '密碼不一致',
+        text: '新密碼與確認密碼不一致 .ᐟ.ᐟ.ᐟ',
+        confirmButtonText: '確定'
+      })
       return
     }
 
@@ -45,13 +51,23 @@ export default function ProfileUpdatePwd() {
       const data = await response.json()
 
       if (response.ok) {
-        setSuccess('密碼更新成功 .ᐟ.ᐟ.ᐟ')
+        Swal.fire({
+          icon: 'success',
+          title: '密碼更新成功',
+          text: '密碼更新成功 .ᐟ.ᐟ.ᐟ',
+          confirmButtonText: '確定'
+        })
         setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' })
       } else {
         throw new Error(data.message || '密碼更新失敗')
       }
     } catch (err) {
-      setError(err.message)
+      Swal.fire({
+        icon: 'error',
+        title: '密碼更新失敗',
+        text: err.message,
+        confirmButtonText: '確定'
+      })
     }
   }
   if (!auth.isAuth) {
@@ -78,7 +94,9 @@ export default function ProfileUpdatePwd() {
             style={{ width: "93%" }}
             required
           />
+
           <br />
+
           <label htmlFor="newPassword">新密碼 (6-12字元)</label>
           <input
             type="password"
@@ -111,8 +129,8 @@ export default function ProfileUpdatePwd() {
           </div>
         </section>
 
-        {error && <div className="error-message-pwd">{error}</div>}
-        {success && <div className="success-message-pwd">{success}</div>}
+        {/* {error && <div className="error-message-pwd">{error}</div>}
+        {success && <div className="success-message-pwd">{success}</div>} */}
       </form>
 
 

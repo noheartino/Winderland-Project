@@ -20,7 +20,7 @@ import { useEffect } from "react";
 import { AuthProvider } from '@/hooks/use-auth';  // 管理會員狀態
 import { CartProvider } from '@/context/CartContext';
 import NextTopLoader from 'nextjs-toploader'; // 換頁進度條－nextjs-toploader
-
+import swal from 'sweetalert';   // 美麗彈跳窗
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // 引入 React Query
 
 // 創建一個 QueryClient 實例

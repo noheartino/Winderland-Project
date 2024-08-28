@@ -7,6 +7,7 @@
 
 import { createContext, useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Swal from 'sweetalert2'
 
 // * Context使用1.建立context與導出
 // 傳入參數為defaultValue，是在套用context時錯誤或失敗才會得到的值
@@ -138,12 +139,26 @@ export function AuthProvider({ children }) {
           isAuth: false,
           userData: null,
         })
-        alert('你已成功登出!')
+        // alert('你已成功登出!')
+        await Swal.fire({
+          icon: 'success',
+          title: '登出成功',
+          text: '醺迷仙園 期待下次再與您相見',
+          showConfirmButton: false,
+          timer: 1500
+        });
         router.push('/member') // 登出後導向登入頁面
       }
     } catch (error) {
       console.error('登出時發生錯誤：', error)
-      alert('登出過程中發生錯誤，請稍後再試。')
+      // alert('登出過程中發生錯誤，請稍後再試。')
+      await Swal.fire({
+        icon: 'error',
+        title: '發生錯誤',
+        text: '登出過程中發生錯誤，請稍後再試。',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   }
 

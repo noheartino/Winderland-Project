@@ -1,13 +1,15 @@
 // @ 導入
 import React, { useState } from 'react'
+import { useRouter } from 'next/router'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import styles from '@/components/member/member.module.css'
 import Link from 'next/link'
-
+import Swal from 'sweetalert2'
 
 
 // @ 預設導出
 export default function RegisterForm() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     user_name: '',
     phone: '',
@@ -31,24 +33,24 @@ export default function RegisterForm() {
       ...formData,
       [name]: value,
     });
-     // 即時驗證
-  let newErrors = { ...errors };
- 
-  if (name === 'password') {
-    if (value.length < 6 || value.length > 12) {
-      newErrors.password = '密碼長度必須在6-12字元之間';
-    } else {
-      newErrors.password = '';
+    // 即時驗證
+    let newErrors = { ...errors };
+
+    if (name === 'password') {
+      if (value.length < 6 || value.length > 12) {
+        newErrors.password = '密碼長度必須在6-12字元之間';
+      } else {
+        newErrors.password = '';
+      }
     }
-  }
-  if (name === 'password2') {
-    if (value !== formData.password) {
-      newErrors.password2 = '密碼輸入不符';
-    } else {
-      newErrors.password2 = '';
+    if (name === 'password2') {
+      if (value !== formData.password) {
+        newErrors.password2 = '密碼輸入不符';
+      } else {
+        newErrors.password2 = '';
+      }
     }
-  }
-  setErrors(newErrors);
+    setErrors(newErrors);
   };
 
   const validateForm = () => {
@@ -79,6 +81,18 @@ export default function RegisterForm() {
     }
 
     setErrors(newErrors);
+
+    // 顯示所有錯誤訊息
+    if (!isValid) {
+      Swal.fire({
+        icon: 'error',
+        title: '填寫資料錯誤',
+        html: Object.values(newErrors).map(error => `<p>${error}</p>`).join(''),  // 使用HTML顯示多行錯誤訊息
+        showConfirmButton: true,
+      });
+    }
+
+
     return isValid;
   };
 
@@ -99,18 +113,40 @@ export default function RegisterForm() {
       const result = await response.json();
 
       if (response.ok) {
-        alert('註冊成功！');
+        // alert('註冊成功！');
+        await Swal.fire({
+          icon: 'success',
+          title: '註冊成功',
+          text: '歡迎成為醺迷仙園會員，請先登入',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        setTimeout(() => router.push('/member/login'), 1000)
       } else {
-       // 處理後端返回的錯誤
-       if (result.message === '會員帳號已存在') {
-        setErrors({ ...errors, account: '會員帳號已存在' });
-      } else {
-        alert(result.message || '註冊失敗，請稍後再試');
-      }
+        // 處理後端返回的錯誤
+        if (result.message === '會員帳號已存在') {
+          setErrors({ ...errors, account: '會員帳號已存在' });
+        } else {
+          // alert(result.message || '註冊失敗，請稍後再試');
+          await Swal.fire({
+            icon: 'error',
+            title: '註冊失敗',
+            text: result.message || '註冊失敗，請稍後再試',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('發生錯誤，請稍後再試');
+      // alert('發生錯誤，請稍後再試');
+      await Swal.fire({
+        icon: 'success',
+        title: '註冊失敗',
+        text: '發生錯誤，請稍後再試',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   };
 
@@ -128,7 +164,7 @@ export default function RegisterForm() {
             role="tabpanel"
             aria-labelledby="register-tab"
           >
-          
+
             {/* 帳號 */}
             <div className={styles.mail}>
               <div className="d-flex justify-content-between align-items-center">
@@ -170,8 +206,8 @@ export default function RegisterForm() {
                 <label htmlFor="register-pwd2" className={styles.label}>
                   * 再次輸入會員密碼
                 </label>
-              {/* 錯誤訊息 */}
-              {errors.password2 && <span className={styles.span}>{errors.password2}</span>}
+                {/* 錯誤訊息 */}
+                {errors.password2 && <span className={styles.span}>{errors.password2}</span>}
               </div>
               <input
                 type="password"
@@ -198,7 +234,7 @@ export default function RegisterForm() {
                 value={formData.user_name}
                 onChange={handleChange}
               />
-               {errors.user_name && <span className={styles.span}>{errors.user_name}</span>}
+              {errors.user_name && <span className={styles.span}>{errors.user_name}</span>}
               <input
                 type="text"
                 name="phone"
@@ -236,10 +272,10 @@ export default function RegisterForm() {
                   value={formData.gender}
                   onChange={handleChange}
                 >
-                <option value="option1">性別</option>
-                    <option value="Male">男性</option>
-                    <option value="Female">女性</option>
-                    <option value="Other">不願透露</option>
+                  <option value="option1">性別</option>
+                  <option value="Male">男性</option>
+                  <option value="Female">女性</option>
+                  <option value="Other">不願透露</option>
                 </select>
               </div>
             </div>
@@ -284,7 +320,7 @@ export default function RegisterForm() {
                     * 會員帳號
                   </label>{' '}
                   {/* 錯誤訊息 */}
-                {errors.account && <span className={styles.span}>{errors.account}</span>}
+                  {errors.account && <span className={styles.span}>{errors.account}</span>}
                 </div>
                 <input
                   type="text"
@@ -317,7 +353,7 @@ export default function RegisterForm() {
                     * 再次輸入會員密碼
                   </label>
                   {/* 錯誤訊息 */}
-                {errors.pwd2 && <span className={styles.span}>{errors.pwd2}</span>}
+                  {errors.pwd2 && <span className={styles.span}>{errors.pwd2}</span>}
                 </div>
                 <input
                   type="password"

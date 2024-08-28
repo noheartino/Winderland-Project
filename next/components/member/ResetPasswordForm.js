@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import styles from '@/components/member/member.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import Swal from 'sweetalert2'
 
 export default function ResetPasswordForm() {
   const [password, setPassword] = useState('')
@@ -20,27 +21,47 @@ export default function ResetPasswordForm() {
         setToken(token)
         setEmail(email)
       } else {
-        setMessage('無效的重設密碼連結')
+        Swal.fire({
+          icon: 'error',
+          title: '錯誤',
+          text: '無效的重設密碼連結',
+          confirmButtonText: '確定'
+        })
       }
     }
   }, [router.isReady, router.query])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setMessage('')
+    // setMessage('')
 
     if (!token || !email) {
-      setMessage('無效的重設密碼連結')
+      Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '無效的重設密碼連結',
+        confirmButtonText: '確定'
+      })
       return
     }
 
     if (password !== confirmPassword) {
-      setMessage('密碼不一致')
+      Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '密碼不一致',
+        confirmButtonText: '確定'
+      })
       return
     }
 
     if (password.length < 6) {
-      setMessage('密碼長度必須至少為6個字符')
+      Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '密碼長度必須至少為6個字符',
+        confirmButtonText: '確定'
+      })
       return
     }
 
@@ -54,14 +75,29 @@ export default function ResetPasswordForm() {
       })
       const data = await response.json()
       if (response.ok) {
-        setMessage('密碼重設成功')
+        await Swal.fire({
+          icon: 'success',
+          title: '成功',
+          text: '密碼重設成功',
+          confirmButtonText: '確定'
+        })
         setTimeout(() => router.push('/member/login'), 3000)
       } else {
-        setMessage(data.message || '重設密碼失敗')
+        Swal.fire({
+          icon: 'error',
+          title: '錯誤',
+          text: data.message || '重設密碼失敗',
+          confirmButtonText: '確定'
+        })
       }
     } catch (error) {
       console.error('Error:', error)
-      setMessage('發生錯誤,請稍後再試')
+      Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '發生錯誤,請稍後再試',
+        confirmButtonText: '確定'
+      })
     }
   }
 
@@ -73,7 +109,7 @@ export default function ResetPasswordForm() {
           <div className={styles.bgResetPwd}>
             <div className={styles.resetPwdBox}>
 
-              {message && <div className={` ms-5 mt-5 ${styles.message} ${message.includes('成功') ? styles.success : styles.error}`}>{message}</div>}
+              {/* {message && <div className={` ms-5 mt-5 ${styles.message} ${message.includes('成功') ? styles.success : styles.error}`}>{message}</div>} */}
 
               <form onSubmit={handleSubmit}>
                 <div className={`${styles.tabContent} ms-5`}>
@@ -126,8 +162,8 @@ export default function ResetPasswordForm() {
       <main className={styles.main}>
       
   
-
-              {message && <div className={` ms-5 mt-5 ${styles.message} ${message.includes('成功') ? styles.success : styles.error}`}>{message}</div>}
+{/* 
+              {message && <div className={` ms-5 mt-5 ${styles.message} ${message.includes('成功') ? styles.success : styles.error}`}>{message}</div>} */}
 
               <form onSubmit={handleSubmit}>
                 <div className={`${styles.tabContent} ms-5 mt-5`}>
