@@ -1,9 +1,11 @@
+// @ 導入模組
 import React, { useState ,useEffect} from 'react'
 import Image from 'next/image'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
+import Pagination from '@/components/member/dashboard/order/orderPagination' 
 
 import OrderAside from '@/components/member/dashboard/order/OrderAside'
 import OrderFilterOffcanvas from '@/components/member/dashboard/order/OrderFilterOffcanvas';
@@ -12,6 +14,7 @@ import OrderCardDetail from './order/OrderCardDetail'
 import OrderCardRWD from './order/OrderCardRWD'
 import styles from '@/components/member/dashboard/order/OrderCardDetail.module.css'
 
+// @ 預設導出
 export default function DashboardOrder() {
 const [orders, setOrders] = useState([])
 const [filters, setFilters] = useState({
@@ -25,6 +28,10 @@ const [filters, setFilters] = useState({
 const [expandedStates, setExpandedStates] = useState({});
 const [error, setError] = useState(null)
 const [isLoading, setIsLoading] = useState(true)
+
+// 分頁狀態
+const [currentPage, setCurrentPage] = useState(1)
+const ordersPerPage = 5
 
 useEffect(() => {
   fetchOrders()
@@ -85,10 +92,19 @@ const handleFilterChange = (newFilters) => {
   }))
 }
 
+// 計算當前頁面的訂單
+const indexOfLastOrder = currentPage * ordersPerPage
+const indexOfFirstOrder = indexOfLastOrder - ordersPerPage
+const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder)
+
+// 更改頁碼
+const paginate = (pageNumber) => setCurrentPage(pageNumber)
+
 
   return (
     <>
     {error && <div className="alert alert-danger">{error}</div>}
+
       {/* desk */}
       <div className="container d-none d-lg-block mb-5">
         <div className=" d-flex">
@@ -97,10 +113,10 @@ const handleFilterChange = (newFilters) => {
           <div className="order-list">
             {isLoading ? (
               <div>載入中...</div>
-            ) : orders.length === 0 ? (
+            ) : currentOrders.length === 0 ? (
               <OrderCard order={null} />
             ) : (
-              orders.map(order => (
+              currentOrders.map(order => (
                 <div key={order.order_uuid} className="order-card card mb-4">
                   <OrderCard order={order} />
 
@@ -137,6 +153,13 @@ const handleFilterChange = (newFilters) => {
                 </div>
               ))
             )}
+            {/* 分頁 */}
+            <Pagination
+              ordersPerPage={ordersPerPage}
+              totalOrders={orders.length}
+              paginate={paginate}
+              currentPage={currentPage}
+            />
           </div>
         </div>
       </div>
