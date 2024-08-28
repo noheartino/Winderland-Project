@@ -17,7 +17,8 @@ const [orders, setOrders] = useState([])
 const [filters, setFilters] = useState({
   status: [],
   startDate: '',
-  endDate: ''
+  endDate: '',
+  sortOrder: '' 
 })
 
 // 使用對象來存儲每個訂單的展開狀態
@@ -43,6 +44,9 @@ const fetchOrders = async () => {
     }
     if (filters.endDate) {
       params.append('endDate', filters.endDate)
+    }
+    if (filters.sortOrder) {
+      params.append('sortOrder', filters.sortOrder)
     }
 
     if (params.toString()) {
@@ -75,7 +79,10 @@ const toggleDetails = (orderId) => {
 };
 // 篩選器
 const handleFilterChange = (newFilters) => {
-  setFilters(newFilters)
+  setFilters(prevFilters => ({
+    ...prevFilters,
+    ...newFilters
+  }))
 }
 
 

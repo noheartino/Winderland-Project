@@ -8,10 +8,10 @@ const router = express.Router()
 router.get('/history', authenticate, async (req, res) => {
   try {
     const userId = req.user.id
-    const { status, startDate, endDate } = req.query
+    const { status, startDate, endDate, sortOrder } = req.query
 
     let query = `
-      SELECT 
+     SELECT 
         o.order_uuid,
         o.status,
         o.payment_method,
@@ -75,7 +75,14 @@ router.get('/history', authenticate, async (req, res) => {
       queryParams.push(startDate, endDate)
     }
 
-    query += ` ORDER BY o.created_at DESC`
+    // 排序邏輯
+    if (sortOrder === 'asc') {
+      query += ` ORDER BY o.created_at ASC`
+    } else {
+      query += ` ORDER BY o.created_at DESC`
+    }
+
+    // query += ` ORDER BY o.created_at DESC`
 
     const [rows] = await connection.query(query, queryParams)
 
