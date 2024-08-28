@@ -150,7 +150,7 @@ export function AuthProvider({ children }) {
   // @ 更新
   const updateUserInfo = async (updatedData) => {
     try {
-      console.log('Sending update request with data:', updatedData);
+      // console.log('Sending update request with data:', updatedData);
       const response = await fetch('http://localhost:3005/api/dashboard/profile/update', {
         method: 'PUT',
         headers: {
@@ -164,16 +164,18 @@ export function AuthProvider({ children }) {
 
       if (response.ok && result.status === 'success') {
         // 更新本地 auth 狀態
-        setAuth(prevAuth => ({
-          ...prevAuth,
-          userData: {
-            ...prevAuth.userData,
-            ...result.data.user,
-            // phone: result.data.user.phone || '',  // 確保 phone 字段存在
-            // address: result.data.user.address || ''  // 確保 address 字段存在
-          }
-        }));
-        console.log('User data updated:', result.data.user); // 檢查更新後的數據
+        setAuth(prevAuth => {
+          const newAuth = {
+            ...prevAuth,
+            userData: {
+              ...prevAuth.userData,
+              ...result.data.user,
+              avatar_url: updatedData.avatar_url || prevAuth.userData.avatar_url, // 確保頭像 URL 被更新
+            }
+          };
+          console.log('Updated auth state:', newAuth); // 檢查更新後的狀態
+          return newAuth;
+        });
         return { success: true, user: result.data.user };
       } else {
         throw new Error(result.message || '更新失敗');
@@ -182,7 +184,7 @@ export function AuthProvider({ children }) {
       console.error('更新失敗資訊:', error);
       return { success: false, error: error.message };
     }
-  }
+  };
 
   return (
     <AuthContext.Provider value={{ auth, login, logout, checkAuth, updateUserInfo }}>

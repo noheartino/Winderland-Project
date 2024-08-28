@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useAuth } from '@/hooks/use-auth'
@@ -17,7 +17,7 @@ export default function DashboardProfile() {
 
   const [avatarUrl, setAvatarUrl] = useState('');
   const [uploadStatus, setUploadStatus] = useState('');
-  const [key, setKey] = useState(0); // 新增一個 key 狀態用於強制重新渲染 Image 組件
+  const [key, setKey] = useState(0);
 
   const [formData, setFormData] = useState({
     user_name: '',
@@ -28,6 +28,14 @@ export default function DashboardProfile() {
     phone: '',
     address: ''
   })
+
+  const updateAvatarUrl = useCallback(() => {
+    if (auth.userData && auth.userData.avatar_url) {
+      setAvatarUrl(`http://localhost:3005${auth.userData.avatar_url}?t=${new Date().getTime()}`);
+    } else {
+      setAvatarUrl('/images/member/avatar/default-avatar.jpg');
+    }
+  }, [auth.userData]);
 
   useEffect(() => {
     if (!auth.isAuth) {
@@ -43,10 +51,10 @@ export default function DashboardProfile() {
         address: auth.userData.address || '',
         member_level_id: auth.userData.member_level_id || '',
       });
-      setAvatarUrl(auth.userData.avatar_url || '/images/member/avatar/default-avatar.jpg');
-      setKey(prev => prev + 1);
+      updateAvatarUrl();
     }
-  }, [auth, router]);
+  }, [auth, router, updateAvatarUrl]);
+
 
 
   if (!auth.isAuth || !auth.userData) {
@@ -55,7 +63,7 @@ export default function DashboardProfile() {
 
   // @ 更換會員頭像
   const handleAvatarChange = async (event) => {
-    console.log('更換會員頭像函式');
+    // console.log('更換會員頭像函式');
 
     const file = event.target.files[0];
     if (!file) return;
@@ -64,7 +72,7 @@ export default function DashboardProfile() {
     formData.append('avatar', file);
 
     try {
-      setUploadStatus('上傳中...');
+      // setUploadStatus('上傳中...');
       console.log('會員頭像上傳要求中...');
       const response = await fetch('http://localhost:3005/api/dashboard/profile/upload-avatar', {
         method: 'POST',
@@ -82,10 +90,14 @@ export default function DashboardProfile() {
       if (result.status === 'success') {
         console.log('會員頭像更換成功');
         const newAvatarUrl = result.data.avatar_url;
-        setAvatarUrl(newAvatarUrl);
-        updateUserInfo({ ...auth.userData, avatar_url: newAvatarUrl });
-        setUploadStatus('上傳成功');
-        setKey(prev => prev + 1);
+        const updateResult = await updateUserInfo({ ...auth.userData, avatar_url: newAvatarUrl });
+        if (updateResult.success) {
+          setAvatarUrl(`http://localhost:3005${newAvatarUrl}?t=${new Date().getTime()}`);
+          setUploadStatus('頭像已更換成功');
+          setKey(prevKey => prevKey + 1);
+        } else {
+          setUploadStatus('更新用戶資料失敗');
+        }
       } else {
         console.error('頭像上傳失敗:', result.message);
         setUploadStatus('上傳失敗: ' + result.message);
@@ -99,7 +111,7 @@ export default function DashboardProfile() {
   // if (isLoading) return <div>Loading...</div>
   // if (error) return <div>Error: {error}</div>
 
-  // 前端換算顯示
+  // @ 前端換算顯示
   // * 性別
   const genderMapping = {
     Male: '男性',
@@ -162,7 +174,7 @@ export default function DashboardProfile() {
     }
   };
 
-  
+
 
   return (
     <>
@@ -194,13 +206,17 @@ export default function DashboardProfile() {
               <div className="userID">ID：{auth.userData.account}</div>
               <div className="userAge">{userGender} / {userAge}歲 / {auth.userData.birthday}</div>
 
+              {/* 會員頭像 */}
               <div className="user-img">
                 <Image
-                src={avatarUrl || '/images/member/avatar/default-avatar.jpg'}
+                  src={avatarUrl || '/images/member/avatar/default-avatar.jpg'}
                   alt="User Avatar"
                   width={130}
                   height={130}
                   className="rounded-circle"
+                  key={key}  // 使用 key 強制重新渲染
+                  loader={({ src }) => src}  // 自定義 loader 以避免 Next.js 的圖片優化
+                  unoptimized  // 禁用 Next.js 的圖片優化
                 />
               </div>
 
@@ -215,7 +231,7 @@ export default function DashboardProfile() {
                 onChange={handleAvatarChange}
                 accept="image/*"
               />
-              {uploadStatus && <div className="uploadStatus">{uploadStatus}</div>}
+             {uploadStatus && <div className="uploadStatus">{uploadStatus}</div>}
             </div>
 
 
@@ -257,7 +273,7 @@ export default function DashboardProfile() {
               </div>
               <div className="user-img-rwd">
                 <Image
-           src={auth.userData.avatar_url || '/images/member/avatar/default-avatar.jpg'}
+                  src={auth.userData.avatar_url || '/images/member/avatar/default-avatar.jpg'}
                   alt="User Avatar"
                   width={100}
                   height={100}

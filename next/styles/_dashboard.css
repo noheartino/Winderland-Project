@@ -223,6 +223,12 @@
         /* background: url(/images/member/user.jpg) lightgray 50% / cover no-repeat; */
     }
 
+    .uploadStatus{
+        margin-left: 380px;
+        margin-top: 180px;
+        font-size: medium;
+        color: var(--blue);
+    }
     .avatarButton {
         width: 12%;
         height: 50px;
