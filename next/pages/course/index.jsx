@@ -7,6 +7,7 @@ import CourseCardSm from '@/components/course/course-card-sm'
 import Link from "next/link";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
+import CourseIndexPageNav from "@/components/course/courseIndexPageNav"
 
 export default function CourseIndex() {
   const router = useRouter();
@@ -21,6 +22,7 @@ export default function CourseIndex() {
   const [firstMyCourse, setFirstMyCourse] = useState({});
   const [isHomePage, setIsHomePage] = useState(true);
   const [courseBtn, setCourseBtn] = useState("");
+  const [currentPage, setCurrentPage] = useState(1)
 
   const courseBtn01 = useRef(null)
   const courseBtn02 = useRef(null)
@@ -276,12 +278,13 @@ export default function CourseIndex() {
               </Link>
                 
               </div>
-              <div className="col-auto">page-nav</div>
+              <div className="row">
+                <CourseIndexPageNav courses={courses} setCurrentPage={setCurrentPage} />
+              </div>
             </div>
           </div>
         </div>
         {/* page-nav-bar end */}
-        {/* <footer></footer> */}
         {/* Bootstrap JavaScript Libraries */}
       </div>
 
