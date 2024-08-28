@@ -5,9 +5,75 @@ import connection from '##/configs/mysql.js'
 const router = express.Router()
 let userId = 1
 
+router.get('/teacher/:teacherId', async (req, res) => {
+  const { series } = req.query
+
+  const courseId = req.params.courseId
+  let courseSQL = `SELECT 
+                    class.*,
+                    class.id AS class_id,
+                    class.name AS class_name,
+                    class.description AS class_description,
+                    teacher.*,
+                    teacher.id AS teacher_id,
+                    teacher.name AS teacher_name,
+                    images_class.class_id,
+                    images_class.path AS class_path,
+                    images_teacher.teacher_id,
+                    images_teacher.path AS teacher_path
+                FROM 
+                    class
+                LEFT JOIN
+                    teacher ON class.teacher_id = teacher.id
+                LEFT JOIN
+                    images_class ON class.id = images_class.class_id
+                LEFT JOIN
+                    images_teacher ON teacher.id = images_teacher.teacher_id
+                WHERE class.id = ${courseId};`
+  let theCourseAssignedSQL = `SELECT 
+                                order_details.*, 
+                                orders.*, 
+                                order_details.id AS order_details_id
+                            FROM 
+                                order_details 
+                            JOIN 
+                                orders 
+                            ON 
+                                order_details.order_uuid = orders.order_uuid
+                            WHERE order_details.class_id=${courseId};`
+
+  let commentSQLparams = `comments.created_at DESC`
+  if (series === 'timeOldToNew') {
+    commentSQLparams = `comments.created_at ASC`
+  } else if (series && series === 'scoreHtoL') {
+    commentSQLparams = `comments.rating DESC, comments.created_at DESC`
+  } else if (series && series === 'scoreLtoH') {
+    commentSQLparams = `comments.rating ASC, comments.created_at DESC`
+  } else {
+    commentSQLparams = `comments.created_at DESC`
+  }
+  let commentsSQL = `SELECT comments.*, users.account, users.id AS user_id FROM comments JOIN users ON comments.user_id = users.id WHERE comments.entity_type = 'class' AND comments.entity_id = ${courseId} ORDER BY ${commentSQLparams}`
+  try {
+    const [course] = await connection.execute(courseSQL)
+    const [theCourseAssigned] = await connection.execute(theCourseAssignedSQL)
+    const [comments] = await connection.execute(commentsSQL)
+    res.json({ course, theCourseAssigned, comments })
+    console.log('測試:' + req.originalUrl)
+  } catch (err) {
+    res.status(500).json({ error: 'error' + err.message })
+  }
+})
+
 router.get('/teacher', async (req, res) => {
   // teacher 列表
-  let teachersSQL = `SELECT teacher.*, images_teacher.teacher_id, images_teacher.path AS teacher_path FROM teacher JOIN images_teacher ON teacher.id = images_teacher.teacher_id`
+  const { searchT } = req.query;
+  let teacherSQLParamsStr = ``
+  let teachersSQLParams = []
+  if(searchT){
+    teacherSQLParamsStr = `WHERE teacher.name LIKE ? OR teacher.name_en LIKE ?`
+    teachersSQLParams = [`%${searchT}%`, `%${searchT}%`]
+  }
+  let teachersSQL = `SELECT teacher.*, images_teacher.teacher_id, images_teacher.path AS teacher_path FROM teacher JOIN images_teacher ON teacher.id = images_teacher.teacher_id ${teacherSQLParamsStr}`
   let commentsSQL = `SELECT comments.*, comments.id AS comment_id, class.*, class.id AS class_id, class.description AS class_description, class.name AS class_name, teacher.*, teacher.id AS teacher_id, teacher.description AS teacher_description, teacher.name AS teacher_name, images_teacher.teacher_id, images_teacher.path AS teacher_path
   FROM
     comments
@@ -21,7 +87,7 @@ router.get('/teacher', async (req, res) => {
     comments.entity_type = 'class'`
 
   try {
-    const [teachers] = await connection.execute(teachersSQL)
+    const [teachers] = await connection.execute(teachersSQL, teachersSQLParams)
     const [comments] = await connection.execute(commentsSQL)
 
     res.json({ teachers, comments })

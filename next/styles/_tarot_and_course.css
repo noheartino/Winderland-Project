@@ -323,7 +323,7 @@
     }
   }
   & .course-search-box-width{
-    width: 35%;
+    width: 30%;
   }
   & .teacher-search-box-width{
     width: 50%;
@@ -611,7 +611,7 @@
     margin-top: -100px;
   }
   & .teacher-index-contentBox-margin-minus-control {
-    margin-top: -550px;
+    margin-top: -600px;
   }
   @media screen and (max-width: 768px) {
     & .fourth-page-wrap {
@@ -642,7 +642,7 @@
       margin-top: 0px;
     }
     & .teacher-index-contentBox-margin-minus-control {
-      margin-top: -250px;
+      margin-top: -300px;
     }
     & .teacher-detail-suggest-course {
       padding: 10px 10px;

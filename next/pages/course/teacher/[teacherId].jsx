@@ -1,8 +1,34 @@
-import React from "react";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import Image from 'next/image';
 
 export default function TeacherDetail() {
+  // 需要資料: 目前teacher & 目前teacher的comments 、 courses中此teacher的課程列表=>card-sm:{當前課程 / 當前課程平均得分 / 課程已報名人數}
+  const router = useRouter()
+let apiUrl = `http://localhost:3005/api/course/teacher`
+// const [comments, setComments] = useState([])
+
+useEffect(()=>{
+  fetch(apiUrl)
+    .then((response) => {
+      console.log("送出fetch，URL="+apiUrl);
+      if (!response.ok) {
+        throw new Error("Network response not ok");
+      }
+      console.log("送出的URL: "+apiUrl);
+      return response.json();
+    })
+    .then((data) => {
+      // const {} = data;
+      // set
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}, [])
   return (
     <>
       <div className="course_wrap">
@@ -119,9 +145,9 @@ export default function TeacherDetail() {
                 </div>
               </div>
             </div>
-            <div className="container-fluid my-5 px-0">
+            <div className="container-fluid mt-5 px-0 pb-5">
               <div className="container-sm">
-                <div className="w-100 bg-white rounded-top-5 m-auto teacher-detail-suggest-course">
+                <div className="w-100 bg-white rounded-5 m-auto teacher-detail-suggest-course">
                   {/* 講師其他課程 start */}
                   <div className="my-5 border-5">
                     <div className="col-auto h3 pe-2 spac-2 m-0 text-prim-text-prim px-10px mb-5 text-center text-md-start">
@@ -315,18 +341,6 @@ export default function TeacherDetail() {
         </div>
         {/* page four teacher-detail end */}
 
-        {/* page-nav-bar start */}
-        <div className="container-fluid py-3">
-            <div className="container-sm">
-                <div className="row justify-content-between">
-                    <a className="col-auto" href="">
-                      <span className="h5 text-prim-text-prim spac-1">查看所有講師<i className="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i></span>
-                    </a>
-                    <div className="col-auto">page-nav</div>
-                </div>
-            </div>
-        </div>
-        {/* page-nav-bar end */}
         {/* <footer></footer> */}
       </div>
          {/* Footer */}

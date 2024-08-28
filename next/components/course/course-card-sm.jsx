@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
+  // 當前課程 / 當前課程平均得分 / 課程已報名人數
   const {
     class_name='',
     student_limit,
