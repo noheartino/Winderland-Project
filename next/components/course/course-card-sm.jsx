@@ -136,7 +136,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
                   上課縣市-{address.slice(0, 3)}
                 </span>
               </div>
-              <div className="course-process-footer mt-2 d-flex align-items-center justify-content-end justify-content-md-start">
+              <div className="course-process-footer mt-2 d-flex align-items-center justify-content-end justify-content-md-start flex-wrap row-gap-2 gap-3">
                 <span
                   className={`h6 text-gray-light spac-2 origin-price mx-2 ${
                     sale_price > 0 ? "d-inline-block d-md-none" : "d-none"
@@ -144,6 +144,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
                 >
                   <del>NT${price.toLocaleString()}</del>
                 </span>
+                
                 <span className="h5 spac-2">
                   NT$
                   {sale_price > 0
@@ -151,7 +152,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
                     : price.toLocaleString()}
                 </span>
                 <span
-                  className={`h6 text-gray-light spac-2 origin-price mx-2 ${
+                  className={`h6 text-gray-light spac-2 origin-price ${
                     sale_price > 0 ? "d-none d-md-inline-block" : "d-none"
                   }`}
                 >
@@ -166,7 +167,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
             isOnline === true ? "d-none" : "d-flex"
           }`}
         >
-          <div className="col-12 course-process-header d-flex justify-content-between mt-3 px-0">
+          <div className="col-12 course-process-header d-flex justify-content-between mt-3 px-0 flex-wrap row-gap-2">
             <span className="h6 text-sec-blue spac-1">
               限額總數 - {parseInt(student_limit)}人
             </span>

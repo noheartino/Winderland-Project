@@ -200,7 +200,7 @@ export default function CourseIndex() {
         <div className={`container-fluid px-0 ${isHomePage?'d-none':'d-block'}`}>
           <div className="container-sm px-0 my-5">
             <div className="px-10px">
-            <div className="spac-1 btn-border-wine btn mt-4" onClick={(e)=>{setIsHomePage(true);clearQuery()}}><i className="fa-solid fa-chevron-left me-1"></i>回到課程首頁</div>
+              <div className="spac-1 btn-border-wine btn mt-4" onClick={(e)=>{setIsHomePage(true);clearQuery()}}><i className="fa-solid fa-chevron-left me-1"></i>回到課程首頁</div>
               <div className="row px-0 m-0 justify-content-center justify-content-md-start course-card-header-page2 align-items-center">
                 <span className="col-auto h4 pe-2 spac-2 m-0">
                   <strong>我的課程</strong>

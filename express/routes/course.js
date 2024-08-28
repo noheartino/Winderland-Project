@@ -6,58 +6,22 @@ const router = express.Router()
 let userId = 1
 
 router.get('/teacher/:teacherId', async (req, res) => {
-  const { series } = req.query
+  // 目前 teacher ID
+  const teacherId = req.params.teacherId
 
-  const courseId = req.params.courseId
-  let courseSQL = `SELECT 
-                    class.*,
-                    class.id AS class_id,
-                    class.name AS class_name,
-                    class.description AS class_description,
-                    teacher.*,
-                    teacher.id AS teacher_id,
-                    teacher.name AS teacher_name,
-                    images_class.class_id,
-                    images_class.path AS class_path,
-                    images_teacher.teacher_id,
-                    images_teacher.path AS teacher_path
-                FROM 
-                    class
-                LEFT JOIN
-                    teacher ON class.teacher_id = teacher.id
-                LEFT JOIN
-                    images_class ON class.id = images_class.class_id
-                LEFT JOIN
-                    images_teacher ON teacher.id = images_teacher.teacher_id
-                WHERE class.id = ${courseId};`
-  let theCourseAssignedSQL = `SELECT 
-                                order_details.*, 
-                                orders.*, 
-                                order_details.id AS order_details_id
-                            FROM 
-                                order_details 
-                            JOIN 
-                                orders 
-                            ON 
-                                order_details.order_uuid = orders.order_uuid
-                            WHERE order_details.class_id=${courseId};`
+  // SELECT 目前teacher
+  let teacherSQL = `SELECT teacher.*, teacher.id AS teacher_id, images_teacher.teacher_id, images_teacher.path AS teacher_path FROM teacher JOIN images_teacher ON teacher.id = images_teacher.teacher_id WHERE teacher.id = ${teacherId};`
 
-  let commentSQLparams = `comments.created_at DESC`
-  if (series === 'timeOldToNew') {
-    commentSQLparams = `comments.created_at ASC`
-  } else if (series && series === 'scoreHtoL') {
-    commentSQLparams = `comments.rating DESC, comments.created_at DESC`
-  } else if (series && series === 'scoreLtoH') {
-    commentSQLparams = `comments.rating ASC, comments.created_at DESC`
-  } else {
-    commentSQLparams = `comments.created_at DESC`
-  }
-  let commentsSQL = `SELECT comments.*, users.account, users.id AS user_id FROM comments JOIN users ON comments.user_id = users.id WHERE comments.entity_type = 'class' AND comments.entity_id = ${courseId} ORDER BY ${commentSQLparams}`
+  // SELECT 目前teacher的comments
+  let teacherCommentsSQL = `SELECT comments.*, comments.id AS comment_id, class.id AS class_id, class.name AS class_name, class.teacher_id FROM comments JOIN class ON comments.entity_id = class.id WHERE comments.entity_type = 'class' AND class.teacher_id = ${teacherId}`
+
+  // SELECT 目前 teacher 開課的 courses
+  let teacherCoursesSQL = `SELECT class.*, class.name AS class_name, images_class.class_id, images_class.path AS class_path FROM class JOIN images_class ON class.id = images_class.class_id WHERE class.teacher_id = ${teacherId}`
   try {
-    const [course] = await connection.execute(courseSQL)
-    const [theCourseAssigned] = await connection.execute(theCourseAssignedSQL)
-    const [comments] = await connection.execute(commentsSQL)
-    res.json({ course, theCourseAssigned, comments })
+    const [teacher] = await connection.execute(teacherSQL)
+    const [teacherComments] = await connection.execute(teacherCommentsSQL)
+    const [teacherCourses] = await connection.execute(teacherCoursesSQL)
+    res.json({ teacher, teacherComments, teacherCourses })
     console.log('測試:' + req.originalUrl)
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })

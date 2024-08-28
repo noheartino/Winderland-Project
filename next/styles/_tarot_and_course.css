@@ -152,6 +152,17 @@
     color: var(--wine) !important;
     &:hover{
       background-color: var(--wine) !important;
+      border: 0.075rem solid var(--wine);
+      color: #ffffff !important;
+    }
+  }
+  & .btn-border-white {
+    background-color: transparent;
+    border: 0.075rem solid #ffffff;
+    color: #ffffff !important;
+    &:hover{
+      background-color: var(--wine) !important;
+      border: 0.075rem solid var(--wine);
       color: #ffffff !important;
     }
   }
@@ -590,22 +601,13 @@
         no-repeat;
     height: 650px;
     position: relative;
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(256, 256, 256, 0.1);
-    }
   }
   & .teacher-detail-content-box {
     background-color: #ffffff;
     padding: 50px 75px;
   }
   & .teacher-detail-suggest-course {
-    padding: 25px 75px;
+    padding: 25px 0px;
   }
   & .teacher-detail-contentBox-margin-minus-control {
     margin-top: -100px;

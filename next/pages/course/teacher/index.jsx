@@ -92,8 +92,8 @@ useEffect(()=>{
             </div>
             <div className="container-fluid px-0">
               <div className="container-sm">
-              <Link href={`/course`}>
-                <div className="spac-1 btn-prim-wine btn mb-5 px-4 py-3 rounded-4"><i className="fa-solid fa-chevron-left me-1"></i>回到課程首頁</div>
+              <Link href={`/course`} className="spac-1 btn-prim-wine btn mb-5 px-4 py-3 rounded-4">
+                <i className="fa-solid fa-chevron-left me-1"></i>回到課程首頁
               </Link>
                 <div className="w-100 bg-white rounded-5 m-auto teacher-detail-suggest-course">
                   
