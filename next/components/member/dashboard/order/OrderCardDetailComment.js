@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '@/components/member/dashboard/order/OrderCardDetailComment.module.css'
 import Swal from 'sweetalert2'
 
-export default function OrderCardDetailComment({ orderUuid, items }) {
+export default function OrderCardDetailComment({ orderUuid }) {
     const [commentableItems, setCommentableItems] = useState([]);
     const [comments, setComments] = useState({});
     const [submittedComments, setSubmittedComments] = useState({});
@@ -23,8 +23,13 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
                 credentials: 'include',
             });
 
-            if (!response.ok) throw new Error('Failed to fetch commentable items');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to fetch commentable items');
+            }
+
             const data = await response.json();
+            console.log('Fetched commentable items:', data.data); // 添加日誌
             setCommentableItems(data.data);
             setComments(data.data.reduce((acc, item) => ({
                 ...acc,
@@ -41,6 +46,7 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
                 } : null
             }), {}));
         } catch (err) {
+            console.error('Error fetching commentable items:', err);
             setError(err.message);
         } finally {
             setIsLoading(false);
@@ -105,11 +111,14 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
                 credentials: 'include',
             });
 
-            if (!response.ok) throw new Error('Failed to submit comment');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to submit comment');
+            }
             setSubmittedComments(prev => ({ ...prev, [itemId]: comments[itemId] }));
 
-             // 使用 SweetAlert2 顯示成功訊息
-             await Swal.fire({
+            // 使用 SweetAlert2 顯示成功訊息
+            await Swal.fire({
                 icon: 'success',
                 title: '評論提交成功',
                 text: '感謝您的寶貴意見！',
@@ -117,6 +126,7 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
                 confirmButtonColor: '#60464C',
             });
         } catch (err) {
+            console.error('Error submitting comment:', err);
             setError(err.message);
 
             // 使用 SweetAlert2 顯示錯誤訊息
@@ -132,7 +142,8 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
-    if (commentableItems.length === 0) return <div>已超過評論時間或無可評論項目</div>;
+    if (commentableItems.length === 0) return
+    <div className={styles.overCommentTime}>已超過評論時間</div>;
 
     return (
 
@@ -142,8 +153,22 @@ export default function OrderCardDetailComment({ orderUuid, items }) {
                 <div key={item.item_id} className={`mb-3 ${styles.productComment}`}>
 
                     <h3 className={styles.productTitle}>
-                        <span className={styles.itemType}>{item.item_type === 'product' ? '商品' : '課程'}－</span>
+                        <span className={styles.itemType}>
+                            {item.item_type === 'product' ? '商品' : '課程'}－
+                        </span>
                         {item.item_name}
+                        {item.item_type === 'product' && (
+                            <span className={styles.productDetails}>
+                                {item.capacity && `${item.capacity}ml`}
+                                {item.years && ` ${item.years}年`}
+                                {item.country_name && ` ${item.country_name}`}
+                            </span>
+                        )}
+                        {item.item_type === 'class' && item.teacher_name && (
+                            <span className={styles.classDetails}>
+                                講師：{item.teacher_name}
+                            </span>
+                        )}
 
                     </h3>
 

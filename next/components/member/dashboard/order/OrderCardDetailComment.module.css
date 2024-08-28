@@ -150,3 +150,12 @@
 .ratingStar {
     margin-right: 2px;
 }
+
+.overCommentTime{
+    color: var(--text_primary, #60464C);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 1.6px;
+    margin-top: 60px;
+    margin-left: 70px;
+}
