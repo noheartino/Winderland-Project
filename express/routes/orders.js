@@ -11,25 +11,20 @@ router.get('/history', authenticate, async (req, res) => {
     const { status, startDate, endDate, sortOrder } = req.query
 
     let query = `
-     SELECT 
-        o.order_uuid,
-        o.status,
-        o.payment_method,
-        o.transport,
-        o.created_at,
-        o.totalMoney,
-        (
-          SELECT 
-            COALESCE(SUM(
-              CASE 
-                WHEN od.product_id IS NOT NULL THEN od.product_quantity
-                ELSE 0
-              END
-            ), 0) +
-            COALESCE(COUNT(DISTINCT CASE WHEN od.class_id IS NOT NULL THEN od.class_id END), 0)
-          FROM order_details od
-          WHERE od.order_uuid = o.order_uuid
-        ) AS total_items,
+   SELECT 
+    o.order_uuid,
+    o.status,
+    o.payment_method,
+    o.transport,
+    o.created_at,
+    o.totalMoney,
+    (
+      SELECT 
+        COALESCE(SUM(CASE WHEN od.product_id IS NOT NULL THEN od.product_quantity ELSE 0 END), 0) +
+        COALESCE(COUNT(DISTINCT CASE WHEN od.class_id IS NOT NULL AND od.class_id != 0 THEN od.class_id END), 0)
+      FROM order_details od
+      WHERE od.order_uuid = o.order_uuid
+    ) AS total_items,
         (
           SELECT 
             CASE
