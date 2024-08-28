@@ -23,6 +23,11 @@ export default function CouponCardModal({
           cardClass: style.couponDiscountCard,
           categoryClass: style.couponDiscountCategory,
         };
+      case "金額折扣":
+        return {
+          cardClass: style.couponCard,
+          categoryClass: style.couponC,
+        };
       default:
         return {
           cardClass: "",
@@ -41,11 +46,11 @@ export default function CouponCardModal({
         title={`低消＄${coupon.min_spend}`}
       >
         <div
-          className={`${style.couponCard} row align-items-center py-3 ${couponcss.cardClass}`}
+          className={`row align-items-center py-3 ${couponcss.cardClass}`}
         >
           <div className={`col-auto pe-0`}>
             <p
-              className={`${style.couponC} p-2 m-0 ${couponcss.categoryClass}`}
+              className={`p-2 m-0 ${couponcss.categoryClass}`}
             >
               {coupon.category}
             </p>

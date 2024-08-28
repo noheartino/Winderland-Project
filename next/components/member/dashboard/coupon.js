@@ -9,6 +9,7 @@ import WPointRecord from "./coupon/WPointRecord";
 
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/router";
+import CouponPlusSm from "./coupon/CouponPlusSm";
 
 export default function DashboardCoupon() {
   const router = useRouter();
@@ -20,6 +21,10 @@ export default function DashboardCoupon() {
 
   const [coupons, setCoupons] = useState([]);
   const [userCoupons, setUserCoupons] = useState([]);
+  const [userGetCoupons, setUserGetCoupons] = useState([]);
+  const [userUsedCoupons, setUserUsedCoupons] = useState([]);
+  const [userExpiredCoupons, setUserExpiredCoupons] = useState([]);
+
   const [userPoints, setUserPoints] = useState([]);
   const [memberLevelName, setMemberLevelName] = useState("");
 
@@ -32,8 +37,8 @@ export default function DashboardCoupon() {
         setUserId(id);
         setMemberLevelId(auth.userData?.member_level_id);
         setfreeCoupon(auth.userData?.free_coupon);
-        setLoading(false); // 完成加載
-      }, 1000); // 延遲 1 秒
+        setLoading(false);
+      }, 1000);
     };
 
     fetchUserId();
@@ -69,7 +74,11 @@ export default function DashboardCoupon() {
     fetch(`http://localhost:3005/api/coupon/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        setUserCoupons(data.userCoupons); // 從 data 中提取 userCoupons
+        // 全部
+        const userAllCoupon = data.userCoupons
+        const userGetCouponData = userAllCoupon.filter((coupon) => coupon.status === "get")
+        const userUsedCouponData = userAllCoupon.filter((coupon) => coupon.status === "used")
+        const userExpiredCouponData = userAllCoupon.filter((coupon) => coupon.status === "expired")
 
         // 設定 userPoints，如果為空則設置預設值
         const defaultUserPoints = {
@@ -81,6 +90,11 @@ export default function DashboardCoupon() {
         const processedUserPoints = data.userPoints.length
           ? data.userPoints[0]
           : defaultUserPoints;
+
+        setUserCoupons(userAllCoupon);
+        setUserGetCoupons(userGetCouponData)
+        setUserUsedCoupons(userUsedCouponData)
+        setUserExpiredCoupons(userExpiredCouponData)
 
         setUserPoints(processedUserPoints);
       })
@@ -127,59 +141,30 @@ export default function DashboardCoupon() {
     }
   }, [memberLevelId]);
 
+  // console.log(userExpiredCoupons)
+
   return (
     <>
       <div className={`container ${style["coupon-content"]} m-0 mx-auto`}>
         {/* 優惠券倉庫 */}
-        {/* {console.log(memberLevelName)} */}
         <CouponStorage
           userId={userId}
           freeCoupon={freeCoupon}
           memberLevelName={memberLevelName}
+          userGetCoupons={userGetCoupons}
         />
 
         {/* 手機的領券的標題 */}
-        <div className={`${style.couponNav} col-12 d-lg-none mt-5 mb-4`}>
-          <span
-            type="button"
-            className={`${style.CTitle} ${style.CTitleSm} row`}
-            data-bs-toggle="modal"
-            data-bs-target="#couponPlusModal"
-          >
-            <i className="fa-solid fa-ticket col-auto" />
-            領取本月會員優惠券
-            <i className={`fa-solid fa-angle-down ${style.pointDown} col`} />
-          </span>
-        </div>
-
-        {/* 手機領券區塊 */}
-        <div
-          className={`${style.couponZoneSm} row m-0 d-lg-none py-4 mx-3 mt-3 mb-5`}
-        >
-          <div className={`${style.couponNav} col-12 col-lg-7 px-4`}>
-            <span className={`${style.CTitle} ${style.CTitleSm} row`}>
-              <i className="fa-solid fa-ticket col-auto" />
-              9月會員優惠券
-            </span>
-            <div className="row mt-2">
-              <p
-                className={`${style.couponLimit} ${style.couponLimitSm} col-auto`}
-              >
-                本用戶等級最多可本月領取5張優惠券
-              </p>
-            </div>
-          </div>
-          {coupons.map((coupon) => (
-            <CouponCard key={coupon.id} coupon={coupon} />
-          ))}
-        </div>
+        <CouponPlusSm userId={userId} freeCoupon={freeCoupon} coupons={coupons} setCoupons={setCoupons} />
+        
 
         <div className="row">
           {/* 優惠券使用紀錄 */}
-          <CouponRecord userId={userId} />
+          <CouponRecord userId={userId} userUsedCoupons={userUsedCoupons} />
 
           {/* 優惠券過期紀錄 */}
-          <CouponExpired userId={userId} />
+          <CouponExpired userId={userId} userExpiredCoupons={userExpiredCoupons} />
+          
         </div>
         <hr
           className="d-none d-lg-block"
@@ -193,7 +178,7 @@ export default function DashboardCoupon() {
         {/* wpoints */}
         {/* wpoints 2 nav */}
         <div className="wpoint-navbar mt-5 mx-3 row">
-          {console.log(userPoints)}
+          {/* {console.log(userPoints)} */}
             <WPointShow userId={userId} userPoints={userPoints} />
 
           {/* 會員說明的區塊 */}
