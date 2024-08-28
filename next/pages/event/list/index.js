@@ -31,6 +31,7 @@ export default function Applyevent() {
 
     const myallevent = infodata ? infodata.myallevent : [];
     const myowner = infodata ? infodata.myowner : [];
+    const myallapply = infodata ? infodata.myallapply : [];
    
 
     const arrt = [{text:1},{text:2},{text:3},{text:4},{text:5}]
@@ -54,6 +55,10 @@ export default function Applyevent() {
     function filtertheevent(index){
         return myallevent.filter((i) => (i.id === index))[0]
     }
+
+    function filterapply(index){
+        return myallapply.filter((i) => (i.event_id === index))
+    }
     
 
 
@@ -63,7 +68,7 @@ export default function Applyevent() {
             <EventHeader />
             {/* {myowner ? <pre>{JSON.stringify(myowner, null, 2)}</pre> : 'Loading...'} */}
             
-
+            
             <>
                 <div className="eventManageNav">
                     <div className="container">
@@ -72,7 +77,7 @@ export default function Applyevent() {
                             
                         <Link href='/event/create' className='Armall'><div className="NavListLi">新增活動</div></Link>
                         <Link href='/event/list' className='Armall'><div className="NavListLi NowUnderLI">活動管理</div></Link>
-                        <Link href='/event/list/end' className='Armall'><div className="NavListLi">已結束活動</div></Link>
+                        <Link href='/event/pastevent' className='Armall'><div className="NavListLi">已結束活動</div></Link>
 
                         </div>
                     </div>
@@ -87,13 +92,25 @@ export default function Applyevent() {
                         myowner.map((t,i) => {
                             const eventdata = filtertheevent(t.event_id)
 
+                            const applydata = filterapply(t.event_id)
+
+                            const allage = applydata.reduce((sum, person) => sum + person.age, 0)
+
+                            const allpeople = applydata.length
+
+                            const allfemale = applydata.filter(person => person.gender === 1).length
+
+                            const allmale = allpeople - applydata.filter(person => person.gender === 1).length
+
+                            
+
                             return(
-                            <div className="eventDetailist" key={i}>
-                            <div className="DetailistBox">
+                            <div className={`eventDetailist ${eventdata.status === 0 ? 'd-none' : '' }`} key={i}>
+                            <div className={`DetailistBox ${eventdata.status === 1 ? 'applyEnd' : '' }`}>
                                 <img src={`http://localhost:3005/uploads/${eventdata.event_cover_image}`} alt="" className="DetailistBoxPic" />
                                 <div className="DetailistBoxT">
                                     <div className="DetailistBoxTitle">
-                                        <div className="Eventstatus">開放報名中</div>
+                                        <div className={`Eventstatus`}>{eventdata.status === 1 ? '報名已截止' : '開放報名中' }</div>
                                         <div className="EventTitle">
                                             {eventdata.event_name}
                                         </div>
@@ -137,32 +154,32 @@ export default function Applyevent() {
                                     <div className="col-12 col-md-6 mb-4">
                                         <div className="eventLimit">
                                             <div className="eventLimiText">
-                                                <div>目前人數 : 12人</div>
-                                                <div>人數上限 : 30人</div>
+                                                <div>目前人數 : {allpeople}人</div>
+                                                <div>人數上限 : {eventdata.people_limit}人</div>
                                             </div>
                                             <div className="eventLimitLine">
-                                                <div className="eventLimitLinedata" />
+                                                <div className="eventLimitLinedata" style={{width: `${(allpeople/eventdata.people_limit)*100}%`}}/>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="col-12 col-md-6 mb-4">
                                         <div className="eventAge">
                                             <div className="eventAgeText">
-                                                <div>平均年齡 : 28歲</div>
+                                                <div>平均年齡 : {Math.round(allage/allpeople)}歲</div>
                                             </div>
                                             <div className="eventAgeLine">
-                                                <div className="eventAgeLinedata" />
+                                                <div className="eventAgeLinedata" style={{width: `${Math.round(allage/allpeople)*2}%`}}/>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="col-12 col-md-6 mb-4">
                                         <div className="eventGender">
                                             <div className="eventGenderText">
-                                                <div className="male">男性 : 12人</div>
-                                                <div className="female">女性 : 8人</div>
+                                                <div className="male">男性 : {allmale}人</div>
+                                                <div className="female">女性 : {allfemale}人</div>
                                             </div>
                                             <div className="eventGenderLine">
-                                                <div className="eventGenderLinedata" />
+                                                <div className="eventGenderLinedata" style={{width: `${(allmale/allpeople)*100}%`}} />
                                             </div>
                                         </div>
                                     </div>
@@ -173,51 +190,20 @@ export default function Applyevent() {
                                     </div>
                                     <div className="col-12">
                                         <div className="ListInfoComment">
-                                            <div className="eventPList">
-                                                <div className="eventPListInfo">
-                                                    ▪ 花花公子哥 &nbsp;[ 男 / 36歲 ]
-                                                </div>
-                                                <div className="ListPComment">
-                                                    大家好，我是
-                                                    neck哥。很高興有機會在這裡與大家見面。我對酒品有著濃厚的興趣，尤其是那些具有獨特風味和故事的酒類。我喜歡在各種社交場合中，分享自己對酒品的認識和體驗，也很期待能夠從各位這裡學到更多關於酒的知識。我相信，這樣的活動不僅能讓我們品味到不同的酒品，還能促進我們之間的交流和了解。希望今晚能與大家共同探討和分享，讓我們一同度過一個愉快的夜晚。期待與大家的精彩交流！
-                                                </div>
-                                            </div>
-                                            <div className="eventPList">
-                                                <div className="eventPListInfo">
-                                                    ▪ 花花公子哥 &nbsp;[ 男 / 36歲 ]
-                                                </div>
-                                                <div className="ListPComment">
-                                                    大家好，我是
-                                                    neck哥。很高興有機會在這裡與大家見面。我對酒品有著濃厚的興趣，尤其是那些具有獨特風味和故事的酒類。我喜歡在各種社交場合中，分享自己對酒品的認識和體驗，也很期待能夠從各位這裡學到更多關於酒的知識。我相信，這樣的活動不僅能讓我們品味到不同的酒品，還能促進我們之間的交流和了解。希望今晚能與大家共同探討和分享，讓我們一同度過一個愉快的夜晚。期待與大家的精彩交流！
-                                                </div>
-                                            </div>
-                                            <div className="eventPList">
-                                                <div className="eventPListInfo">
-                                                    ▪ 花花公子哥 &nbsp;[ 男 / 36歲 ]
-                                                </div>
-                                                <div className="ListPComment">
-                                                    大家好，我是
-                                                    neck哥。很高興有機會在這裡與大家見面。我對酒品有著濃厚的興趣，尤其是那些具有獨特風味和故事的酒類。我喜歡在各種社交場合中，分享自己對酒品的認識和體驗，也很期待能夠從各位這裡學到更多關於酒的知識。我相信，這樣的活動不僅能讓我們品味到不同的酒品，還能促進我們之間的交流和了解。希望今晚能與大家共同探討和分享，讓我們一同度過一個愉快的夜晚。期待與大家的精彩交流！
-                                                </div>
-                                            </div>
-                                            <div className="eventPList">
-                                                <div className="eventPListInfo">
-                                                    ▪ 花花公子哥 &nbsp;[ 男 / 36歲 ]
-                                                </div>
-                                                <div className="ListPComment">
-                                                    大家好，我是
-                                                    neck哥。很高興有機會在這裡與大家見面。我對酒品有著濃厚的興趣，尤其是那些具有獨特風味和故事的酒類。我喜歡在各種社交場合中，分享自己對酒品的認識和體驗，也很期待能夠從各位這裡學到更多關於酒的知識。我相信，這樣的活動不僅能讓我們品味到不同的酒品，還能促進我們之間的交流和了解。希望今晚能與大家共同探討和分享，讓我們一同度過一個愉快的夜晚。期待與大家的精彩交流！
-                                                </div>
-                                            </div>
-                                            <div className="eventPList">
-                                                <div className="eventPListInfo">
-                                                    ▪ 花花公子哥 &nbsp;[ 男 / 36歲 ]
-                                                </div>
-                                                <div className="ListPComment">
-                                                    大家好，我是
-                                                    neck哥。很高興有機會在這裡與大家見面。我對酒品有著濃厚的興趣，尤其是那些具有獨特風味和故事的酒類。我喜歡在各種社交場合中，分享自己對酒品的認識和體驗，也很期待能夠從各位這裡學到更多關於酒的知識。我相信，這樣的活動不僅能讓我們品味到不同的酒品，還能促進我們之間的交流和了解。希望今晚能與大家共同探討和分享，讓我們一同度過一個愉快的夜晚。期待與大家的精彩交流！
-                                                </div>
-                                            </div>
+
+                                            {
+                                                applydata.map((t,i) => (
+                                                    <div className="eventPList">
+                                                    <div className="eventPListInfo">
+                                                        ▪ {t.neckname} &nbsp;[ {t.gender === 1 ? '女' : '男'} / {t.age}歲 ]
+                                                    </div>
+                                                    <div className="ListPComment">
+                                                        {t.introduce}
+                                                    </div>
+                                                    </div>
+                                                ))
+                                            }
+
                                         </div>
                                     </div>
                                 </div>

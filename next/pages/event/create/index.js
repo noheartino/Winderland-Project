@@ -18,6 +18,19 @@ export default function Applyevent() {
     const mygender = UserData?.gender === 'Female' ? 1 : 0
     const myname = UserData ? UserData.user_name : ''
 
+    const [image, setImage] = useState("/event/depic.png"); // 存儲圖片 URL
+
+    const handleImageUpload = (event) => {
+      const file = event.target.files[0]; // 獲取選中的文件
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImage(reader.result); // 設置圖片 URL 到狀態
+        };
+        reader.readAsDataURL(file); // 讀取文件為 data URL
+      }
+    };
+
     useEffect(() => {
         fetch(`http://localhost:3005/api/event-create`)
             .then(response => response.json())
@@ -58,7 +71,7 @@ export default function Applyevent() {
                             
                             <Link href='/event/create' className='Armall'><div className="NavListLi NowUnderLI">新增活動</div></Link>
                             <Link href='/event/list' className='Armall'><div className="NavListLi">活動管理</div></Link>
-                            <Link href='/event/list/end' className='Armall'><div className="NavListLi">已結束活動</div></Link>
+                            <Link href='/event/pastevent' className='Armall'><div className="NavListLi">已結束活動</div></Link>
        
                         </div>
                     </div>
@@ -198,12 +211,13 @@ export default function Applyevent() {
                                     <label htmlFor="eventPic" className="form-label CreateWriteT">
                                         活動形象圖
                                     </label>
-                                    <img src="/event/e02.jpg" alt="" className="prevpic" />
+                                    <img src={image} alt="" className="prevpic" />
                                     <input
                                         className="form-control"
                                         type="file"
                                         id="eventPic"
                                         name="myfile"
+                                        onChange={handleImageUpload}
                                     />
                                 </div>
                                 <div className="col-12 mt-3 mt-lg-0">

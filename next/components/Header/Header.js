@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { CartContext } from "@/context/CartContext";
 
+
 export default function Nav() {
   const { logout } = useAuth();
   const router = useRouter();
@@ -18,6 +19,14 @@ export default function Nav() {
 
 
   const userId = userData ? userData.id : 0
+
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      const searchQuery = event.target.value;
+      router.push(`/product?page=1&sort=id_asc&search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   
   
@@ -260,7 +269,7 @@ export default function Nav() {
           <div className="HeaderCNavR">
             <div className="NavCSearch">
               <i className="fa-solid fa-magnifying-glass NavCSearchIcon" />
-              <input id="nav_search" type="search" placeholder="搜 尋" />
+              <input id="nav_search" type="text" placeholder="搜 尋" onKeyDown={handleKeyPress}/>
             </div>
             <div className="HeaderCart">
               <button onClick={GoCart}>
@@ -409,8 +418,8 @@ export default function Nav() {
                     defaultValue={0}
                   />
                   <div className="navShopBox_b_text">
-                    <small>WINE-OPENER</small>
-                    <div className="fs-5">開瓶器具</div>
+                    <small>OTHER-TYPES</small>
+                    <div className="fs-5">其他類別</div>
                   </div>
                 </div>
               </div>
@@ -419,7 +428,7 @@ export default function Nav() {
         </div>
       </div>
       <div className="navShop_list"></div>
-      <div ref={navRef} className={`nav_rwdArea ${isOpen ? "display" : ""}`}>
+      <div ref={navRef} className={`nav_rwdArea d-lg-none ${isOpen ? "display" : ""}`}>
         <div className="nav_rwdArea_head">
           <div className="nav_rwdArea_head_t">
             <div className="nrht_l d-flex align-items-center">
@@ -438,45 +447,45 @@ export default function Nav() {
               <i className="fa-solid fa-ticket-simple me-1" /> <span>x4</span>
             </div>
             <div className="nrhb_r">
-              <a href="">
+              <Link href="/dashboard/profile" onClick={hamburgerHook}>
                 會員頁面
                 <i className="fa-solid fa-chevron-right" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
         <div className="nav_rwdArea_bottom">
           <ul>
-            <a href="">
+            <Link href="/" onClick={hamburgerHook}>
               <li>
                 <i className="fa-solid fa-house ihome" />
                 首頁
               </li>
-            </a>
-            <a href="">
+            </Link>
+            <Link href="/product" onClick={hamburgerHook}>
               <li>
                 <i className="fa-solid fa-bag-shopping me-2" />
                 商品列表
               </li>
-            </a>
-            <a href="">
+            </Link>
+            <Link href="/article" onClick={hamburgerHook}>
               <li>
                 <i className="fa-solid fa-book me-2" />
                 相關文章
               </li>
-            </a>
-            <a href="">
+            </Link>
+            <Link href="/course" onClick={hamburgerHook}>
               <li>
                 <i className="fa-solid fa-chalkboard-user icourse" />
                 <span>品酒課程</span>
               </li>
-            </a>
-            <a href="">
+            </Link>
+            <Link href="/event" onClick={hamburgerHook}>
               <li>
                 <i className="fa-solid fa-square-rss me-2" />
                 活動專區
               </li>
-            </a>
+            </Link>
           </ul>
         </div>
       </div>

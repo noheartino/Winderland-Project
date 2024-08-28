@@ -72,13 +72,26 @@ a.Armallmt{
                 width: 850px;
             }
         }
+
+        .ascto{
+            color: #916B51;
+            letter-spacing: 2px;
+            background-color: white;
+            border-radius: 50px;
+            border: 1px solid #916B51;
+            font-size: 14px;
+            padding: 8px 10px 8px 15px;
+            margin-right: 15px;
+            
+        }
         .eventHomeBoxAreaTitleB{
             color: white;
             letter-spacing: 2px;
             background-color: #916B51;
             border-radius: 50px;
             border: none;
-            padding: 12px 35px;
+            font-size: 14px;
+            padding: 8px 25px;
         }
 
         .lvtext{
@@ -1304,9 +1317,9 @@ a.Armallmt{
 
     .prevpic{
         width: 100%;
-        height: 180px;
+        height: 230px;
         object-fit: cover;
-        object-position: top;
+        object-position: center;
         margin-bottom: 10px;
     }
 
@@ -1437,6 +1450,25 @@ a.Armallmt{
                 letter-spacing: 0px;
             }
         }
+
+        .Eventstatus.past{
+            background-color: #eeeeee;
+            border: 1px solid #acacac;
+            color: #505050;
+            letter-spacing: 2px;
+            font-weight: 900;
+            font-size: 14px;
+            padding: 5px 15px;
+            text-align: center;
+            white-space: nowrap;
+
+            @media screen and (max-width: 576px){
+                font-size: 12px;
+                padding: 2px 5px;
+                letter-spacing: 0px;
+            }
+        }
+        
 
         .EventTitle{
             /* border: 2px solid lightblue; */
