@@ -195,14 +195,14 @@
     .userName {
         letter-spacing: 6px;
         /* padding: 30px; */
-        margin-bottom: 90px;
+        /* margin-bottom: 90px; */
     }
 
     .userID {
         font-size: 20px;
         letter-spacing: 2px;
         /* margin-left: 30px; */
-        margin-top: 140px;
+        margin-top: 100px;
         margin-bottom: 15px;
     }
 
@@ -216,12 +216,40 @@
     .user-img {
         position: absolute;
         left: 29%;
-        top: 0px;
+        top: 20px;
         width: 115px;
         height: 115px;
         border-radius: 115px;
         /* background: url(/images/member/user.jpg) lightgray 50% / cover no-repeat; */
     }
+
+    .avatarButton {
+        width: 12%;
+        height: 50px;
+        border-radius: 3.395px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 1.4px;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+          position: absolute;
+        left: 28%;
+        top: 170px;
+      }
+    
+      .avatarbuttonOutlined {
+        border: 2px solid var(--light, #F4EBEB);
+        background: transparent;
+        color: var(--text_primary, #60464C);
+      }
+    
+      .avatarbuttonOutlined:hover {
+        background: #F4EBEB;
+      }
 
     .membership {
         width: 130px;
@@ -235,9 +263,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        position: absolute;
+        /* position: absolute;
         left: 28%;
-        top: 190px;
+        top: 190px; */
+        margin-top: 10px;
+        margin-left: -5px;
     }
 
     .membership-level {
@@ -250,6 +280,7 @@
         font-size: 16px;
         letter-spacing: 1.6px;
         margin-top: 20px;
+        margin-left: 50px;
 
         .span-p {
             font-size: 22px;
@@ -276,6 +307,13 @@
         align-items: center;
         margin-left: 32px;
         margin-top: 17px;
+    }
+    .levelA {
+        background: var(--primary);
+        color: #FFF;
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 1.4px;
     }
 
     .levelB {
@@ -325,7 +363,7 @@
             white-space: nowrap;
             color: var(--blue);
             margin-bottom: 140px;
-            margin-left: 75px;
+            margin-left: 50px;
         }
 
         .upgrade {
@@ -339,7 +377,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-left: 80%;
+            margin-left: 40%;
+            margin-top: 90%;
         }
     }
 

@@ -26,6 +26,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // 引
 // 創建一個 QueryClient 實例
 const queryClient = new QueryClient();
 
+// 會員頭像目錄
+// const avatarDir = path.join(process.cwd(), 'public', 'images', 'member', 'avatar');
+// if (!fs.existsSync(avatarDir)){
+//   fs.mkdirSync(avatarDir, { recursive: true });
+// }
+
 export default function MyApp({ Component, pageProps }) {
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js");

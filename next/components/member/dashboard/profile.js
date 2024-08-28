@@ -15,9 +15,9 @@ export default function DashboardProfile() {
   const { auth, updateUserInfo } = useAuth();
   const router = useRouter();
 
-  // const [auth.userData, setauth.userData] = useState(null)
-  // const [isLoading, setIsLoading] = useState(true)
-  // const [error, setError] = useState(null)
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [uploadStatus, setUploadStatus] = useState('');
+  const [key, setKey] = useState(0); // 新增一個 key 狀態用於強制重新渲染 Image 組件
 
   const [formData, setFormData] = useState({
     user_name: '',
@@ -27,12 +27,6 @@ export default function DashboardProfile() {
     member_level_id: '',
     phone: '',
     address: ''
-  })
-
-  const [passwordData, setPasswordData] = useState({
-    oldPassword: '',
-    newPassword: '',
-    confirmPassword: ''
   })
 
   useEffect(() => {
@@ -49,13 +43,58 @@ export default function DashboardProfile() {
         address: auth.userData.address || '',
         member_level_id: auth.userData.member_level_id || '',
       });
+      setAvatarUrl(auth.userData.avatar_url || '/images/member/avatar/default-avatar.jpg');
+      setKey(prev => prev + 1);
     }
   }, [auth, router]);
+
 
   if (!auth.isAuth || !auth.userData) {
     return null;
   }
 
+  // @ 更換會員頭像
+  const handleAvatarChange = async (event) => {
+    console.log('更換會員頭像函式');
+
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    try {
+      setUploadStatus('上傳中...');
+      console.log('會員頭像上傳要求中...');
+      const response = await fetch('http://localhost:3005/api/dashboard/profile/upload-avatar', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('會員頭像上傳回應:', result);
+
+      if (result.status === 'success') {
+        console.log('會員頭像更換成功');
+        const newAvatarUrl = result.data.avatar_url;
+        setAvatarUrl(newAvatarUrl);
+        updateUserInfo({ ...auth.userData, avatar_url: newAvatarUrl });
+        setUploadStatus('上傳成功');
+        setKey(prev => prev + 1);
+      } else {
+        console.error('頭像上傳失敗:', result.message);
+        setUploadStatus('上傳失敗: ' + result.message);
+      }
+    } catch (error) {
+      console.error('頭像上傳出錯:', error);
+      setUploadStatus('上傳出錯: ' + error.message);
+    }
+  };
 
   // if (isLoading) return <div>Loading...</div>
   // if (error) return <div>Error: {error}</div>
@@ -91,10 +130,39 @@ export default function DashboardProfile() {
     3: '金瓶會員',
     4: '白金瓶會員',
   };
-  const userMembership = membershipMapping[auth.userData.member_level_id] ;
+  const userMembership = membershipMapping[auth.userData.member_level_id];
 
-  // * 會員頭像
-  // const avatarPath = `/public/member/avatar/${auth.userData.img.split('/').pop()}`;
+  // * 根據會員等級決定背景樣式
+  const getMembershipStyle = (level) => {
+    switch (level) {
+      case 1:
+        return {
+          background: 'var(--primary)',
+          color: '#FFF'
+        };
+      case 2:
+        return {
+          background: 'linear-gradient(180deg, #E7E2D3 0%, #FFF 47.5%, #D0C7B0 100%)',
+          color: 'var(--text_primary, #60464C)'
+        };
+      case 3:
+        return {
+          background: 'linear-gradient(180deg, #FCC63E 0%, #FFE7A9 47.5%, #FBC741 100%)',
+          color: 'var(--text_primary, #60464C)'
+        };
+      case 4:
+        return {
+          background: 'linear-gradient(180deg, #FBE09B 0%, #FFF1CF 47.5%, #E5C369 100%)',
+          border: '1px solid #FFF',
+          boxShadow: '0px 0px 8.1px 1px #FFF',
+          color: 'var(--text_primary, #60464C)'
+        };
+      default:
+        return {};
+    }
+  };
+
+  
 
   return (
     <>
@@ -103,31 +171,66 @@ export default function DashboardProfile() {
         <div className="container d-none d-lg-block mb-5">
           {/* 個人資料區 */}
           <section className="name-card d-flex row">
+
             {/* 會員資料 */}
             <div className="name col-5">
-              <div className="userName">{auth.userData.user_name}</div>
+              <div className="d-flex align-item-center mt-3">
+                <div className="userName">{auth.userData.user_name}</div>
+
+              </div>
+              <div
+                className="membership"
+                style={{
+                  ...getMembershipStyle(auth.userData.member_level_id),
+                  fontSize: '16px',
+                  fontWeight: '400',
+                  letterSpacing: '1.4px'
+                }}
+              >
+                {userMembership}
+              </div>
+
+
               <div className="userID">ID：{auth.userData.account}</div>
               <div className="userAge">{userGender} / {userAge}歲 / {auth.userData.birthday}</div>
+
               <div className="user-img">
-              <Image
-                src={auth.userData.avatar_url || 'images/member/avatar/default-avatar.jpg'}
-                alt="User Avatar"
-                width={130}
-                height={130}
-                className="rounded-circle"
+                <Image
+                src={avatarUrl || '/images/member/avatar/default-avatar.jpg'}
+                  alt="User Avatar"
+                  width={130}
+                  height={130}
+                  className="rounded-circle"
+                />
+              </div>
+
+              <label htmlFor="avatarUpload" className="avatarButton avatarbuttonOutlined">
+                更換頭像
+              </label>
+              <input
+                name='avatar'
+                type="file"
+                id="avatarUpload"
+                style={{ display: 'none' }}
+                onChange={handleAvatarChange}
+                accept="image/*"
               />
+              {uploadStatus && <div className="uploadStatus">{uploadStatus}</div>}
             </div>
-              <div className="membership">{userMembership}</div>
-            </div>
-            {/* 會員等級 */}
-            <div className="membership-level d-flex  col-2">
+
+
+
+            {/* 會員卡 */}
+            <div className="membership-level d-flex  justify-content-end col-2">
               <ProfileMembership />
             </div>
-            {/* 會員期限 */}
+
+            {/* 升級 */}
             <div className="membership-detail col-2">
-              <p className="membership-exp">白金會員到期日 - 2025.07.10</p>
+              {/* <p className="membership-exp">白金會員到期日 - 2025.07.10</p> */}
               <div className="upgrade">升級攻略</div>
             </div>
+
           </section>
           <hr style={{ border: "3px solid var(--light)" }} />
 
@@ -153,14 +256,14 @@ export default function DashboardProfile() {
                 <div className="userAge-rwd">{userGender} / {userAge}歲 / {auth.userData.birthday}</div>
               </div>
               <div className="user-img-rwd">
-              <Image
-                src={auth.userData.avatar_url || '/member/avatar/default-avatar.jpg'}
-                alt="User Avatar"
-                width={100}
-                height={100}
-                className="rounded-circle"
-              />
-            </div>
+                <Image
+           src={auth.userData.avatar_url || '/images/member/avatar/default-avatar.jpg'}
+                  alt="User Avatar"
+                  width={100}
+                  height={100}
+                  className="rounded-circle"
+                />
+              </div>
             </div>
             <hr style={{ border: "3px solid var(--primary_color-light)" }} />
             <div className="membership-detail-rwd d-flex">
@@ -174,7 +277,7 @@ export default function DashboardProfile() {
             <ProfileUpdateUserRWD />
             <ProfileUpdatePwdRWD />
           </div>
-       
+
         </div>
       </>
 
