@@ -2,6 +2,7 @@
 .orderUsed {
     margin-left: 56px;
     margin-top: 32px;
+
 }
 
 .orderUsedLabel {
@@ -27,7 +28,18 @@
     align-items: center;
     margin-top: 30px;
     margin-left: 60px;
+
 }
+
+.orderUsedLabel {
+    color: var(--text_gray, #6A6A6A);
+    font-size: medium;
+    font-weight: 400;
+    letter-spacing: 3.8px;
+    margin-top: 50px;
+}
+
+
 
 
 .pointImg {
@@ -96,6 +108,60 @@
     letter-spacing: 3.6px;
 }
 
+
+.noCoupon {
+    font-size: large;
+    /* font-style: italic; */
+    color: #888;
+    margin-top: 5px;
+    margin-left: 50px;
+    /* 與優惠券對齊 */
+    font-weight: 700;
+    letter-spacing: 1.6px;
+}
+
+
+
+
+
+.pointUsed {
+    color: var(--orange, #FF4F4F);
+    font-size: xx-large;
+    letter-spacing: 3.6px;
+    white-space: nowrap;
+}
+
+.orderGet {
+    margin-left: 56px;
+    margin-top: 125px;
+}
+
+.orderGetLabel {
+    color: #6A6A6A;
+    font-size: medium;
+    font-weight: 400;
+    letter-spacing: 3.8px;
+    /* margin-bottom: 80px; */
+}
+
+.pointImgGet {
+    width: 72px;
+    height: 72px;
+    background: url(/images/member/wpoint.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-left: 70px;
+    align-items: center;
+    margin-top: -28px;
+}
+
+
+.pointGet {
+    color: var(--orange, #FF4F4F);
+    font-size: xx-large;
+    letter-spacing: 3.6px;
+}
+
 .usedItem {
     margin-bottom: 10px;
     margin-left: 50px;
@@ -106,7 +172,7 @@
     /* font-style: italic; */
     color: #888;
     margin-top: 5px;
-    margin-left: 50px;  
+    margin-left: 50px;
     /* 與優惠券對齊 */
     font-weight: 700;
     letter-spacing: 1.6px;
@@ -119,7 +185,144 @@
     margin-top: 5px;
     /* margin-left: 50px;   */
     /* 與優惠券對齊 */
-    font-weight: 700;
+    /* font-weight: 700; */
     letter-spacing: 1.6px;
 }
 
+
+
+/* RWD */
+@media (max-width: 768px) {
+    .orderUsedLabel {
+        color: var(--text_gray, #6A6A6A);
+        font-size: medium;
+        font-weight: 400;
+        letter-spacing: 3.8px;
+        margin-top: 50px;
+        margin-left: 55px;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 50px;
+    }
+
+    .orderUsed {
+        width: 100%;
+
+        margin-left: -26px;
+        margin-top: 22px;
+        margin-bottom: -40px;
+
+
+    }
+
+    .couponTicket {
+        min-width: 140px;
+        min-height: 60px;
+        white-space: nowrap;
+        border-radius: 2.925px;
+        background: linear-gradient(90deg, #D0D0D0 0%, #717171 100%);
+        box-shadow: -1.95px 2.925px 3.9px 0px rgba(0, 0, 0, 0.25);
+        color: #FFF;
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: 3.2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: -30px;
+        margin-left: 30px;
+
+    }
+
+    .pointImgRWD {
+        width: 72px;
+        height: 40px;
+        background: url(/images/member/wpoint-used.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        margin-left: -15px;
+        margin-right: 15px;
+        margin-top: -7px;
+        /* margin-top: 30px; */
+    }
+
+    /* .usedItem {
+        margin-bottom: 10px;
+        margin-left: 50px;
+    } */
+
+    
+
+    .pointText {
+        /* white-space: nowrap; */
+        color: var(--text_gray, #6A6A6A);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1.6px;
+        margin-left: -10px;
+        /* margin-top: -7px; */
+    }
+    .pointTextWpoint{
+                margin-top: -10px;
+    }
+    .noPoints {
+        font-size: small;
+        color: #888;
+        margin-top: 5px;
+        /* margin-left: 50px;   */
+        /* 與優惠券對齊 */
+        /* font-weight: 700; */
+        letter-spacing: 1.6px;
+    }
+
+
+.orderGet {
+    /* margin-left: 56px; */
+    margin-top: 125px;
+}
+
+.orderGetLabel {
+    color: #6A6A6A;
+    font-size: medium;
+    font-weight: 400;
+    letter-spacing: 3.8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: -40px;
+
+    /* margin-bottom: 80px; */
+}
+
+.pointImgGet {
+    width: 72px;
+    height: 72px;
+    background: url(/images/member/wpoint.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-left: -70px;
+    align-items: center;
+    margin-top: 28px;
+}
+
+
+.pointTextGet {
+    color: #6A6A6A;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    margin-left: 32px;
+    margin-top: 28px;
+    margin-bottom: 50px;
+}
+
+.pointGet {
+    color: var(--orange, #FF4F4F);
+    font-size: xx-large;
+    letter-spacing: 3.6px;
+}
+.point{
+    margin-left: -50px;
+}
+
+}

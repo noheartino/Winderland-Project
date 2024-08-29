@@ -59,7 +59,17 @@ export default function ProfileUpdatePwd() {
         })
         setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' })
       } else {
-        throw new Error(data.message || '密碼更新失敗')
+        // 這裡處理舊密碼錯誤的情況
+        if (data.message === '舊密碼不正確.ᐟ.ᐟ.ᐟ') {
+          Swal.fire({
+            icon: 'error',
+            title: '舊密碼錯誤',
+            text: '舊密碼輸入錯誤，無法更改密碼 .ᐟ.ᐟ.ᐟ',
+            confirmButtonText: '確定'
+          })
+        } else {
+          throw new Error(data.message || '密碼更新失敗')
+        }
       }
     } catch (err) {
       Swal.fire({

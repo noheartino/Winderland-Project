@@ -277,7 +277,7 @@ export default function DashboardProfile() {
 
         {/* rwd */}
         <div
-          className="container-fluid d-block d-lg-none  d-fluid"
+          className="container-fluid d-block d-lg-none  d-fluid ms-4 "
           id="account-content-rwd"
         >
           {/* 個人資料區 */}
@@ -286,26 +286,33 @@ export default function DashboardProfile() {
             <div className="d-flex">
               <div className="name-rwd">
                 <div className="userName-rwd">{auth.userData.user_name}</div>
+
+                <div className="membership-detail-rwd d-flex">
+              <div className="membership-rwd">{userMembership}</div>
+              {/* <p className="membership-exp-rwd">白金會員到期日 - 2025.07.10</p> */}
+            </div>
+
                 <div className="userID-rwd">ID：{auth.userData.account}</div>
                 <div className="userAge-rwd">{userGender} / {userAge}歲 / {auth.userData.birthday}</div>
               </div>
-              <div className="user-img-rwd">
-                <Image
-                  src={auth.userData.avatar_url || '/images/member/avatar/default-avatar.jpg'}
+              <div className="user-img-rwd ">
+              <Image
+                  src={avatarUrl || '/images/member/avatar/default-avatar.jpg'}
                   alt="User Avatar"
-                  width={100}
-                  height={100}
-                  className="rounded-circle"
+                  width={130}
+                  height={130}
+                  className="rounded-circle "
+                  key={key}  // 使用 key 強制重新渲染
+                  loader={({ src }) => src}  // 自定義 loader 以避免 Next.js 的圖片優化
+                  unoptimized  // 禁用 Next.js 的圖片優化
                 />
               </div>
             </div>
-            <hr style={{ border: "3px solid var(--primary_color-light)" }} />
-            <div className="membership-detail-rwd d-flex">
-              <div className="membership-rwd">{userMembership}</div>
-              <p className="membership-exp-rwd">白金會員到期日 - 2025.07.10</p>
-            </div>
-            <hr style={{ border: "3px solid var(--primary_color-light)" }} />
+
+           
           </section>
+      <hr className='hrProfile'/>
+
           {/* 修改區 */}
           <div className="edit-card edit-card-rwd">
             <ProfileUpdateUserRWD />

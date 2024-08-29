@@ -56,14 +56,35 @@ export default function ProfileUpdateUserRWD() {
       // console.log('Submitting form data:', formData);
       const result = await updateUserInfo(formData);
       if (result.success) {
-        alert('個人資料更新成功');
+        // alert('個人資料更新成功');
+        await Swal.fire({
+          icon: 'success',
+          title: '個人資料更新成功',
+          text: '已完成資料修改',
+          showConfirmButton: false,
+          timer: 1500
+        });
         // console.log('Updated user data:', result.user);
         updateFormData(result.user);
       } else {
-        alert('更新個人資料失敗：' + (result.error || '未知錯誤'));
+        // alert('更新個人資料失敗：' + (result.error || '未知錯誤'));
+        await Swal.fire({
+          icon: 'error',
+          title: '更新個人資料失敗',
+          text: result.error || '未知錯誤',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     } catch (err) {
-      alert('更新個人資料失敗：' + err.message);
+      // alert('更新個人資料失敗：' + err.message);
+      await Swal.fire({
+        icon: 'error',
+        title: '更新個人資料失敗',
+        text: err.message,
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   }
 

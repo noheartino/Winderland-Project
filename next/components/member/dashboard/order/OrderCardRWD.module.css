@@ -1,0 +1,85 @@
+.orderListRwd {
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .orderCardRwd {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+    overflow: hidden;
+  }
+  
+  .cardBodyRwd {
+    display: flex;
+    padding: 15px;
+  }
+  
+  .orderImg {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .orderDetail {
+    flex-grow: 1;
+    display: flex;
+    margin-left: 15px;
+  }
+  
+  .thRwd, .tdRwd {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+  }
+  
+  .thRwd li, .tdRwd li {
+    margin-bottom: 5px;
+  }
+  
+  .thRwd {
+    font-weight: bold;
+    color: #666;
+  }
+  
+  .tdRwd {
+    text-align: right;
+  }
+  
+  .span {
+    color: #FF4F4F;
+    font-weight: bold;
+  }
+  
+  .cardFooter {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background: #f8f8f8;
+    font-size: 0.9em;
+    color: #666;
+  }
+  
+  .cardFooter div:last-child {
+    cursor: pointer;
+  }
+  
+  /* 為小屏幕設備進一步優化 */
+  @media (max-width: 480px) {
+    .cardBodyRwd {
+      flex-direction: column;
+    }
+    
+    .orderImg {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+    
+    .orderDetail {
+      margin-left: 0;
+    }
+  }

@@ -1,114 +1,115 @@
 // @ 導入模組
-import React, { useState ,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
-import Pagination from '@/components/member/dashboard/order/orderPagination' 
+import Pagination from '@/components/member/dashboard/order/orderPagination'
 
 import OrderAside from '@/components/member/dashboard/order/OrderAside'
 import OrderFilterOffcanvas from '@/components/member/dashboard/order/OrderFilterOffcanvas';
 import OrderCard from './order/OrderCard'
 import OrderCardDetail from './order/OrderCardDetail'
+import OrderCardDetailRWD from '@/components/member/dashboard/order/OrderCardDetailRWD'
 import OrderCardRWD from './order/OrderCardRWD'
 import styles from '@/components/member/dashboard/order/OrderCardDetail.module.css'
 
 // @ 預設導出
 export default function DashboardOrder() {
-const [orders, setOrders] = useState([])
-const [filters, setFilters] = useState({
-  status: [],
-  startDate: '',
-  endDate: '',
-  sortOrder: '' 
-})
+  const [orders, setOrders] = useState([])
+  const [filters, setFilters] = useState({
+    status: [],
+    startDate: '',
+    endDate: '',
+    sortOrder: ''
+  })
 
-// 使用對象來存儲每個訂單的展開狀態
-const [expandedStates, setExpandedStates] = useState({});
-const [error, setError] = useState(null)
-const [isLoading, setIsLoading] = useState(true)
+  // 使用對象來存儲每個訂單的展開狀態
+  const [expandedStates, setExpandedStates] = useState({});
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
-// 分頁狀態
-const [currentPage, setCurrentPage] = useState(1)
-const ordersPerPage = 5
+  // 分頁狀態
+  const [currentPage, setCurrentPage] = useState(1)
+  const ordersPerPage = 5
 
-useEffect(() => {
-  fetchOrders()
-}, [filters])
+  useEffect(() => {
+    fetchOrders()
+  }, [filters])
 
-const fetchOrders = async () => {
-  try {
-    setIsLoading(true)
-    let url = 'http://localhost:3005/api/orders/history'
-    const params = new URLSearchParams()
-    
-    if (filters.status.length > 0) {
-      params.append('status', filters.status.join(','))
-    }
-    if (filters.startDate) {
-      params.append('startDate', filters.startDate)
-    }
-    if (filters.endDate) {
-      params.append('endDate', filters.endDate)
-    }
-    if (filters.sortOrder) {
-      params.append('sortOrder', filters.sortOrder)
-    }
+  const fetchOrders = async () => {
+    try {
+      setIsLoading(true)
+      let url = 'http://localhost:3005/api/orders/history'
+      const params = new URLSearchParams()
 
-    if (params.toString()) {
-      url += `?${params.toString()}`
-    }
+      if (filters.status.length > 0) {
+        params.append('status', filters.status.join(','))
+      }
+      if (filters.startDate) {
+        params.append('startDate', filters.startDate)
+      }
+      if (filters.endDate) {
+        params.append('endDate', filters.endDate)
+      }
+      if (filters.sortOrder) {
+        params.append('sortOrder', filters.sortOrder)
+      }
 
-    const response = await fetch(url, {
-      credentials: 'include',
-    })
-    if (!response.ok) {
-      const errorData = await response.json()
-      throw new Error(errorData.message || '獲取訂單失敗')
+      if (params.toString()) {
+        url += `?${params.toString()}`
+      }
+
+      const response = await fetch(url, {
+        credentials: 'include',
+      })
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || '獲取訂單失敗')
+      }
+      const data = await response.json()
+      setOrders(data.data)
+    } catch (error) {
+      console.error('獲取訂單時出錯:', error)
+      setError(error.message)
+    } finally {
+      setIsLoading(false)
     }
-    const data = await response.json()
-    setOrders(data.data)
-  } catch (error) {
-    console.error('獲取訂單時出錯:', error)
-    setError(error.message)
-  } finally {
-    setIsLoading(false)
   }
-}
 
-// 展開詳細訂單
-const toggleDetails = (orderId) => {
-  setExpandedStates(prevStates => ({
-    ...prevStates,
-    [orderId]: !prevStates[orderId]
-  }));
-};
-// 篩選器
-const handleFilterChange = (newFilters) => {
-  setFilters(prevFilters => ({
-    ...prevFilters,
-    ...newFilters
-  }))
-}
+  // 展開詳細訂單
+  const toggleDetails = (orderId) => {
+    setExpandedStates(prevStates => ({
+      ...prevStates,
+      [orderId]: !prevStates[orderId]
+    }));
+  };
+  // 篩選器
+  const handleFilterChange = (newFilters) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      ...newFilters
+    }))
+  }
 
-// 計算當前頁面的訂單
-const indexOfLastOrder = currentPage * ordersPerPage
-const indexOfFirstOrder = indexOfLastOrder - ordersPerPage
-const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder)
+  // 計算當前頁面的訂單
+  const indexOfLastOrder = currentPage * ordersPerPage
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder)
 
-// 更改頁碼
-const paginate = (pageNumber) => setCurrentPage(pageNumber)
+  // 更改頁碼
+  const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
 
   return (
     <>
-    {error && <div className="alert alert-danger">{error}</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
 
       {/* desk */}
       <div className="container d-none d-lg-block mb-5">
         <div className=" d-flex">
-        <OrderAside onFilterChange={handleFilterChange} />
+          <OrderAside onFilterChange={handleFilterChange} />
 
           <div className="order-list">
             {isLoading ? (
@@ -122,6 +123,7 @@ const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
                   {expandedStates[order.order_uuid] ? (
                     <>
+                      {/* 訂單詳細頁-標題 */}
                       <div className={`${styles.orderDetailTitle} d-flex p-3`}>
                         <div className={`col-7  ${styles.titleLabel}`}>品項</div>
                         <div className={`col-2 ${styles.titleLabelNumber} ${styles.titleLabel}`}>件數</div>
@@ -132,10 +134,13 @@ const paginate = (pageNumber) => setCurrentPage(pageNumber)
                           </button>
                         </div>
                       </div>
-                      <OrderCardDetail orderUuid={ order.order_uuid} />
+                      {/* 訂單詳細頁-內容 */}
+                      <OrderCardDetail orderUuid={order.order_uuid} />
                     </>
                   ) : (
+
                     <div>
+                      {/* 訂單欄末 */}
                       <button
                         type="button"
                         className="card-footer text-muted d-flex justify-content-between align-items-center collapsible"
@@ -153,6 +158,7 @@ const paginate = (pageNumber) => setCurrentPage(pageNumber)
                 </div>
               ))
             )}
+
             {/* 分頁 */}
             <Pagination
               ordersPerPage={ordersPerPage}
@@ -163,6 +169,8 @@ const paginate = (pageNumber) => setCurrentPage(pageNumber)
           </div>
         </div>
       </div>
+
+
       {/* rwd */}
       <div className="d-block d-lg-none" id="order-content-rwd">
         <div className="d-flex align-items-center searchArea">
@@ -174,14 +182,81 @@ const paginate = (pageNumber) => setCurrentPage(pageNumber)
           <OrderFilterOffcanvas />
         </div>
 
-        <div className="order-list-rwd container-fluid">
-          <div className="order-card-rwd card">
-            <OrderCardRWD />
-          </div>
 
-          <div className="order-card-rwd card">
-            <OrderCardRWD />
-          </div>
+        <div className="order-list-rwd container-fluid">
+          {/* <div className="order-card-rwd card">
+          <OrderCardRWD />
+          </div> */}
+
+          {isLoading ? (
+            <div>載入中...</div>
+          ) : currentOrders.length === 0 ? (
+            <OrderCardRWD order={null} />
+          ) : (
+            currentOrders.map(order => (
+              <div key={order.order_uuid} className={`order-card-rwd card mb-4 ${expandedStates[order.order_uuid] ? 'expanded' : ''}`}>
+                <OrderCardRWD order={order} />
+
+                {expandedStates[order.order_uuid] ? (
+                  <>
+                    <div className={`${styles.orderDetailTitle} d-flex p-3`}>
+                      <div className={`col-5 ${styles.titleLabel}`}>品項</div>
+                      <div className={`col-2 ${styles.titleLabelNumber} ${styles.titleLabel}`}>件數</div>
+                      <div className={`col-2 ${styles.titleLabel}`}>小計</div>
+                      <div className={`col-1`}>
+                        <button onClick={() => toggleDetails(order.order_uuid)} className={styles.iconBox}>
+                          <i className={`fa-solid fa-chevron-up ${styles.faChevronUp}`} />
+                        </button>
+                      </div>
+                    </div>
+                    <OrderCardDetailRWD orderUuid={order.order_uuid} />
+                  </>
+                ) : (
+                  <div>
+                    <button
+                      type="button"
+                      className="card-footer text-muted d-flex justify-content-between align-items-center collapsible"
+                      onClick={() => toggleDetails(order.order_uuid)}
+                    >
+                      <div>{new Date(order.created_at).toLocaleDateString('zh-TW')}</div>
+                      <div>訂單編號 ＃{order.order_uuid}</div>
+                      <div>
+                        訂單詳情
+                        <i className="fa-solid fa-chevron-down" />
+                      </div>
+                    </button>
+                  </div>
+                )}
+
+                {/* <div>
+                  <button
+                    type="button"
+                    className="card-footer text-muted d-flex justify-content-between align-items-center collapsible"
+                    onClick={() => toggleDetails(order.order_uuid)}
+                  >
+                    <div>{new Date(order.created_at).toLocaleDateString('zh-TW')}</div>
+                    <div>訂單編號 ＃{order.order_uuid}</div>
+                    <div>
+                      訂單詳情
+                      <i className={`fa-solid fa-chevron-${expandedStates[order.order_uuid] ? 'up' : 'down'}`} />
+                    </div>
+                  </button>
+                </div> */}
+
+                {/* {expandedStates[order.order_uuid] && (
+                  <div className="order-detail-expanded">
+                    <div className={`${styles.orderDetailTitle} d-flex p-3`}>
+                      <div className={`col-5 ${styles.titleLabel}`}>品項</div>
+                      <div className={`col-2 ${styles.titleLabelNumber} ${styles.titleLabel}`}>件數</div>
+                      <div className={`col-2 ${styles.titleLabel}`}>小計</div>
+                    </div>
+                    <OrderCardDetailRWD orderUuid={order.order_uuid} />
+                  </div>
+                )} */}
+              </div>
+            ))
+          )}
+
 
         </div>
       </div>
