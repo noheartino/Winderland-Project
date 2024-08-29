@@ -90,13 +90,13 @@ export default function CouponRecord({ userUsedCoupons }) {
           }`}
         >
           <div className={`${style.couponRecordHeader} row`}>
-            <div className="col-7">
+            <div className="col-6">
               <p className={`${style.couponRecordTitleSm} py-2`}>使用券種</p>
             </div>
             <div className="col-3">
               <p className={`${style.couponRecordTitleSm} py-2 ps-3`}>日期</p>
             </div>
-            <div className="col-2">
+            <div className="col-3">
               <p className={`${style.couponRecordTitleSm} py-2`}>總折抵</p>
             </div>
           </div>

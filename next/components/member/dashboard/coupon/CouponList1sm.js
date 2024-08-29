@@ -26,16 +26,19 @@ export default function CouponList1sm({ coupon }) {
 
   const date = new Date(coupon.used_at);
   const formattedDate = date.toISOString().split("T")[0];
-  const [year, month, day] = formattedDate.split('-');
+  const [year, month, day] = formattedDate.split("-");
   const formattedNoYear = `${month}-${day}`;
   // console.log(formattedNoYear);
 
   return (
     <>
-      <div className="col-7 px-4 my-3">
-           {/* 一組優惠券 */}
-           <div className={`col-12 d-lg-none px-3 py-2`}>
-          <div className={`${style.couponCard} row px-2 py-3 ${couponcss.cardClass}`} title={coupon.name}>
+      <div className="col-6 px-4 my-3">
+        {/* 一組優惠券 */}
+        <div className={`col-12 d-lg-none px-3 py-2`}>
+          <div
+            className={`${style.couponCard} row px-2 py-3 ${couponcss.cardClass}`}
+            title={coupon.name}
+          >
             <div
               className={`col d-flex justify-content-center align-items-center`}
             >
@@ -43,17 +46,16 @@ export default function CouponList1sm({ coupon }) {
             </div>
           </div>
         </div>
-        
       </div>
       <div className="col-3 my-3">
         <p className={`${style.couponRecordDate} py-2 m-0 d-none d-lg-block`}>
-         {formattedDate}
+          {formattedDate}
         </p>
         <p className={`${style.couponRecordDateSm} py-2 ps-3 m-0 d-lg-none`}>
           {formattedNoYear}
         </p>
       </div>
-      <div className="col-2 my-3">
+      <div className="col-3 my-3">
         <p className={`${style.couponRecordCost} py-2 m-0 d-none d-lg-block`}>
           -NT $350
         </p>

@@ -135,9 +135,9 @@ router.post('/member-level', async (req, res) => {
 
 //   try {
 //     const query = `
-//       SELECT uc.*, 
-//              c.name, 
-//              c.category, 
+//       SELECT uc.*,
+//              c.name,
+//              c.category,
 //              c.min_spend
 //       FROM user_coupon uc
 //       JOIN coupon c ON uc.coupon_id = c.id
@@ -166,14 +166,14 @@ router.post('/member-level', async (req, res) => {
 
 //   try {
 //     const query = `
-//       SELECT uc.*, 
-//         c.name, 
-//         c.category, 
+//       SELECT uc.*,
+//         c.name,
+//         c.category,
 //         c.min_spend,
 //         c.discount
 //       FROM user_coupon uc
 //       JOIN coupon c ON uc.coupon_id = c.id
-//       WHERE 
+//       WHERE
 //         uc.user_id = ?
 //         AND uc.status = 'used'
 //         AND c.status = '已啟用'

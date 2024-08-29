@@ -9,23 +9,25 @@ export default function CouponStorage({
   userId,
   freeCoupon,
   memberLevelName,
+  userGetCoupons,
+  setUserGetCoupons
 }) {
   const [isGetVisible, setIsGetVisible] = useState(true);
-  const [userGetCoupons, setUserGetCoupons] = useState([]);
+  // const [userGetCoupons, setUserGetCoupons] = useState([]);
 
-  useEffect(() => {
-    fetch(`http://localhost:3005/api/coupon/${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        // 全部
-        const userGetCouponData = data.userCoupons.filter((coupon) => coupon.status === "get")
+  // useEffect(() => {
+  //   fetch(`http://localhost:3005/api/coupon/${userId}`)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       // 全部
+  //       const userGetCouponData = data.userCoupons.filter((coupon) => coupon.status === "get")
 
-        setUserGetCoupons(userGetCouponData)
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-      });
-  }, [userId]);
+  //       setUserGetCoupons(userGetCouponData)
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching user data:", error);
+  //     });
+  // }, [userId]);
 
   const toggleGetVisibility = () => {
     setIsGetVisible(!isGetVisible);
@@ -115,6 +117,7 @@ export default function CouponStorage({
           ))
         )}
       </div>
+      
       <div
         className={`${style.couponZoneSm} row d-lg-none py-4 mx-3 mt-3 mb-5 ${
           isGetVisible ? style.showGetCoupon : style.hideGetCoupon

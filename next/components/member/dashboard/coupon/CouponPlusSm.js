@@ -6,8 +6,7 @@ import CouponPlusCard from "./CouponPlusCard";
 export default function CouponPlusSm({
   userId,
   freeCoupon,
-  coupons,
-  setCoupons,
+  setUserGetCoupons,
 }) {
   const [isAllVisible, setIsAllVisible] = useState(false);
 
@@ -105,7 +104,7 @@ export default function CouponPlusSm({
         alert("優惠券領取成功");
 
         // 更新父層的 coupons 狀態
-        setCoupons((prevCoupons) => [
+        setUserGetCoupons((prevCoupons) => [
           ...prevCoupons,
           ...selectedCoupons.map((coupon) => ({
             ...coupon,
@@ -120,7 +119,7 @@ export default function CouponPlusSm({
         fetch(`http://localhost:3005/api/coupon/${userId}`)
           .then((response) => response.json())
           .then((data) => {
-            const userCoupons = data.userCoupons
+            const userCoupons = data.userCoupons;
             const usedClaimedCouponIds = userCoupons
               .filter((coupon) => coupon.status === "used") // 只選擇 status 為 'used' 的資料
               .map((coupon) => coupon.coupon_id); // 提取 coupon_id
@@ -143,12 +142,12 @@ export default function CouponPlusSm({
       alert("發生錯誤，請稍後再試");
     }
   };
-  console.log(claimedCoupons);
+  // console.log(claimedCoupons);
   return (
     <>
       <div className="couponPlusZoneSm row d-lg-none">
         <div
-          className={`${style.couponNav} col-12 mt-5 mb-4 px-4`}
+          className={`${style.couponNav} col-12 px-4`}
           onClick={toggleAllVisibility}
         >
           <span
@@ -162,11 +161,20 @@ export default function CouponPlusSm({
             <p className="col m-0">領取本月會員優惠券</p>
             <i className={`fa-solid fa-angle-down ${style.pointDown} col`} />
           </span>
+          <div className="row mt-2">
+            <p
+              className={`${style.couponLimit} ${style.couponLimitSm} col-auto`}
+            >
+              可選擇
+              {freeCoupon - claimedCoupons.length - selectedCoupons.length}
+              張優惠券
+            </p>
+          </div>
         </div>
       </div>
       {/* 手機領券區塊 */}
       <div
-        className={`${style.couponZoneSm} row d-lg-none py-4 mx-3 mt-3 mb-5 ${
+        className={`${style.couponZoneSm} row d-lg-none py-4 mx-3 mt-3 ${
           isAllVisible ? style.showGetCoupon : style.hideGetCoupon
         }`}
       >
@@ -178,17 +186,8 @@ export default function CouponPlusSm({
             />
             <p className="col m-0">9月會員優惠券</p>
           </span>
-          <div className="row mt-2">
-            <p
-              className={`${style.couponLimit} ${style.couponLimitSm} col-auto`}
-            >
-              可選擇
-                {freeCoupon - claimedCoupons.length - selectedCoupons.length}
-                張優惠券
-            </p>
-          </div>
         </div>
-        {console.log(usedClaimedCoupons)}
+        {/* {console.log(usedClaimedCoupons)} */}
         {plusCoupons.map((coupon) => (
           <CouponPlusCard
             key={coupon.id}
@@ -196,16 +195,19 @@ export default function CouponPlusSm({
             onSelect={handleCouponSelect}
             isClaimed={claimedCoupons.includes(coupon.id)}
             isUsed={usedClaimedCoupons.includes(coupon.id)}
+            isSelected={selectedCoupons.some(
+              (selectedCoupon) => selectedCoupon.id === coupon.id
+            )}
           />
         ))}
       </div>
       <div className="row px-5">
         <button
           type="button"
-          className={`btn btn-primary col py-2" ${
+          className={`btn btn-primary col py-2 border-0 ${
             isAllVisible ? style.showGetCoupon : style.hideGetCoupon
           }`}
-          style={{ fontSize: "18px" }}
+          style={{ fontSize: "18px", background:"var(--primary)" }}
           onClick={handleConfirm}
         >
           確認領取

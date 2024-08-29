@@ -5,7 +5,8 @@ import { CiCirclePlus } from "react-icons/ci";
 export default function CouponPlusCard({ coupon,
   onSelect,
   isClaimed,
-  isUsed, }) {
+  isUsed,
+isSelected, }) {
   if (!coupon || !coupon.id) {
     return null;
   }
@@ -14,10 +15,10 @@ export default function CouponPlusCard({ coupon,
       return; // 已經領取過的優惠券不能再選
     }
     onSelect(coupon); // 呼叫父元件的 onSelect 函式
-    setIsSelected((prev) => !prev);
+    // setIsSelected((prev) => !prev);
   };
 
-  const [isSelected, setIsSelected] = useState(false);
+  // const [isSelected, setIsSelected] = useState(false);
   const [isGetUsed, setIsGetUsed] = useState(false);
 
   // const handleClick = () => {

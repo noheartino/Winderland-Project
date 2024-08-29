@@ -60,7 +60,7 @@ export default function CouponExpired({ userExpiredCoupons }) {
         className="couponExpiredZone d-lg-none col-12 px-4 mb-5"
         onClick={toggleExpiredVisibility}
       >
-        <div className={`${style.couponNav} mt-5 mb-4`}>
+        <div className={`${style.couponNav} mt-4 mb-3`}>
           <span className={`${style.CTitleSm} row py-2`}>
             <HiOutlineTicket
               className="col-auto pe-0"
