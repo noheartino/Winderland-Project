@@ -59,7 +59,7 @@ export default function CourseList({courses, comments, classAssigns, currentPage
                 {/* course-list button area start */}
                   <div className="col-12 mx-0 px-0">
                       <div className='row justify-content-between'>
-                        <div className='col-auto'>
+                        <div className='col-auto d-flex gap-2'>
                           <p className="d-inline-flex gap-1 me-2">
                             <button className="btn-light-to-prim btn py-2 px-3 spac-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapes-courseSort" aria-expanded="false" aria-controls="collapes-courseSort">
                               課程排序<i className="fa-solid fa-sort ms-2"></i>

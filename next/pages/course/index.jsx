@@ -5,15 +5,32 @@ import CourseBox from "@/components/course/course-courseBox";
 import { useState, useEffect, useRef } from "react";
 import CourseCardSm from '@/components/course/course-card-sm'
 import Link from "next/link";
+import Image from "next/image";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 import CourseIndexPageNav from "@/components/course/courseIndexPageNav"
+import { useAuth } from '@/hooks/use-auth';
 
 export default function CourseIndex() {
   const router = useRouter();
+  const { auth } = useAuth();
+  const [userId, setUserId] = useState("")
+    useEffect(()=>{
+      if(auth.isAuth){
+        setUserId(auth.userData?.id);
+        console.log("userId 是否已設定: "+auth?.isAuth);
+
+        console.log("以下是auth內容");
+        console.log(auth);
+        console.log("======auth結束======");
+      }
+    }, [auth])
+
+    
+
   let pageLimit = 8;
   const { search, view } = router.query;
-  let apiUrl = `http://localhost:3005/api/course`
+  let apiUrl = ``
   const [courses, setCourses] = useState([]);
   const [filterCourses, setFilterCourses] = useState([])
   const [teachers, setTeachers] = useState([]);
@@ -44,6 +61,7 @@ export default function CourseIndex() {
     return district.districtStr
 })])
 
+
   useEffect(()=>{
     setFilterCourses(courses)
   }, [courses])
@@ -62,43 +80,39 @@ export default function CourseIndex() {
         (!priceEnd ? true : !course.sale_price ? course.price < priceEnd : course.sale_price < priceEnd)
   );
     setFilterCourses(newCoursesArray)
-    console.log("newCoursesArray::::"+newCoursesArray.length);
-    
   },[districtArr, score, onlineFilter, teacherSelect, dateStart, dateEnd, priceStart, priceEnd])
 
-  console.log("onlineFilter:::: "+onlineFilter);
-  console.log("filterCourses:::: "+filterCourses.length);
-
   useEffect(() => {
+    if(!search && !view && auth.isAuth){
+      apiUrl=`http://localhost:3005/api/course?userId=${userId}`
+    }
+    if(search && auth.isAuth){
+      apiUrl=`http://localhost:3005/api/course?search=${search}&userId=${userId}`
+    }
+    if(view && auth.isAuth){
+      apiUrl=`http://localhost:3005/api/course?view=${view}&userId=${userId}`
+    }
+    
     // const includeImages = false;
     console.log("search 或 view 偵測到變動");
-    if(!search && !view){
-      apiUrl=`http://localhost:3005/api/course`
-    }
-    if(search){
-      apiUrl=`http://localhost:3005/api/course?search=${search}`
-    }
-    if(view){
-      apiUrl=`http://localhost:3005/api/course?view=${view}`
-    }
-    // 當組件掛載時執行 fetch 請求 紀錄0823 0451
+    
+    // 當組件掛載時執行 fetch 請求
     fetch(apiUrl)
-      .then((response) => {
+    .then((response) => {
+      
         if (!response.ok) {
           throw new Error("Network response not ok");
         }
         return response.json();
+
       })
       .then((data) => {
         const { courses, comments, classAssigns, myFavoriteCourse, myCourse, teachers } =
           data;
+          console.log("課程列表抓取到的資料數量:"+courses.length);
         // 處理 courses 資料，將 images 字段轉換為數組
-        const processedCourses = courses.map((course) => ({
-          ...course,
-          images: course.path ? course.path : [],
-        }));
         setComments(comments);
-        setCourses(processedCourses);
+        setCourses(courses);
         setClassAssigns(classAssigns);
         setMyFavoriteCourse(myFavoriteCourse);
         setMyCourse(myCourse);
@@ -110,7 +124,7 @@ export default function CourseIndex() {
       .catch((error) => {
         console.log(error);
       });
-  }, [view, search]);
+  }, [view, search, userId]);
   // console.log(myFirstFavoriteCourse[0]);
 
   function clickCourseBtn(e, btnRef) {
@@ -161,7 +175,6 @@ function handlePressMoreMyFavoriteC(){
     query: {}
 })
 }
-  
   return (
     <>
     
@@ -334,7 +347,11 @@ function handlePressMoreMyFavoriteC(){
               );
             })
                :
-               <div className='col-12 col-md-4 col-lg-3 px-10px'><h5 className="spac-1 text-gray">目前尚無課程<i className="ms-2 fa-solid fa-wine-glass-empty"></i></h5></div>}
+               <div className="row justify-content-center my-3">
+                              <div className="col-auto" style={{ maxWidth: '370px', maxHeight: '350px', width: '100%' }}>
+                              <Image src={`/images/course_and_tarot/courses-no-result.png`} alt="course list no result" layout="responsive" width={370} height={350} style={{ width: '100%', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}/>
+                            </div>
+                          </div>}
               {/* card-sm online end */}
               
             </div>

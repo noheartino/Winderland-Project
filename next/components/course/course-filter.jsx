@@ -134,7 +134,7 @@ export default function CourseFilter({teachers, setScore
                             <label className="form-check-label stretched-link spac-1 text-gray" htmlFor={`districtAll`}>全部</label>
                         </span>
                     </div>
-                    <div className='col-auto cursor-pointer btn-border-wine btn' onClick={handleClearAllSort}>清除篩選<i class="fa-solid fa-xmark ms-2"></i></div>
+                    <div className='col-auto cursor-pointer btn-border-wine btn' onClick={handleClearAllSort}>清除篩選<i className="fa-solid fa-xmark ms-2"></i></div>
                     
         </div>
                     

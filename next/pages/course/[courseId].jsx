@@ -9,7 +9,7 @@ export default function CourseIndex() {
 
   const [classSum, setClassSum] = useState([])
    useEffect(() => {
-    fetch(`http://localhost:3005/api/course`)
+    fetch(`http://localhost:3005/api/course?userId=1`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response not ok");
@@ -24,6 +24,7 @@ export default function CourseIndex() {
         console.log(error);
       });
   }, []);
+  
 
   const router = useRouter();
   const { courseId, series } = router.query;

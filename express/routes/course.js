@@ -3,24 +3,24 @@ import 'dotenv/config.js'
 import connection from '##/configs/mysql.js'
 
 const router = express.Router()
-let userId = 1
 
 router.get('/teacher/:teacherId', async (req, res) => {
+  let {userId} = req.query
   // 目前 teacher ID
   const teacherId = req.params.teacherId
 
   // SELECT 目前teacher
-  let teacherSQL = `SELECT teacher.*, teacher.id AS teacher_id, images_teacher.teacher_id, images_teacher.path AS teacher_path FROM teacher JOIN images_teacher ON teacher.id = images_teacher.teacher_id WHERE teacher.id = ${teacherId} AND teacher.valid = '1';`
+  let teacherSQL = `SELECT teacher.*, teacher.id AS teacher_id, images_teacher.teacher_id, images_teacher.path AS teacher_path FROM teacher JOIN images_teacher ON teacher.id = images_teacher.teacher_id WHERE teacher.id = ? AND teacher.valid = '1';`
 
   // SELECT 目前teacher的comments
-  let teacherCommentsSQL = `SELECT comments.*, comments.id AS comment_id, class.id AS class_id, class.name AS class_name, class.teacher_id FROM comments JOIN class ON comments.entity_id = class.id WHERE comments.entity_type = 'class' AND class.teacher_id = ${teacherId}`
+  let teacherCommentsSQL = `SELECT comments.*, comments.id AS comment_id, class.id AS class_id, class.name AS class_name, class.teacher_id FROM comments JOIN class ON comments.entity_id = class.id WHERE comments.entity_type = 'class' AND class.teacher_id = ?`
 
   // SELECT 目前 teacher 開課的 courses
-  let teacherCoursesSQL = `SELECT class.*, class.name AS class_name, images_class.class_id, images_class.path AS class_path FROM class JOIN images_class ON class.id = images_class.class_id WHERE class.teacher_id = ${teacherId}`
+  let teacherCoursesSQL = `SELECT class.*, class.name AS class_name, images_class.class_id, images_class.path AS class_path FROM class JOIN images_class ON class.id = images_class.class_id WHERE class.teacher_id = ?`
   try {
     const [teacher] = await connection.execute(teacherSQL)
-    const [teacherComments] = await connection.execute(teacherCommentsSQL)
-    const [teacherCourses] = await connection.execute(teacherCoursesSQL)
+    const [teacherComments] = await connection.execute(teacherCommentsSQL, [teacherId])
+    const [teacherCourses] = await connection.execute(teacherCoursesSQL, [teacherId])
     res.json({ teacher, teacherComments, teacherCourses })
     console.log('測試:' + req.originalUrl)
   } catch (err) {
@@ -30,6 +30,7 @@ router.get('/teacher/:teacherId', async (req, res) => {
 
 router.get('/teacher', async (req, res) => {
   // teacher 列表
+  let {userId} = req.query
   const { searchT } = req.query
   let teacherSQLParamsStr = ``
   let teachersSQLParams = []
@@ -62,12 +63,14 @@ router.get('/teacher', async (req, res) => {
 })
 
 router.get('/', async (req, res) => {
+  const {userId} = req.query
   const { search, view } = req.query
   let querySQL = null
   let querySQLParams = []
-  let classSumSQL = `SELECT class.id FROM class`
-  let teachersSQL = `SELECT teacher.* FROM teacher WHERE teacher.valid = '1'`
+  let classSumSQL = `SELECT class.* FROM class`
+  let teachersSQL = `SELECT teacher.* FROM teacher`
   if (!search) {
+    // querySQL = `select class.* from class`
     querySQL = `SELECT 
                     class.*,
                     class.id AS class_id,
@@ -94,27 +97,8 @@ router.get('/', async (req, res) => {
                     class.id, class.name, teacher.id, teacher.name, images_class.class_id, images_class.path, images_teacher.teacher_id, images_teacher.path
                 ORDER BY 
                     class.id ASC;`
-    // querySQL = `SELECT
-    //     class.*,
-    //     class.id AS class_id,
-    //     class.name AS class_name,
-    //     teacher.*,
-    //     teacher.id AS teacher_id,
-    //     teacher.name AS teacher_name,
-    //     images_class.class_id,
-    //     images_class.path AS class_path,
-    //     images_teacher.teacher_id,
-    //     images_teacher.path AS teacher_path
-    // FROM
-    //     class
-    // LEFT JOIN
-    //     teacher ON class.teacher_id = teacher.id
-    // LEFT JOIN
-    //     images_class ON class.id = images_class.class_id
-    // LEFT JOIN
-    //     images_teacher ON teacher.id = images_teacher.teacher_id
-    // ORDER BY class.id ASC;`
   } else {
+    // querySQL = `select class.* from class`
     querySQL = `SELECT 
                     class.*,
                     class.id AS class_id,
@@ -144,30 +128,7 @@ router.get('/', async (req, res) => {
                     class.id, class.name, teacher.id, teacher.name, images_class.class_id, images_class.path, images_teacher.teacher_id, images_teacher.path
                 ORDER BY 
                     class.id ASC;`
-    // querySQL = `SELECT
-    //                 class.*,
-    //                 class.id AS class_id,
-    //                 class.name AS class_name,
-    //                 teacher.*,
-    //                 teacher.id AS teacher_id,
-    //                 teacher.name AS teacher_name,
-    //                 images_class.class_id,
-    //                 images_class.path AS class_path,
-    //                 images_teacher.teacher_id,
-    //                 images_teacher.path AS teacher_path
-    //             FROM
-    //                 class
-    //             LEFT JOIN
-    //                 teacher ON class.teacher_id = teacher.id
-    //             LEFT JOIN
-    //                 images_class ON class.id = images_class.class_id
-    //             LEFT JOIN
-    //                 images_teacher ON teacher.id = images_teacher.teacher_id
-    //             WHERE
-    //                 class.name LIKE ?
-    //                 OR teacher.name LIKE ?
-    //             ORDER BY class.id ASC;`
-    querySQLParams = [`%${search}%`, `%${search}%`]
+      querySQLParams = [`%${search}%`, `%${search}%`]
   }
   console.log('送出的查詢詞語是: ' + search)
   let querySQLComments = `SELECT comments.* FROM comments`
@@ -183,6 +144,7 @@ router.get('/', async (req, res) => {
                                 order_details.order_uuid = orders.order_uuid
                             WHERE order_details.class_id>0
                             ORDER BY orders.order_uuid ASC;`
+  // let querySQLMyFavoriteCourse = `select class.* from class`
   let querySQLMyFavoriteCourse = `SELECT user_like.*, class.*, class.id AS class_id, user_like.id AS user_like_id, images_class.class_id, images_class.path AS class_path
                                     FROM user_like
                                     JOIN class ON user_like.item_id = class.id
@@ -197,9 +159,10 @@ router.get('/', async (req, res) => {
     courseBtnSQLwords = `AND order_details.class_id > 0 AND class.online = 0`
     console.log(courseBtnSQLwords + '點擊:' + view)
   } else {
-    courseBtnSQLwords = `AND order_details.class_id > 0 AND class.online = 1`
+    courseBtnSQLwords = `AND order_details.class_id > 0 AND class.online = '1'`
     console.log(courseBtnSQLwords + '點擊:' + view)
   }
+  // let querySQLMyCourse = `select class.* from class`
   let querySQLMyCourse = `SELECT order_details.order_uuid, order_details.class_id, orders.user_id, orders.order_uuid, class.*, class.id AS class_id, images_class.class_id, images_class.path AS class_path, class.name AS class_name, teacher.id AS teacher_id, teacher.name AS teacher_name
                             FROM
                                 order_details
@@ -214,8 +177,23 @@ router.get('/', async (req, res) => {
                             WHERE orders.user_id = ${userId}
                                 ${courseBtnSQLwords}
                             ORDER BY orders.order_uuid ASC;`
+                            if(userId){
+                              console.log("userId-----> "+userId);
+                            }
+                            if(courseBtnSQLwords){
+                              console.log("courseBtnSQLwords-----> "+courseBtnSQLwords);
+                            }
+                            if(view){
+                              console.log("view-----> "+view);
+                            }
+                            if(search){
+                              console.log("search-----> "+search);
+                            }     
+  console.log('測試:' + req.originalUrl)               
   try {
-    const [courses] = await connection.execute(querySQL, querySQLParams)
+    console.log('測試:' + req.originalUrl)
+    
+    const [courses] = search ? await connection.execute(querySQL, querySQLParams) : await connection.execute(querySQL)
     const [classSum] = await connection.execute(classSumSQL)
     const [comments] = await connection.execute(querySQLComments)
     const [classAssigns] = await connection.execute(querySQLClassAsign)
@@ -224,11 +202,6 @@ router.get('/', async (req, res) => {
     )
     const [myCourse] = await connection.execute(querySQLMyCourse)
     const [teachers] = await connection.execute(teachersSQL)
-
-    // if (myCourse.length === 0) {
-    //     return res.json({ courses: [], comments: [], classAssigns: [], myFavoriteCourse: [], myCourse: [] })
-    //   }
-    // 傳出去的資料庫資料
     res.json({
       courses,
       comments,
@@ -238,14 +211,14 @@ router.get('/', async (req, res) => {
       classSum,
       teachers,
     })
-    console.log({ courses: courses }, { comments: comments })
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
+    console.log('來源測試:' + req.originalUrl)
   }
 })
 
 router.get('/:courseId', async (req, res) => {
-  const { series } = req.query
+  const { series, userId } = req.query
 
   const courseId = req.params.courseId
   let courseSQL = `SELECT 
