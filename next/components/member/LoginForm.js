@@ -2,7 +2,6 @@
 import React, { useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import styles from '@/components/member/member.module.css'
-import Image from 'next/image'
 import Link from 'next/link'
 import GoogleLogo from '@/components/icons/google-logo'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -12,7 +11,6 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 
 // 漂浮標籤
-
 const FloatingLabelInput = React.memo(({ label, type, name, value, onChange, error, isPassword, togglePasswordVisibility, showPassword }) => {
   const [isFocused, setIsFocused] = useState(false);
 

@@ -111,6 +111,7 @@ export function AuthProvider({ children }) {
             member_level_id: profileData.data.user.member_level_id || '',
             phone: profileData.data.user.phone || '',
             address: profileData.data.user.address || '',
+            email: profileData.data.user.email || '', 
           };
           setAuth({
             isAuth: true,

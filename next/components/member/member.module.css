@@ -529,7 +529,12 @@
   pointer-events: none;
   /* color: #6c757d; */
   color: #A66E7B;
-
+}
+@media (max-width: 768px) {
+  .floatingLabel {
+    top: 0.7rem; /* 增加上邊距 */ 
+    font-size: 2rem; /* 縮小字體 */
+  }
 }
 
 .loginInput {
@@ -541,6 +546,11 @@
   color: #9A5B69;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+@media (max-width: 768px) {
+  .loginInput {
+    padding-top: 1rem; /* 增加上內邊距 */
+  }
+}
 
 .loginInput:focus {
   outline: none;
@@ -550,9 +560,9 @@
 
 .loginInput:focus + .floatingLabel,
 .loginInput.hasContent + .floatingLabel {
-  top: -0.5rem;
-  left: 0.5rem;
-  font-size: 0.75rem;
+  top: -0.7rem;
+  left: 0.8rem;
+  font-size: 0.9rem;
   background-color: white;
   padding: 0 0.25rem;
 }
@@ -586,6 +596,11 @@
   color: #666;
   font-size: 20px;
 }
+@media (max-width: 768px) {
+  .passwordToggle {
+    padding-top: 1rem; /* 增加上內邊距 */
+  }
+}
 
 .loginInput {
   padding-right: 40px; /* 為圖標騰出空間 */
@@ -613,7 +628,7 @@
 
 .formCheckLabel {
   cursor: pointer;
-  font-size: 16px;
+  font-size: 17px;
   color: #A66E7B;
 }
 
