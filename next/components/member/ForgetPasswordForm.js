@@ -2,7 +2,7 @@
 
 // @ 導入
 import React, { useState } from 'react'
-import styles from '@/components/member/member.module.css'
+import styles from '@/components/member/forgetPassword.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Link from 'next/link'
 import Swal from 'sweetalert2'

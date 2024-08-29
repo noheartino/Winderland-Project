@@ -1,0 +1,258 @@
+/* 註冊register */
+.registerContent {
+  width: 100%;
+}
+
+.registerContent .label {
+  color: var(--primary_color-purple_light, #a66e7b);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  margin-top: 15px;
+}
+
+.registerContent .span {
+  color: var(--info-orange, #ff4f4f);
+  display: block;
+  margin-right: 80px;
+  margin-top: 7px;
+}
+
+.registerContent .registerInput {
+  width: 80%;
+  border: none;
+  border-bottom: 2px solid var(--primary_color-purple_light, #a66e7b);
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-size: x-large;
+  color: var(--info-dark_blue);
+  outline: none;
+}
+
+ .registerContent .rRegisterInput::placeholder {
+  color:#afa6a6;
+  font-size: medium;
+}
+
+.registerContent .registerInput::placeholder {
+  color:#afa6a6;
+  font-size: medium;
+}
+
+.registerContent .labelName {
+  margin-right: 35%;
+}
+
+.registerContent .labelTel {
+  margin-left: -30px;
+}
+
+.registerContent .labelGender {
+  margin-left: -10px;
+}
+
+.registerContent .registerInput2 {
+  width: 37%;
+  border: none;
+  border-bottom: 2px solid var(--primary_color-purple_light, #a66e7b);
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-size: x-large;
+  color: var(--info-dark_blue);
+  outline: none;
+}
+
+.registerContent .registerInput2.rRegisterInput {
+  display: inline-block;
+  margin-left: -30px;
+}
+
+.registerContent input[type='date'] {
+  font-size: 18px;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+.registerContent select {
+  width: 170%;
+  border-radius: 0%;
+  border: none;
+  font-size: large;
+  color: var(--info-dark_blue);
+  border-bottom: 2px solid #a66e7b;
+  margin-top: 10px;
+  margin-left: -35px;
+}
+
+  .registerContent .button {
+  width: 80%;
+  height: 60px;
+  border-radius: 4px;
+  background: var(--primary_color-purple, #9a5b69);
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+  border: none;
+  color: var(--primary_color-light, #f4ebeb);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 8px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+  .registerContent .btnBack {
+  margin-top: -20px;
+  margin-left: 45%;
+  margin-bottom: 30px;
+}
+
+  .registerContent .btnBack .notice {
+  color: var(--primary_color-purple_light);
+  text-decoration: none;
+}
+
+/* rwd-register*/
+.registerContent {
+    width: 100%;
+    white-space: nowrap;
+}
+
+.registerContent label {
+    color: var(--primary_color-purple_light, #A66E7B);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    margin-top: 15px;
+}
+
+.registerContent span {
+    color: var(--info-orange, #FF4F4F);
+    display: block;
+    margin-right: 80px;
+    margin-top: 15px;
+}
+
+.registerInput {
+    width: 80%;
+    border: none;
+    border-bottom: 2px solid var(--primary_color-purple_light, #A66E7B);
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: x-large;
+    color: var(--info-dark_blue);
+    outline: none;
+}
+
+.registerInput::placeholder {
+    color: var(--dark_blue);
+    font-size: small;
+}
+
+.labelName {
+    margin-right: 35%;
+}
+
+.labelTel {
+    margin-left: -30px;
+}
+
+.labelGender {
+    margin-left: -10px;
+}
+
+.registerInput2 {
+    width: 37%;
+    border: none;
+    border-bottom: 2px solid var(--primary_color-purple_light, #A66E7B);
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: x-large;
+    color: var(--info-dark_blue);
+    outline: none;
+}
+
+.registerInput2.rRegisterInput {
+    display: inline-block;
+    margin-left: -30px;
+}
+
+.registerContent input[type="date"] {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.registerContent select {
+    /* width: 80%; */
+    border-radius: 0%;
+    border: none;
+    font-size: large;
+    color: var(--info-dark_blue);
+    border-bottom: 2px solid #A66E7B;
+    margin-top: 10px;
+    margin-left: -35px;
+}
+
+.registerButton {
+    width: 80%;
+    height: 60px;
+    border-radius: 4px;
+    background: var(--primary_color-purple, #9A5B69);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+    border: none;
+    color: var(--primary_color-light, #F4EBEB);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 8px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+
+
+.btnBack {
+    margin-top: -20px;
+    margin-left: 25%;
+    margin-bottom: 30px;
+}
+
+.red{
+  color: var(--orange, #ff4f4f);
+  text-decoration: none;
+}
+
+.btnBack Link .notice {
+  color: var(--orange, #ff4f4f);
+  text-decoration: none;
+}
+
+.error {
+  color: red;
+  display: none;
+  font-size: 0.9em;
+  margin-top: 5px;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+}
+.errorAccount {
+  color: red;
+  display: none;
+  font-size: 0.9em;
+  margin-top: 5px;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+}
+.errorPwd {
+  color: red;
+  display: none;
+  font-size: 0.9em;
+  margin-top: 17px;
+  position: absolute;
+  top: 35%;
+  left: 20%;
+  
+}
+.error .show {
+  display: block;
+}
+

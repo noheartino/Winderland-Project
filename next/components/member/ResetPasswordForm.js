@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import styles from '@/components/member/member.module.css'
+import styles from '@/components/member/resetPassword.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Swal from 'sweetalert2'
 

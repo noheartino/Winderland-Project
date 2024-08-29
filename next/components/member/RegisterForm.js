@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import styles from '@/components/member/member.module.css'
+import styles from '@/components/member/register.module.css'
 import Link from 'next/link'
 import Swal from 'sweetalert2'
 

@@ -1,5 +1,5 @@
 // @ 導入
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import styles from '@/components/member/member.module.css'
 import Image from 'next/image'
@@ -8,11 +8,45 @@ import GoogleLogo from '@/components/icons/google-logo'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useAuth } from '@/hooks/use-auth'
 import Swal from 'sweetalert2'
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
+
+// 漂浮標籤
+
+const FloatingLabelInput = React.memo(({ label, type, name, value, onChange, error, isPassword, togglePasswordVisibility, showPassword }) => {
+  const [isFocused, setIsFocused] = useState(false);
+
+  return (
+    <div className={`${styles.floatingLabelInput} position-relative mb-3`}>
+      <input
+        type={isPassword ? (showPassword ? 'text' : 'password') : type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        className={`${styles.loginInput} ${error ? styles.inputError : ''} ${isFocused || value ? styles.hasContent : ''}`}
+        placeholder=" "
+      />
+      <label className={styles.floatingLabel}>{label}</label>
+      {isPassword && (
+        <button
+          type="button"
+          className={styles.passwordToggle}
+          onClick={togglePasswordVisibility}
+        >
+          {showPassword ? <FaEyeSlash /> : <FaEye />}
+        </button>
+      )}
+      {error && <span className={`${styles.error} ${styles.show}`}>{error}</span>}
+    </div>
+  );
+});
 
 
 // @ 預設導出
 export default function LoginForm() {
-  const { login, googleLogin , isLoading } = useAuth();
+  const { login, googleLogin, isLoading } = useAuth();
   const router = useRouter()
 
   // 狀態設置
@@ -20,7 +54,6 @@ export default function LoginForm() {
     account: '',
     password: '',
   })
-
   // 記錄欄位錯誤訊息用
   const [errors, setErrors] = useState({
     account: '',
@@ -28,14 +61,18 @@ export default function LoginForm() {
   })
   // 顯示密碼用
   const [showPassword, setShowPassword] = useState(false)
-
   // 添加 rememberMe 狀態
   const [rememberMe, setRememberMe] = useState(false);
 
   // 多欄位共用事件處理函式
-  const handleFieldChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value })
-  }
+  const handleFieldChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setUser(prevUser => ({
+      ...prevUser,
+      [name]: value
+    }));
+  }, []);
+
 
   // 表單送出事件處理函式
   const handleSubmit = async (e) => {
@@ -145,6 +182,10 @@ export default function LoginForm() {
     }
   };
 
+  const togglePasswordVisibility = useCallback(() => {
+    setShowPassword(prev => !prev);
+  }, []);
+
   if (isLoading) {
     return <div>Loading...</div>; // 或者其他加載指示器
   }
@@ -156,91 +197,55 @@ export default function LoginForm() {
       {/* desk */}
       <div className={` d-none d-lg-block`}>
         <div>
-          <div className={`${styles.tabContent} ms-5`}>
-            {/* 01-login */}
+          <div className={`${styles.tabContent} ms-5 mt-5 `}>
+
             <form onSubmit={handleSubmit} >
               <div
-                className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent}`}
+                className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent} `}
                 id="login"
                 role="tabpanel"
                 aria-labelledby="login-tab"
               >
-                <label className={styles.label} htmlFor="login-account">
-                  會員帳號
-                </label>{' '}
-                <br />
-                <input
+                <FloatingLabelInput
+                  label="帳號"
                   type="text"
                   name="account"
                   value={user.account}
-                  className={styles.loginInput}
                   onChange={handleFieldChange}
+                  error={errors.account}
                 />
                 <br />
-                {/* 錯誤訊息 */}
-                {errors.account && <span className={`${styles.error} ${styles.show} ${styles.errorAccount}`}>{errors.account}</span>}
-                <br />
-                <div
-                  className={`d-flex justify-content-between align-items-center ${styles.pwdNotice}`}
-                >
-                  <label className={styles.label} htmlFor="login-pwd">
-                    會員密碼
-                  </label>{' '}
-                  <br />
-
-                  {/* 顯示密碼checkbox */}
-                  <div
-                    className={`${styles.formCheck} align-items-center d-flex`}
-                  >
-                    <input
-                      className={`${styles.formCheckInput} me-2`}
-                      type="checkbox"
-                      checked={showPassword}
-                      onChange={() => {
-                        setShowPassword(!showPassword)
-                      }}
-                    />
-
-                    <label
-                      className={styles.formCheckLabel}
-                      htmlFor="showPassword"
-                    >
-                      顯示密碼
-                    </label>
-                  </div>
-                </div>
-                {/* 密碼輸入欄 */}
-                <input
-                  type={showPassword ? 'text' : 'password'}
+                <FloatingLabelInput
+                  label="密碼"
+                  type="password"
                   name="password"
-                  className={styles.loginInput}
                   value={user.password}
                   onChange={handleFieldChange}
+                  error={errors.password}
+                  isPassword={true}
+                  togglePasswordVisibility={togglePasswordVisibility}
+                  showPassword={showPassword}
                 />
 
-                {errors.password && <span className={`${styles.error} ${styles.show} ${styles.errorPwd}`}>{errors.password}</span>}
                 <div
                   className={`d-flex justify-content-between align-items-center ${styles.forgetPwd}`}
                 >
 
                   {/* 記住我的登入 */}
-                  <div
-                    className={`${styles.formCheck} align-items-center d-flex`}
-                  >
+                  <div className={`${styles.formCheck} align-items-center d-flex`}>
                     <input
-                      className={`${styles.formCheckInput} me-2`}
+                      id="rememberMe"
+                      className={styles.formCheckInput}
                       type="checkbox"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
                     />
-                    <label
-                      className={styles.formCheckLabel}
-                      htmlFor="rememberMe"
-                    >
-
+                    <label className={styles.formCheckLabel} htmlFor="rememberMe">
                       記住我的登入
                     </label>
                   </div>
+
+                  {/* 忘記密碼 */}
                   <Link
                     href="/member/forget-password"
                     className={styles.outlineButton}
@@ -248,6 +253,7 @@ export default function LoginForm() {
                     忘記密碼？
                   </Link>
                 </div>
+
                 {/* 登入按鈕 */}
                 <button
                   type="submit"
@@ -270,7 +276,7 @@ export default function LoginForm() {
                     className={styles.red}>加入我們</Link>
                 </div>
                 {/* 第三方登入 */}
-                <div className={styles.fastLogin}>
+                {/* <div className={styles.fastLogin}>
                   <hr className={styles.hr} />
                   <div className={styles.buttonGruop}>
                     <button
@@ -294,7 +300,7 @@ export default function LoginForm() {
                       使用LINE登入
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
             </form>
           </div> </div>
@@ -303,81 +309,54 @@ export default function LoginForm() {
       {/* RWD */}
       <div className="d-block d-lg-none">
         <div>
-          <div className={`${styles.tabContent} ms-5`}>
-            {/* login */}
+          <div className={`${styles.tabContent} ms-5 mb-5 mt-5`}>
+
             <form onSubmit={handleSubmit}>
               <div
                 className={`tab-pane fade show active ${styles.loginContent}`}
                 role="tabpanel"
                 aria-labelledby="login-tab-rwd"
               >
-                <label htmlFor="login-account">會員帳號</label> <br />
-                <input
+                <FloatingLabelInput
+                  label="帳號"
                   type="text"
                   name="account"
                   value={user.account}
-                  className={styles.loginInput}
                   onChange={handleFieldChange}
+                  error={errors.account}
                 />
+
                 <br />
-                {/* 錯誤訊息 */}
-                {errors.account && <span className={`${styles.error} ${styles.show} ${styles.errorAccount}`}>{errors.account}</span>}
-                <br />
-                <div
-                  className={`d-flex justify-content-between align-items-center ${styles.pwdNotice}`}
-                >
-                  <label htmlFor="login-pwd">會員密碼</label> <br />
-                  <div
-                    className={`form-check align-items-center d-flex ${styles.formCheck}`}
-                  >
-                    <input
-                      className={`${styles.formCheckInput} me-2`}
-                      type="checkbox"
-                      checked={showPassword}
-                      onChange={() => {
-                        setShowPassword(!showPassword)
-                      }}
-                      defaultValue=""
-                    />
-                    <label
-                      className={`form-check-label ${styles.formCheckLabel}`}
-                      htmlFor="showPassword"
-                    >
-                      {' '}
-                      顯示密碼
-                    </label>
-                  </div>
-                </div>
-                <input
-                  type={showPassword ? 'text' : 'password'}
+                <FloatingLabelInput
+                  label="密碼"
+                  type="password"
                   name="password"
-                  className={styles.loginInput}
                   value={user.password}
                   onChange={handleFieldChange}
+                  error={errors.password}
+                  isPassword={true}
+                  togglePasswordVisibility={togglePasswordVisibility}
+                  showPassword={showPassword}
                 />
-                {errors.password && <span className={`${styles.error} ${styles.show} ${styles.errorPwd}`}>{errors.password}</span>}
+
                 <div
                   className={`d-flex justify-content-between align-items-center ${styles.forgetPwd}`}
                 >
                   {/* 記住登入 */}
-                  <div
-                    className={`form-check align-items-center d-flex ${styles.formCheck}`}
-                  >
+                  <div className={`${styles.formCheck} align-items-center d-flex`}>
                     <input
-                      className={`${styles.formCheckInput} me-2`}
+                      id="rememberMe"
+                      className={styles.formCheckInput}
                       type="checkbox"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
                     />
-                    <label
-                      className={`form-check-label ${styles.formCheckLabel}`}
-                      htmlFor="rememberMe"
-                    >
-                      {' '}
+                    <label className={styles.formCheckLabel} htmlFor="rememberMe">
                       記住我的登入
                     </label>
                   </div>
 
+                  {/* 忘記密碼 */}
                   <Link
                     href="/member/forget-password"
                     className={styles.outlineButton}
@@ -385,16 +364,20 @@ export default function LoginForm() {
                     忘記密碼？
                   </Link>
                 </div>
+
+                {/* 登入按鈕 */}
                 <button className={styles.loginButton}>登入</button>
                 <div
                   className={`d-flex justify-content-center ${styles.noAccount}`}
                 >
                   <p>目前還沒有帳號嗎？</p>
                   <Link href="/member/register"
-                    className={styles.red}>加入我們</Link>
+                    className={`${styles.red} mb-5`}>加入我們</Link>
 
                 </div>
-                <div className={styles.fastLogin}>
+
+                {/* 第三方登入 */}
+                {/* <div className={styles.fastLogin}>
                   <hr />
                   <div className={styles.buttonGroup}>
                     <button
@@ -416,7 +399,7 @@ export default function LoginForm() {
                       使用LINE登入
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
             </form>
           </div>
