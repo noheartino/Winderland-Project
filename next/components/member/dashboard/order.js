@@ -13,6 +13,8 @@ import OrderCard from './order/OrderCard'
 import OrderCardDetail from './order/OrderCardDetail'
 import OrderCardDetailRWD from '@/components/member/dashboard/order/OrderCardDetailRWD'
 import OrderCardRWD from './order/OrderCardRWD'
+import OrderListRWD from '@/components/member/dashboard/order/OrderListRWD'
+
 import styles from '@/components/member/dashboard/order/OrderCardDetail.module.css'
 
 // @ 預設導出
@@ -181,84 +183,11 @@ export default function DashboardOrder() {
           {/* 篩選手風琴元件 */}
           <OrderFilterOffcanvas />
         </div>
+        
+        <OrderListRWD orders={currentOrders} isLoading={isLoading} />
 
-
-        <div className="order-list-rwd container-fluid">
-          {/* <div className="order-card-rwd card">
-          <OrderCardRWD />
-          </div> */}
-
-          {isLoading ? (
-            <div>載入中...</div>
-          ) : currentOrders.length === 0 ? (
-            <OrderCardRWD order={null} />
-          ) : (
-            currentOrders.map(order => (
-              <div key={order.order_uuid} className={`order-card-rwd card mb-4 ${expandedStates[order.order_uuid] ? 'expanded' : ''}`}>
-                <OrderCardRWD order={order} />
-
-                {expandedStates[order.order_uuid] ? (
-                  <>
-                    <div className={`${styles.orderDetailTitle} d-flex p-3`}>
-                      <div className={`col-5 ${styles.titleLabel}`}>品項</div>
-                      <div className={`col-2 ${styles.titleLabelNumber} ${styles.titleLabel}`}>件數</div>
-                      <div className={`col-2 ${styles.titleLabel}`}>小計</div>
-                      <div className={`col-1`}>
-                        <button onClick={() => toggleDetails(order.order_uuid)} className={styles.iconBox}>
-                          <i className={`fa-solid fa-chevron-up ${styles.faChevronUp}`} />
-                        </button>
-                      </div>
-                    </div>
-                    <OrderCardDetailRWD orderUuid={order.order_uuid} />
-                  </>
-                ) : (
-                  <div>
-                    <button
-                      type="button"
-                      className="card-footer text-muted d-flex justify-content-between align-items-center collapsible"
-                      onClick={() => toggleDetails(order.order_uuid)}
-                    >
-                      <div>{new Date(order.created_at).toLocaleDateString('zh-TW')}</div>
-                      <div>訂單編號 ＃{order.order_uuid}</div>
-                      <div>
-                        訂單詳情
-                        <i className="fa-solid fa-chevron-down" />
-                      </div>
-                    </button>
-                  </div>
-                )}
-
-                {/* <div>
-                  <button
-                    type="button"
-                    className="card-footer text-muted d-flex justify-content-between align-items-center collapsible"
-                    onClick={() => toggleDetails(order.order_uuid)}
-                  >
-                    <div>{new Date(order.created_at).toLocaleDateString('zh-TW')}</div>
-                    <div>訂單編號 ＃{order.order_uuid}</div>
-                    <div>
-                      訂單詳情
-                      <i className={`fa-solid fa-chevron-${expandedStates[order.order_uuid] ? 'up' : 'down'}`} />
-                    </div>
-                  </button>
-                </div> */}
-
-                {/* {expandedStates[order.order_uuid] && (
-                  <div className="order-detail-expanded">
-                    <div className={`${styles.orderDetailTitle} d-flex p-3`}>
-                      <div className={`col-5 ${styles.titleLabel}`}>品項</div>
-                      <div className={`col-2 ${styles.titleLabelNumber} ${styles.titleLabel}`}>件數</div>
-                      <div className={`col-2 ${styles.titleLabel}`}>小計</div>
-                    </div>
-                    <OrderCardDetailRWD orderUuid={order.order_uuid} />
-                  </div>
-                )} */}
-              </div>
-            ))
-          )}
-
-
-        </div>
+     
+        
       </div>
     </>
   )

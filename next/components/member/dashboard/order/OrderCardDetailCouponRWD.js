@@ -105,7 +105,8 @@ export default function OrderCardDetailCoupon({ orderInfo }) {
                                         <div className={styles.pointImgRWD} />
                                         <div className={styles.pointText}>
                                             <p>W Points</p>
-                                            <div className={styles.pointUsed}>-{orderInfo.pointUsed}P</div>
+                                            <div className={styles.pointUsed}>
+                                            -{orderInfo.pointUsed}P</div>
                                         </div>
                                     </div>
                                 </div>
@@ -113,7 +114,7 @@ export default function OrderCardDetailCoupon({ orderInfo }) {
                                 <div className={styles.noPoints}>
 
                                     <div className="point d-flex">
-                                        <div className={styles.pointImgRWD} />
+                                        <div className={styles.nopointImgRWD} />
                                         <div className={styles.pointTextWpoint}>
                                             <p>W Points</p>
                                             <div className={styles.noPoints}>

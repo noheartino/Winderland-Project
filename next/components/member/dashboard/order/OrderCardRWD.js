@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
+import styles from './OrderCardRWD.module.css';
 
 export default function OrderCardRWD({ order }) {
 
@@ -29,48 +30,44 @@ export default function OrderCardRWD({ order }) {
     )
   }
 
- // 處理圖片路徑
- const imagePath = order.firstItemImage 
- ? `/images/${order.firstItemType === 'product' ? 'product' : 'course_and_tarot'}/${order.firstItemImage}`
- : '/images/default-order-image.png'
+  // 處理圖片路徑
+  const imagePath = order.firstItemImage
+    ? `/images/${order.firstItemType === 'product' ? 'product' : 'course_and_tarot'}/${order.firstItemImage}`
+    : '/images/default-order-image.png'
 
   return (
     <>
-          <div className="card-body-rwd d-flex ">
-          <Image
-           src={imagePath}
+      <div className={`${styles.cardBodyRwd} d-flex `}>
+      <div className="cardImg">
+      <Image
+          src={imagePath}
           alt="First item"
-          width={150}
-          height={150}
-          className="order-img "
-              //  layout="fill"
-        objectFit="cover"
+          width={80}
+          height={80}
+          className={styles.orderImg}
+          //  layout="fill"
+          objectFit="cover"
         />
+      </div>
+       
 
-              <div className="order-detail d-flex">
-                <ul className="th-rwd">
-                  <li>總件數</li>
-                  <li>付款方式</li>
-                  <li>狀態</li>
-                  <li>總金額</li>
-                </ul>
-                <ul className="td-rwd">
-                  <li>共{order.total_items}件</li>
-                  <li> {order.payment_method}／{order.transport}</li>
-                  <li  className={getStatusClass(order.status)}>{order.status}</li>
-                  <li className="span">NT${order.totalMoney.toLocaleString()}</li>
-                </ul>
-              </div>
-            </div>
-            
-            {/* <div className="card-footer  d-flex align-items-center ;">
-              <div>2024.07.10</div>
-              <div>訂單編號 ＃a441</div>
-              <div>
-                訂單詳情
-                <i className="fa-solid fa-chevron-down" />
-              </div>
-            </div> */}
+        <div className={`${styles.orderDetail}`}>
+          <ul className={styles.thRwd}>
+            <li>總件數</li>
+            <li>付款方式</li>
+            <li>狀態</li>
+            <li>總金額</li>
+          </ul>
+          <ul className={styles.tdRwd}>
+            <li>共{order.total_items}件</li>
+            <li> {order.payment_method}／{order.transport}</li>
+            <li className={getStatusClass(order.status)}>{order.status}</li>
+            <span className={styles.span}>NT${order.totalMoney.toLocaleString()}</span>
+          </ul>
+        </div>
+      </div>
+
+
     </>
   )
 }
