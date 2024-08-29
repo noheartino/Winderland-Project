@@ -4,36 +4,99 @@ import connection from '##/configs/mysql.js'
 
 const router = express.Router()
 
-// 文章首頁
 router.get('/', async (req, res) => {
   try {
-    // 獲取查詢參數
-    const { search = '' } = req.query
+    const {
+      search = '',
+      category = '',
+      dateFilter = '',
+      startDate = '',
+      endDate = '',
+    } = req.query
 
-    // 構建 SQL 查詢語句
-    let query = `SELECT a.*,
-    GROUP_CONCAT(ia.path) AS images,
-    DATE(a.update_time) AS update_date
-    FROM article a
-    LEFT JOIN images_article ia ON a.id = ia.article_id
+    const categoryMap = {
+      knowledge: '葡萄酒小知識',
+      regional: '產區特色',
+      varieties: '葡萄品種介紹',
+      pairing: '搭配餐點推薦',
+      cocktail: '調酒知識',
+    }
+
+    let query = `
+      SELECT a.*, 
+        GROUP_CONCAT(ia.path) AS images,
+        DATE(a.update_time) AS update_date
+      FROM article a
+      LEFT JOIN images_article ia ON a.id = ia.article_id
     `
-    // 預設一個空陣列
+
     const params = []
 
-    // 如果有提供 search 參數，則添加 WHERE 條件
     if (search) {
-      query += ' WHERE title LIKE ?'
+      query += ' WHERE a.title LIKE ?'
       params.push(`%${search}%`)
     }
 
-    query += ' GROUP BY a.id'
-
-    // 執行 SQL 查詢
-    const [articles] = await connection.execute(query, params)
-
-    if (search && articles.length === 0) {
-      return res.json([]) // 當使用 search 且沒有資料時回傳空的陣列
+    if (category) {
+      const categoryName = categoryMap[category] || category
+      if (params.length > 0) {
+        query += ' AND a.category = ?'
+      } else {
+        query += ' WHERE a.category = ?'
+      }
+      params.push(categoryName)
     }
+
+    if (dateFilter) {
+      const currentDate = new Date()
+      let dateCondition
+
+      switch (dateFilter) {
+        case '本日':
+          dateCondition = `DATE(a.update_time) = CURDATE()`
+          break
+        case '本週':
+          dateCondition = `YEARWEEK(a.update_time, 1) = YEARWEEK(CURDATE(), 1)`
+          break
+        case '本月':
+          dateCondition = `MONTH(a.update_time) = MONTH(CURDATE()) AND YEAR(a.update_time) = YEAR(CURDATE())`
+          break
+        case '近半年':
+          dateCondition = `a.update_time >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)`
+          break
+        case '近一年':
+          dateCondition = `a.update_time >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)`
+          break
+        case '一年以上':
+          dateCondition = `a.update_time < DATE_SUB(CURDATE(), INTERVAL 1 YEAR)`
+          break
+        default:
+          dateCondition = ''
+      }
+
+      if (dateCondition) {
+        if (params.length > 0) {
+          query += ` AND ${dateCondition}`
+        } else {
+          query += ` WHERE ${dateCondition}`
+        }
+      }
+    }
+
+    // 日期區間篩選
+    if (startDate && endDate) {
+      if (params.length > 0) {
+        query += ' AND DATE(a.update_time) BETWEEN ? AND ?'
+      } else {
+        query += ' WHERE DATE(a.update_time) BETWEEN ? AND ?'
+      }
+      params.push(startDate, endDate)
+    }
+
+    // 加入 ORDER BY 子句，按照 update_time 升序排序
+    query += ' GROUP BY a.id ORDER BY a.update_time ASC'
+
+    const [articles] = await connection.execute(query, params)
 
     res.json(articles)
   } catch (err) {
@@ -41,6 +104,54 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: '無法查詢資料' })
   }
 })
+
+// router.get('/', async (req, res) => {
+//   try {
+//     const { search = '', category = '' } = req.query
+
+//     const categoryMap = {
+//       knowledge: '葡萄酒小知識',
+//       regional: '產區特色',
+//       varieties: '葡萄品種介紹',
+//       pairing: '搭配餐點推薦',
+//       cocktail: '調酒知識',
+//     }
+
+//     let query = `
+//       SELECT a.*,
+//         GROUP_CONCAT(ia.path) AS images,
+//         DATE(a.update_time) AS update_date
+//       FROM article a
+//       LEFT JOIN images_article ia ON a.id = ia.article_id
+//     `
+
+//     const params = []
+
+//     if (search) {
+//       query += ' WHERE a.title LIKE ?'
+//       params.push(`%${search}%`)
+//     }
+
+//     if (category) {
+//       const categoryName = categoryMap[category] || category
+//       if (params.length > 0) {
+//         query += ' AND a.category = ?'
+//       } else {
+//         query += ' WHERE a.category = ?'
+//       }
+//       params.push(categoryName)
+//     }
+
+//     query += ' GROUP BY a.id'
+
+//     const [articles] = await connection.execute(query, params)
+
+//     res.json(articles)
+//   } catch (err) {
+//     console.error(err)
+//     res.status(500).json({ error: '無法查詢資料' })
+//   }
+// })
 
 // 文章細節頁
 router.get('/:id', async (req, res) => {

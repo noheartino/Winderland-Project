@@ -139,6 +139,7 @@
         display: flex
         justify-content: center
         align-items: center
+        overflow: hidden
         p
           color: #fff
           font-size: 34px
@@ -150,6 +151,7 @@
         display: flex
         justify-content: center
         align-items: center
+        overflow: hidden
         p
           color: #fff
           font-size: 16px
@@ -198,10 +200,20 @@
             box-shadow: none
             padding: 0
           button
-            background-color: var(--primary)
-            color: #fff
-            border-radius: 44px
-
+            background-color: var(--purple_light)
+            color: var(--light)
+            border-radius: 15px
+            border: 0
+            padding: 10px
+            padding-right: 15px
+            padding-left: 15px
+            letter-spacing: 1.4px
+            transition: all 0.3s ease
+            &:hover
+              background-color: darken(#A66E7B, 5%)
+              color: darken(#F4EBEB, 10%) 
+            &:active
+              transform: scale(0.95)
           p
             font-size: 16px
             letter-spacing: 1.6px

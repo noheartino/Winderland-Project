@@ -5,7 +5,7 @@ import ArticleSearchbar from "@/components/article/article-searchbar";
 import ArticleSortdropdown from "@/components/article/article-sortdropdown";
 import ArticleRwdSidebar from "@/components/article/article-rwd-sidebar";
 
-import ArticleIndexList from "@/components/article/article-list";
+import ArticleIndexList from "@/components/article/ArticleIndexList";
 import ArticlePagination from "@/components/article/article-pagination";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
@@ -48,12 +48,12 @@ export default function Index() {
   const handleLink = () => {
     router.push(`/article`);
   };
-  console.log(articleHead)
+  // console.log(articleHead)
   return (
     <>
       {/* Header */}
       <Nav />
-      <title>Title</title>
+      <title>相關文章</title>
       {/* Required meta tags */}
       <div className="wrap">
         {/* Banner */}

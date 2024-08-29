@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ArticleCReplymore from "./article-c-replymore";
 import { useAuth } from "@/hooks/use-auth";
+import Image from "next/image";
 
 export default function ArticleComment({ comment, index }) {
   // console.log(comment)
@@ -84,7 +85,7 @@ export default function ArticleComment({ comment, index }) {
     if (!confirmDelete) {
       return; // 如果用戶取消，則退出函數
     }
-    
+
     if (commentUser !== userId) {
       alert("您沒有權限刪除此評論");
       return;
@@ -122,11 +123,21 @@ export default function ArticleComment({ comment, index }) {
           <div className="col-auto">
             {/* 桌機icon */}
             <div className="au-icon d-none d-lg-flex">
-              <p className="m-0">{firstTwoChars}</p>
+              <Image
+                src={`/images/member/avatar/${auth.userData.id}.png`}
+                width={100}
+                height={100}
+              />
+              {/* <p className="m-0">{firstTwoChars}</p> */}
             </div>
             {/* 手機icon */}
             <div className="au-icon-sm d-lg-none">
-              <p className="m-0">{firstTwoChars}</p>
+              <Image
+                src={`/images/member/avatar/${auth.userData.id}.png`}
+                width={100}
+                height={100}
+              />
+              {/* <p className="m-0">{firstTwoChars}</p> */}
             </div>
           </div>
           <div className="aucomment-section col">

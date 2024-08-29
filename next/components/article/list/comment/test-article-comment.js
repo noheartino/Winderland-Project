@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import Image from "next/image";
 
 export default function TestArticleComment({ articleId, comments }) {
   const [commentText, setCommentText] = useState("");
@@ -72,18 +73,23 @@ export default function TestArticleComment({ articleId, comments }) {
           <div className="col-auto">
             {/* 桌機icon */}
             <div className="au-icon d-none d-lg-flex">
-              <p className="m-0">{firstTwoChars}</p>
+            {console.log(auth.userData.id)}
+              {/* <p className="m-0">{firstTwoChars}</p> */}
+              <Image src={`/images/member/avatar/${auth.userData.id}.png`} width={100} height={100} />
             </div>
             {/* 手機icon */}
             <div className="au-icon-sm d-lg-none">
-              <p className="m-0">{firstTwoChars}</p>
+              {/* <p className="m-0">{firstTwoChars}</p> */}
+              <Image src={`/images/member/avatar/${auth.userData.id}.png`} width={100} height={100} />
             </div>
           </div>
           <div className="aucomment-section col">
             <div className="aucomment-nav row align-items-center mb-2">
               {/* 使用者 */}
               <div className="au-name col-auto col-lg-auto">
-                <h5 className="m-0">{account}</h5>
+                <h5 className="m-0">
+                
+                {account}</h5>
               </div>
             </div>
             {/* 評論內容 */}
