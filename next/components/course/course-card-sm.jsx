@@ -11,6 +11,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
     address,
     teacher_name,
     class_path,
+    assigned,
   } = course;
   const isOnline = parseInt(online) === 0 ? false : true;
   return (
@@ -175,7 +176,8 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
                         已報名 {classAssignsQ>0 ? classAssignsQ/student_limit*100 : '0'}%
                       </span> */}
             <span className="h6 text-sec-blue spac-1">
-            已報名 {classAssignsQ > 0 ? `${((classAssignsQ / student_limit) * 100).toFixed(1)}%` : '0%'}
+            {/* 已報名 {classAssignsQ > 0 ? `${((classAssignsQ / student_limit) * 100).toFixed(1)}%` : '0%'} */}
+            已報名 {assigned>0?(assigned/student_limit*100).toFixed(0):"0"}%
           </span>
           </div>
           <div
@@ -189,7 +191,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
           >
             <div
               className="progress-bar bg-sec-blue-dark"
-              style={{ width: `${(classAssignsQ / student_limit) * 100}%` }}
+              style={{ width: `${assigned>0?(assigned/student_limit*100).toFixed(0):"0"}%` }}
             />
           </div>
         </div>

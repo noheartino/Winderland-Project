@@ -80,6 +80,9 @@
   & .fw-thin {
     font-weight: 300;
   }
+  & .fw-bold {
+    font-weight: 500;
+  }
   & .text-justify {
     text-align: justify;
   }
@@ -290,6 +293,14 @@
   }
   & .emmit1 {
     font-size: 0.8rem;
+  }
+  & .emmit1-pageNav {
+    font-size: 0.8rem;
+  }
+  @media screen and (max-width: 768px) {
+    & .emmit1-pageNav {
+      font-size: 1.8rem;
+    }
   }
   & .emmit2 {
     font-size: 0.6rem;

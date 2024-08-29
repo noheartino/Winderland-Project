@@ -24,8 +24,7 @@ export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage
                 pathname: '/dashboard/favorite',
                 query: {}
             })
-        }
-        
+        }  
     }
     function handleHref(){
         router.push({
@@ -50,7 +49,7 @@ export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage
                 </div>
                 <div className="course-body row d-none d-md-flex flex-column align-items-center justify-content-between">
                     <div className="col-12 h-auto py-0 my-0">
-                        <span className={`${myBox?.online===0?'online-tag':'underline-tag'}`}>{myBox?.online===0?'線上':'實體'}</span>
+                        <span className={`${myBox?.online===0?'online-tag':'underline-tag'}`}>{myBox?.online===0?'實體':'線上'}</span>
                         <span
                             className="h5 spac-1"
                             style={{ lineHeight: "35px" }}
@@ -59,9 +58,9 @@ export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage
                             
                         </span>
                     </div>
-                    <div className="col-12">
+                    <div className={`col-12 ${myBox?.online===0?'d-block':'d-none'}`}>
                         <div
-                            className="progress bg-sec-blue"
+                            className={`progress bg-sec-blue`}
                             role="progressbar"
                             aria-label=""
                             aria-valuenow={75}
@@ -71,8 +70,11 @@ export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage
                         >
                             <div
                             className="progress-bar bg-sec-blue-dark"
+                            style={{ width: `${myBox?.assigned>0?(myBox?.assigned/myBox?.student_limit*100).toFixed(0):"0"}%` }}/>
+                            {/* <div
+                            className="progress-bar bg-sec-blue-dark"
                             style={{ width: `${assignedQ}%` }}
-                            />
+                            /> */}
                         </div>
                     </div>
                     

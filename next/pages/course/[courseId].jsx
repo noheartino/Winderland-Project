@@ -238,13 +238,7 @@ function querySeries04(e) {
                             </span>
                             <span className="h6 text-sec-dark-blue spac-1">
                               已報名-
-                              {theCourseAssigned.length > 0
-                                ? (
-                                    (theCourseAssigned.length /
-                                      course.student_limit) *
-                                    100
-                                  ).toFixed(0)
-                                : "0"}
+                              {course?.assigned>0?(course?.assigned/course?.student_limit*100).toFixed(0):"0"}
                               %
                             </span>
                           </div>
@@ -260,15 +254,7 @@ function querySeries04(e) {
                             <div
                               className="progress-bar bg-sec-blue-dark"
                               style={{
-                                width: `${
-                                  theCourseAssigned.length > 0
-                                    ? (
-                                        (theCourseAssigned.length /
-                                          course.student_limit) *
-                                        100
-                                      ).toFixed(0)
-                                    : "0"
-                                }%`,
+                                width: `${course?.assigned>0?(course?.assigned/course?.student_limit*100).toFixed(0):"0"}%`,
                               }}
                             />
                           </div>
@@ -555,13 +541,14 @@ function querySeries04(e) {
                       限額總數-{course?.student_limit}人
                       </span>
                       <span className="h6 text-sec-dark-blue spac-1">已報名-
-                              {theCourseAssigned.length > 0
+                              {/* {theCourseAssigned.length > 0
                                 ? (
                                     (theCourseAssigned.length /
                                       course.student_limit) *
                                     100
                                   ).toFixed(0)
-                                : "0"}
+                                : "0"} */}
+                                {course?.assigned>0?(course?.assigned/course?.student_limit*100).toFixed(0):"0"}
                               %</span>
                     </div>
                     <div
@@ -576,15 +563,7 @@ function querySeries04(e) {
                       <div
                         className="progress-bar bg-sec-blue-dark"
                         style={{
-                                width: `${
-                                  theCourseAssigned.length > 0
-                                    ? (
-                                        (theCourseAssigned.length /
-                                          course.student_limit) *
-                                        100
-                                      ).toFixed(0)
-                                    : "0"
-                                }%`,
+                                width: `${course?.assigned>0?(course?.assigned/course?.student_limit*100).toFixed(0):"0"}%`,
                               }}
                       />
                     </div>

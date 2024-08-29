@@ -11,9 +11,12 @@ import CourseIndexPageNav from "@/components/course/courseIndexPageNav"
 
 export default function CourseIndex() {
   const router = useRouter();
+  let pageLimit = 8;
   const { search, view } = router.query;
   let apiUrl = `http://localhost:3005/api/course`
   const [courses, setCourses] = useState([]);
+  const [filterCourses, setFilterCourses] = useState([])
+  const [teachers, setTeachers] = useState([]);
   const [comments, setComments] = useState([]);
   const [classAssigns, setClassAssigns] = useState([]);
   const [myFavoriteCourse, setMyFavoriteCourse] = useState([]);
@@ -27,6 +30,44 @@ export default function CourseIndex() {
   const courseBtn01 = useRef(null)
   const courseBtn02 = useRef(null)
   const courseBtn03 = useRef(null)
+
+  // 篩選狀態
+  const [score, setScore] = useState(0)
+  const [onlineFilter, setOnlineFilter] = useState("全部")
+  const [teacherSelect, setTeacherSelect] = useState("全部")
+  const [dateStart, setDateStart] = useState("")
+  const [dateEnd, setDateEnd] = useState("")
+  const [priceStart, setPriceStart] = useState("")
+  const [priceEnd, setPriceEnd] = useState("")
+  const districts = [{dId: 1, districtStr: "台北市"}, {dId: 2, districtStr: "新北市"}, {dId: 3, districtStr: "桃園市"}, {dId: 4, districtStr: "台中市"}, {dId: 5, districtStr: "台南市"}, {dId: 6, districtStr: "高雄市"}, {dId: 7, districtStr: "新竹縣"}, {dId: 8, districtStr: "苗栗縣"}, {dId: 9, districtStr: "彰化縣"}, {dId: 10, districtStr: "南投縣"}, {dId: 11, districtStr: "雲林縣"}, {dId: 12, districtStr: "嘉義縣"}, {dId: 13, districtStr: "屏東縣"}, {dId: 14, districtStr: "宜蘭縣"}, {dId: 15, districtStr: "花蓮縣"}, {dId: 16, districtStr: "台東縣"}, {dId: 17, districtStr: "澎湖縣"}, {dId: 18, districtStr: "金門縣"}, {dId: 19, districtStr: "連江縣"}, {dId: 20, districtStr: "基隆市"}, {dId: 21, districtStr: "新竹市"}, {dId: 22, districtStr: "嘉義市"}, {dId: 23, districtStr: ""}]
+  const [districtArr, setDistrictArr] = useState([districts.map((district)=>{
+    return district.districtStr
+})])
+
+  useEffect(()=>{
+    setFilterCourses(courses)
+  }, [courses])
+  useEffect(()=>{
+    const newCoursesArray = courses.filter((course)=>
+        (districtArr.includes(course.address.slice(0,3))) &&
+        (course.average_rating>=score) &&
+        (onlineFilter === "全部" ? true :
+          (onlineFilter === "實體" ? (parseInt(course.online)==0) :
+          (onlineFilter === "線上" ? (parseInt(course.online)==1) :
+          true))) &&
+        (teacherSelect === "全部" ? true : course.teacher_name === teacherSelect) &&
+        (!dateStart ? true : course.course_start > dateStart || !course.course_start) &&
+        (!dateEnd ? true : course.course_end < dateEnd || !course.course_end) &&
+        (!priceStart ? true : !course.sale_price ? course.price > priceStart : course.sale_price > priceStart) &&
+        (!priceEnd ? true : !course.sale_price ? course.price < priceEnd : course.sale_price < priceEnd)
+  );
+    setFilterCourses(newCoursesArray)
+    console.log("newCoursesArray::::"+newCoursesArray.length);
+    
+  },[districtArr, score, onlineFilter, teacherSelect, dateStart, dateEnd, priceStart, priceEnd])
+
+  console.log("onlineFilter:::: "+onlineFilter);
+  console.log("filterCourses:::: "+filterCourses.length);
 
   useEffect(() => {
     // const includeImages = false;
@@ -49,7 +90,7 @@ export default function CourseIndex() {
         return response.json();
       })
       .then((data) => {
-        const { courses, comments, classAssigns, myFavoriteCourse, myCourse } =
+        const { courses, comments, classAssigns, myFavoriteCourse, myCourse, teachers } =
           data;
         // 處理 courses 資料，將 images 字段轉換為數組
         const processedCourses = courses.map((course) => ({
@@ -63,6 +104,7 @@ export default function CourseIndex() {
         setMyCourse(myCourse);
         setmyFirstFavoriteCourse(...myFavoriteCourse.slice(0, 1));
         setFirstMyCourse(...myCourse.slice(0, 1));
+        setTeachers(teachers);
         // if(isHomePage){clearBtnHref()}
       })
       .catch((error) => {
@@ -104,6 +146,21 @@ export default function CourseIndex() {
       query: {},
     });
 }
+function handlePressMoreMyCourse(){
+      setIsHomePage(false)
+      if(search){
+          router.push({
+              pathname: '/course',
+              query: {}
+          })
+      }
+  }
+function handlePressMoreMyFavoriteC(){
+  router.push({
+    pathname: '/dashboard/favorite',
+    query: {}
+})
+}
   
   return (
     <>
@@ -137,7 +194,7 @@ export default function CourseIndex() {
                         style={{ width: "20px", height: "20px" }}
                       >
                         <i
-                          className="fa-solid fa-chevron-right text-sec-orange"
+                          className="fa-solid fa-chevron-right text-sec-orange cursor-pointer" onClick={handlePressMoreMyCourse}
                           style={{ fontSize: "9px" }}
                         />
                       </div>
@@ -166,7 +223,7 @@ export default function CourseIndex() {
                         style={{ width: "20px", height: "20px" }}
                       >
                         <i
-                          className="fa-solid fa-chevron-right text-sec-orange"
+                          className="fa-solid fa-chevron-right text-sec-orange cursor-pointer" onClick={handlePressMoreMyFavoriteC}
                           style={{ fontSize: "9px" }}
                         />
                       </div>
@@ -191,9 +248,30 @@ export default function CourseIndex() {
           {/* page one 我的課程&收藏課程 end */}
 
           <CourseList
-            courses={courses}
+            courses={filterCourses}
             comments={comments}
             classAssigns={classAssigns}
+            currentPage={currentPage}
+            pageLimit={pageLimit}
+            teachers={teachers}
+            districts={districts}
+            districtArr={districtArr}
+            setDistrictArr={setDistrictArr}
+            setCurrentPage={setCurrentPage}
+            setScore={setScore}
+            setOnlineFilter={setOnlineFilter}
+            setTeacherSelect={setTeacherSelect}
+            setDateStart={setDateStart}
+            setDateEnd={setDateEnd}
+            setPriceStart={setPriceStart}
+            setPriceEnd={setPriceEnd}
+            score={score}
+            onlineFilter={onlineFilter}
+            teacherSelect={teacherSelect}
+            dateStart={dateStart}
+            dateEnd={dateEnd}
+            priceStart={priceStart}
+            priceEnd={priceEnd}
           />
         </div>
         {/* first page end */}
@@ -270,16 +348,10 @@ export default function CourseIndex() {
           <div className="container-sm">
             <div className="row justify-content-between">
               <div className="col-auto">
-              <Link href="/course/teacher"> 
-                <span className="h5 text-prim-text-prim spac-1">
-                  查看所有講師
-                  <i className="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i>
-                </span>
-              </Link>
                 
               </div>
-              <div className="row">
-                <CourseIndexPageNav courses={courses} setCurrentPage={setCurrentPage} />
+              <div className="row justify-content-center justify-conten-md-end mt-3 mb-5">
+                <CourseIndexPageNav courses={filterCourses} currentPage={currentPage} setCurrentPage={setCurrentPage} pageLimit={pageLimit} />
               </div>
             </div>
           </div>

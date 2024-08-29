@@ -10,7 +10,7 @@ router.get('/teacher/:teacherId', async (req, res) => {
   const teacherId = req.params.teacherId
 
   // SELECT 目前teacher
-  let teacherSQL = `SELECT teacher.*, teacher.id AS teacher_id, images_teacher.teacher_id, images_teacher.path AS teacher_path FROM teacher JOIN images_teacher ON teacher.id = images_teacher.teacher_id WHERE teacher.id = ${teacherId};`
+  let teacherSQL = `SELECT teacher.*, teacher.id AS teacher_id, images_teacher.teacher_id, images_teacher.path AS teacher_path FROM teacher JOIN images_teacher ON teacher.id = images_teacher.teacher_id WHERE teacher.id = ${teacherId} AND teacher.valid = '1';`
 
   // SELECT 目前teacher的comments
   let teacherCommentsSQL = `SELECT comments.*, comments.id AS comment_id, class.id AS class_id, class.name AS class_name, class.teacher_id FROM comments JOIN class ON comments.entity_id = class.id WHERE comments.entity_type = 'class' AND class.teacher_id = ${teacherId}`
@@ -30,11 +30,11 @@ router.get('/teacher/:teacherId', async (req, res) => {
 
 router.get('/teacher', async (req, res) => {
   // teacher 列表
-  const { searchT } = req.query;
+  const { searchT } = req.query
   let teacherSQLParamsStr = ``
   let teachersSQLParams = []
-  if(searchT){
-    teacherSQLParamsStr = `WHERE teacher.name LIKE ? OR teacher.name_en LIKE ?`
+  if (searchT) {
+    teacherSQLParamsStr = `WHERE teacher.name LIKE ? OR teacher.name_en LIKE ? AND teacher.valid = '1'`
     teachersSQLParams = [`%${searchT}%`, `%${searchT}%`]
   }
   let teachersSQL = `SELECT teacher.*, images_teacher.teacher_id, images_teacher.path AS teacher_path FROM teacher JOIN images_teacher ON teacher.id = images_teacher.teacher_id ${teacherSQLParamsStr}`
@@ -66,6 +66,7 @@ router.get('/', async (req, res) => {
   let querySQL = null
   let querySQLParams = []
   let classSumSQL = `SELECT class.id FROM class`
+  let teachersSQL = `SELECT teacher.* FROM teacher WHERE teacher.valid = '1'`
   if (!search) {
     querySQL = `SELECT 
                     class.*,
@@ -77,7 +78,8 @@ router.get('/', async (req, res) => {
                     images_class.class_id,
                     images_class.path AS class_path,
                     images_teacher.teacher_id,
-                    images_teacher.path AS teacher_path
+                    images_teacher.path AS teacher_path,
+                    COALESCE(AVG(comments.rating), 0) AS average_rating
                 FROM 
                     class
                 LEFT JOIN
@@ -86,7 +88,32 @@ router.get('/', async (req, res) => {
                     images_class ON class.id = images_class.class_id
                 LEFT JOIN
                     images_teacher ON teacher.id = images_teacher.teacher_id
-                ORDER BY class.id ASC;`
+                LEFT JOIN 
+                    comments ON class.id = comments.entity_id AND comments.entity_type = 'class'
+                GROUP BY 
+                    class.id, class.name, teacher.id, teacher.name, images_class.class_id, images_class.path, images_teacher.teacher_id, images_teacher.path
+                ORDER BY 
+                    class.id ASC;`
+    // querySQL = `SELECT
+    //     class.*,
+    //     class.id AS class_id,
+    //     class.name AS class_name,
+    //     teacher.*,
+    //     teacher.id AS teacher_id,
+    //     teacher.name AS teacher_name,
+    //     images_class.class_id,
+    //     images_class.path AS class_path,
+    //     images_teacher.teacher_id,
+    //     images_teacher.path AS teacher_path
+    // FROM
+    //     class
+    // LEFT JOIN
+    //     teacher ON class.teacher_id = teacher.id
+    // LEFT JOIN
+    //     images_class ON class.id = images_class.class_id
+    // LEFT JOIN
+    //     images_teacher ON teacher.id = images_teacher.teacher_id
+    // ORDER BY class.id ASC;`
   } else {
     querySQL = `SELECT 
                     class.*,
@@ -98,7 +125,8 @@ router.get('/', async (req, res) => {
                     images_class.class_id,
                     images_class.path AS class_path,
                     images_teacher.teacher_id,
-                    images_teacher.path AS teacher_path
+                    images_teacher.path AS teacher_path,
+                    COALESCE(AVG(comments.rating), 0) AS average_rating
                 FROM 
                     class
                 LEFT JOIN
@@ -107,10 +135,38 @@ router.get('/', async (req, res) => {
                     images_class ON class.id = images_class.class_id
                 LEFT JOIN
                     images_teacher ON teacher.id = images_teacher.teacher_id
+                LEFT JOIN 
+                    comments ON class.id = comments.entity_id AND comments.entity_type = 'class'
                 WHERE
                     class.name LIKE ?
                     OR teacher.name LIKE ?
-                ORDER BY class.id ASC;`
+                GROUP BY 
+                    class.id, class.name, teacher.id, teacher.name, images_class.class_id, images_class.path, images_teacher.teacher_id, images_teacher.path
+                ORDER BY 
+                    class.id ASC;`
+    // querySQL = `SELECT
+    //                 class.*,
+    //                 class.id AS class_id,
+    //                 class.name AS class_name,
+    //                 teacher.*,
+    //                 teacher.id AS teacher_id,
+    //                 teacher.name AS teacher_name,
+    //                 images_class.class_id,
+    //                 images_class.path AS class_path,
+    //                 images_teacher.teacher_id,
+    //                 images_teacher.path AS teacher_path
+    //             FROM
+    //                 class
+    //             LEFT JOIN
+    //                 teacher ON class.teacher_id = teacher.id
+    //             LEFT JOIN
+    //                 images_class ON class.id = images_class.class_id
+    //             LEFT JOIN
+    //                 images_teacher ON teacher.id = images_teacher.teacher_id
+    //             WHERE
+    //                 class.name LIKE ?
+    //                 OR teacher.name LIKE ?
+    //             ORDER BY class.id ASC;`
     querySQLParams = [`%${search}%`, `%${search}%`]
   }
   console.log('送出的查詢詞語是: ' + search)
@@ -167,6 +223,7 @@ router.get('/', async (req, res) => {
       querySQLMyFavoriteCourse
     )
     const [myCourse] = await connection.execute(querySQLMyCourse)
+    const [teachers] = await connection.execute(teachersSQL)
 
     // if (myCourse.length === 0) {
     //     return res.json({ courses: [], comments: [], classAssigns: [], myFavoriteCourse: [], myCourse: [] })
@@ -179,6 +236,7 @@ router.get('/', async (req, res) => {
       myFavoriteCourse,
       myCourse,
       classSum,
+      teachers,
     })
     console.log({ courses: courses }, { comments: comments })
   } catch (err) {
