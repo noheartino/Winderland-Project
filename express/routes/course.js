@@ -8,17 +8,18 @@ router.get('/teacher/:teacherId', async (req, res) => {
   let {userId} = req.query
   // 目前 teacher ID
   const teacherId = req.params.teacherId
+  console.log("---teacherID="+teacherId);
 
   // SELECT 目前teacher
-  let teacherSQL = `SELECT teacher.*, teacher.id AS teacher_id, images_teacher.teacher_id, images_teacher.path AS teacher_path FROM teacher JOIN images_teacher ON teacher.id = images_teacher.teacher_id WHERE teacher.id = ? AND teacher.valid = '1';`
+  let teacherSQL = `SELECT teacher.*, teacher.id AS teacher_id, images_teacher.teacher_id, images_teacher.path AS teacher_path FROM teacher JOIN images_teacher ON teacher.id = images_teacher.teacher_id WHERE teacher.id = ?;`
 
   // SELECT 目前teacher的comments
   let teacherCommentsSQL = `SELECT comments.*, comments.id AS comment_id, class.id AS class_id, class.name AS class_name, class.teacher_id FROM comments JOIN class ON comments.entity_id = class.id WHERE comments.entity_type = 'class' AND class.teacher_id = ?`
 
   // SELECT 目前 teacher 開課的 courses
-  let teacherCoursesSQL = `SELECT class.*, class.name AS class_name, images_class.class_id, images_class.path AS class_path FROM class JOIN images_class ON class.id = images_class.class_id WHERE class.teacher_id = ?`
+  let teacherCoursesSQL = `SELECT class.*, class.name AS class_name, images_class.class_id, images_class.path AS class_path, teacher.name AS teacher_name FROM class JOIN images_class ON class.id = images_class.class_id JOIN teacher ON class.teacher_id = teacher.id WHERE class.teacher_id = ?`
   try {
-    const [teacher] = await connection.execute(teacherSQL)
+    const [teacher] = await connection.execute(teacherSQL, [teacherId])
     const [teacherComments] = await connection.execute(teacherCommentsSQL, [teacherId])
     const [teacherCourses] = await connection.execute(teacherCoursesSQL, [teacherId])
     res.json({ teacher, teacherComments, teacherCourses })
@@ -177,18 +178,18 @@ router.get('/', async (req, res) => {
                             WHERE orders.user_id = ${userId}
                                 ${courseBtnSQLwords}
                             ORDER BY orders.order_uuid ASC;`
-                            if(userId){
-                              console.log("userId-----> "+userId);
-                            }
-                            if(courseBtnSQLwords){
-                              console.log("courseBtnSQLwords-----> "+courseBtnSQLwords);
-                            }
-                            if(view){
-                              console.log("view-----> "+view);
-                            }
-                            if(search){
-                              console.log("search-----> "+search);
-                            }     
+                            // if(userId){
+                            //   console.log("userId-----> "+userId);
+                            // }
+                            // if(courseBtnSQLwords){
+                            //   console.log("courseBtnSQLwords-----> "+courseBtnSQLwords);
+                            // }
+                            // if(view){
+                            //   console.log("view-----> "+view);
+                            // }
+                            // if(search){
+                            //   console.log("search-----> "+search);
+                            // }     
   console.log('測試:' + req.originalUrl)               
   try {
     console.log('測試:' + req.originalUrl)
@@ -219,8 +220,13 @@ router.get('/', async (req, res) => {
 
 router.get('/:courseId', async (req, res) => {
   const { series, userId } = req.query
-
   const courseId = req.params.courseId
+  console.log(courseId+"courseId");
+  console.log(userId+"userId");
+
+  // 這邊要寫PUT資料進購物車的SQL語法，要寫入userID到cart_items.user_id、courseId到cart_items.class_id、new Date(now)到cart_items.updated_at
+
+
   let courseSQL = `SELECT 
                     class.*,
                     class.id AS class_id,
@@ -265,6 +271,9 @@ router.get('/:courseId', async (req, res) => {
     commentSQLparams = `comments.created_at DESC`
   }
   let commentsSQL = `SELECT comments.*, users.account, users.id AS user_id FROM comments JOIN users ON comments.user_id = users.id WHERE comments.entity_type = 'class' AND comments.entity_id = ${courseId} ORDER BY ${commentSQLparams}`
+  console.log("------"+commentSQLparams+"------");
+  console.log("------"+series+"------");
+  if(series){console.log(series);}
   try {
     const [course] = await connection.execute(courseSQL)
     const [theCourseAssigned] = await connection.execute(theCourseAssignedSQL)
