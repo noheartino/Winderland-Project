@@ -4,12 +4,27 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
+import { useAuth } from '@/hooks/use-auth';
 
 export default function CourseIndex() {
 
   const [classSum, setClassSum] = useState([])
+
+  const { auth } = useAuth();
+  const [userId, setUserId] = useState("")
+    useEffect(()=>{
+      if(auth.isAuth){
+        setUserId(auth.userData?.id);
+        console.log("userId 是否已設定: "+auth?.isAuth);
+
+        console.log("以下是auth內容");
+        console.log(auth);
+        console.log("======auth結束======");
+      }
+    }, [auth])
+
    useEffect(() => {
-    fetch(`http://localhost:3005/api/course?userId=1`)
+    fetch(`http://localhost:3005/api/course?userId=${userId}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response not ok");
@@ -19,11 +34,12 @@ export default function CourseIndex() {
       .then((data) => {
         const { classSum } = data;
         setClassSum(classSum);
+        console.log("userId= "+userId);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [userId]);
   
 
   const router = useRouter();
@@ -35,7 +51,7 @@ export default function CourseIndex() {
 
   const seriesDefaultBtn = useRef(null);
 
-  let apiUrl = `http://localhost:3005/api/course/${courseId}`;
+  let apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}`;
 
   function querySeries01(e) {
     router.push({
@@ -76,32 +92,32 @@ function querySeries04(e) {
 
   useEffect(()=>{
     if(series==='timeOldToNew'){
-      apiUrl = `http://localhost:3005/api/course/${courseId}?series=timeOldToNew`;
+      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}&series=timeOldToNew`;
     }else if(series==='scoreHtoL'){
-      apiUrl = `http://localhost:3005/api/course/${courseId}?series=scoreHtoL`;
+      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}&series=scoreHtoL`;
     }else if(series==='scoreLtoH'){
-      apiUrl = `http://localhost:3005/api/course/${courseId}?series=scoreLtoH`;
+      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}&series=scoreLtoH`;
     }else{
-      apiUrl = `http://localhost:3005/api/course/${courseId}`;
+      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}`;
     }
-  }, [series])
+  }, [series, userId])
 
   useEffect(() => {
     if (courseId && classSum.length > 0) {
       // let apiUrl = `http://localhost:3005/api/course/${courseId}`;
 
-      if (courseId > classSum.length) {
-        apiUrl = `http://localhost:3005/api/course/1`;
-        router.push(`/course/1`);
-      } else {
-        if (series === 'timeOldToNew') {
-          apiUrl += `?series=timeOldToNew`;
-        } else if (series === 'scoreHtoL') {
-          apiUrl += `?series=scoreHtoL`;
-        } else if (series === 'scoreLtoH') {
-          apiUrl += `?series=scoreLtoH`;
-        }
-      }
+      // if (courseId > classSum.length) {
+      //   apiUrl = `http://localhost:3005/api/course?userId=${userId}`;
+      //   router.push(`/course/1`);
+      // } else {
+      //   if (series === 'timeOldToNew') {
+      //     apiUrl += `?series=timeOldToNew`;
+      //   } else if (series === 'scoreHtoL') {
+      //     apiUrl += `?series=scoreHtoL`;
+      //   } else if (series === 'scoreLtoH') {
+      //     apiUrl += `?series=scoreLtoH`;
+      //   }
+      // }
 
       fetch(apiUrl)
         .then((response) => {
@@ -121,7 +137,7 @@ function querySeries04(e) {
           console.log(error);
         });
     }
-  }, [courseId, classSum, series]);
+  }, [courseId, classSum, series, userId]);
 
 
 
@@ -268,11 +284,11 @@ function querySeries04(e) {
                       <strong>{course?.class_name}</strong>
                     </h2>
 
-                    <div className="row align-items-center mt-3 justify-content-between mx-0">
+                    <div className="row align-items-center mt-3 justify-content-between mx-0 row-gap-3">
                       <h5 className="col-auto text-prim-text-prim spac-1">
                         by {course?.name}
                       </h5>
-                      <div className="col-auto stars mt-2 d-flex align-items-center px-0">
+                      <div className="col-auto stars d-flex align-items-center px-0">
                         <i
                           className={`fa-solid fa-star ${
                             averageRating > 0.5

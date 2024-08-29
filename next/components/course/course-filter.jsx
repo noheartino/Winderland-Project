@@ -157,7 +157,7 @@ export default function CourseFilter({teachers, setScore
                 <button className={`btn btn-light-to-prim ${onlineFilter==='實體'?'active':''}`} onClick={handleOnlineRadio}>實體</button>
                 <button className={`btn btn-light-to-prim ${onlineFilter==='線上'?'active':''}`} onClick={handleOnlineRadio}>線上</button>
             </div>
-            <div className={`col-12 col-xl-4 mx-0 px-0 d-flex align-items-center`}>
+            <div className={`col-8 col-lg-6 col-xl-4 mx-0 px-0 d-flex align-items-center`}>
                 <span className='text-nowrap me-2 my-0 p-0'>依評分篩選：</span>
                 <select className="form-select" aria-label="Default select example" id="starsFilter" value={score} onChange={handelSetScore}>
                     <option value="0">全部</option>
@@ -178,26 +178,31 @@ export default function CourseFilter({teachers, setScore
         </div>
         <div className='row mx-0 px-10px mb-3 spac-1 text-prim-text-prim fw-bold mt-4 row-gap-3 gap-5'>
         
-            <div className={`col-12 mx-0 px-0 d-flex align-items-center`}>
+            <div className={`col-12 mx-0 px-0 d-flex align-items-center flex-wrap row-gap-2`}>
                 <span className='d-flex flex-column align-items-center'>
                     <p className='text-nowrap me-2 my-0 p-0'>選擇開課時間區間：</p>
                     <p className='text-nowrap me-2 my-0 p-0 emmit1 text-gray'>(包含線上課程)</p>
                 </span>
-                <input type="date" className="form-control" placeholder="選擇開課時間" aria-label="選擇開課時間" onChange={handleDateStart} style={{maxWidth: '220px'}}/>
-                <span className="mx-2">~</span>
-                <input type="date" className="form-control" placeholder="選擇結束時間" aria-label="選擇結束時間" onChange={handleDateEnd} style={{maxWidth: '220px'}}/>
+                <span className='d-flex align-items-center'>
+                  <input type="date" className="form-control w-50" placeholder="選擇開課時間" aria-label="選擇開課時間" onChange={handleDateStart}/>
+                  <span className="mx-2">~</span>
+                  <input type="date" className="form-control w-50" placeholder="選擇結束時間" aria-label="選擇結束時間" onChange={handleDateEnd}/>
+                </span>
                 {(dateStart && dateEnd && dateStart>dateEnd)?<span className='text-nowrap ms-3 text-prim-wine'>* 開始時間不得大於結束時間!!</span>:""}
             </div>
             
         </div>
         
         <div className='row mx-0 px-10px mb-3 spac-1 text-prim-text-prim fw-bold mt-4 row-gap-3 gap-3'>
-            <div className={`col-12 mx-0 px-0 d-flex align-items-center`}>
+            <div className={`col-12 mx-0 px-0 d-flex align-items-center flex-wrap row-gap-2`}>
                 <span className='text-nowrap me-2 my-0 p-0'>選擇課程費用區間：</span>
-                NT$ <input type="text" className="form-control" placeholder="最低金額..." aria-label="最低課程金額" value={priceStart} onChange={handlePriceStart} style={{maxWidth: '150px'}} id={`priceStart`}/>
-                <span className="mx-2">~</span>
-                NT$ <input type="text" className="form-control" placeholder="最高金額..." aria-label="最高課程金額" value={priceEnd} onChange={handlePriceEnd} style={{maxWidth: '150px'}} id={`priceEnd`}/>
-                <i className="fa-solid fa-xmark mx-2 cursor-pointer" onClick={handleClearPrice}></i>
+                <span className="d-flex align-items-center">
+                  NT$ <input type="text" className="form-control w-35" placeholder="最低金額..." aria-label="最低課程金額" value={priceStart} onChange={handlePriceStart} id={`priceStart`}/>
+                  <span className="mx-2">~</span>
+                  NT$ <input type="text" className="form-control w-35" placeholder="最高金額..." aria-label="最高課程金額" value={priceEnd} onChange={handlePriceEnd} id={`priceEnd`}/>
+                  <i className="fa-solid fa-xmark mx-2 cursor-pointer" onClick={handleClearPrice}></i>
+                </span>
+                
                 {(priceStart && priceEnd && Number(priceStart)>Number(priceEnd))?<span className='text-nowrap ms-3 text-prim-wine'>* 最小金額不得大於最大金額!!</span>:""}
             </div>
             
