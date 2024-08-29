@@ -143,7 +143,10 @@ export default function Applyevent() {
                                     </div>
                                     <div className="col-2">
                                         <div className="eventEditIcon">
-                                            <i className="fa-solid fa-pen-to-square EditIconI" />
+                                            <Link href={`/event/edit/${eventdata.id}`} className='Armallc d-flex align-items-center'>
+                                                <div className='eventEditIconT d-none d-lg-block'>編輯活動</div>
+                                                <i className="fa-solid fa-pen-to-square EditIconI" />
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

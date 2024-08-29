@@ -48,6 +48,12 @@ a.Armall{
     display: block;
 }
 
+a.Armallc{
+    text-decoration: none;
+    display: block;
+    color: #916B51;
+}
+
 a.Armallmt{
     text-decoration: none;
     display: block;
@@ -1604,6 +1610,8 @@ a.Armallmt{
             display: flex;
             justify-content: flex-end;
 
+            
+
             @media screen and (max-width: 576px){
                 font-size: 24px;
             }
@@ -1611,8 +1619,18 @@ a.Armallmt{
             .EditIconI{
                 cursor: pointer;
             }
+
+            .eventEditIconT{
+                font-size: 14px;
+                margin-right: 10px;
+                letter-spacing: 1px;
+                font-weight: 900;
+            }
+
+
         }
 
+        
         .eventListStatisT{
             font-weight: 900;
             color: var(--text_primary);
