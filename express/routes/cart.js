@@ -27,7 +27,9 @@ router.get('/:user_id', async (request, response) => {
       images_class.path AS class_image,
       country.name AS product_country,
       class.online AS class_online,
-      teacher.name AS teacher_name
+      teacher.name AS teacher_name,
+      class.student_limit AS student_limits,
+      class.assigned AS assigned
   FROM 
       cart_items 
   JOIN users ON cart_items.user_id = users.id
@@ -53,7 +55,8 @@ router.get('/:user_id', async (request, response) => {
       coupon.name AS coupon_name,
       coupon.discount AS coupon_discount,
       coupon.category AS coupon_category,
-      coupon.min_spend AS min_spend
+      coupon.min_spend AS min_spend,
+      user_coupon.status AS coupon_status
   FROM 
       users
   LEFT JOIN user_points ON users.id = user_points.user_id
@@ -198,9 +201,7 @@ router.delete('/:id', async (request, response) => {
 
 // 新增訂單 (Cash On Delivery)
 router.post('/cashOnDelivery', async (req, res) => {
-  console.log('Request Body:', req.body)
   const couponId = req.body.couponData ? req.body.couponData.id : null
-  console.log('Coupon ID:', couponId)
   const {
     userId, // 使用從前端傳來的 userId
     pointsUsed,
@@ -267,7 +268,6 @@ router.post('/cashOnDelivery', async (req, res) => {
                 ? 0.035
                 : 0)
     )
-    console.log('Earned Points:', earnedPoints)
 
     // 插入訂單資料
     const insertOrderQuery = `
@@ -295,15 +295,14 @@ router.post('/cashOnDelivery', async (req, res) => {
         : selectedTransport === 'transprot711'
           ? '7-11'
           : null,
-      discountedAmount
+      discountedAmount,
     ])
-    console.log('Order Insert Result:', orderResult)
 
     const orderId = orderResult.insertId
 
     // 插入商品和課程
     const insertOrderItemsQuery = `
-      INSERT INTO order_detailss (order_uuid, product_id, product_detail_id, class_id, product_quantity, created_at)
+      INSERT INTO order_details (order_uuid, product_id, product_detail_id, class_id, product_quantity, created_at)
       VALUES (?, ?, ?, ?, ?, NOW());
     `
     for (const item of cartItems) {
@@ -314,16 +313,41 @@ router.post('/cashOnDelivery', async (req, res) => {
         item.class_id || null,
         item.product_quantity,
       ])
+
+      // 如果 class_id 存在且有報名人數上限，則更新已報名人數
+      if (item.class_id && item.student_limits > 0) {
+        const updateAssignedQuery = `
+          UPDATE class 
+          SET assigned = COALESCE(assigned, 0) + 1
+          WHERE id = ? AND COALESCE(assigned, 0) < student_limit;
+        `
+        await conn.query(updateAssignedQuery, [item.class_id])
+      }
+
+      // 更新商品銷售數量
+      if (item.product_detail_id) {
+        const updateSalesQuery = `
+                UPDATE product_detail 
+                SET sales = sales + ?
+                WHERE id = ?;
+              `
+        await conn.query(updateSalesQuery, [
+          item.product_quantity,
+          item.product_detail_id,
+        ])
+      }
     }
 
-    // 刪除已使用的優惠券
+    // 更新已使用的優惠券狀態
     if (couponData?.coupon_id) {
-      const deleteCouponQuery = `
-        DELETE FROM user_coupon WHERE user_id = ? AND coupon_id = ?;
-      `
-      await conn.query(deleteCouponQuery, [userId, couponData.coupon_id])
+      const updateCouponStatusQuery = `
+    UPDATE user_coupon 
+    SET status = 'used' 
+    WHERE user_id = ? AND coupon_id = ?;
+  `
+      await conn.query(updateCouponStatusQuery, [userId, couponData.coupon_id])
       console.log(
-        'Deleting coupon for user:',
+        'Updated coupon status to used for user:',
         userId,
         'with coupon id:',
         couponData.coupon_id
@@ -340,7 +364,6 @@ router.post('/cashOnDelivery', async (req, res) => {
       originalPoints - pointsUsed + earnedPoints
     )
     await conn.query(userPointsQuery, [userId, newPointsBalance])
-    console.log('New Points Balance:', newPointsBalance)
 
     // 記錄點數變化
     const pointChange = earnedPoints - pointsUsed
@@ -392,9 +415,7 @@ router.post('/cashOnDelivery', async (req, res) => {
 
 // 新增訂單 (CreditCard Payment)
 router.post('/creditCardPayment', async (req, res) => {
-  console.log('Request Body:', req.body)
   const couponId = req.body.couponData ? req.body.couponData.id : null
-  console.log('Coupon ID:', couponId)
   const {
     userId,
     pointsUsed,
@@ -422,7 +443,6 @@ router.post('/creditCardPayment', async (req, res) => {
     }
 
     const orderNumber = generateOrderNumber()
-    console.log('Generated Order Number:', orderNumber)
 
     // 計算總金額並無條件捨去
     const totalAmount = Math.floor(
@@ -462,7 +482,6 @@ router.post('/creditCardPayment', async (req, res) => {
                 ? 0.035
                 : 0)
     )
-    console.log('Earned Points:', earnedPoints)
 
     // 插入訂單資料
     const insertOrderQuery = `
@@ -490,15 +509,14 @@ router.post('/creditCardPayment', async (req, res) => {
         : selectedTransport === 'transprot711'
           ? '7-11'
           : null,
-      discountedAmount
+      discountedAmount,
     ])
-    console.log('Order Insert Result:', orderResult)
 
     const orderId = orderResult.insertId
 
     // 插入商品和課程
     const insertOrderItemsQuery = `
-      INSERT INTO order_detailss (order_uuid, product_id, product_detail_id, class_id, product_quantity, created_at)
+      INSERT INTO order_details (order_uuid, product_id, product_detail_id, class_id, product_quantity, created_at)
       VALUES (?, ?, ?, ?, ?, NOW());
     `
     for (const item of cartItems) {
@@ -509,16 +527,41 @@ router.post('/creditCardPayment', async (req, res) => {
         item.class_id || null,
         item.product_quantity,
       ])
+
+      // 如果 class_id 存在且有報名人數上限，則更新已報名人數
+      if (item.class_id && item.student_limits > 0) {
+        const updateAssignedQuery = `
+          UPDATE class 
+          SET assigned = COALESCE(assigned, 0) + 1
+          WHERE id = ? AND COALESCE(assigned, 0) < student_limit;
+        `
+        await conn.query(updateAssignedQuery, [item.class_id])
+      }
+
+      // 更新商品銷售數量
+      if (item.product_detail_id) {
+        const updateSalesQuery = `
+                UPDATE product_detail 
+                SET sales = sales + ?
+                WHERE id = ?;
+              `
+        await conn.query(updateSalesQuery, [
+          item.product_quantity,
+          item.product_detail_id,
+        ])
+      }
     }
 
-    // 刪除已使用的優惠券
+    // 更新已使用的優惠券狀態
     if (couponData?.coupon_id) {
-      const deleteCouponQuery = `
-        DELETE FROM user_coupon WHERE user_id = ? AND coupon_id = ?;
-      `
-      await conn.query(deleteCouponQuery, [userId, couponData.coupon_id])
+      const updateCouponStatusQuery = `
+    UPDATE user_coupon 
+    SET status = 'used' 
+    WHERE user_id = ? AND coupon_id = ?;
+  `
+      await conn.query(updateCouponStatusQuery, [userId, couponData.coupon_id])
       console.log(
-        'Deleting coupon for user:',
+        'Updated coupon status to used for user:',
         userId,
         'with coupon id:',
         couponData.coupon_id
@@ -535,7 +578,6 @@ router.post('/creditCardPayment', async (req, res) => {
       originalPoints - pointsUsed + earnedPoints
     )
     await conn.query(userPointsQuery, [userId, newPointsBalance])
-    console.log('New Points Balance:', newPointsBalance)
 
     // 記錄點數變化
     const pointChange = earnedPoints - pointsUsed
