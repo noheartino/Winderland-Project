@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
-import CouponCardModal from "./CouponCardModal";
+import { HiOutlineTicket } from "react-icons/hi";
+import CouponPlusCard from "./CouponPlusCard";
 
-export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons }) {
+export default function CouponPlusSm({
+  userId,
+  freeCoupon,
+  setUserGetCoupons,
+}) {
+  const [isAllVisible, setIsAllVisible] = useState(false);
+
+  const toggleAllVisibility = () => {
+    setIsAllVisible(!isAllVisible);
+  };
+
   const [plusCoupons, setplusCoupons] = useState([]);
   const [selectedCoupons, setSelectedCoupons] = useState([]);
   const [claimedCoupons, setClaimedCoupons] = useState([]);
   const [usedClaimedCoupons, setUsedClaimedCoupons] = useState([]);
-
   useEffect(() => {
     // 取得所有優惠券的資料
     fetch("http://localhost:3005/api/coupon")
@@ -23,7 +33,7 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
     fetch(`http://localhost:3005/api/coupon/${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        const userCoupons = data.userCoupons
+        const userCoupons = data.userCoupons;
         // console.log(userCoupons)
         const usedClaimedCouponIds = userCoupons
           .filter((coupon) => coupon.status === "used") // 只選擇 status 為 'used' 的資料
@@ -43,7 +53,6 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
       });
   }, [userId]);
 
-  // console.log(freeCoupon)
   // 新增到會員擁有的優惠券空陣列
   const handleCouponSelect = (coupon) => {
     setSelectedCoupons((prevSelected) => {
@@ -107,26 +116,24 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
         setSelectedCoupons([]); // 清空選擇列表
 
         // 重新 fetch 用戶已經領取的優惠券
-      fetch(`http://localhost:3005/api/coupon/${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        const userCoupons = data.userCoupons
-        const usedClaimedCouponIds = userCoupons
-          .filter((coupon) => coupon.status === "used") // 只選擇 status 為 'used' 的資料
-          .map((coupon) => coupon.coupon_id); // 提取 coupon_id
-        // 過濾出 status 為 'get' 的優惠券
-        const claimedCouponIds = userCoupons
-          .filter((coupon) => coupon.status === "get") // 只選擇 status 為 'get' 的資料
-          .map((coupon) => coupon.coupon_id); // 提取 coupon_id
-        // console.log(claimedCouponIds)
-        setUsedClaimedCoupons(usedClaimedCouponIds);
-        setClaimedCoupons(claimedCouponIds);
-      })
-      .catch((error) => {
-        console.error("Error fetching user coupons:", error);
-      });
-
-
+        fetch(`http://localhost:3005/api/coupon/${userId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            const userCoupons = data.userCoupons;
+            const usedClaimedCouponIds = userCoupons
+              .filter((coupon) => coupon.status === "used") // 只選擇 status 為 'used' 的資料
+              .map((coupon) => coupon.coupon_id); // 提取 coupon_id
+            // 過濾出 status 為 'get' 的優惠券
+            const claimedCouponIds = userCoupons
+              .filter((coupon) => coupon.status === "get") // 只選擇 status 為 'get' 的資料
+              .map((coupon) => coupon.coupon_id); // 提取 coupon_id
+            // console.log(claimedCouponIds)
+            setUsedClaimedCoupons(usedClaimedCouponIds);
+            setClaimedCoupons(claimedCouponIds);
+          })
+          .catch((error) => {
+            console.error("Error fetching user coupons:", error);
+          });
       } else {
         throw new Error(result.message || "領取失敗");
       }
@@ -135,87 +142,76 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
       alert("發生錯誤，請稍後再試");
     }
   };
-
-  const handleClear = () => {
-    setSelectedCoupons([]);
-  };
-
+  // console.log(claimedCoupons);
   return (
     <>
-      <div
-        className={`modal fade ${style.CPlusModal}`}
-        id="couponPlusModal"
-        tabIndex="-1"
-        aria-labelledby="couponPlusModalLabel"
-        aria-hidden="true"
-      >
+      <div className="couponPlusZoneSm row d-lg-none">
         <div
-          className={`modal-dialog modal-dialog-centered modal-dialog-scrollable`}
+          className={`${style.couponNav} col-12 px-4`}
+          onClick={toggleAllVisibility}
         >
-          <div className={`modal-content ${style.CModalContent}`}>
-            <div className="modal-header border-0">
-              <div className={`${style.couponNav} px-4`}>
-                <span className={`${style.CTitle}`}>
-                  <i className="fa-solid fa-ticket" />
-                  9月會員優惠券
-                </span>
-                <div className="mt-2">
-                  <p className={`${style.couponLimit} m-0`}>
-                    本用戶等級最多可本月領取{freeCoupon}張優惠券
-                  </p>
-                </div>
-              </div>
-              {/* 關閉的地方 */}
-              <button
-                type="button"
-                className={`btn-close ${style.cModalClose}`}
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                onClick={handleClear}
-              />
-            </div>
-            {/* 電腦領取modal */}
-            <div className="modal-body row align-items-center">
-              {plusCoupons.map((coupon) => {
-                const isChecked = selectedCoupons.some(
-                  (c) => c.id === coupon.id
-                );
-                {/* {console.log(coupon);} */}
-                {/* {console.log(selectedCoupons)} */}
-                {/* console.log(`Coupon ID: ${coupon.id}, isChecked: ${isChecked}`); */}
-
-                return (
-                  <CouponCardModal
-                    key={coupon.id}
-                    coupon={coupon}
-                    onSelect={handleCouponSelect}
-                    isChecked={isChecked}
-                    isClaimed={claimedCoupons.includes(coupon.id)} // 傳遞是否已經領取過
-                    isUsed={usedClaimedCoupons.includes(coupon.id)}
-                  />
-                );
-              })}
-            </div>
-
-            <div className="modal-footer border-0">
-              <p
-                className={`${style.couponLimit} m-0 me-auto ps-3`}
-                style={{ fontSize: "18px", color: "var(--wine)" }}
-              >
-                可選擇
-                {freeCoupon - claimedCoupons.length - selectedCoupons.length}
-                張優惠券
-              </p>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleConfirm}
-              >
-                確認領取
-              </button>
-            </div>
+          <span
+            type="button"
+            className={`${style.CTitle} ${style.CTitleSm} row py-2`}
+          >
+            <HiOutlineTicket
+              className="col-auto pe-0"
+              style={{ fontSize: "20px" }}
+            />
+            <p className="col m-0">領取本月會員優惠券</p>
+            <i className={`fa-solid fa-angle-down ${style.pointDown} col`} />
+          </span>
+          <div className="row mt-2">
+            <p
+              className={`${style.couponLimit} ${style.couponLimitSm} col-auto`}
+            >
+              可選擇
+              {freeCoupon - claimedCoupons.length - selectedCoupons.length}
+              張優惠券
+            </p>
           </div>
         </div>
+      </div>
+      {/* 手機領券區塊 */}
+      <div
+        className={`${style.couponZoneSm} row d-lg-none py-4 mx-3 mt-3 ${
+          isAllVisible ? style.showGetCoupon : style.hideGetCoupon
+        }`}
+      >
+        <div className={`${style.couponNav} col-12`}>
+          <span className={`${style.CTitle} ${style.CTitleSm} row py-2`}>
+            <HiOutlineTicket
+              className="col-auto pe-0"
+              style={{ fontSize: "20px" }}
+            />
+            <p className="col m-0">9月會員優惠券</p>
+          </span>
+        </div>
+        {/* {console.log(usedClaimedCoupons)} */}
+        {plusCoupons.map((coupon) => (
+          <CouponPlusCard
+            key={coupon.id}
+            coupon={coupon}
+            onSelect={handleCouponSelect}
+            isClaimed={claimedCoupons.includes(coupon.id)}
+            isUsed={usedClaimedCoupons.includes(coupon.id)}
+            isSelected={selectedCoupons.some(
+              (selectedCoupon) => selectedCoupon.id === coupon.id
+            )}
+          />
+        ))}
+      </div>
+      <div className="row px-5">
+        <button
+          type="button"
+          className={`btn btn-primary col py-2 border-0 ${
+            isAllVisible ? style.showGetCoupon : style.hideGetCoupon
+          }`}
+          style={{ fontSize: "18px", background:"var(--primary)" }}
+          onClick={handleConfirm}
+        >
+          確認領取
+        </button>
       </div>
     </>
   );

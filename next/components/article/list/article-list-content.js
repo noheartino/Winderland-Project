@@ -41,12 +41,12 @@ export default function ArticleListContent({ article }) {
   return (
     <>
       <div className="aid-content-word">
-        {/* rwd */}
+        {/* 桌機 */}
         <div className="aid-content-p d-none d-lg-block" style={{ whiteSpace: "pre-wrap" }}>
           {contentWithImages}
         </div>
-        {/* 桌機 */}
-        <div className="aid-content-p-sm d-lg-none" style={{ whiteSpace: "pre-wrap" }}>
+        {/* rwd */}
+        <div className="aid-content-p-sm d-lg-none px-4" style={{ whiteSpace: "pre-wrap" }}>
           {contentWithImages}
         </div>
       </div>
