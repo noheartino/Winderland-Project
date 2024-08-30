@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { useAuth } from '@/hooks/use-auth'
 import Swal from 'sweetalert2'
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useFirebase } from '@/hooks/useFirebase';
 
 
 // 漂浮標籤
@@ -44,6 +45,7 @@ const FloatingLabelInput = React.memo(({ label, type, name, value, onChange, err
 
 // @ 預設導出
 export default function LoginForm() {
+  const { firebaseInitialized } = useFirebase();
   const { login, googleLogin, isLoading } = useAuth();
   const router = useRouter()
 
@@ -138,10 +140,9 @@ export default function LoginForm() {
     }
   }
 
-  // 處理 Google 登入
+  // * Google 登入
   const handleGoogleLogin = async () => {
-    if (isLoading) {
-      // 如果 auth 狀態正在加載，顯示一個加載消息或返回
+    if (!firebaseInitialized) {
       Swal.fire({
         title: '請稍候',
         text: '正在初始化登入服務...',
@@ -179,6 +180,8 @@ export default function LoginForm() {
       });
     }
   };
+
+
 
   const togglePasswordVisibility = useCallback(() => {
     setShowPassword(prev => !prev);
@@ -274,7 +277,7 @@ export default function LoginForm() {
                     className={styles.blue}>立即註冊新帳號</Link>
                 </div>
                 {/* 第三方登入 */}
-                {/* <div className={styles.fastLogin}>
+                <div className={styles.fastLogin}>
                   <hr className={styles.hr} />
                   <div className={styles.buttonGruop}>
                     <button
@@ -285,7 +288,7 @@ export default function LoginForm() {
                       <GoogleLogo className="mx-3" />
                       使用GOOGLE登入
                     </button>
-                    <button
+                    {/* <button
                       className={`${styles.lineLogin} d-flex justify-content-center align-items-center`}
                     >
                       <Image
@@ -296,9 +299,9 @@ export default function LoginForm() {
                         className={`${styles.img} mx-2`}
                       />
                       使用LINE登入
-                    </button>
+                    </button> */}
                   </div>
-                </div> */}
+                </div>
               </div>
             </form>
           </div> </div>

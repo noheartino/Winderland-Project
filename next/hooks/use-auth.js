@@ -23,7 +23,7 @@ const AuthContext = createContext(null)
 export function AuthProvider({ children }) {
   // 建立路由器
   const router = useRouter()
-  const { authFire } = useFirebase();
+  // const { auth, firebaseInitialized } = useFirebase();
 
   // 會員使用的認証&授權狀態
   const [auth, setAuth] = useState({
@@ -211,16 +211,16 @@ export function AuthProvider({ children }) {
 
   // * google登入
   const googleLogin = async () => {
-    if (!authFire) {
+    if (!auth) {
       console.error('Firebase auth is not initialized');
       return { success: false, message: 'Firebase auth is not initialized' };
     }
-
+  
     try {
       const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(authFire, provider);
+      const result = await signInWithPopup(auth, provider);
       const user = result.user;
-
+  
       // 向後端發送 Google 用戶資訊
       const response = await fetch('http://localhost:3005/api/google-login', {
         method: 'POST',
@@ -235,9 +235,9 @@ export function AuthProvider({ children }) {
         }),
         credentials: 'include',
       });
-
+  
       const data = await response.json();
-
+  
       if (data.status === 'success') {
         setAuth({
           isAuth: true,

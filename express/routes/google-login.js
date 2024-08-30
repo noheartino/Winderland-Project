@@ -3,7 +3,6 @@ const router = express.Router()
 import connection from '##/configs/mysql.js'
 
 import jsonwebtoken from 'jsonwebtoken'
-// 存取`.env`設定檔案使用
 import 'dotenv/config.js'
 
 // 定義安全的私鑰字串
@@ -19,67 +18,68 @@ router.post('/', async function (req, res) {
   }
 
   const { displayName, email, uid, photoURL } = req.body
-  // const google_uid = uid
+  const google_uid = uid
 
   try {
-    // 檢查用戶是否已存在
-    const [existingUsers] = await connection.execute(
-      'SELECT * FROM users WHERE google_uid = ?',
-      [uid]
+    // 檢查是否存在具有相同 google_uid 的用戶
+    const [rows] = await connection.execute(
+      'SELECT COUNT(*) as count FROM users WHERE google_uid = ?',
+      [google_uid]
     )
+    const total = rows[0].count
 
-    let user
-
-    if (existingUsers.length === 0) {
-      // 創建新用戶
-      const [result] = await connection.execute(
-        'INSERT INTO users (user_name, email, google_uid, photo_url) VALUES (?, ?, ?, ?)',
-        [displayName, email, uid, photoURL]
-      )
-
-      const [newUser] = await connection.execute(
-        'SELECT * FROM users WHERE id = ?',
-        [result.insertId]
-      )
-      user = newUser[0]
-    } else {
-      user = existingUsers[0]
+    let returnUser = {
+      id: 0,
+      username: '',
+      google_uid: '',
+      line_uid: '',
     }
 
-    // 生成 JWT
-    const accessToken = jsonwebtoken.sign(
-      {
-        id: user.id,
-        account: user.account,
-        google_uid: user.google_uid,
-      },
-      accessTokenSecret,
-      { expiresIn: '3d' }
-    )
+    if (total > 0) {
+      // 用戶已存在，獲取用戶資料
+      const [users] = await connection.execute(
+        'SELECT id, username, google_uid, line_uid FROM users WHERE google_uid = ?',
+        [google_uid]
+      )
+      const dbUser = users[0]
+      returnUser = {
+        id: dbUser.id,
+        username: dbUser.username,
+        google_uid: dbUser.google_uid,
+        line_uid: dbUser.line_uid,
+      }
+    } else {
+      // 創建新用戶
+      const [result] = await connection.execute(
+        'INSERT INTO users (name, email, google_uid, photo_url) VALUES (?, ?, ?, ?)',
+        [displayName, email, google_uid, photoURL]
+      )
+      returnUser = {
+        id: result.insertId,
+        username: '',
+        google_uid: google_uid,
+        line_uid: null,
+      }
+    }
 
-    // 設置 httpOnly cookie
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // 在生產環境中使用 secure
-      sameSite: 'strict',
-      maxAge: 3 * 24 * 60 * 60 * 1000, // 3 天
+    // 產生存取令牌(access token)
+    const accessToken = jsonwebtoken.sign(returnUser, accessTokenSecret, {
+      expiresIn: '3d',
     })
 
-    res.json({
+    // 使用httpOnly cookie來讓瀏覽器端儲存access token
+    res.cookie('accessToken', accessToken, { httpOnly: true })
+
+    // 傳送access token回應
+    return res.json({
       status: 'success',
       data: {
         accessToken,
-        user: {
-          id: user.id,
-          user_name: user.user_name,
-          email: user.email,
-          photo_url: user.photo_url,
-        },
       },
     })
   } catch (error) {
-    console.error('Google 登入處理錯誤:', error)
-    res.status(500).json({ status: 'error', message: '伺服器錯誤' })
+    console.error('Error during Google login:', error)
+    return res.status(500).json({ status: 'error', message: '伺服器錯誤' })
   }
 })
 
