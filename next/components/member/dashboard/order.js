@@ -1,30 +1,69 @@
-import React, { useState ,useEffect} from 'react'
+// @ 導入模組
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { faFilter } from '@fortawesome/free-solid-svg-icons'
+import Pagination from '@/components/member/dashboard/order/orderPagination'
 
 import OrderAside from '@/components/member/dashboard/order/OrderAside'
 import OrderFilterOffcanvas from '@/components/member/dashboard/order/OrderFilterOffcanvas';
 import OrderCard from './order/OrderCard'
 import OrderCardDetail from './order/OrderCardDetail'
+import OrderCardDetailRWD from '@/components/member/dashboard/order/OrderCardDetailRWD'
 import OrderCardRWD from './order/OrderCardRWD'
+import OrderListRWD from '@/components/member/dashboard/order/OrderListRWD'
+
 import styles from '@/components/member/dashboard/order/OrderCardDetail.module.css'
 
+// @ 預設導出
 export default function DashboardOrder() {
-const [orders, setOrders] = useState([])
+  const [orders, setOrders] = useState([])
+  const [filters, setFilters] = useState({
+    status: [],
+    startDate: '',
+    endDate: '',
+    sortOrder: ''
+  })
 
-// 使用對象來存儲每個訂單的展開狀態
-const [expandedStates, setExpandedStates] = useState({});
-const [error, setError] = useState(null)
-const [isLoading, setIsLoading] = useState(true)
+  // 使用對象來存儲每個訂單的展開狀態
+  const [expandedStates, setExpandedStates] = useState({});
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
-useEffect(() => {
+  // 分頁狀態
+  const [currentPage, setCurrentPage] = useState(1)
+  const ordersPerPage = 5
+
+  useEffect(() => {
+    fetchOrders()
+  }, [filters])
+
   const fetchOrders = async () => {
     try {
       setIsLoading(true)
-      const response = await fetch('http://localhost:3005/api/orders/history', {
+      let url = 'http://localhost:3005/api/orders/history'
+      const params = new URLSearchParams()
+
+      if (filters.status.length > 0) {
+        params.append('status', filters.status.join(','))
+      }
+      if (filters.startDate) {
+        params.append('startDate', filters.startDate)
+      }
+      if (filters.endDate) {
+        params.append('endDate', filters.endDate)
+      }
+      if (filters.sortOrder) {
+        params.append('sortOrder', filters.sortOrder)
+      }
+
+      if (params.toString()) {
+        url += `?${params.toString()}`
+      }
+
+      const response = await fetch(url, {
         credentials: 'include',
       })
       if (!response.ok) {
@@ -41,37 +80,52 @@ useEffect(() => {
     }
   }
 
+  // 展開詳細訂單
+  const toggleDetails = (orderId) => {
+    setExpandedStates(prevStates => ({
+      ...prevStates,
+      [orderId]: !prevStates[orderId]
+    }));
+  };
+  // 篩選器
+  const handleFilterChange = (newFilters) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      ...newFilters
+    }))
+  }
 
-  fetchOrders()
-}, [])
+  // 計算當前頁面的訂單
+  const indexOfLastOrder = currentPage * ordersPerPage
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder)
 
-const toggleDetails = (orderId) => {
-  setExpandedStates(prevStates => ({
-    ...prevStates,
-    [orderId]: !prevStates[orderId]
-  }));
-};
+  // 更改頁碼
+  const paginate = (pageNumber) => setCurrentPage(pageNumber)
+
 
   return (
     <>
-    {error && <div className="alert alert-danger">{error}</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
+
       {/* desk */}
       <div className="container d-none d-lg-block mb-5">
         <div className=" d-flex">
-          <OrderAside />
+          <OrderAside onFilterChange={handleFilterChange} />
 
           <div className="order-list">
             {isLoading ? (
               <div>載入中...</div>
-            ) : orders.length === 0 ? (
+            ) : currentOrders.length === 0 ? (
               <OrderCard order={null} />
             ) : (
-              orders.map(order => (
+              currentOrders.map(order => (
                 <div key={order.order_uuid} className="order-card card mb-4">
                   <OrderCard order={order} />
 
                   {expandedStates[order.order_uuid] ? (
                     <>
+                      {/* 訂單詳細頁-標題 */}
                       <div className={`${styles.orderDetailTitle} d-flex p-3`}>
                         <div className={`col-7  ${styles.titleLabel}`}>品項</div>
                         <div className={`col-2 ${styles.titleLabelNumber} ${styles.titleLabel}`}>件數</div>
@@ -82,10 +136,13 @@ const toggleDetails = (orderId) => {
                           </button>
                         </div>
                       </div>
-                      <OrderCardDetail orderUuid={ order.order_uuid} />
+                      {/* 訂單詳細頁-內容 */}
+                      <OrderCardDetail orderUuid={order.order_uuid} />
                     </>
                   ) : (
+
                     <div>
+                      {/* 訂單欄末 */}
                       <button
                         type="button"
                         className="card-footer text-muted d-flex justify-content-between align-items-center collapsible"
@@ -103,9 +160,19 @@ const toggleDetails = (orderId) => {
                 </div>
               ))
             )}
+
+            {/* 分頁 */}
+            <Pagination
+              ordersPerPage={ordersPerPage}
+              totalOrders={orders.length}
+              paginate={paginate}
+              currentPage={currentPage}
+            />
           </div>
         </div>
       </div>
+
+
       {/* rwd */}
       <div className="d-block d-lg-none" id="order-content-rwd">
         <div className="d-flex align-items-center searchArea">
@@ -116,17 +183,11 @@ const toggleDetails = (orderId) => {
           {/* 篩選手風琴元件 */}
           <OrderFilterOffcanvas />
         </div>
+        
+        <OrderListRWD orders={currentOrders} isLoading={isLoading} />
 
-        <div className="order-list-rwd container-fluid">
-          <div className="order-card-rwd card">
-            <OrderCardRWD />
-          </div>
-
-          <div className="order-card-rwd card">
-            <OrderCardRWD />
-          </div>
-
-        </div>
+     
+        
       </div>
     </>
   )

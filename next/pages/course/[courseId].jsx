@@ -1,8 +1,49 @@
 import Comment from "@/components/course/course-comment";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import Nav from "@/components/Header/Header";
+import Footer from "@/components/footer/footer";
+import { useAuth } from '@/hooks/use-auth';
 
 export default function CourseIndex() {
+
+  const [classSum, setClassSum] = useState([])
+
+  const { auth } = useAuth();
+  const [userId, setUserId] = useState("")
+    useEffect(()=>{
+      if(auth.isAuth){
+        setUserId(auth.userData?.id);
+        console.log("userId 是否已設定: "+auth?.isAuth);
+
+        console.log("以下是auth內容");
+        console.log(auth);
+        console.log("======auth結束======");
+      }
+    }, [auth])
+
+   useEffect(() => {
+    if(userId){
+      fetch(`http://localhost:3005/api/course?userId=${userId}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const { classSum } = data;
+        setClassSum(classSum);
+        console.log("userId= "+userId);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+  }, [userId]);
+  
+
   const router = useRouter();
   const { courseId, series } = router.query;
   const [course, setCourse] = useState([]);
@@ -11,9 +52,8 @@ export default function CourseIndex() {
   let averageRating = 0;
 
   const seriesDefaultBtn = useRef(null);
-  
 
-  let apiUrl = `http://localhost:3005/api/course/${courseId}`;
+  let apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}`;
 
   function querySeries01(e) {
     router.push({
@@ -54,21 +94,22 @@ function querySeries04(e) {
 
   useEffect(()=>{
     if(series==='timeOldToNew'){
-      apiUrl = `http://localhost:3005/api/course/${courseId}?series=timeOldToNew`;
+      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}&series=timeOldToNew`;
     }else if(series==='scoreHtoL'){
-      apiUrl = `http://localhost:3005/api/course/${courseId}?series=scoreHtoL`;
+      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}&series=scoreHtoL`;
     }else if(series==='scoreLtoH'){
-      apiUrl = `http://localhost:3005/api/course/${courseId}?series=scoreLtoH`;
+      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}&series=scoreLtoH`;
     }else{
-      apiUrl = `http://localhost:3005/api/course/${courseId}`;
+      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}`;
     }
-  }, [series])
+  }, [series, userId])
 
   useEffect(() => {
-    if (courseId) {
+    if (courseId && classSum.length > 0) {
+
       fetch(apiUrl)
         .then((response) => {
-          console.log("送出fetch，URL="+apiUrl);
+          console.log("送出fetch，URL=" + apiUrl);
           if (!response.ok) {
             throw new Error("Network response not ok");
           }
@@ -84,7 +125,34 @@ function querySeries04(e) {
           console.log(error);
         });
     }
-  }, [courseId, series]);
+  }, [courseId, classSum, series, userId]);
+
+  // 寫入購物車
+    function handleCourseWriteInCart(){
+      if(courseId && userId){
+        fetch(`http://localhost:3005/api/course/${courseId}?userId=${userId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(),
+        })
+          .then((response) => {
+            console.log(`送出POST fetch，URL=http://localhost:3005/api/course/${courseId}?userId=${userId}`);
+            if (!response.ok) {
+              throw new Error("Network response not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log('成功寫入購物車', data);
+          })
+          .catch((error) => {
+            console.log('發生錯誤:', error);
+          });
+      }
+    }
+
 
   if (comments.length>0) {
     averageRating = (
@@ -126,6 +194,7 @@ function querySeries04(e) {
 
   return (
     <>
+     
       <title>課程詳情</title>
       {/* Required meta tags */}
       <meta charSet="utf-8" />
@@ -134,13 +203,19 @@ function querySeries04(e) {
         content="width=device-width, initial-scale=1, shrink-to-fit=no"
       />
       <div className="course_wrap">
-        <header></header>
+      {/* Header */}
+     <Nav />
 
         {/* page three course-detail start */}
         <div className="container-fluid px-0 m-0">
           <div className="container-fluid px-0">
             <div className="container-sm px-0">
-              <div className="row px-0 m-0 pt-5 mb-4 d-none d-md-flex">
+            <div className="row px-0 m-0 justify-content-center justify-content-md-start px-10px">
+              <Link className={`px-0 col-auto`} href={"/course"}>
+                <div className="spac-1 btn-border-wine btn mt-4 mb-3"><i className="fa-solid fa-chevron-left me-1"></i>回到課程首頁</div>
+              </Link>
+            </div>
+              <div className="row px-0 mx-0 pt-5 mb-4 d-none d-md-flex">
                 <div className="col px-10px">
                   <span
                     className={`me-4 py-2 px-3 h6 ${
@@ -193,13 +268,7 @@ function querySeries04(e) {
                             </span>
                             <span className="h6 text-sec-dark-blue spac-1">
                               已報名-
-                              {theCourseAssigned.length > 0
-                                ? (
-                                    (theCourseAssigned.length /
-                                      course.student_limit) *
-                                    100
-                                  ).toFixed(0)
-                                : "0"}
+                              {course?.assigned>0?(course?.assigned/course?.student_limit*100).toFixed(0):"0"}
                               %
                             </span>
                           </div>
@@ -215,15 +284,7 @@ function querySeries04(e) {
                             <div
                               className="progress-bar bg-sec-blue-dark"
                               style={{
-                                width: `${
-                                  theCourseAssigned.length > 0
-                                    ? (
-                                        (theCourseAssigned.length /
-                                          course.student_limit) *
-                                        100
-                                      ).toFixed(0)
-                                    : "0"
-                                }%`,
+                                width: `${course?.assigned>0?(course?.assigned/course?.student_limit*100).toFixed(0):"0"}%`,
                               }}
                             />
                           </div>
@@ -236,11 +297,11 @@ function querySeries04(e) {
                       <strong>{course?.class_name}</strong>
                     </h2>
 
-                    <div className="row align-items-center mt-3 justify-content-between mx-0">
+                    <div className="row align-items-center mt-3 justify-content-between mx-0 row-gap-3">
                       <h5 className="col-auto text-prim-text-prim spac-1">
                         by {course?.name}
                       </h5>
-                      <div className="col-auto stars mt-2 d-flex align-items-center px-0">
+                      <div className="col-auto stars d-flex align-items-center px-0">
                         <i
                           className={`fa-solid fa-star ${
                             averageRating > 0.5
@@ -319,7 +380,7 @@ function querySeries04(e) {
                     <div className="row mt-5 justify-content-between align-items-start">
                       <div className="col-auto">
                         <div className="h2 spac-2 text-sec-orange">
-                          <strong>NT${course.price && course.sale_price===0 ? course.price.toLocaleString() : course.sale_price>0 ? course.sale_price.toLocaleString() : 0 }</strong>
+                          <strong>NT${course.price && course.sale_price===0 ? course.price.toLocaleString() : course.sale_price && course.sale_price>0 ? course.sale_price.toLocaleString() : 0 }</strong>
                         </div>
                         <p className={`text-gray-light h5 spac-2 mt-3 ${course.sale_price===0 ? "d-none" :"d-block" }`}>
                           <del>NT${course.sale_price>0 ? course.price.toLocaleString() : 0}</del>
@@ -338,8 +399,94 @@ function querySeries04(e) {
                     </div>
                     <div className="row h-100">
                       <div className="col-12 d-flex align-items-end">
-                        <button className="btn spac-3 btn-sec-orange w-100 mt-3 py-4">
-                          加入購物車
+                      {/* Button trigger modal */}
+                      <button
+                        type="button"
+                        className="btn spac-3 btn-sec-orange w-100 mt-3 py-4"
+                        data-bs-toggle="modal"
+                        data-bs-target="#courseWriteInCartModal"
+                      >
+                        加入購物車
+                      </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Modal 01*/}
+                <div
+                  className="modal fade"
+                  id="courseWriteInCartModal"
+                  tabIndex={-1}
+                  aria-labelledby="courseWriteInCartModalLabel"
+                  aria-hidden="true"
+                >
+                  <div className="modal-dialog">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title fs-5 spac-1" id="courseWriteInCartModalLabel">
+                          請確認是否加入購物車
+                        </h5>
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        />
+                      </div>
+                      <div className="modal-body py-4">
+                        <div className="row row-gap-3">
+                          <div className="col-12">
+                            <h3 className="spac-1 text-prim-text-prim">確認將課程加入購物車嗎?</h3>
+                          </div>
+                          <div className="col-12">
+                            <h5 className="spac-1 text-gray-light">{course?.class_name}</h5>
+                          </div>
+                          <div className="mt-3 col-12 d-flex align-items-center justify-content-end">
+                            <h4 className="spac-1 text-sec-orange">NT${course.price && course.sale_price===0 ? course.price.toLocaleString() : course.sale_price>0 ? course.sale_price.toLocaleString() : 0 }</h4>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-white"
+                          data-bs-dismiss="modal"
+                        >
+                          取消
+                        </button>
+                        <button type="button" className="btn btn-prim-to-wine" onClick={handleCourseWriteInCart} data-bs-toggle="modal"
+                        data-bs-target="#courseWriteInCartOK">
+                          確認
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Modal 02*/}
+                <div
+                  className="modal fade"
+                  id="courseWriteInCartOK"
+                  tabIndex={-1}
+                  aria-labelledby="courseWriteInCartOKLabel"
+                  aria-hidden="true"
+                >
+                  <div className="modal-dialog">
+                    <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title fs-5 spac-1" id="courseWriteInCartModalLabel">
+                          成功加入購物車
+                        </h5>
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        />
+                      </div>
+                      <div className="modal-body spac-1 text-gray py-4">課程「{course?.class_name}」已成功加入購物車</div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-prim-to-wine" data-bs-dismiss="modal">
+                          確認
                         </button>
                       </div>
                     </div>
@@ -442,10 +589,10 @@ function querySeries04(e) {
                     </strong>
                   </h1>
 
-                  <div className="row mx-0 text-sec-dark-blue spac-1 mt-4">
+                  <div className={`row mx-0 text-sec-dark-blue spac-1 mt-4 ${course?.online===1 ? "d-none" :"d-flex"}`}>
                     <div className="col-12 p-0">
                       <p className="text-sec-dark-blue">
-                        <i className={`fa-regular fa-calendar-days me-1 ${course?.online===1 ? "d-none" :"d-flex"}`}></i>
+                        <i className={`fa-regular fa-calendar-days me-1`}></i>
                         上課日期：{handleDateFormat(course?.course_start)}-{handleDateFormat(course?.course_end)}
                       </p>
                     </div>
@@ -510,13 +657,14 @@ function querySeries04(e) {
                       限額總數-{course?.student_limit}人
                       </span>
                       <span className="h6 text-sec-dark-blue spac-1">已報名-
-                              {theCourseAssigned.length > 0
+                              {/* {theCourseAssigned.length > 0
                                 ? (
                                     (theCourseAssigned.length /
                                       course.student_limit) *
                                     100
                                   ).toFixed(0)
-                                : "0"}
+                                : "0"} */}
+                                {course?.assigned>0?(course?.assigned/course?.student_limit*100).toFixed(0):"0"}
                               %</span>
                     </div>
                     <div
@@ -531,15 +679,7 @@ function querySeries04(e) {
                       <div
                         className="progress-bar bg-sec-blue-dark"
                         style={{
-                                width: `${
-                                  theCourseAssigned.length > 0
-                                    ? (
-                                        (theCourseAssigned.length /
-                                          course.student_limit) *
-                                        100
-                                      ).toFixed(0)
-                                    : "0"
-                                }%`,
+                                width: `${course?.assigned>0?(course?.assigned/course?.student_limit*100).toFixed(0):"0"}%`,
                               }}
                       />
                     </div>
@@ -826,9 +966,11 @@ function querySeries04(e) {
         </div>
         {/* page-nav-bar end */}
 
-        <footer></footer>
+        {/* <footer></footer> */}
         {/* Bootstrap JavaScript Libraries */}
       </div>
+        {/* Footer */}
+        <Footer />
     </>
   );
 }

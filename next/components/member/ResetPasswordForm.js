@@ -1,9 +1,43 @@
 // # 重設密碼
-
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect , useCallback } from 'react'
 import { useRouter } from 'next/router'
-import styles from '@/components/member/member.module.css'
+import styles from '@/components/member/resetPassword.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import Swal from 'sweetalert2'
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
+// * 漂浮標籤
+const FloatingLabelInput = ({ label, type, name, value, onChange, error, isPassword, togglePasswordVisibility, showPassword }) => {
+  const [isFocused, setIsFocused] = useState(false);
+
+  return (
+    <div className={`${styles.floatingLabelInput} position-relative mb-3`}>
+      <div className={styles.inputWrapper}>
+        <input
+          type={isPassword ? (showPassword ? 'text' : 'password') : type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className={`${styles.resetPwdInput} ${error ? styles.inputError : ''} ${isFocused || value ? styles.hasContent : ''}`}
+          placeholder=" "
+        />
+        <label className={styles.floatingLabel}>{label}</label>
+        {isPassword && (
+          <button
+            type="button"
+            className={styles.passwordToggle}
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        )}
+      </div>
+      {error && <span className={styles.error}>{error}</span>}
+    </div>
+  );
+};
 
 export default function ResetPasswordForm() {
   const [password, setPassword] = useState('')
@@ -11,6 +45,10 @@ export default function ResetPasswordForm() {
   const [message, setMessage] = useState('')
   const [token, setToken] = useState('')
   const [email, setEmail] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [confirmPasswordError, setConfirmPasswordError] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -20,29 +58,50 @@ export default function ResetPasswordForm() {
         setToken(token)
         setEmail(email)
       } else {
-        setMessage('無效的重設密碼連結')
+        Swal.fire({
+          icon: 'error',
+          title: '錯誤',
+          text: '無效的重設密碼連結',
+          confirmButtonText: '確定'
+        })
       }
     }
   }, [router.isReady, router.query])
 
+  const togglePasswordVisibility = useCallback(() => {
+    setShowPassword(prev => !prev);
+  }, []);
+
+  const toggleConfirmPasswordVisibility = useCallback(() => {
+    setShowConfirmPassword(prev => !prev);
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setMessage('')
+    setPasswordError('')
+    setConfirmPasswordError('')
 
     if (!token || !email) {
-      setMessage('無效的重設密碼連結')
+      Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '無效的重設密碼連結',
+        confirmButtonText: '確定'
+      })
       return
     }
-
-    if (password !== confirmPassword) {
-      setMessage('密碼不一致')
-      return
-    }
-
     if (password.length < 6) {
-      setMessage('密碼長度必須至少為6個字符')
+      setPasswordError('密碼長度必須至少為6-12個字符')
       return
     }
+ 
+    if (password !== confirmPassword) {
+      setConfirmPasswordError('密碼不一致')
+      return
+    }
+
+   
+ 
 
     try {
       const response = await fetch('http://localhost:3005/api/member/reset-password', {
@@ -54,14 +113,29 @@ export default function ResetPasswordForm() {
       })
       const data = await response.json()
       if (response.ok) {
-        setMessage('密碼重設成功')
+        await Swal.fire({
+          icon: 'success',
+          title: '成功',
+          text: '密碼重設成功，請重新登入！',
+          confirmButtonText: '確定'
+        })
         setTimeout(() => router.push('/member/login'), 3000)
       } else {
-        setMessage(data.message || '重設密碼失敗')
+        Swal.fire({
+          icon: 'error',
+          title: '錯誤',
+          text: data.message || '重設密碼失敗',
+          confirmButtonText: '確定'
+        })
       }
     } catch (error) {
       console.error('Error:', error)
-      setMessage('發生錯誤,請稍後再試')
+      Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '發生錯誤,請稍後再試',
+        confirmButtonText: '確定'
+      })
     }
   }
 
@@ -70,44 +144,41 @@ export default function ResetPasswordForm() {
       {/* desk */}
       <div className={`d-none d-lg-block`}>
         <main className={styles.main}>
-          <div className={styles.bg}>
-            <div className={styles.loginBox}>
-
-              {message && <div className={` ms-5 mt-5 ${styles.message} ${message.includes('成功') ? styles.success : styles.error}`}>{message}</div>}
+          <div className={styles.bgResetPwd}>
+            <div className={styles.resetPwdBox}>
 
               <form onSubmit={handleSubmit}>
+
                 <div className={`${styles.tabContent} ms-5`}>
                   <div className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent}`}>
-                    <label className={`${styles.label} mt-5 mb-2`} htmlFor="newPassword">
-                      重設密碼
-                    </label>{' '}
-                    <p className={`${styles.resetNotice} me-5`}>請重新設定您的密碼，完成設定後用新密碼登入。
-                    </p>
+
+                    <h2 className={`${styles.resetLabel} mt-5 mb-2`}>重設密碼</h2>
+                    <p className={`${styles.resetNotice} me-5`}>請重新設定您的密碼，並以新密碼登入。</p>
+
                     <br />
-                    <input
+                   <FloatingLabelInput
+                      label="新密碼 (6-12字符，不區分大小寫)"
                       type="password"
                       name="newPassword"
-                      id="newPassword"
-                      className={styles.loginInput}
-                      placeholder='新密碼 (至少6個字符) '
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      required
-                      minLength="6"
+                      error={passwordError}
+                      isPassword={true}
+                      togglePasswordVisibility={togglePasswordVisibility}
+                      showPassword={showPassword}
                     />
-                    <br />
-
-                    <input
+                    <FloatingLabelInput
+                      label="確認新密碼"
                       type="password"
                       name="confirmPassword"
-                      id="confirmPassword"
-                      className={styles.loginInput}
-                      placeholder='確認新密碼'
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      required
-                      minLength="6"
+                      error={confirmPasswordError}
+                      isPassword={true}
+                      togglePasswordVisibility={toggleConfirmPasswordVisibility}
+                      showPassword={showConfirmPassword}
                     />
+
                     <br />
                     <button type="submit" className={`${styles.button} mt-5 mb-5`}>
                       確認重設密碼
@@ -115,7 +186,7 @@ export default function ResetPasswordForm() {
                   </div>
                 </div>
               </form>
-              {/* {message && <div className={styles.message}>{message}</div>} */}
+
             </div>
           </div>
         </main>
@@ -123,55 +194,51 @@ export default function ResetPasswordForm() {
 
       {/* RWD */}
       <div className="d-block d-lg-none">
-      <main className={styles.main}>
-      
-  
+        <main className={styles.main}>
 
-              {message && <div className={` ms-5 mt-5 ${styles.message} ${message.includes('成功') ? styles.success : styles.error}`}>{message}</div>}
+          <form onSubmit={handleSubmit}>
+            <div className={`${styles.tabContent} ms-5 mt-5`}>
+              <div className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent}`}>
 
-              <form onSubmit={handleSubmit}>
-                <div className={`${styles.tabContent} ms-5 mt-5`}>
-                  <div className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent}`}>
-                    <label className={`${styles.label} mt-5 mb-2 ms-4`} htmlFor="newPassword">
-                      重設密碼
-                    </label>{' '}
-                    <p className={`${styles.resetNotice} me-5 ms-4`}>請重新設定您的密碼，完成設定後用新密碼登入。
-                    </p>
-                    <br />
-                    <input
+                <h2 className={`${styles.resetLabel} mt-5 mb-2 ms-4`}>重設密碼</h2>
+                <p className={`${styles.resetNotice} me-5 ms-4`}>請重新設定您的密碼，並以新密碼登入。</p>
+
+                <br />
+                <div className="ms-3">
+                <FloatingLabelInput
+                      label="新密碼 (6-12字符，不區分大小寫)"
                       type="password"
                       name="newPassword"
-                      id="newPassword"
-                      className={`${styles.loginInput} ms-4`}
-                      placeholder='新密碼 (至少6個字符) '
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      required
-                      minLength="6"
+                      error={passwordError}
+                      isPassword={true}
+                      togglePasswordVisibility={togglePasswordVisibility}
+                      showPassword={showPassword}
                     />
-                    <br />
-
-                    <input
+                    <FloatingLabelInput
+                      label="確認新密碼"
                       type="password"
                       name="confirmPassword"
-                      id="confirmPassword"
-                      className={`${styles.loginInput} ms-4 mb-5`}
-                      placeholder='確認新密碼'
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      required
-                      minLength="6"
+                      error={confirmPasswordError}
+                      isPassword={true}
+                      togglePasswordVisibility={toggleConfirmPasswordVisibility}
+                      showPassword={showConfirmPassword}
                     />
-                    <br />
-                    <button type="submit" className={`${styles.button} mt-5 mb-5 ms-4`}>
-                      確認重設密碼
-                    </button>
-                  </div>
                 </div>
-              </form>
-              {/* {message && <div className={styles.message}>{message}</div>} */}
-         
-   
+
+                <br />
+                <button type="submit" className={`${styles.buttonRwd} mt-5 mb-5 ms-4`}>
+                  確認重設密碼
+                </button>
+              </div>
+            </div>
+          </form>
+          {/* {message && <div className={styles.message}>{message}</div>} */}
+
+
         </main>
       </div>
     </>

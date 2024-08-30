@@ -12,7 +12,7 @@ export default function MessageItem() {
   return (
     <>
       {product[0].comments.map((comment, index) => (
-        <div className={`mb-5 ${styles["message-item"]}`} key={index}>
+        <div key={comment.id} className={`mb-5 ${styles["message-item"]}`} >
           <div className={`${styles["message-user"]}`}>
             <div className={`${styles["user-photo"]}`}>
               <img
@@ -40,7 +40,7 @@ export default function MessageItem() {
               <div className={`${styles["user-star"]}`}>
                 <div className={`${styles["stars"]}`}>
                   {[1,2,3,4,5].map((star) => (
-                    <i className={`fa-solid fa-star ${star<=comment.rating? styles["light"] : ""}`}></i>
+                    <i key={star} className={`fa-solid fa-star ${star<=comment.rating? styles["light"] : ""}`}></i>
                   ))}
                 </div>
                 <div className={`${styles["score"]}`}>{comment.rating}</div>

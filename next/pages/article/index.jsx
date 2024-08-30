@@ -5,7 +5,7 @@ import ArticleSearchbar from "@/components/article/article-searchbar";
 import ArticleSortdropdown from "@/components/article/article-sortdropdown";
 import ArticleRwdSidebar from "@/components/article/article-rwd-sidebar";
 
-import ArticleIndexList from "@/components/article/article-list";
+import ArticleIndexList from "@/components/article/ArticleIndexList";
 import ArticlePagination from "@/components/article/article-pagination";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
@@ -23,7 +23,7 @@ export default function Index() {
       })
       .then((data) => {
         // 處理 articles 資料，將 images 字段轉換為數組
-        const processedArticles = data.map((article) => ({
+        const processedArticles = data.articles.map((article) => ({
           ...article,
           images: article.images ? article.images.split(",") : [],
         }));
@@ -48,12 +48,12 @@ export default function Index() {
   const handleLink = () => {
     router.push(`/article`);
   };
-  console.log(articleHead)
+  // console.log(articleHead)
   return (
     <>
       {/* Header */}
       <Nav />
-      <title>Title</title>
+      <title>相關文章</title>
       {/* Required meta tags */}
       <div className="wrap">
         {/* Banner */}
@@ -76,10 +76,7 @@ export default function Index() {
           <div className="row a-contentmain">
             <ArticleIndexList Article={articleHead} />
           </div>
-          {/* 選頁 */}
-          <div aria-label="Page navigation">
-            <ArticlePagination />
-          </div>
+          
         </div>
       </div>
       {/* Footer */}
