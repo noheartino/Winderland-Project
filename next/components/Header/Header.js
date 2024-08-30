@@ -12,6 +12,7 @@ export default function Nav() {
   const [infodata, setInfo] = useState(null);
   const navRef = useRef(null);
   const { cartQuantity } = useContext(CartContext); // 使用 CartContext
+  // console.log('總數量',cartQuantity)
 
   const Data = useAuth().auth
   const userData = (Data && Data.userData) ? Data.userData : '';

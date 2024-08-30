@@ -32,6 +32,10 @@ export default function CartCheckout3() {
     router.push("/");
   };
 
+  const goOrder = () => {
+    router.push("/dashboard/order");
+  };
+
   const toggleDetails = () => {
     setIsExpanded(!isExpanded);
   };
@@ -110,7 +114,7 @@ export default function CartCheckout3() {
               <CartMoneyTotal userId={userId} />
               <CartPayDividend userId={userId} />
               <div className="checkOutEnd">
-                <button className="goOrder">訂單查詢</button>
+                <button className="goOrder" onClick={goOrder}>訂單查詢</button>
                 <button className="goPage" onClick={goHome}>
                   回首頁
                 </button>
