@@ -172,7 +172,7 @@ export default function ProductIndex() {
         <header>
           <Nav />
           {/* TOP的分類名稱 */}
-          <CategoryTitle />
+          <CategoryTitle filters={filters} selectFilters={selectFilters}/>
         </header>
         <div className="container">
           {/* 排序跟搜尋 */}

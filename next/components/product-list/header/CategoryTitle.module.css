@@ -1,7 +1,7 @@
 @media (max-width: 1920px) {
     .shop-header-img {
         height: 27vh;
-        background: url(/shop_images/all.jpg) no-repeat;
+        background-repeat: no-repeat;
         background-size: 110% auto;
         background-position: 25% 49%;
         color: #ffffff;
