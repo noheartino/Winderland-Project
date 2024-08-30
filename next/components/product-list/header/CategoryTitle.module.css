@@ -1,28 +1,82 @@
 @media (max-width: 1920px) {
     .shop-header-img {
-        height: 27vh;
-        background-repeat: no-repeat;
-        background-size: 110% auto;
-        background-position: 25% 49%;
+        position: relative;
+        height: 30vh;
         color: #ffffff;
+        overflow: hidden;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .shop-header-img.loading {
+        opacity: 0.6;
+    }
+
+    .background-layer {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .background-layer.current {
+        z-index: 1;
+    }
+
+    .background-layer.next {
+        transition: opacity 0.5s ease-in-out;
+        z-index: 2;
+        opacity: 0;
+    }
+
+    .shop-header-img:not(.loading) .background-layer.next {
+        opacity: 1;
+    }
+
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 3;
     }
 
     .shop-header-title {
+        position: absolute;
+        top: 0;
+
         width: 100%;
         height: 100%;
         align-items: center;
         justify-content: center;
         display: flex;
+        z-index: 9;
 
         & h1 {
             margin-bottom: 0;
             letter-spacing: 1.1rem;
+
+            &.loading {
+                opacity: 0;
+                transition: 0.3s;
+            }
         }
 
         & h5 {
             margin-bottom: 0;
             margin-left: 0.5rem;
             letter-spacing: 0.4rem;
+
+            &.loading {
+                opacity: 0;
+                transition: 0.3s;
+            }
         }
     }
 }
