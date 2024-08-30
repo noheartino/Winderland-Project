@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useRouter } from "next/router";
 
 export default function Homepage() {
 
@@ -14,6 +15,14 @@ export default function Homepage() {
   //     }
   //   }, 100)
   // }
+  const router = useRouter();
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      const searchQuery = event.target.value;
+      router.push(`/product?page=1&sort=id_asc&search=${encodeURIComponent(searchQuery)}`);
+    }
+  }
 
 
   useEffect(() => {
@@ -625,6 +634,7 @@ export default function Homepage() {
               name=""
               id="home_search_rwd"
               placeholder="搜尋您想要的美酒"
+              onKeyDown={handleKeyPress}
             />
             <i className="fa-solid fa-magnifying-glass search_icon_rwd" />
           </div>

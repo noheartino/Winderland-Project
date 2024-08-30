@@ -46,6 +46,11 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 // 在 public 的目錄，提供影像、CSS 等靜態檔案
 app.use(express.static(path.join(__dirname, 'public')))
+// * 會員頭像
+app.use(
+  '/images/member/avatar',
+  express.static(path.join(__dirname, 'public/images/member/avatar'))
+)
 
 // fileStore的選項 session-cookie使用
 const fileStoreOptions = { logFn: function () {} }

@@ -12,6 +12,9 @@ export default function Einfo() {
   const { id } = router.query;
   const [infodata, setInfo] = useState(null);
 
+  const [ownerimg, setOwnerimg] = useState('/nav-footer/default_user.jpg');
+  
+
   useEffect(() => {
     if (id) {
       fetch(`http://localhost:3005/api/event/info/${id}`)
@@ -21,11 +24,14 @@ export default function Einfo() {
     }
   }, [id]);
 
+
   if (!infodata) return <div>Loading...</div>;
 
   const eventinfo = infodata.eventinfo[0] || [];
   const applyinfo = infodata.applyinfo || [];
-  // const applyamount = infodata.applyinfo[0].length || [];
+  const imginfo = infodata.userimg || [];
+  const Nowid = applyinfo[0].user_id || 0
+  
   const limitper = Math.round((applyinfo.length/eventinfo.people_limit)*100)
 
   let age = 0
@@ -36,10 +42,28 @@ export default function Einfo() {
   const males = applyinfo.filter(p => p.gender === 0).length
   const gavg = Math.round((males/(males+females))*100)
 
+
+
+  // function ownerpic(index){
+  //   return imginfo.filter((e) => e.user_id === index )
+  // }
+  // const imageInfo = ownerpic(Nowid);
+
+  // const imageUrl = `/images/member/avatar/${ownerpic(Nowid).img}`;
+
+  // function watchimg(){
+  //   setOwnerimg(`/images/member/avatar/${ownerpic(Nowid).img}`)
+  // }
+
+
+
   return (
     <>
       <Nav />
-      {/* {applyinfo ? <pre>{JSON.stringify(applyinfo, null, 2)}</pre> : 'Loading...'} */}
+      
+      {/* {imageInfo ? <pre>{JSON.stringify(imageInfo, null, 2)}</pre> : 'Loading...'} */}
+      
+   
       <EventHeader />
       <div className="eventPageArea">
         <div className="eventPageAreaBg1 d-none d-lg-block" />
@@ -47,7 +71,7 @@ export default function Einfo() {
         <div className="container">
           <div className="row g-5">
             <div className="col-12 col-lg-5">
-              <img src={`/event/${eventinfo.event_cover_image}`} alt="" className="eventPageimg" />
+              <img src={`http://localhost:3005/uploads/${eventinfo.event_cover_image}`} alt="" className="eventPageimg" />
               <div className="eventduring">
                 <div className={`eventduring_box ${eventinfo.status === 1 ? 'applyend' : ''}`}>{eventinfo.status === 1 ? '報名已截止' : applyinfo.length >= eventinfo.people_limit ? '目前名額已滿' : '開放報名中'}</div>
                 {eventinfo.status === 2 && <div className="eventduring_text">報名期間 : {eventinfo.apply_start.substring(5, 10).replace("-","/")}~{eventinfo.apply_end.substring(5, 10).replace("-","/")}</div>}
@@ -107,12 +131,12 @@ export default function Einfo() {
                 <div className="eventOwnerT">開團人</div>
                 <div className="eventOwnerInfo">
                   <img
-                    src="/event/teacher_alex_tsai.jpg"
+                    src={ownerimg}
                     alt=""
                     className="eventOwnerPic"
                   />
                   <div className="eventOwnerInfoT">
-                    蔡孝倫 <br />男 / 36歲
+                    {applyinfo[0].neckname} <br />{applyinfo[0].gender === 0 ? '男' : '女'} / {applyinfo[0].age}歲
                   </div>
                 </div>
               </div>

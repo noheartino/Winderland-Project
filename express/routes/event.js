@@ -4,11 +4,12 @@ import moment from 'moment';
 
 const router = express.Router();
 
-router.get('/', async (request, response) => {
+router.get('/', async (req, res) => {
 
-  const queryapplyon = `SELECT * FROM event WHERE status = 2`;
+  const sort = req.query.sort
+
+  const queryapplyon = `SELECT * FROM event WHERE status = 2 ORDER BY event_date ${sort}`;
   const queryapplyoff = `SELECT * FROM event WHERE status = 1`;
-
 
   try {
     const [eventonResults, eventoffResults] = await Promise.all([
@@ -16,7 +17,7 @@ router.get('/', async (request, response) => {
         conn.query(queryapplyoff)
     ]);
 
-    response.json({
+    res.json({
         applyon: eventonResults[0],
         applyoff: eventoffResults[0],
     });
@@ -29,6 +30,8 @@ router.get('/', async (request, response) => {
   }
 });
 
+
+
 router.get('/info/:id', async (request, response) => {
 
   const infoId = request.params.id;
@@ -37,16 +40,20 @@ router.get('/info/:id', async (request, response) => {
 
   const queryToFetchapplyinfo = `SELECT * FROM event_apply WHERE event_id = ?`;
 
+  const queryToFetchapplyimg = `SELECT * FROM images_user`;
+
 
   try {
-    const [eventsResults, applysResults] = await Promise.all([
+    const [eventsResults, applysResults, imgResults] = await Promise.all([
       conn.query(queryToFetcheventinfo,[infoId]),
-      conn.query(queryToFetchapplyinfo,[infoId])
+      conn.query(queryToFetchapplyinfo,[infoId]),
+      conn.query(queryToFetchapplyimg),
     ]);
 
     response.json({
       eventinfo: eventsResults[0],
       applyinfo: applysResults[0],
+      userimg: imgResults[0]
     });
     
   } catch (error) {
@@ -142,6 +149,8 @@ router.get('/list/:id', async (request, response) => {
 
   const queryToFetchmyin = `SELECT * FROM event`;
 
+  const queryToFetapply = `SELECT * FROM event_apply`;
+
   const queryToFetchin = `
     WITH MinIdPerEvent AS (
     SELECT event_id, MIN(id) AS min_id
@@ -155,16 +164,19 @@ router.get('/list/:id', async (request, response) => {
     
     SELECT *
     FROM FilteredEvents
-    WHERE user_id = ?;`;
+    WHERE user_id = ?
+    ORDER BY event_id DESC;`;
 
   try {
-    const [inResults, inviResults] = await Promise.all([
-      conn.query(queryToFetchmyin,[infoId]),
+    const [inResults, iesults, inviResults] = await Promise.all([
+      conn.query(queryToFetchmyin),
+      conn.query(queryToFetapply),
       conn.query(queryToFetchin,[infoId])
     ]);
 
     response.json({
       myallevent: inResults[0],
+      myallapply: iesults[0],
       myowner: inviResults[0],
     });
     
@@ -176,91 +188,7 @@ router.get('/list/:id', async (request, response) => {
   }
 });
 
-// useEffect(() => {
-//   console.log('Component mounted');
-// }, []);
 
 
-// router.get('/info/:id', async (request, response) => {
-
-//   const infoId = request.params.id;
-
-//   const queryToFetcheventinfo = `SELECT * FROM event WHERE id = ? AND status != 0`;
-
-
-//   try {
-//     const [eventResults] = await conn.query(queryToFetcheventinfo,[infoId]);
-//     response.json(eventResults);
-    
-//   } catch (error) {
-//     console.error('失敗:', error);
-//     return response
-//       .status(500)
-//       .json({ error: '失敗', details: error.message });
-//   }
-// });
-
-
-// import express from 'express';
-// import conn from '../configs/mysql.js'; // 引入資料庫連接
-
-// const router = express.Router();
-
-// router.get('/', async (request, response) => {
-
-//   const queryToFetcheventon = `SELECT * FROM event WHERE status = 1 OR status = 2`;
-
-
-//   try {
-//     const [eventResults] = await conn.query(queryToFetcheventon);
-//     response.json(eventResults);
-    
-//   } catch (error) {
-//     console.error('失敗:', error);
-//     return response
-//       .status(500)
-//       .json({ error: '失敗', details: error.message });
-//   }
-// });
-
-
-// // 更新購物車中的項目數量 (Update)
-// router.put('/:id', async (request, response) => {
-//   const itemId = request.params.id;
-//   const { product_quantity } = request.body;
-
-//   try {
-//     await conn.query(
-//       'UPDATE cart_items SET product_quantity = ? WHERE id = ?',
-//       [product_quantity, itemId]
-//     );
-//     response.json({ message: '購物車項目數量已更新' });
-//   } catch (error) {
-//     console.error('更新購物車項目數量失敗:', error);
-//     return response
-//       .status(500)
-//       .json({ error: '更新購物車項目數量失敗', details: error.message });
-//   }
-// });
-
-// // 刪除該用戶的所有購物車項目
-// router.delete('/:id', async (request, response) => {
-//   const itemId = request.params.id; // 获取 item ID
-//   try {
-//     const [result] = await conn.query('DELETE FROM cart_items WHERE id = ?', [
-//       itemId,
-//     ]);
-//     if (result.affectedRows > 0) {
-//       return response.json({ message: '购物车项已成功删除' });
-//     } else {
-//       return response.status(404).json({ message: '找不到要删除的物品' });
-//     }
-//   } catch (error) {
-//     console.error('删除购物车项目失败:', error);
-//     return response
-//       .status(500)
-//       .json({ error: '删除购物车项目失败', details: error.message });
-//   }
-// });
 
 export default router;
