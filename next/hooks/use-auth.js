@@ -7,6 +7,11 @@
 
 import { createContext, useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Swal from 'sweetalert2'
+
+// google登入
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { useFirebase } from './useFirebase';
 
 // * Context使用1.建立context與導出
 // 傳入參數為defaultValue，是在套用context時錯誤或失敗才會得到的值
@@ -18,6 +23,7 @@ const AuthContext = createContext(null)
 export function AuthProvider({ children }) {
   // 建立路由器
   const router = useRouter()
+  const { authFire } = useFirebase();
 
   // 會員使用的認証&授權狀態
   const [auth, setAuth] = useState({
@@ -105,6 +111,7 @@ export function AuthProvider({ children }) {
             member_level_id: profileData.data.user.member_level_id || '',
             phone: profileData.data.user.phone || '',
             address: profileData.data.user.address || '',
+            email: profileData.data.user.email || '', 
           };
           setAuth({
             isAuth: true,
@@ -138,19 +145,35 @@ export function AuthProvider({ children }) {
           isAuth: false,
           userData: null,
         })
-        alert('你已成功登出!')
-        router.push('/member') // 登出後導向登入頁面
+        // alert('你已成功登出!')
+        await Swal.fire({
+          icon: 'success',
+          title: '登出成功',
+          text: '醺迷仙園 期待下次再與您相見',
+          showConfirmButton: false,
+          timer: 2000
+        });
+        // Swal 關閉後立即返回，不再等待額外的時間
+        return true; // 返回 true 表示登出成功
       }
     } catch (error) {
       console.error('登出時發生錯誤：', error)
-      alert('登出過程中發生錯誤，請稍後再試。')
+      // alert('登出過程中發生錯誤，請稍後再試。')
+      await Swal.fire({
+        icon: 'error',
+        title: '發生錯誤',
+        text: '登出過程中發生錯誤，請稍後再試。',
+        showConfirmButton: false,
+        timer: 1500
+      });
+      return false; // 返回 false 表示登出失敗
     }
   }
 
   // @ 更新
   const updateUserInfo = async (updatedData) => {
     try {
-      console.log('Sending update request with data:', updatedData);
+      // console.log('Sending update request with data:', updatedData);
       const response = await fetch('http://localhost:3005/api/dashboard/profile/update', {
         method: 'PUT',
         headers: {
@@ -164,16 +187,18 @@ export function AuthProvider({ children }) {
 
       if (response.ok && result.status === 'success') {
         // 更新本地 auth 狀態
-        setAuth(prevAuth => ({
-          ...prevAuth,
-          userData: {
-            ...prevAuth.userData,
-            ...result.data.user,
-            // phone: result.data.user.phone || '',  // 確保 phone 字段存在
-            // address: result.data.user.address || ''  // 確保 address 字段存在
-          }
-        }));
-        console.log('User data updated:', result.data.user); // 檢查更新後的數據
+        setAuth(prevAuth => {
+          const newAuth = {
+            ...prevAuth,
+            userData: {
+              ...prevAuth.userData,
+              ...result.data.user,
+              avatar_url: updatedData.avatar_url || prevAuth.userData.avatar_url, // 確保頭像 URL 被更新
+            }
+          };
+          console.log('Updated auth state:', newAuth); // 檢查更新後的狀態
+          return newAuth;
+        });
         return { success: true, user: result.data.user };
       } else {
         throw new Error(result.message || '更新失敗');
@@ -182,10 +207,54 @@ export function AuthProvider({ children }) {
       console.error('更新失敗資訊:', error);
       return { success: false, error: error.message };
     }
-  }
+  };
+
+  // * google登入
+  const googleLogin = async () => {
+    if (!authFire) {
+      console.error('Firebase auth is not initialized');
+      return { success: false, message: 'Firebase auth is not initialized' };
+    }
+
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(authFire, provider);
+      const user = result.user;
+
+      // 向後端發送 Google 用戶資訊
+      const response = await fetch('http://localhost:3005/api/google-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          displayName: user.displayName,
+          email: user.email,
+          uid: user.uid,
+          photoURL: user.photoURL
+        }),
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+
+      if (data.status === 'success') {
+        setAuth({
+          isAuth: true,
+          userData: data.data.user,
+        });
+        return { success: true, message: 'Google 登入成功！' };
+      } else {
+        return { success: false, message: data.message || 'Google 登入失敗' };
+      }
+    } catch (error) {
+      console.error('Google 登入時發生錯誤：', error);
+      return { success: false, message: 'Google 登入過程中發生錯誤，請稍後再試。' };
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{ auth, login, logout, checkAuth, updateUserInfo }}>
+    <AuthContext.Provider value={{ auth, login, logout, checkAuth, updateUserInfo, googleLogin }}>
       {children}
     </AuthContext.Provider>
   )

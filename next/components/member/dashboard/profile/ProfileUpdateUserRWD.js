@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '@/hooks/use-auth'
 import { useRouter } from 'next/router'
+import Swal from 'sweetalert2'
 
 export default function ProfileUpdateUserRWD() {
   // 驗證登入
@@ -55,14 +56,35 @@ export default function ProfileUpdateUserRWD() {
       // console.log('Submitting form data:', formData);
       const result = await updateUserInfo(formData);
       if (result.success) {
-        alert('個人資料更新成功');
+        // alert('個人資料更新成功');
+        await Swal.fire({
+          icon: 'success',
+          title: '個人資料更新成功',
+          text: '已完成資料修改',
+          showConfirmButton: false,
+          timer: 1500
+        });
         // console.log('Updated user data:', result.user);
         updateFormData(result.user);
       } else {
-        alert('更新個人資料失敗：' + (result.error || '未知錯誤'));
+        // alert('更新個人資料失敗：' + (result.error || '未知錯誤'));
+        await Swal.fire({
+          icon: 'error',
+          title: '更新個人資料失敗',
+          text: result.error || '未知錯誤',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     } catch (err) {
-      alert('更新個人資料失敗：' + err.message);
+      // alert('更新個人資料失敗：' + err.message);
+      await Swal.fire({
+        icon: 'error',
+        title: '更新個人資料失敗',
+        text: err.message,
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   }
 
@@ -101,7 +123,7 @@ export default function ProfileUpdateUserRWD() {
             value={formData.gender}
             onChange={handleInputChange}
             style={{ width: "27%" }}>
-            <option value="option1">選擇性別</option>
+            {/* <option value="option1">選擇性別</option> */}
             <option value="Male">男</option>
             <option value="Female">女</option>
             <option value="Other">不願透露</option>

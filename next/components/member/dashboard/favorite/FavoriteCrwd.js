@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
 import { useAuth } from '@/hooks/use-auth'
+import Link from 'next/link';
 
 // 格式化價格輔助函數
 const formatPrice = (price) => {
@@ -70,7 +71,13 @@ export default function FavoriteCrwd() {
               className="favorite-c-img-rwd"
             />
             <div className="favorite-c-detail-rwd">
-              <p>{course.class_name}</p>
+
+            <Link href={`/course/${course.class_id}`} className='classTitleLinkrwd' >
+                      <div className='classTitleLinkrwd'>
+                        {course.class_name}
+                      </div>
+                    </Link>
+
               <div className="favorite-c-title-rwd d-flex align-item-center">
                 <div className="online">{course.online ? "線上" : "實體"}</div>
                 <p className="byTeacher">by {course.teacher_name}</p>
@@ -104,7 +111,7 @@ export default function FavoriteCrwd() {
             </div>
           </div>
           {/* 進度條 */}
-          <div className="progressArea">
+          {/* <div className="progressArea">
             <div className="progress-detail d-flex justify-content-between mt-1">
               <p>課程時長-5小時</p>
               <p>已完成90%</p>
@@ -119,7 +126,7 @@ export default function FavoriteCrwd() {
                 aria-valuemax={100}
               />
             </div>
-          </div>
+          </div> */}
         </div>
       ))}
       </div>

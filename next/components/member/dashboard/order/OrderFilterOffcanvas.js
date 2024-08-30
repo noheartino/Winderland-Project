@@ -16,7 +16,7 @@ export default function OrderFilterOffcanvas() {
                 <FontAwesomeIcon icon={faFilter} />
             </div>
 
-            <Offcanvas show={show} onHide={handleClose} placement="end">
+            <Offcanvas show={show} onHide={handleClose} placement="end" className={styles.offcanvasCustomWidth}>
                 <Offcanvas.Header closeButton className={`${styles.offcanvasHeader} `} >
                     <FontAwesomeIcon icon={faFilter} />
                     <Offcanvas.Title className={`${styles.offcanvasHeaderTitle} `}>篩選項目</Offcanvas.Title>

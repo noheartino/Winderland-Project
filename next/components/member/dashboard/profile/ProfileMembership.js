@@ -39,6 +39,13 @@ export default function ProfileMembership() {
     4: 'levelD'
   };
 
+  // 函數用於格式化 points_reward_percentage
+  const formatPointsReward = (value) => {
+    // 使用 parseFloat 來確保 value 是數字
+    // 然後使用 toFixed(1) 來限制到小數點後一位
+    return parseFloat(value).toFixed(1);
+  };
+
   return (
     <>
       <div className={styles.levelList}>
@@ -57,7 +64,7 @@ export default function ProfileMembership() {
           </li>
           <li>WPoints 
             <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>
-            {Math.floor(membershipInfo.points_reward_percentage)}
+            {formatPointsReward(membershipInfo.points_reward_percentage)}
             </span>倍回饋
           </li>
           <li>每月
