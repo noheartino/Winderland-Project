@@ -9,6 +9,8 @@ export default function ArticleSidebar({
   endDate,
   onStartDateChange,
   onEndDateChange,
+  selectedDate,
+  onCategoryChange
 }) {
   const router = useRouter();
 
@@ -18,135 +20,54 @@ export default function ArticleSidebar({
         類型
         <li
           className="aCategoryLi"
-          onClick={() => router.push("article/?category=knowledge")}
+          onClick={() => onCategoryChange("knowledge")}
         >
           <p>知識</p>
         </li>
         <li
           className="aCategoryLi"
-          onClick={() => router.push("article/?category=regional")}
+          onClick={() => onCategoryChange("regional")}
         >
           <p>產區特色</p>
         </li>
         <li
           className="aCategoryLi"
-          onClick={() => router.push("article/?category=varieties")}
+          onClick={() => onCategoryChange("varieties")}
         >
           <p>品種介紹</p>
         </li>
         <li
           className="aCategoryLi"
-          onClick={() => router.push("article/?category=pairing")}
+          onClick={() => onCategoryChange("pairing")}
         >
           <p>搭配餐點</p>
         </li>
         <li
           className="aCategoryLi"
-          onClick={() => router.push("article/?category=cocktail")}
+          onClick={() => onCategoryChange("cocktail")}
         >
           <p>調酒知識</p>
         </li>
       </ul>
+      {/* radio */}
       <ul className="pt-3">
         發布日期
-        <li className={`${style.aCheckLi} pt-2`}>
-          <input
-            className={`${style.aCheckbox}`}
-            id="all"
-            type="radio"
-            name="dateFilter"
-            value="全部"
-            // checked={selectedDate === '全部'}
-            onChange={onDateFilterChange}
-          />
-          <label className={`${style.aLabelCheckbox}`} htmlFor="all">
-            全部
-          </label>
-        </li>
-        <li className={`${style.aCheckLi}`}>
-          <input
-            className={`${style.aCheckbox}`}
-            id="today"
-            type="radio"
-            name="dateFilter"
-            value="本日"
-            // checked={selectedDate === '全部'}
-            onChange={onDateFilterChange}
-          />
-          <label className={`${style.aLabelCheckbox}`} htmlFor="today">
-            本日
-          </label>
-        </li>
-        <li className={`${style.aCheckLi}`}>
-          <input
-            className={`${style.aCheckbox}`}
-            id="week"
-            type="radio"
-            name="dateFilter"
-            value="本週"
-            // checked={selectedDate === '全部'}
-            onChange={onDateFilterChange}
-          />
-          <label className={`${style.aLabelCheckbox}`} htmlFor="week">
-            本週
-          </label>
-        </li>
-        <li className={`${style.aCheckLi}`}>
-          <input
-            className={`${style.aCheckbox}`}
-            id="month"
-            type="radio"
-            name="dateFilter"
-            value="本月"
-            // checked={selectedDate === '全部'}
-            onChange={onDateFilterChange}
-          />
-          <label className={`${style.aLabelCheckbox}`} htmlFor="month">
-            本月
-          </label>
-        </li>
-        <li className={`${style.aCheckLi}`}>
-          <input
-            className={`${style.aCheckbox}`}
-            id="halfyear"
-            type="radio"
-            name="dateFilter"
-            value="近半年"
-            // checked={selectedDate === '全部'}
-            onChange={onDateFilterChange}
-          />
-          <label className={`${style.aLabelCheckbox}`} htmlFor="halfyear">
-            近半年
-          </label>
-        </li>
-        <li className={`${style.aCheckLi}`}>
-          <input
-            className={`${style.aCheckbox}`}
-            id="year"
-            type="radio"
-            name="dateFilter"
-            value="近一年"
-            // checked={selectedDate === '全部'}
-            onChange={onDateFilterChange}
-          />
-          <label className={`${style.aLabelCheckbox}`} htmlFor="year">
-            近一年
-          </label>
-        </li>
-        <li className={`${style.aCheckLi}`}>
-          <input
-            className={`${style.aCheckbox}`}
-            id="overyear"
-            type="radio"
-            name="dateFilter"
-            value="一年以上"
-            // checked={selectedDate === '全部'}
-            onChange={onDateFilterChange}
-          />
-          <label className={`${style.aLabelCheckbox}`} htmlFor="overyear">
-            一年以上
-          </label>
-        </li>
+        {["全部", "本日", "本週", "本月", "近半年", "近一年", "一年以上"].map((label) => (
+          <li className={`${style.aCheckLi} pt-2`} key={label}>
+            <input
+              className={`${style.aCheckbox}`}
+              id={label}
+              type="radio"
+              name="dateFilter"
+              value={label}
+              checked={selectedDate === label}
+              onChange={onDateFilterChange}
+            />
+            <label className={`${style.aLabelCheckbox}`} htmlFor={label}>
+              {label}
+            </label>
+          </li>
+        ))}
       </ul>
       {/* 日期 */}
       {/* <ArticleDateSearch /> */}

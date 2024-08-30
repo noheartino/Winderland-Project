@@ -164,7 +164,7 @@
       transition: all 0.3s ease
       &:hover
         background-color: darken(#F4EBEB, 5%)
-        color: darken(#60464C, 10%) 
+        color: darken(#60464C, 10%)
       &:active
         border: 0
         transform: scale(0.98)
@@ -320,7 +320,24 @@
   display: flex
   gap: 6px
   li
+    background-color: #F4EBEB
+    border: 1px solid var(--wine_light)
+    color: #A66E7B
+    :hover
+      background-color: darken(#F4EBEB, 5%)
+      border: 1px solid var(--wine_light)
+      color: darken(#A66E7B, 5%)
+    :active
+      background-color: darken(#F4EBEB, 5%)
+      border: 1px solid var(--wine_light)
+      color: darken(#A66E7B, 5%)
+    :focus
+      background-color: var(--primary)
     a
       border: 1px solid var(--wine_light)
       background-color: var(--light)
       color: var(--purple_light)
+      :active
+        background-color: #F4EBEB
+        border: 1px solid var(--wine_light)
+        color: #A66E7B

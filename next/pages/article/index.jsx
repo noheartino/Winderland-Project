@@ -23,7 +23,7 @@ export default function Index() {
       })
       .then((data) => {
         // 處理 articles 資料，將 images 字段轉換為數組
-        const processedArticles = data.map((article) => ({
+        const processedArticles = data.articles.map((article) => ({
           ...article,
           images: article.images ? article.images.split(",") : [],
         }));
@@ -76,10 +76,7 @@ export default function Index() {
           <div className="row a-contentmain">
             <ArticleIndexList Article={articleHead} />
           </div>
-          {/* 選頁 */}
-          <div aria-label="Page navigation">
-            <ArticlePagination />
-          </div>
+          
         </div>
       </div>
       {/* Footer */}

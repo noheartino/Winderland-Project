@@ -5,6 +5,8 @@ import ArticleIndexCard from "@/components/article/article-index-card";
 import ArticleIndexCardSm from "./article-index-card-sm";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import ArticlePagination from "./article-pagination";
+import { FaBookmark } from "react-icons/fa";
 
 export default function ArticleIndexList({ Article }) {
   const router = useRouter();
@@ -14,9 +16,11 @@ export default function ArticleIndexList({ Article }) {
   const [firstTwoArticles, setFirstTwoArticles] = useState([]);
   const [remainArticles, setRemainArticles] = useState([]);
   const [dateFilter, setDateFilter] = useState("");
-  const [selectedDateFilter, setSelectedDateFilter] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0); // 新增 totalPages 的 state
 
   useEffect(() => {
     const apiUrl = new URL("http://localhost:3005/api/article");
@@ -37,8 +41,11 @@ export default function ArticleIndexList({ Article }) {
       apiUrl.searchParams.append("startDate", startDate);
       apiUrl.searchParams.append("endDate", endDate);
     }
+    apiUrl.searchParams.append("page", currentPage);
+    apiUrl.searchParams.append("limit", 8); // 每頁顯示6筆
 
     // 當組件掛載時執行 fetch 請求
+    console.log(apiUrl.toString()); // 檢查 URL 是否正確
     fetch(apiUrl.toString())
       .then((response) => {
         if (!response.ok) {
@@ -49,18 +56,23 @@ export default function ArticleIndexList({ Article }) {
       .then((data) => {
         // console.log(data);
         // 處理 articles 資料，將 images 字段轉換為數組
-        const processedArticles = data.map((article) => ({
+        // console.log(data.articles)
+        // console.log(data.totalPages)
+        const processedArticles = data.articles.map((article) => ({
           ...article,
           images: article.images ? article.images.split(",") : [],
         }));
+        console.log(processedArticles)
         setArticles(processedArticles);
         setFirstTwoArticles(processedArticles.slice(0, 2));
         setRemainArticles(processedArticles.slice(2));
+        setTotalPages(data.totalPages); // 設置 totalPages
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [search, category, dateFilter, startDate, endDate]);
+  }, [search, category, dateFilter, startDate, endDate, currentPage]);
+
 
   // 取得背景圖片的路徑
   const backgroundImage =
@@ -68,21 +80,34 @@ export default function ArticleIndexList({ Article }) {
       ? `url(/images/article/${Article.images[0]})`
       : `url(/images/article/titlePic.jpeg)`;
 
+  // 導向某篇文章
   const handleLink = () => {
     if (Article.id) {
       router.push(`/article/${Article.id}`);
     }
   };
 
-  // 日期radio篩選用
-  const handleDateFilterChange = (e) => {
-    setDateFilter(e.target.value);
-    // setSelectedDateFilter(e.target.value);
+  // 類別
+  const handleCategoryChange = (newCategory) => {
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, category: newCategory },
+    });
   };
 
-  const handleFilterSubmit = () => {
-    setStartDate(value);
-    setEndDate(value);
+  // 日期radio篩選用
+  const handleDateFilterChange = (e) => {
+    router.push({
+      pathname: router.pathname,
+      query: {},
+    });
+    setDateFilter(e.target.value);
+    setSelectedDate(e.target.value);
+  };
+
+  const handleFilterSubmit = (e) => {
+    setDateFilter(e.target.value);
+
   };
 
   // 輸入日期篩選用
@@ -102,10 +127,10 @@ export default function ArticleIndexList({ Article }) {
     });
 
     // 清空日期篩選狀態
-    setDateFilter("");
-    setSelectedDateFilter("");
+    setSelectedDate("全部");
     setStartDate("");
     setEndDate("");
+    setDateFilter("");
   };
 
   return (
@@ -118,6 +143,8 @@ export default function ArticleIndexList({ Article }) {
           endDate={endDate}
           onStartDateChange={handleStartDateChange}
           onEndDateChange={handleEndDateChange}
+          selectedDate={selectedDate}
+          onCategoryChange={handleCategoryChange}
         />
         {/* 篩選按鈕 */}
         <button className="btn a-btn-select mt-3" onClick={handleFilterSubmit}>
@@ -133,20 +160,35 @@ export default function ArticleIndexList({ Article }) {
         {/* 文章頭條 */}
         <div className="col-9 col-lg-8">
           <div
-            className="a-title"
+            className="a-title d-none d-lg-flex"
             style={{ backgroundImage: backgroundImage }}
             onClick={handleLink}
           >
             <h3>{Article ? Article.title : "..."}</h3>
           </div>
+          {/* 手機頭條 */}
+          <div
+            className="a-title d-lg-none"
+            style={{ backgroundImage: backgroundImage, height:"200px", padding:"20px" }}
+            onClick={handleLink}
+          >
+            <h3 style={{fontSize:"18px"}}>{Article ? Article.title : "..."}</h3>
+          </div>
         </div>
         {/* 收藏 */}
         <div className="col-3 col-lg-4">
-          <Link className="aLink" href="/dashboard/favorite">
+          <Link className="aLink d-none d-lg-block" href="/dashboard/favorite">
             <div className="a-collection p-2">
               <h3>
                 <i className="fa-solid fa-bookmark" /> 我的收藏
               </h3>
+            </div>
+          </Link>
+          {/* 手機收藏 */}
+          <Link className="aLink d-lg-none" href="/dashboard/favorite">
+            <div className="a-collection p-2" style={{height:"200px"}}>
+              <FaBookmark className="mb-2" style={{fontSize:"18px", color:"var(--light)"}}/>
+              <h3 className="" style={{fontSize:"18px", writingMode: "vertical-rl"}}>收藏庫</h3>
             </div>
           </Link>
         </div>
@@ -158,7 +200,9 @@ export default function ArticleIndexList({ Article }) {
               <ArticleIndexCard key={article.id} article={article} />
             ))
           ) : (
-            <h3 className="text-center">沒有可顯示的文章</h3>
+            <h3 className="text-center" style={{ color: "var(--text_gray)" }}>
+              沒有搜尋到可顯示的文章
+            </h3>
           )
         ) : (
           <>
@@ -177,6 +221,15 @@ export default function ArticleIndexList({ Article }) {
               ))}
           </>
         )}
+      </div>
+      {/* 選頁 */}
+      {/* {console.log(totalPages)} */}
+      <div aria-label="Page navigation">
+        <ArticlePagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+        />
       </div>
     </>
   );

@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import ArticleCReplymore from "./article-c-replymore";
-import { useAuth } from "@/hooks/use-auth";
-import Image from "next/image";
+// import { useAuth } from "@/hooks/use-auth";
 
-export default function ArticleComment({ comment, index }) {
-  // console.log(comment)
+export default function ArticleComment({ comment, index, userId }) {
+  console.log(userId);
   const [commentText, setCommentText] = useState(comment.comment_text);
   const [isEditing, setIsEditing] = useState(false);
   // 設定textarea的行數
   const [rows, setRows] = useState(2);
   // 設定回覆icon字元
-  const firstTwoChars = comment.account.slice(0, 2).toUpperCase();
+  // const firstTwoChars = comment.account.slice(0, 2).toUpperCase();
 
   // 這邊是使用hooks的useAuth測試
-  const { auth } = useAuth(); // 取得認證資訊
-  const userId = auth.userData.id; // 取得使用者 ID
+  // const { auth } = useAuth(); // 取得認證資訊
 
   const commentUser = comment.user_id; // 替換為實際的使用者 ID
   const commentId = comment.id; // 替換為實際的文章 ID
@@ -22,6 +20,11 @@ export default function ArticleComment({ comment, index }) {
 
   // 判定是否有權限編輯
   const handleEdit = async () => {
+    // const userId = auth.userData.id; // 取得使用者 ID
+    if (!userId) {
+      alert("請登入來編輯評論");
+      return;
+    }
     if (commentUser !== userId) {
       alert("您沒有權限編輯此評論");
       return;
@@ -123,21 +126,11 @@ export default function ArticleComment({ comment, index }) {
           <div className="col-auto">
             {/* 桌機icon */}
             <div className="au-icon d-none d-lg-flex">
-              <Image
-                src={`/images/member/avatar/${auth.userData.id}.png`}
-                width={100}
-                height={100}
-              />
-              {/* <p className="m-0">{firstTwoChars}</p> */}
+              <p className="m-0">{comment.user_id}</p>
             </div>
             {/* 手機icon */}
             <div className="au-icon-sm d-lg-none">
-              <Image
-                src={`/images/member/avatar/${auth.userData.id}.png`}
-                width={100}
-                height={100}
-              />
-              {/* <p className="m-0">{firstTwoChars}</p> */}
+              <p className="m-0">{comment.user_id}</p>
             </div>
           </div>
           <div className="aucomment-section col">
@@ -172,12 +165,14 @@ export default function ArticleComment({ comment, index }) {
                 </ul>
               </div>
               {/* 回覆區的more */}
-              <div className="ms-auto col-auto pe-3 dropdown aid-replymore">
-                <ArticleCReplymore
-                  onDelete={handleDelete}
-                  onEdit={handleEdit} // 傳遞 handleEdit 函數
-                />
-              </div>
+              {userId && (
+                <div className="ms-auto col-auto pe-3 dropdown aid-replymore">
+                  <ArticleCReplymore
+                    onDelete={handleDelete}
+                    onEdit={handleEdit} // 傳遞 handleEdit 函數
+                  />
+                </div>
+              )}
             </div>
             {/* 評論內容 */}
             <div className="aucomment p-4">
