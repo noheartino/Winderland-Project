@@ -23,7 +23,16 @@ export default function CourseIndex() {
       }
     }, [auth])
 
-   useEffect(() => {
+  const router = useRouter();
+  const { courseId, series } = router.query;
+  const [course, setCourse] = useState([]);
+  const [theCourseAssigned, setCourseAssigned] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [existing, setExisting] = useState([]);
+  let averageRating = 0;
+  
+  // 到/api/獲取課程總數，避免網址輸入不存在的課程導致顯示錯誤
+  useEffect(() => {
     if(userId){
       fetch(`http://localhost:3005/api/course?userId=${userId}`)
       .then((response) => {
@@ -36,24 +45,31 @@ export default function CourseIndex() {
         const { classSum } = data;
         setClassSum(classSum);
         console.log("userId= "+userId);
+        console.log("classSum numbers= "+classSum.length);
       })
       .catch((error) => {
         console.log(error);
       });
     }
-  }, [userId]);
+  }, [userId, courseId]);
   
-
-  const router = useRouter();
-  const { courseId, series } = router.query;
-  const [course, setCourse] = useState([]);
-  const [theCourseAssigned, setCourseAssigned] = useState([]);
-  const [comments, setComments] = useState([]);
-  let averageRating = 0;
 
   const seriesDefaultBtn = useRef(null);
 
   let apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}`;
+
+  // useEffect(()=>{
+  //   if(courseId && classSum.length>0){
+  //     // console.log(courseId+"+"+classSum.length);
+  //     if(courseId>classSum.length){
+  //       router.push({
+  //         pathname: "/course/1",
+  //         query: {}
+  //       })
+  //     }
+  //     apiUrl= `http://localhost:3005/api/course/1?userId=${userId}`;
+  //   }
+  // }, [courseId])
 
   function querySeries01(e) {
     router.push({
@@ -104,8 +120,17 @@ function querySeries04(e) {
     }
   }, [series, userId])
 
+  // 獲取當前課程資訊
   useEffect(() => {
     if (courseId && classSum.length > 0) {
+        // console.log(courseId+"+"+classSum.length);
+        if(!(classSum.length > parseInt(courseId) && parseInt(courseId) > 0)){
+          router.push({
+            pathname: "/course/1",
+            query: {}
+          })
+        }
+        apiUrl= `http://localhost:3005/api/course/1?userId=${userId}`;
 
       fetch(apiUrl)
         .then((response) => {
@@ -116,10 +141,11 @@ function querySeries04(e) {
           return response.json();
         })
         .then((data) => {
-          const { course, theCourseAssigned, comments } = data;
+          const { course, theCourseAssigned, comments, existing } = data;
           setCourse(course[0]);
           setCourseAssigned(theCourseAssigned);
           setComments(comments);
+          setExisting(existing);
         })
         .catch((error) => {
           console.log(error);
@@ -191,6 +217,9 @@ function querySeries04(e) {
     const timeVar = String(timeStr)
     return timeVar.split(":").slice(0,2).join(":")
   }
+
+  function handleCourseAddToFav(){}
+  function handleCourseRmFromFav(){}
 
   return (
     <>
@@ -391,10 +420,15 @@ function querySeries04(e) {
                         className="col-auto d-flex align-items-center mt-1"
                       >
                         <h5 className="text-prim-text-prim spac-2">收藏</h5>
+                        {existing.length>0?
+                        <i className="ms-2 fa-solid fa-bookmark text-prim-text-prim"
+                        style={{ fontSize: "1.7rem" }} onClick={handleCourseAddToFav}></i>
+                        :
                         <i
                           className="ms-2 fa-regular fa-bookmark text-prim-text-prim"
-                          style={{ fontSize: "1.7rem" }}
-                        />
+                          style={{ fontSize: "1.7rem" }} onClick={handleCourseRmFromFav}
+                        />}
+                        
                       </a>
                     </div>
                     <div className="row h-100">

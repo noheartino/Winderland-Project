@@ -253,35 +253,35 @@ router.get('/courses', authenticate, async (req, res) => {
 })
 
 // @ 添加文章到收藏（用在課程頁面）
-// router.post('/courses/:id', authenticate, async (req, res) => {
-//   try {
-//     const userId = req.user.id
-//     const classId = req.params.id
+router.post('/courses/:id', authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id
+    const classId = req.params.id
 
-//     // 檢查是否已收藏
-//     const [existing] = await connection.query(
-//       'SELECT * FROM user_like WHERE user_id = ? AND item_id = ? AND item_type = "class"',
-//       [userId, classId]
-//     )
+    // 檢查是否已收藏
+    const [existing] = await connection.query(
+      'SELECT * FROM user_like WHERE user_id = ? AND item_id = ? AND item_type = "class"',
+      [userId, classId]
+    )
 
-//     if (existing.length > 0) {
-//       return res
-//         .status(400)
-//         .json({ status: 'error', message: '課程已在經典收藏中' })
-//     }
+    if (existing.length > 0) {
+      return res
+        .status(400)
+        .json({ status: 'error', message: '課程已在經典收藏中' })
+    }
 
-//     // 添加到收藏
-//     await connection.query(
-//       'INSERT INTO user_like (user_id, item_id, item_type) VALUES (?, ?, "class")',
-//       [userId, classId]
-//     )
+    // 添加到收藏
+    await connection.query(
+      'INSERT INTO user_like (user_id, item_id, item_type) VALUES (?, ?, "class")',
+      [userId, classId]
+    )
 
-//     res.json({ status: 'success', message: '課程已添加到經典收藏' })
-//   } catch (error) {
-//     console.error('添加課程到經典收藏時出錯:', error)
-//     res.status(500).json({ status: 'error', message: '服務器錯誤' })
-//   }
-// })
+    res.json({ status: 'success', message: '課程已添加到經典收藏' })
+  } catch (error) {
+    console.error('添加課程到經典收藏時出錯:', error)
+    res.status(500).json({ status: 'error', message: '服務器錯誤' })
+  }
+})
 
 // @ 從文章收藏中移除
 router.delete('/courses/:id', authenticate, async (req, res) => {

@@ -130,6 +130,8 @@ export default function CourseIndex() {
         setmyFirstFavoriteCourse(...myFavoriteCourse.slice(0, 1));
         setFirstMyCourse(...myCourse.slice(0, 1));
         setTeachers(teachers);
+        console.log("myCourse----------");
+        console.log(myCourse);
         // if(isHomePage){clearBtnHref()}
       })
       .catch((error) => {

@@ -182,7 +182,6 @@ router.get('/', async (req, res) => {
                                 teacher ON class.teacher_id = teacher.id
                             WHERE orders.user_id = ${userId}
                                 ${courseBtnSQLwords}
-                                AND (class.online = 1 OR (class.online = 0 AND class.course_end < ${todayDateOnly}))
                             ORDER BY orders.order_uuid ASC;`
   // if(userId){
   //   console.log("userId-----> "+userId);
@@ -284,7 +283,12 @@ router.get('/:courseId', async (req, res) => {
     const [course] = await connection.execute(courseSQL)
     const [theCourseAssigned] = await connection.execute(theCourseAssignedSQL)
     const [comments] = await connection.execute(commentsSQL)
-    res.json({ course, theCourseAssigned, comments })
+    // 檢查課程是否已收藏，length>0就是有
+    const [existing] = await connection.query(
+      'SELECT * FROM user_like WHERE user_id = ? AND item_id = ? AND item_type = "class"',
+      [userId, courseId]
+    )
+    res.json({ course, theCourseAssigned, comments, existing })
     console.log('測試:' + req.originalUrl)
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
