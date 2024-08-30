@@ -13,19 +13,25 @@ export default function Eventindex() {
     const UserData = authData.userData
     const userlv = UserData ? UserData.member_level_id : 0
 
+    const [sort, setSort] = useState('desc');
+
     useEffect(() => {
-        fetch('http://localhost:3005/api/event')
+        fetch(`http://localhost:3005/api/event?sort=${sort}`)
             .then(response => response.json())
             .then(eventData => setData(eventData))
             .catch(error => console.error('Error:', error));
-    }, []);
+    }, [sort]);
+
+    const handleSortChange = (newSort) => {
+        setSort(newSort);
+    }
 
     return (
         <>
             <Nav />
             <EventHeader/>
             {/* {userlv ? <pre>{JSON.stringify(userlv, null, 2)}</pre> : 'Loading...'} */}
-            <EventHomeList events={eventData} userlv={userlv}/>
+            <EventHomeList events={eventData} userlv={userlv} onSortChange={handleSortChange} currentSort={sort}/>
             <Footer/>
         </>
     );

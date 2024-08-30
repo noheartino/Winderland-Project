@@ -78,8 +78,8 @@ export default function Applyevent() {
         <>
             <Nav />
             <EventHeader />
-            {/* {UserData ? <pre>{JSON.stringify(UserData, null, 2)}</pre> : 'Loading...'}
-            {eventinfo ? <pre>{JSON.stringify(eventinfo, null, 2)}</pre> : 'Loading...'} */}
+            {/* {UserData ? <pre>{JSON.stringify(UserData, null, 2)}</pre> : 'Loading...'} */}
+            {/* {eventinfo ? <pre>{JSON.stringify(eventinfo, null, 2)}</pre> : 'Loading...'} */}
             <div className="eventApplyArea">
                 <div className="container">
                     <div className="row g-5">
