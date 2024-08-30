@@ -123,7 +123,7 @@ export default function ProfileUpdateUserRWD() {
             value={formData.gender}
             onChange={handleInputChange}
             style={{ width: "27%" }}>
-            <option value="option1">選擇性別</option>
+            {/* <option value="option1">選擇性別</option> */}
             <option value="Male">男</option>
             <option value="Female">女</option>
             <option value="Other">不願透露</option>

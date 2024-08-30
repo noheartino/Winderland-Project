@@ -256,14 +256,14 @@
 
 .pickupDetail {
     color: var(--text_primary);
-    font-size: xx-small;
+    font-size: 12px;
     font-weight: 400;
     margin-top: 9px;
     letter-spacing: 3.8px;
     margin-left: -20px;
     /* margin-bottom: 80px; */
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
 }
 .orderGetLabel {
@@ -273,7 +273,7 @@
     font-weight: 400;
     letter-spacing: 3.8px;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     margin-left: -40px;
 
