@@ -404,4 +404,44 @@ router.get('/:pid', async (req, res) => {
   }
 })
 
+router.post('/addCart', async (req, res) => {
+  try {
+    const { user_id, product_detail_id, product_quantity } = req.body
+
+    const currentFormattedDate = new Date()
+      .toLocaleString('zh-TW', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      })
+      .replace(/\//g, '-')
+      .replace(/24:/, '00:')
+
+    console.log(currentFormattedDate)
+
+    const result = await db.query(
+      'INSERT INTO cart_items(user_id, product_detail_id, product_quantity, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
+      [
+        user_id,
+        product_detail_id,
+        product_quantity,
+        currentFormattedDate,
+        currentFormattedDate,
+      ]
+    )
+
+    res.json({
+      success: true,
+      time: currentFormattedDate,
+      result: result,
+    })
+  } catch (error) {
+    res.status(500).json({ success: false })
+  }
+})
+
 export default router

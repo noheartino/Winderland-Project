@@ -21,7 +21,7 @@ export default function PcFliterAside({
 
   const [minValue, setMinValue] = useState(minLimit);
   const [maxValue, setMaxValue] = useState(maxLimit);
-  const [priceRange, setPriceRange] = useState("");
+  const [priceRange, setPriceRange] = useState("0-150000");
 
   const priceRanges = [
     { label: "全部金額", value: "0-150000" },
@@ -146,11 +146,11 @@ export default function PcFliterAside({
               >
                 {showAllVarieties ? (
                   <>
-                    收起 <i class="fa-solid fa-angles-up"></i>
+                    收起 <i className="fa-solid fa-angles-up"></i>
                   </>
                 ) : (
                   <>
-                    顯示更多 <i class="fa-solid fa-angles-down"></i>
+                    顯示更多 <i className="fa-solid fa-angles-down"></i>
                   </>
                 )}
               </button>
@@ -202,7 +202,7 @@ export default function PcFliterAside({
                 onChange={() => changeFilter("origin", "")}
               />
               <label htmlFor="allOrigin">全部產地</label>
-              {filters.origins
+              {filters.origins.filter(o => o.belongsToSelectedCountry)
                 .slice(0, showAllOrigins ? undefined : INITIAL_SHOW_COUNT)
                 .map((o, index) => (
                   <div
@@ -231,7 +231,7 @@ export default function PcFliterAside({
                     <br />
                   </div>
                 ))}
-              {filters.origins.length > INITIAL_SHOW_COUNT && (
+              {filters.origins.filter(o => o.belongsToSelectedCountry).length > INITIAL_SHOW_COUNT && (
                 <button
                   type="button"
                   onClick={toggleShowAllOrigins}
@@ -239,11 +239,11 @@ export default function PcFliterAside({
                 >
                   {showAllOrigins ? (
                     <>
-                      收起 <i class="fa-solid fa-angles-up"></i>
+                      收起 <i className="fa-solid fa-angles-up"></i>
                     </>
                   ) : (
                     <>
-                      顯示更多 <i class="fa-solid fa-angles-down"></i>
+                      顯示更多 <i className="fa-solid fa-angles-down"></i>
                     </>
                   )}
                 </button>
