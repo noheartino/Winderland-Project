@@ -11,6 +11,7 @@ router.get('/:user_id', async (request, response) => {
   SELECT 
       cart_items.id AS cart_item_id,
       cart_items.product_detail_id,
+      product.id AS product_id,
       cart_items.class_id,
       cart_items.product_quantity,
       product.name AS product_name,
@@ -520,6 +521,7 @@ router.post('/creditCardPayment', async (req, res) => {
       VALUES (?, ?, ?, ?, ?, NOW());
     `
     for (const item of cartItems) {
+      console.log('Inserting item:', item);
       await conn.query(insertOrderItemsQuery, [
         orderNumber,
         item.product_id || null,
