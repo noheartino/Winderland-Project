@@ -9,6 +9,7 @@ import { createContext, useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
 
+
 // google登入
 // import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 // import { useFirebase } from './useFirebase';
@@ -38,12 +39,19 @@ export function AuthProvider({ children }) {
     checkAuth()
   }, [])
 
+  // 認證狀態變化
+  // useEffect(() => {
+  //   if (auth.isAuth) {
+  //     router.push('/');  
+  //   }
+  // }, [auth.isAuth, router]);
+
   // @ 檢查狀態
   const checkAuth = async () => {
     try {
       const response = await fetch('http://localhost:3005/api/member/auth-status', {
         method: 'GET',
-        credentials: 'include', // 確保發送 cookies
+        credentials: 'include', 
       })
       if (response.ok) {
         const { status, data } = await response.json();
@@ -56,8 +64,8 @@ export function AuthProvider({ children }) {
               gender: data.user.gender || '',
               birthday: data.user.birthday || '',
               member_level_id: data.user.member_level_id || '',
-              phone: data.user.phone || '',  // 確保設置 phone
-              address: data.user.address || '',  // 確保設置 address
+              phone: data.user.phone || '',  
+              address: data.user.address || '',  
             },
           })
         } else {
@@ -67,7 +75,6 @@ export function AuthProvider({ children }) {
           })
         }
       } else {
-        // const errorData = await response.json()
         console.error('Auth check failed:', errorData)
         setAuth({
           isAuth: false,
@@ -244,22 +251,44 @@ export function AuthProvider({ children }) {
       const data = await response.json();
 
       if (data.status === 'success') {
-        setAuth({
-          isAuth: true,
-          userData: data.data.user,
+        await checkAuth(); // 重新檢查驗證狀態
+
+        // setAuth({
+        //   isAuth: true,
+        //   userData: data.data.user,
+        // });
+        await Swal.fire({
+          icon: 'success',
+          title: '登入成功',
+          text: 'Google 登入成功！',
+          showConfirmButton: false,
+          timer: 1500
         });
+        router.push('/');
         return { success: true, message: 'Google 登入成功！' };
+    
       } else {
+        await Swal.fire({
+          icon: 'error',
+          title: '登入失敗',
+          text: result.message || 'Google 登入失敗',
+        });
         return { success: false, message: data.message || 'Google 登入失敗' };
       }
     } catch (error) {
       console.error('Google 登入時發生錯誤：', error);
+      await Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: 'Google 登入過程中發生錯誤',
+      });
       return { success: false, message: 'Google 登入過程中發生錯誤，請稍後再試。' };
     }
   };
 
   return (
-    <AuthContext.Provider value={{ auth, login, logout, checkAuth, updateUserInfo, googleLogin: () => loginGoogle(cbGoogleLogin) }}>
+    <AuthContext.Provider 
+    value={{ auth, login, logout, checkAuth, updateUserInfo, googleLogin: () => loginGoogle(cbGoogleLogin) }}>
       {children}
     </AuthContext.Provider>
   )

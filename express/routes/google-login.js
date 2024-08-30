@@ -68,13 +68,32 @@ router.post('/', async function (req, res) {
     })
 
     // 使用httpOnly cookie來讓瀏覽器端儲存access token
-    res.cookie('accessToken', accessToken, { httpOnly: true })
+    // res.cookie('accessToken', accessToken, { httpOnly: true })
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 3 * 24 * 60 * 60 * 1000, // 3 天
+    })
 
     // 傳送access token回應
+    // return res.json({
+    //   status: 'success',
+    //   data: {
+    //     accessToken,
+    //   },
+    // })
+
+    // 返回用戶數據（不包括敏感信息）
     return res.json({
       status: 'success',
       data: {
-        accessToken,
+        user: {
+          id: returnUser.id,
+          username: returnUser.username,
+          email: returnUser.email,
+          photoURL: returnUser.photo_url,
+        },
       },
     })
   } catch (error) {

@@ -120,7 +120,7 @@ export default function LoginForm() {
           showConfirmButton: false,
           timer: 1500
         });
-        router.push('/dashboard');
+        router.push('/');
       } else {
         // 使用 SweetAlert2 替代 alert
         await Swal.fire({
@@ -141,45 +141,73 @@ export default function LoginForm() {
   }
 
   // * Google 登入
-  const handleGoogleLogin = async () => {
-    if (!firebaseInitialized) {
-      Swal.fire({
-        title: '請稍候',
-        text: '正在初始化登入服務...',
-        icon: 'info',
-        showConfirmButton: false,
-        timer: 1500
-      });
-      return;
-    }
+  // const handleGoogleLogin = async () => {
+  //   if (!firebaseInitialized) {
+  //     Swal.fire({
+  //       title: '請稍候',
+  //       text: '正在初始化登入服務...',
+  //       icon: 'info',
+  //       showConfirmButton: false,
+  //       timer: 1500
+  //     });
+  //     return;
+  //   }
 
-    try {
-      const result = await googleLogin();
-      if (result.success) {
-        await Swal.fire({
-          icon: 'success',
-          title: '登入成功',
-          text: 'Google 登入成功！',
-          showConfirmButton: false,
-          timer: 1500
-        });
-        router.push('/dashboard');
-      } else {
-        await Swal.fire({
-          icon: 'error',
-          title: '登入失敗',
-          text: result.message || 'Google 登入失敗',
-        });
-      }
-    } catch (error) {
-      console.error('Google 登入過程中發生錯誤:', error);
-      await Swal.fire({
-        icon: 'error',
-        title: '錯誤',
-        text: 'Google 登入過程中發生錯誤',
-      });
-    }
-  };
+  //   try {
+  //     const result = await googleLogin();
+  //     if (result.success) {
+  //       await Swal.fire({
+  //         icon: 'success',
+  //         title: '登入成功',
+  //         text: 'Google 登入成功！',
+  //         showConfirmButton: false,
+  //         timer: 1500
+  //       });
+  //       router.push('/dashboard');
+  //     } else {
+  //       await Swal.fire({
+  //         icon: 'error',
+  //         title: '登入失敗',
+  //         text: result.message || 'Google 登入失敗',
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Google 登入過程中發生錯誤:', error);
+  //     await Swal.fire({
+  //       icon: 'error',
+  //       title: '錯誤',
+  //       text: 'Google 登入過程中發生錯誤',
+  //     });
+  //   }
+  // };
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     const result = await googleLogin();
+  //     if (result.success) {
+  //       await Swal.fire({
+  //         icon: 'success',
+  //         title: '登入成功',
+  //         text: 'Google 登入成功！',
+  //         showConfirmButton: false,
+  //         timer: 1500
+  //       });
+  //       router.push('/');// 重定向到首頁
+  //     } else {
+  //       await Swal.fire({
+  //         icon: 'error',
+  //         title: '登入失敗',
+  //         text: result.message || 'Google 登入失敗',
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Google 登入過程中發生錯誤:', error);
+  //     await Swal.fire({
+  //       icon: 'error',
+  //       title: '錯誤',
+  //       text: 'Google 登入過程中發生錯誤',
+  //     });
+  //   }
+  // };
 
 
 
@@ -283,7 +311,8 @@ export default function LoginForm() {
                     <button
                       className={`${styles.googleLogin} d-flex justify-content-center align-items-center`}
                       onClick={googleLogin}
-                      type="button"  // 確保這不會觸發表單提交
+                      // onClick={handleGoogleLogin}
+                      type="button"  
                     >
                       <GoogleLogo className="mx-3" />
                       使用GOOGLE登入
