@@ -1,13 +1,15 @@
 /* order */
-.orderDetailTitle{
+.orderDetailTitle {
     width: 100%;
     height: 50px;
     background: var(--primary, #851931);
 }
-.titleLabelNumber{
+
+.titleLabelNumber {
     margin-left: 15%;
 }
-.titleLabel{
+
+.titleLabel {
     color: var(--light, #F4EBEB);
     font-size: 16px;
     font-weight: 700;
@@ -15,17 +17,20 @@
     letter-spacing: 1.6px;
     white-space: nowrap;
 }
-.iconBox{
-    border: 0 ;
+
+.iconBox {
+    border: 0;
     background-color: #851931;
     color: none;
 }
+
 .faChevronUp {
     color: var(--light, #F4EBEB);
     font-size: 16px;
     /* margin-bottom: 35px; */
- 
+
 }
+
 /* detail */
 .orderDetailContent {
     width: 100%;
@@ -42,7 +47,7 @@
 
 
 /* Item */
-.orderCard{
+.orderCard {
     width: 100%;
     height: 261px;
     /* margin-left: 50px; */
@@ -52,9 +57,11 @@
     border: none;
     position: relative;
 }
-.cardBody{
+
+.cardBody {
     padding: 0;
 }
+
 .orderDetail {
     width: 90%;
     height: 150px;
@@ -113,149 +120,36 @@
 }
 
 .orderImg {
-    width: 150px;  /* 設置固定寬度 */
-    height: 150px; /* 設置固定高度，與寬度相等，創建正方形 */
+    width: 150px;
+    /* 設置固定寬度 */
+    height: 150px;
+    /* 設置固定高度，與寬度相等，創建正方形 */
     border: 1px solid var(--wine_light, #D4C0C0);
     margin-left: 50px;
     margin-top: 20px;
-    overflow: hidden; /* 確保內容不會溢出容器 */
-    display: flex; /* 使用 flexbox 來居中內容 */
-    align-items: center; /* 垂直居中 */
-    justify-content: center; /* 水平居中 */
-    background: #ffffff;
-  }
-  
-  .orderImg img {
-    width: 100%; /* 圖片寬度填滿容器 */
-    height: 100%; /* 圖片高度填滿容器 */
-    object-fit: contain; /* 確保整個圖片都顯示，不被裁切 */
-    object-position: center; /* 圖片在容器中居中 */
-  }
-
-/* 優惠券 */
-.orderUsed {
-    margin-left: 56px;
-    margin-top: 32px;
-}
-
-.orderUsedLabel {
-    color: var(--text_gray, #6A6A6A);
-    font-size: medium;
-    font-weight: 400;
-    letter-spacing: 3.8px;
-    margin-top: 50px;
-}
-
-.couponTicket {
-    min-width: 229px;
-    min-height: 64px;
-    border-radius: 2.925px;
-    background: linear-gradient(90deg, #D0D0D0 0%, #717171 100%);
-    box-shadow: -1.95px 2.925px 3.9px 0px rgba(0, 0, 0, 0.25);
-    color: #FFF;
-    font-size: 16px;
-    font-weight: 400;
-    letter-spacing: 3.2px;
+    overflow: hidden;
+    /* 確保內容不會溢出容器 */
     display: flex;
+    /* 使用 flexbox 來居中內容 */
+    align-items: center;
+    /* 垂直居中 */
     justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-    margin-left: 60px;
+    /* 水平居中 */
+    background: #ffffff;
+}
+
+.orderImg img {
+    width: 100%;
+    /* 圖片寬度填滿容器 */
+    height: 100%;
+    /* 圖片高度填滿容器 */
+    object-fit: contain;
+    /* 確保整個圖片都顯示，不被裁切 */
+    object-position: center;
+    /* 圖片在容器中居中 */
 }
 
 
-.pointImg {
-    min-width: 72px;
-    min-height: 72px;
-    background: url(/images/member/wpoint-used.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin-left: 90px;
-    margin-top: 30px;
-}
-
-.pointText {
-    color: var(--text_gray, #6A6A6A);
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 1.6px;
-    margin-left: 32px;
-    margin-top: 20px;
-}
-
-.pointUsed {
-    color: var(--orange, #FF4F4F);
-    font-size: xx-large;
-    letter-spacing: 3.6px;
-    white-space: nowrap;
-}
-
-.orderGet {
-    margin-left: 56px;
-    margin-top: 125px;
-}
-
-.orderGetLabel {
-    color: #6A6A6A;
-    font-size: medium;
-    font-weight: 400;
-    letter-spacing: 3.8px;
-    /* margin-bottom: 80px; */
-}
-
-.pointImgGet {
-    width: 72px;
-    height: 72px;
-    background: url(/images/member/wpoint.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin-left: 70px;
-    align-items: center;
-    margin-top: -28px;
-}
-
-.pointTextGet {
-    color: #6A6A6A;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 1.6px;
-    margin-left: 32px;
-    margin-top: -30px;
-    margin-bottom: 50px;
-}
-
-.pointGet {
-    color: var(--orange, #FF4F4F);
-    font-size: xx-large;
-    letter-spacing: 3.6px;
-}
-
-.usedItem {
-    margin-bottom: 10px;
-    margin-left: 50px;
-}
-
-.noCoupon {
-    font-size: large;
-    /* font-style: italic; */
-    color: #888;
-    margin-top: 5px;
-    margin-left: 50px;  
-    /* 與優惠券對齊 */
-    font-weight: 700;
-    letter-spacing: 1.6px;
-}
-
-.noPoints {
-    font-size: large;
-    /* font-style: italic; */
-    color: #888;
-    margin-top: 5px;
-    /* margin-left: 50px;   */
-    /* 與優惠券對齊 */
-    font-weight: 700;
-    letter-spacing: 1.6px;
-}
 
 
 /* 配送資訊 */
@@ -263,11 +157,128 @@
     margin-left: 56px;
     /* margin-top: 32px; */
 }
-.pickupDetail{
+
+.pickupDetail {
     color: var(--text_primary);
     font-size: medium;
     font-weight: 400;
     letter-spacing: 3.8px;
     margin-left: 20px;
     /* margin-bottom: 80px; */
+}
+
+
+/* RWD */
+@media (max-width: 768px) {
+    .orderDetailTitle {
+        margin-left: -1.5px;
+        width: 101%;
+        height: 40px;
+        background: var(--primary, #851931);
+    }
+
+    .cardBody {
+        padding: 0;
+        margin-left: -5px;
+    }
+
+    .titleLabel {
+        color: #FFF;
+        font-family: Inter;
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        letter-spacing: 2.5px;
+    }
+
+    .orderDetail {
+
+        width: 100%;
+        height: 150px;
+        margin-left: 19px;
+        margin-top: -10px;
+        margin-bottom: -20px;
+    }
+
+    .orderDetailProductName {
+        width: 180px;
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 2px;
+    }
+
+    .pCategory {
+        width: 191px;
+        color: var(--purple, #9A5B69);
+        font-size: 10px;
+        font-weight: 400;
+        letter-spacing: 1.4px;
+        margin-top: -50px;
+    }
+
+    .orderDetailTotal {
+        width: 73px;
+        height: 25px;
+        color: var(--info-orange, #FF4F4F);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.6px;
+        margin-right: 60px;
+        white-space: nowrap;
+    }
+
+    .orderDetailNumber {
+        color: var(--purple, #9A5B69);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        /* margin-right: 9%; */
+        margin-top: -10px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+    }
+
+    .orderDetailP {
+        /* width: 60%; */
+        margin-right: 1px;
+    }
+
+    .hrRWD{
+        color: #F4EBEB;
+        border: 1px solid #F4EBEB;
+        padding: 2px;
+    }
+
+    /* 配送資訊 */
+
+
+.pickupDetail {
+    color: var(--text_primary);
+    font-size: 12px;
+    font-weight: 400;
+    margin-top: 9px;
+    letter-spacing: 3.8px;
+    margin-left: -20px;
+    /* margin-bottom: 80px; */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.orderGetLabel {
+    width: 130px;
+    color: #6A6A6A;
+    font-size: medium;
+    font-weight: 400;
+    letter-spacing: 3.8px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: -40px;
+
+    /* margin-bottom: 80px; */
+}
+
+
 }

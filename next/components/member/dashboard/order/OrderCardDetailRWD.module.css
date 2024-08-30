@@ -1,0 +1,184 @@
+.orderDetailContentRWD{
+    
+    width: 344px;
+height: auto;
+border: 1px solid var(--primary_color-light, #F4EBEB);
+background: linear-gradient(0deg, #FAFAFA 87.6%, #E4D8D8 100%);
+margin-bottom: 30px;
+margin-left: -1px;
+
+}
+.pCategory {
+    font-size: 12px;
+}
+
+.pPprice {
+    font-size: 18px;
+}
+
+.orderDetailNumber,
+.orderDetailTotal {
+    font-size: 16px;
+    margin-right: 0;
+    margin-top: 5px;
+}
+
+.orderImg {
+    /* width: 100px;
+    height: 100px;
+    margin-left: 0;
+    margin-top: 0; */
+}
+
+
+/* RWD 樣式 */
+@media (max-width: 768px) {
+    .orderDetailTitle {
+      height: 40px;
+    }
+  
+    .titleLabel {
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+  
+    .orderDetailContent {
+      padding: 10px;
+    }
+  
+    .orderCard {
+      height: auto;
+      margin-bottom: 20px;
+    }
+  
+    .orderDetail {
+      width: 100%;
+      margin-left: 0;
+      height: auto;
+    }
+  
+    .orderDetailP {
+      width: 100%;
+      margin-right: 0;
+    }
+  
+    .orderDetailProductName {
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+  
+    .pDetail {
+      margin-top: 20px;
+    }
+  
+    .pCategory, .pPprice {
+      font-size: 12px;
+    }
+  
+    .orderDetailNumber, .orderDetailTotal {
+      font-size: 14px;
+      margin-right: 0;
+    }
+  
+    .orderImg {
+      width: 100px;
+      height: 100px;
+      margin-left: 10px;
+      margin-top: 10px;
+    }
+  
+    /* 優惠券樣式 */
+    .orderUsed, .orderGet {
+        width: 100%;
+      margin-left: 10px;
+      margin-top: 20px;
+    }
+  
+    .orderUsedLabel, .orderGetLabel {
+      font-size: 14px;
+      letter-spacing: 2px;
+    }
+  
+    .couponTicket {
+      min-width: 180px;
+      min-height: 50px;
+      font-size: 14px;
+      margin-left: 0;
+    }
+  
+    .pointImg, .pointImgGet {
+      min-width: 50px;
+      min-height: 50px;
+      margin-left: 10px;
+    }
+  
+    .pointText, .pointTextGet {
+      font-size: 14px;
+      margin-left: 10px;
+    }
+  
+    .pointUsed, .pointGet {
+      font-size: 18px;
+    }
+  
+    /* 評論樣式 */
+    .formSelect {
+      width: 90%;
+      margin-left: 5%;
+    }
+  
+    .commentText {
+      width: 90%;
+      margin-left: 5%;
+    }
+  
+    .commentRating {
+      margin-left: 5%;
+    }
+  
+    .star {
+      font-size: 24px;
+    }
+  
+    .commentBtn {
+      height: 60px;
+      font-size: 16px;
+    }
+  
+    .productTitle {
+      width: 80%;
+      margin-left: 10%;
+      font-size: 12px;
+    }
+  
+    .commentDone {
+      margin-left: 5%;
+    }
+  
+    .commentDoneText {
+      width: 90%;
+    }
+  
+    /* 配送資訊 */
+    .pickupArea {
+      margin-left: 10px;
+    }
+  
+    .pickupDetail {
+      font-size: 14px;
+      margin-left: 10px;
+    }
+  
+    /* 展開的訂單卡片樣式 */
+    .order-card-rwd.expanded {
+      margin-bottom: 20px;
+      transition: margin-bottom 0.3s ease;
+    }
+  
+    .order-card-rwd.expanded .order-detail-expanded {
+      max-height: 1000px; /* 或者更大的值，視內容而定 */
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+  }
+  

@@ -5,16 +5,13 @@ export default function ArticleCReplymore({ onDelete, onEdit }) {
     <>
       <div className="dropdown aid-replymore">
         <a
-          className="btn p-0"
+          className="p-0"
           href="#"
           role="button"
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <i
-            className="fa-solid fa-ellipsis"
-            style={{ color: "var(--text_gray)" }}
-          ></i>
+          <i className="fa-solid fa-ellipsis"></i>
         </a>
         <ul className="dropdown-menu aid-replymore-dropmenu dropdown-menu-end dropdown-menu-lg-start">
           <li>

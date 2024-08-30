@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image'
-import styles from './FavoritePCard.module.css' 
+import styles from './FavoritePCard.module.css'
+import Link from 'next/link';
 
 export default function FavoritePCard() {
     const [favorites, setFavorites] = useState([]);
     const [error, setError] = useState(null);
 
     // 格式化價格輔助函數
-const formatPrice = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
+    const formatPrice = (price) => {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
 
     useEffect(() => {
         fetchFavorites();
@@ -84,32 +85,39 @@ const formatPrice = (price) => {
                     <div className={styles.noFavorites}>目前還沒有任何收藏喔 .ᐟ.ᐟ.ᐟ</div>
                 ) : (
                     <div className={styles.favoritesGrid}>
-                    {favorites.map((favorite) => (
-                        <div key={favorite.product_id} className={styles.favoritePCard}>
-                            <div className={styles.favoritePImgBox}>
-                                <Image
-                                    src={`/images/product/${favorite.image_path}`}
-                                    alt={favorite.product_name}
-                                  layout="fill"
-                                    objectFit="contain"
-                                    className={styles.productImage}
-                                />
-                                <i className={`fa-solid fa-bookmark ${styles.bookmarkIcon}`} 
-                                onClick={() => removeFavorite(favorite.product_id)} 
-                                style={{ cursor: 'pointer' }}
-                                />
-                            </div>
+                        {favorites.map((favorite) => (
+                            <div key={favorite.product_id} className={styles.favoritePCard}>
+                                <div className={styles.favoritePImgBox}>
+                                    <Image
+                                        src={`/images/product/${favorite.image_path}`}
+                                        alt={favorite.product_name}
+                                        layout="fill"
+                                        objectFit="contain"
+                                        className={styles.productImage}
+                                    />
+                                    <i className={`fa-solid fa-bookmark ${styles.bookmarkIcon}`}
+                                        onClick={() => removeFavorite(favorite.product_id)}
+                                        style={{ cursor: 'pointer' }}
+                                    />
+                                </div>
 
-                            <div className={styles.favoritePDetail}>
-                                <p className={styles.favoriteProductName}>{favorite.product_name}&nbsp;・&nbsp;{favorite.years}</p>
-                                <p>{favorite.capacity}ml&nbsp;/&nbsp;{favorite.country_name}</p>
-                                <div className={styles.price}>NT${formatPrice(favorite.price)}</div>
+                                <div className={styles.favoritePDetail}>
+
+
+                                    <Link href={`/product/${favorite.product_id}`} className={styles.productTitleLink} >
+                                        <p className={styles.favoriteProductName}>
+                                        {favorite.product_name}&nbsp;・&nbsp;{favorite.years}
+                                        </p>
+                                    </Link>
+
+                                    <p className='mt-4'>{favorite.capacity}ml&nbsp;/&nbsp;{favorite.country_name}</p>
+                                    <div className={styles.price}>NT${formatPrice(favorite.price)}</div>
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
+                        ))}
+                    </div>
+                )}
+            </div>
         </>
     )
 }

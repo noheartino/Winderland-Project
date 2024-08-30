@@ -3,13 +3,20 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 
-export default function EventHomeList({ events, userlv }) {
+export default function EventHomeList({ events, userlv, onSortChange, currentSort }) {
 
     const applyon = events.applyon || [];
     const applyoff = events.applyoff || [];
+    const router = useRouter();
+
+    const toggleSort = () => {
+        const newSort = currentSort === 'asc' ? 'desc' : 'asc';
+        onSortChange(newSort);
+    }
 
     return (
         <>
+        {/* {applyon ? <pre>{JSON.stringify(applyon, null, 2)}</pre> : 'Loading...'} */}
             <div className="eventHomeBoxArea">
                 <div className="container">
                     <div className="eventHomeBoxAreaTitle d-none d-lg-flex">
@@ -19,6 +26,13 @@ export default function EventHomeList({ events, userlv }) {
                             <br />
                             就像英文的potluck，一人帶一道菜去聚會，一支會就是一人帶一支酒來聚會，您可以帶來您珍藏的好酒與酒友們一同分享喜悅。
                         </div>
+
+                        <div className='AreaTitleRArea'>
+
+                        <button className='ascto' onClick={toggleSort}>
+                            {currentSort === 'asc' ? '最早▴' : '最新▾'}
+                        </button>
+
                         {userlv < 3 ? <button
                             type="button"
                             className="eventHomeBoxAreaTitleB"
@@ -32,6 +46,8 @@ export default function EventHomeList({ events, userlv }) {
                         >
                             開團管理
                         </button></Link>}
+
+                        </div>
                        
                         <div
                             className="modal fade"
@@ -86,7 +102,7 @@ export default function EventHomeList({ events, userlv }) {
                                 <div className="col-12 col-lg-4 mb-4" key={i}>
                                     <div className="eventHomeBox_able">
                                         <div className="apply_able">報名期間內</div>
-                                        <img src={`/event/${t.event_cover_image}`} alt="" className="eventHomeBoxImg" />
+                                        <img src={`http://localhost:3005/uploads/${t.event_cover_image}`} alt="" className="eventHomeBoxImg" />
                                         <div className="eventHomeBox_text">
                                             <div className="title">{t.event_name}</div>
                                             <div className="info">

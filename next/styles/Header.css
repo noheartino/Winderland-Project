@@ -299,6 +299,9 @@
     justify-content: space-between;
     padding-inline: 30px;
 }
+.nrht_l .nrht_lpic{
+    object-fit: cover;
+}
 .nrht_l_text{
     color: var(--purple);
     letter-spacing: 1.5px;

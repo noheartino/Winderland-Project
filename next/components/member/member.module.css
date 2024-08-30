@@ -3,7 +3,30 @@
  .bg {
   background: var(--light, #f4ebeb);
   overflow: hidden;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1920' height='773' viewBox='0 0 1920 773' fill='none'%3E%3Cpath d='M2179.57 14.8647C2102.51 -7.20907 1921.85 -26.0227 1836.17 129.648C1729.07 324.236 1532.91 401.896 1364.71 375.571C1241.99 352.149 949.527 326.698 808.018 480.03C666.509 633.363 455.479 604.406 345.937 555.496C236.396 506.587 198.821 436.784 97.062 384.058C-40.8705 335.262 -336.717 323.677 -416.643 667.703L-365.803 772.265L559.234 766.072L1128.29 762.263L1559.48 759.376L1840.37 757.496L2194.55 755.124L2204.68 519.705L2190.9 209.798L2179.57 14.8647Z' fill='%23BA435D'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  /* position: fixed; */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* z-index: -1; */
+  animation: flow 15s ease-in-out infinite;
 }
+@keyframes flow {
+  0%, 100% {
+    background-position: 0% 50%;
+  
+  }
+  50% {
+    background-position: 100% 50%;
+
+  }
+}
+
 /* 手機版樣式 */
 @media (max-width: 768px) {
   .bg {
@@ -21,8 +44,8 @@
   padding-left: 50px;
   position: relative;
   margin: auto;
-  top: 100px;
-  margin-bottom: 200px;
+  top: 50px;
+  margin-bottom: 100px;
 }
 
  .navTabs {
@@ -93,21 +116,27 @@
 }
 
 .loginContent .label {
-  color: #a66e7b;
+  /* color: #a66e7b;
   font-size: 18px;
   font-weight: 600;
-  letter-spacing: 1.4px;
+  letter-spacing: 1.4px; */
 }
 
 .loginContent .loginInput {
-  width: 80%;
+  /* width: 80%;
   border: none;
   border-bottom: 2px solid #a66e7b;
   margin-bottom: 10px;
   margin-top: 10px;
   font-size: x-large;
   color: var(--info-dark_blue);
-  outline: none;
+  outline: none; */
+  /* background-color: transparent; 添加這行 */
+}
+.loginContent .loginInput::placeholder {
+  /* color: #afa6a6;
+  font-size: medium;
+  background-color: transparent;  */
 }
 
 .loginContent .span {
@@ -195,6 +224,52 @@
   border-radius: 2px;
 }
 
+/* 忘記密碼 */
+.outlineButton{
+  width: 40%;
+  height: auto;
+  border-radius: 4px;
+  background: transparent;
+  /* border: 2px solid var(--primary_color-purple, #9A5B69); */
+  /* color: var(--orange); */
+  color: #60464C ;
+  font-size: 16px;
+  font-weight: 400;
+  /* letter-spacing: 8px; */
+  margin-top: 5px;
+  margin-right: -40px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.outlineButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--primary_color-purple, #9A5B69);
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.outlineButton:hover {
+  color: var(--wine);
+}
+
+.outlineButton:hover::before {
+  left: 0;
+}
+
+.outlineButton:active {
+  transform: scale(0.98);
+}
+
 .loginContent .noAccount {
   margin-right: 20%;
   margin-top: 10px;
@@ -211,7 +286,7 @@
   font-size: 20px;
   font-weight: 400;
   letter-spacing: 8px;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 .loginContent .fastLogin {
@@ -275,173 +350,9 @@
   margin-top: 10px;
 }
 
-/* 註冊register */
-.registerContent {
-  width: 100%;
-}
 
-.registerContent .label {
-  color: var(--primary_color-purple_light, #a66e7b);
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: 1.4px;
-  margin-top: 15px;
-}
-
-.registerContent .span {
-  color: var(--info-orange, #ff4f4f);
-  display: block;
-  margin-right: 80px;
-  margin-top: 7px;
-}
-
-.registerContent .registerInput {
-  width: 80%;
-  border: none;
-  border-bottom: 2px solid var(--primary_color-purple_light, #a66e7b);
-  margin-bottom: 10px;
-  margin-top: 10px;
-  font-size: x-large;
-  color: var(--info-dark_blue);
-  outline: none;
-}
-
- .registerContent .rRegisterInput::placeholder {
-  color:#afa6a6;
-  font-size: medium;
-}
-
-.registerContent .registerInput::placeholder {
-  color:#afa6a6;
-  font-size: medium;
-}
-
-.registerContent .labelName {
-  margin-right: 35%;
-}
-
-.registerContent .labelTel {
-  margin-left: -30px;
-}
-
-.registerContent .labelGender {
-  margin-left: -10px;
-}
-
-.registerContent .registerInput2 {
-  width: 37%;
-  border: none;
-  border-bottom: 2px solid var(--primary_color-purple_light, #a66e7b);
-  margin-bottom: 10px;
-  margin-top: 10px;
-  font-size: x-large;
-  color: var(--info-dark_blue);
-  outline: none;
-}
-
-.registerContent .registerInput2.rRegisterInput {
-  display: inline-block;
-  margin-left: -30px;
-}
-
-.registerContent input[type='date'] {
-  font-size: 18px;
-  margin-top: 20px;
-}
-
-.registerContent select {
-  width: 170%;
-  border-radius: 0%;
-  border: none;
-  font-size: large;
-  color: var(--info-dark_blue);
-  border-bottom: 2px solid #a66e7b;
-  margin-top: 10px;
-  margin-left: -35px;
-}
-
-  .registerContent .button {
-  width: 80%;
-  height: 60px;
-  border-radius: 4px;
-  background: var(--primary_color-purple, #9a5b69);
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
-  border: none;
-  color: var(--primary_color-light, #f4ebeb);
-  font-size: 20px;
-  font-weight: 400;
-  letter-spacing: 8px;
-  margin-top: 30px;
-  margin-bottom: 30px;
-}
-
-  .registerContent .btnBack {
-  margin-top: -20px;
-  margin-left: 45%;
-  margin-bottom: 30px;
-}
-
-  .registerContent .btnBack .notice {
-  color: var(--primary_color-purple_light);
-  text-decoration: none;
-}
 
 /* rwd */
-/* .navTabs {
-    width: 80%;
-    margin-bottom: 20px;
-    margin-top: 8%;
-    border-bottom: 5px solid var(--primary_color-light);
-    justify-content: space-around;
-}
-
-.navItem {
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 24.2px;
-    letter-spacing: 0.1em;
-    white-space: nowrap;
-    color: var(--primary_color-purple);
-}
-
-.navLink {
-    color: var(--primary_color-purple);
-    border: none;
-    background: none;
-    position: relative;
-    display: inline-block;
-    font-size: large;
-}
-
-.navLink.active {
-    color: var(--primary_color-purple);
-}
-
-.navLink:hover {
-    color: var(--primary_color-purple);
-}
-
-.navLink::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -5px;
-    height: 2px;
-    width: 100%;
-    background-color: transparent;
-    transition: background-color 0.3s;
-    color: var(--primary_color-purple);
-}
-
-.navLink:hover::after,
-.navLink.active::after {
-    background-color: var(--primary_color-purple);
-    width: 165%;
-    height: 5px;
-    left: -35%;
-    bottom: -1px;
-} */
-
 .tabContent {
     color: var(--primary_color-purple_light, #A66E7B);
     font-size: 14px;
@@ -453,20 +364,10 @@
 .loginContent label {
     color: var(--primary_color-purple_light, #A66E7B);
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 1.4px;
 }
 
-.loginContent .loginInput {
-    width: 80%;
-    border: none;
-    border-bottom: 2px solid var(--primary_color-purple_light, #A66E7B);
-    margin-bottom: 10px;
-    margin-top: 10px;
-    font-size: x-large;
-    color: var(--info-dark_blue);
-    outline: none;
-}
 
 .loginContent span {
     color: var(--info-orange, #FF4F4F);
@@ -540,7 +441,7 @@
     font-size: 20px;
     font-weight: 400;
     letter-spacing: 8px;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .fastLogin {
@@ -614,171 +515,164 @@
     background-color: #06c755;
 }
 
-/* rwd-register*/
-.registerContent {
-    width: 100%;
-    white-space: nowrap;
+/* 漂浮標籤 */
+.floatingLabelInput {
+  position: relative;
+  margin-bottom: 1rem;
+
 }
 
-.registerContent label {
-    color: var(--primary_color-purple_light, #A66E7B);
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 1.4px;
-    margin-top: 15px;
+.floatingLabel {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  transition: all 0.2s;
+  pointer-events: none;
+  /* color: #6c757d; */
+  color: #A66E7B;
+}
+@media (max-width: 768px) {
+  .floatingLabel {
+    top: 0.7rem; /* 增加上邊距 */ 
+    font-size: 2rem; /* 縮小字體 */
+  }
 }
 
-.registerContent span {
-    color: var(--info-orange, #FF4F4F);
-    display: block;
-    margin-right: 80px;
-    margin-top: 15px;
+.loginInput {
+  width: 80%;
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  color: #9A5B69;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+@media (max-width: 768px) {
+  .loginInput {
+    padding-top: 1rem; /* 增加上內邊距 */
+  }
 }
 
-.registerInput {
-    width: 80%;
-    border: none;
-    border-bottom: 2px solid var(--primary_color-purple_light, #A66E7B);
-    margin-bottom: 10px;
-    margin-top: 10px;
-    font-size: x-large;
-    color: var(--info-dark_blue);
-    outline: none;
+.loginInput:focus {
+  outline: none;
+  border-color: #379cc4;
+  box-shadow: 0 0 0 0.1rem #379cc4;
 }
 
-.registerInput::placeholder {
-    color: var(--dark_blue);
-    font-size: small;
+.loginInput:focus + .floatingLabel,
+.loginInput.hasContent + .floatingLabel {
+  top: -0.7rem;
+  left: 0.8rem;
+  font-size: 0.9rem;
+  background-color: white;
+  padding: 0 0.25rem;
 }
 
-.labelName {
-    margin-right: 35%;
+.inputError {
+  border-color: #dc3545;
 }
 
-.labelTel {
-    margin-left: -30px;
-}
-
-.labelGender {
-    margin-left: -10px;
-}
-
-.registerInput2 {
-    width: 37%;
-    border: none;
-    border-bottom: 2px solid var(--primary_color-purple_light, #A66E7B);
-    margin-bottom: 10px;
-    margin-top: 10px;
-    font-size: x-large;
-    color: var(--info-dark_blue);
-    outline: none;
-}
-
-.registerInput2.rRegisterInput {
-    display: inline-block;
-    margin-left: -30px;
-}
-
-.registerContent input[type="date"] {
-    font-size: 18px;
-    margin-top: 20px;
-}
-
-.registerContent select {
-    /* width: 80%; */
-    border-radius: 0%;
-    border: none;
-    font-size: large;
-    color: var(--info-dark_blue);
-    border-bottom: 2px solid #A66E7B;
-    margin-top: 10px;
-    margin-left: -35px;
-}
-
-.registerButton {
-    width: 80%;
-    height: 60px;
-    border-radius: 4px;
-    background: var(--primary_color-purple, #9A5B69);
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
-    border: none;
-    color: var(--primary_color-light, #F4EBEB);
-    font-size: 20px;
-    font-weight: 400;
-    letter-spacing: 8px;
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
-
-
-
-.btnBack {
-    margin-top: -20px;
-    margin-left: 25%;
-    margin-bottom: 30px;
-}
-
-.red{
-  color: var(--orange, #ff4f4f);
-  text-decoration: none;
-}
-
-.btnBack Link .notice {
-  color: var(--orange, #ff4f4f);
-  text-decoration: none;
+.inputError:focus {
+  /* box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);  */
 }
 
 .error {
-  color: red;
-  display: none;
-  font-size: 0.9em;
-  margin-top: 5px;
-  position: absolute;
-  top: 20%;
-  left: 20%;
-}
-.errorAccount {
-  color: red;
-  display: none;
-  font-size: 0.9em;
-  margin-top: 5px;
-  position: absolute;
-  top: 20%;
-  left: 20%;
-}
-.errorPwd {
-  color: red;
-  display: none;
-  font-size: 0.9em;
-  margin-top: 5px;
-  position: absolute;
-  top: 35%;
-  left: 20%;
-  
-}
-.error .show {
-  display: block;
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
 
-/* 重設密碼 */
-.resetNotice{
-  color: var(--blue);
+/* .floatingLabelInput {
+  position: relative;
+} */
+
+.passwordToggle {
+  position: absolute;
+  right:95px;
+  top: 45%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  font-size: 20px;
+}
+@media (max-width: 768px) {
+  .passwordToggle {
+    padding-top: 1rem; /* 增加上內邊距 */
+  }
+}
+
+.loginInput {
+  padding-right: 40px; /* 為圖標騰出空間 */
+}
+
+.red{
+  color:var(--orange);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.blue{
+  color:#5B839A;
+  text-decoration: none;
+  cursor: pointer;
   font-weight: 500;
 }
 
-  .loginInput::placeholder {
-  color: #A66E7B;
-  font-size: medium;
+
+
+/* 自定義checkbox樣式 */
+.formCheck {
+  position: relative;
+  padding-left: 15px; /* 為複選框留出空間 */
 }
 
-/* 忘記密碼 */
-.message{
-  color: var(--orange);
-  font-weight: 600;
-
+.formCheckInput {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
 }
 
-  .forgetPWD::placeholder {
+.formCheckLabel {
+  cursor: pointer;
+  font-size: 17px;
   color: #A66E7B;
-  font-size: small;
+}
+
+.formCheckLabel::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid #D4C0C0;
+  border-radius: 0;
+  background-color: white;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.formCheckInput:checked + .formCheckLabel::before {
+  background-color: white;
+}
+
+.formCheckInput:checked + .formCheckLabel::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background-color: #A66E7B;
+  border: none;
+}
+
+/* 可訪問性：焦點樣式 */
+.formCheckInput:focus + .formCheckLabel::before {
+  box-shadow: 0 0 0 3px rgba(166, 110, 123, 0.3);
 }

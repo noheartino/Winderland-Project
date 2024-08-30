@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import { FaCircleCheck } from "react-icons/fa6";
 
-export default function CouponCardModal({ coupon, onSelect, isChecked, isClaimed  }) {
+export default function CouponCardModal({
+  coupon,
+  onSelect,
+  isChecked,
+  isClaimed,
+  isUsed,
+}) {
   const handleCheck = () => {
-    if (isClaimed) {
+    if (isClaimed | isUsed) {
       return; // 已經領取過的優惠券不能再選
     }
     onSelect(coupon); // 呼叫父元件的 onSelect 函式
@@ -16,6 +22,11 @@ export default function CouponCardModal({ coupon, onSelect, isChecked, isClaimed
         return {
           cardClass: style.couponDiscountCard,
           categoryClass: style.couponDiscountCategory,
+        };
+      case "金額折扣":
+        return {
+          cardClass: style.couponCard,
+          categoryClass: style.couponC,
         };
       default:
         return {
@@ -35,11 +46,11 @@ export default function CouponCardModal({ coupon, onSelect, isChecked, isClaimed
         title={`低消＄${coupon.min_spend}`}
       >
         <div
-          className={`${style.couponCard} row align-items-center py-3 ${couponcss.cardClass}`}
+          className={`row align-items-center py-3 ${couponcss.cardClass}`}
         >
           <div className={`col-auto pe-0`}>
             <p
-              className={`${style.couponC} p-2 m-0 ${couponcss.categoryClass}`}
+              className={`p-2 m-0 ${couponcss.categoryClass}`}
             >
               {coupon.category}
             </p>
@@ -60,6 +71,8 @@ export default function CouponCardModal({ coupon, onSelect, isChecked, isClaimed
             className="ms-3"
             style={{ fontSize: "40px", color: "var(--blue)" }}
           />
+        ) : isUsed ? (
+          "已使用"
         ) : (
           "+領取"
         )}

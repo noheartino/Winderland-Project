@@ -4,16 +4,53 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { CartContext } from "@/context/CartContext";
 
+
 export default function Nav() {
   const { logout } = useAuth();
   const router = useRouter();
   const [isOpen, setisOpen] = useState(false);
+  const [infodata, setInfo] = useState(null);
   const navRef = useRef(null);
   const { cartQuantity } = useContext(CartContext); // 使用 CartContext
-  console.log('總數量',cartQuantity)
+  // console.log('總數量',cartQuantity)
 
   const Data = useAuth().auth
-  const userData = Data.userData
+  const userData = (Data && Data.userData) ? Data.userData : '';
+
+
+  const userId = userData ? userData.id : 0
+
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      const searchQuery = event.target.value;
+      router.push(`/product?page=1&sort=id_asc&search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  
+  
+  useEffect(() => {
+    if (userId) {
+        fetch(`http://localhost:3005/api/header/${userId}`)
+            .then(response => response.json())
+            .then(infodata => setInfo(infodata))
+            .catch(error => console.error('Error:', error));
+    }
+  }, [userId]);
+
+
+
+  let userinfo = infodata?.userinfo?.[0].img || [];
+
+  if (typeof userinfo === 'string') {
+    userinfo = userinfo.replace(/[\r\n]+/g, '');
+  } else {
+    userinfo = ''
+  }
+
+
+
 
   const memberLevels = {
     1: '初級會員',
@@ -185,6 +222,8 @@ export default function Nav() {
       console.error('登出失敗:', error);
     }
   };
+
+
   return (
     <>
       <div className="nav_margin"></div>
@@ -230,7 +269,7 @@ export default function Nav() {
           <div className="HeaderCNavR">
             <div className="NavCSearch">
               <i className="fa-solid fa-magnifying-glass NavCSearchIcon" />
-              <input id="nav_search" type="search" placeholder="搜 尋" />
+              <input id="nav_search" type="text" placeholder="搜 尋" onKeyDown={handleKeyPress}/>
             </div>
             <div className="HeaderCart">
               <button onClick={GoCart}>
@@ -240,14 +279,14 @@ export default function Nav() {
               </button>
             </div>
             <div className="nav_user">
-              <img src={userData ? '/nav-footer/user_pic.png' : '/nav-footer/default_user_pr.jpg'} alt="" />
+              <img src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user_pr.jpg'} alt="" />
             </div>
             <div className="user_area">
               <div className="user_area_t">
                 {userData && <div className={`userlvis lv${userData.member_level_id}`}>Lv.{userData.member_level_id}</div> }
                 {/* <div className={`userlvis lv${userData.member_level_id}`}>Lv.4</div> */}
                 <div className="user_area_tl">
-                  <img src={userData ? '/nav-footer/user_pic.png' : '/nav-footer/default_user.jpg'} alt="" />
+                  <img src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user.jpg'} alt="" />
                 </div>
                 <div className="user_area_tr">
                   <p>{userData ? userData.user_name : '訪客'}</p>
@@ -379,8 +418,8 @@ export default function Nav() {
                     defaultValue={0}
                   />
                   <div className="navShopBox_b_text">
-                    <small>WINE-OPENER</small>
-                    <div className="fs-5">開瓶器具</div>
+                    <small>OTHER-TYPES</small>
+                    <div className="fs-5">其他類別</div>
                   </div>
                 </div>
               </div>
@@ -389,11 +428,11 @@ export default function Nav() {
         </div>
       </div>
       <div className="navShop_list"></div>
-      <div ref={navRef} className={`nav_rwdArea ${isOpen ? "display" : ""}`}>
+      <div ref={navRef} className={`nav_rwdArea d-lg-none ${isOpen ? "display" : ""}`}>
         <div className="nav_rwdArea_head">
           <div className="nav_rwdArea_head_t">
             <div className="nrht_l d-flex align-items-center">
-              <img className="rounded-circle" src={userData ? '/nav-footer/user_pic.png' : '/nav-footer/default_user.jpg'} alt="" width={60} />
+              <img className="rounded-circle nrht_lpic" src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user.jpg'} alt="" width={60} height={60}/>
               <div className="nrht_l_text ms-3">
                 <div>{userData ? userData.user_name : '訪客'}</div>
                 <div>{userData ? userData.account : '--'}</div>
@@ -408,48 +447,51 @@ export default function Nav() {
               <i className="fa-solid fa-ticket-simple me-1" /> <span>x4</span>
             </div>
             <div className="nrhb_r">
-              <a href="">
+              <Link href="/dashboard/profile" onClick={hamburgerHook}>
                 會員頁面
                 <i className="fa-solid fa-chevron-right" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
         <div className="nav_rwdArea_bottom">
           <ul>
-            <a href="">
+            <Link href="/" onClick={hamburgerHook}>
               <li>
                 <i className="fa-solid fa-house ihome" />
                 首頁
               </li>
-            </a>
-            <a href="">
+            </Link>
+            <Link href="/product" onClick={hamburgerHook}>
               <li>
                 <i className="fa-solid fa-bag-shopping me-2" />
                 商品列表
               </li>
-            </a>
-            <a href="">
+            </Link>
+            <Link href="/article" onClick={hamburgerHook}>
               <li>
                 <i className="fa-solid fa-book me-2" />
                 相關文章
               </li>
-            </a>
-            <a href="">
+            </Link>
+            <Link href="/course" onClick={hamburgerHook}>
               <li>
                 <i className="fa-solid fa-chalkboard-user icourse" />
                 <span>品酒課程</span>
               </li>
-            </a>
-            <a href="">
+            </Link>
+            <Link href="/event" onClick={hamburgerHook}>
               <li>
                 <i className="fa-solid fa-square-rss me-2" />
                 活動專區
               </li>
-            </a>
+            </Link>
           </ul>
         </div>
       </div>
+      {/* {userData ? <pre>{JSON.stringify(userData, null, 2)}</pre> : 'Loading...'}
+      {userinfo ? <pre>{JSON.stringify(userinfo, null, 2)}</pre> : 'Loading...'}
+      {userId} */}
     </>
   );
 }

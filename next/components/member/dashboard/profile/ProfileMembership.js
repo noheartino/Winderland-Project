@@ -39,6 +39,13 @@ export default function ProfileMembership() {
     4: 'levelD'
   };
 
+  // 函數用於格式化 points_reward_percentage
+  const formatPointsReward = (value) => {
+    // 使用 parseFloat 來確保 value 是數字
+    // 然後使用 toFixed(1) 來限制到小數點後一位
+    return parseFloat(value).toFixed(1);
+  };
+
   return (
     <>
       <div className={styles.levelList}>
@@ -52,11 +59,13 @@ export default function ProfileMembership() {
         <span className="span-p">{membershipInfo.name}會員優惠</span>
 
         <ul className='levelGift'>
-          <li>生日回饋 
-            <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>{membershipInfo.birthday_points}</span> WPoints
+          <li>生日回饋   
+            <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>{membershipInfo.birthday_points}</span>WPoints
           </li>
           <li>WPoints 
-            <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>{membershipInfo.points_reward_percentage}</span>倍回饋
+            <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>
+            {formatPointsReward(membershipInfo.points_reward_percentage)}
+            </span>倍回饋
           </li>
           <li>每月
           <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>{membershipInfo.free_coupon}</span>張自選優惠券</li>
