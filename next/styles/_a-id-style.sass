@@ -96,7 +96,7 @@
       letter-spacing: 2px
       color: var(--text_dark)
     .aid-content-p-sm
-      font-size: 14px
+      font-size: 16px
       font-style: normal
       font-weight: 400
       line-height: 2em
@@ -130,6 +130,7 @@
     // justify-content: space-between
     .send-comment
       border-bottom: 1px solid var(--wine_light)
+      margin-bottom: 2rem
     .aid-reply
       .au-icon
         background-color: var(--wine)
@@ -139,6 +140,7 @@
         display: flex
         justify-content: center
         align-items: center
+        overflow: hidden
         p
           color: #fff
           font-size: 34px
@@ -150,6 +152,7 @@
         display: flex
         justify-content: center
         align-items: center
+        overflow: hidden
         p
           color: #fff
           font-size: 16px
@@ -177,6 +180,16 @@
         .aid-replymore
           text-align: center
           padding: 0
+          a
+            i
+              font-size: 20px
+              color: var(--text_gray)
+              transition: 0.2s all ease
+              &:hover
+                color: darken(#6A6A6A, 15%)
+              &:active
+                transform: scale(0.7)
+
           .aid-replymore-dropmenu
             border: 0
             border-radius: 0
@@ -185,6 +198,8 @@
               a
                 text-align: center
                 color: var(--blue_dark)
+                
+                
 
         /* 評論內容 */
         .aucomment
@@ -199,9 +214,19 @@
             padding: 0
           button
             background-color: var(--primary)
-            color: #fff
-            border-radius: 44px
-
+            color: var(--light)
+            border-radius: 15px
+            border: 0
+            padding: 10px
+            padding-right: 15px
+            padding-left: 15px
+            letter-spacing: 1.4px
+            transition: all 0.3s ease
+            &:hover
+              background-color: lighten(#851931, 5%)
+              color: lighten(#F4EBEB, 10%)
+            &:active
+              transform: scale(0.95)
           p
             font-size: 16px
             letter-spacing: 1.6px
@@ -217,3 +242,19 @@
             font-size: 14px
             margin: 0
             color: var(--text_primary)
+
+.aLoginButton
+  background-color: var(--primary)
+  color: var(--light)
+  border-radius: 15px
+  border: 0
+  padding: 10px
+  padding-right: 15px
+  padding-left: 15px
+  letter-spacing: 1.4px
+  transition: all 0.3s ease
+  &:hover
+    background-color: lighten(#851931, 5%)
+    color: lighten(#F4EBEB, 10%)
+  &:active
+    transform: scale(0.95)

@@ -45,7 +45,7 @@ export default function ProductPhoto() {
           className={`${styles["arrow-button"]}  ${styles["arrow-left"]}`}
           onClick={() => changeImage("prev")}
         >
-          <i class="fa-solid fa-angle-left"></i>
+          <i className="fa-solid fa-angle-left"></i>
         </button>
         <img className={`${styles["product-img"]}`} src={`/images/product/${product[0].images[currentImageIndex].path}`} alt="" />
         <button
@@ -53,7 +53,7 @@ export default function ProductPhoto() {
           className={`${styles["arrow-button"]} ${styles["arrow-right"]}`}
           onClick={() => changeImage("next")}
         >
-          <i class="fa-solid fa-angle-right"></i>
+          <i className="fa-solid fa-angle-right"></i>
         </button>
       </div>
       {/* 商品小圖片們 */}

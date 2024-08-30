@@ -34,7 +34,7 @@ const queryClient = new QueryClient();
 
 export default function MyApp({ Component, pageProps }) {
   useEffect(() => {
-    import("bootstrap/dist/js/bootstrap.bundle.min.js");
+    require("bootstrap");
   }, []);
   
   // 使用自訂在頁面層級的版面(layout)

@@ -2,7 +2,7 @@ import React from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import CouponCardSm from "./CouponCardSm";
 
-export default function CouponList1({ coupon, coupons }) {
+export default function CouponList1({ coupon }) {
   if (!coupon || !coupon.id) {
     // 如果 coupon 或 coupon.id 不存在，返回 null 或其他佔位符內容
     return null;
@@ -13,6 +13,11 @@ export default function CouponList1({ coupon, coupons }) {
         return {
           cardClass: style.couponDiscountCard,
           categoryClass: style.couponDiscountCategory,
+        };
+      case "金額折扣":
+        return {
+          cardClass: style.couponCard,
+          categoryClass: style.couponC,
         };
       default:
         return {
@@ -34,20 +39,19 @@ export default function CouponList1({ coupon, coupons }) {
     <>
       <div className="col-6 px-4 my-3">
         <div
-          className={`${style.couponCard} row align-items-center py-3 d-none d-lg-flex ${couponcss.cardClass}`}
+          className={`row align-items-center py-3 d-none d-lg-flex ${couponcss.cardClass}`}
         >
           <div className={`col-auto pe-0`}>
             <p
-              className={`${style.couponC} p-2 m-0 ${couponcss.categoryClass}`}
+              className={`p-2 m-0 ${couponcss.categoryClass}`}
             >
               {coupon.category}
             </p>
           </div>
           <div className={`col p-0`}>
-            <p className={`${style.couponN} m-0`}>滿萬元現折350元</p>
+            <p className={`${style.couponN} m-0`}>{coupon.name}</p>
           </div>
         </div>
-        {coupons.map(couponsm=>(<CouponCardSm key={couponsm.id} couponsm={couponsm}/>))}
       </div>
       <div className="col-3 my-3">
         <p className={`${style.couponRecordDate} py-2 m-0 d-none d-lg-block`}>

@@ -277,13 +277,13 @@ export default function DashboardProfile() {
 
         {/* rwd */}
         <div
-          className="container-fluid d-block d-lg-none  d-fluid ms-4 "
+          className=" d-block d-lg-none  d-fluid ms-4 "
           id="account-content-rwd"
         >
           {/* 個人資料區 */}
           <section className="name-card-rwd ">
             {/* 會員資料 */}
-            <div className="d-flex">
+            <div className="d-flex profileArea">
               <div className="name-rwd">
                 <div className="userName-rwd">{auth.userData.user_name}</div>
 
