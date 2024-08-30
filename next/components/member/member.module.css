@@ -231,7 +231,8 @@
   border-radius: 4px;
   background: transparent;
   /* border: 2px solid var(--primary_color-purple, #9A5B69); */
-  color: var(--orange);
+  /* color: var(--orange); */
+  color: #60464C ;
   font-size: 16px;
   font-weight: 400;
   /* letter-spacing: 8px; */
@@ -258,7 +259,7 @@
 }
 
 .outlineButton:hover {
-  color: var(--primary_color-light, #F4EBEB);
+  color: var(--wine);
 }
 
 .outlineButton:hover::before {
@@ -588,7 +589,7 @@
 .passwordToggle {
   position: absolute;
   right:95px;
-  top: 35%;
+  top: 45%;
   transform: translateY(-50%);
   background: none;
   border: none;
@@ -611,6 +612,15 @@
   text-decoration: none;
   cursor: pointer;
 }
+
+.blue{
+  color:#5B839A;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+
 
 /* 自定義checkbox樣式 */
 .formCheck {

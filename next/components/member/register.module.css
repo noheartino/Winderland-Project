@@ -2,6 +2,7 @@
 .floatingLabelInput {
   position: relative;
   margin-bottom: 1rem;
+  /* margin-top: 40px; */
 }
 
 .floatingLabel {
@@ -67,7 +68,7 @@
 .passwordToggle {
   position: absolute;
   right: 95px;
-  top: 35%;
+  top: 45%;
   transform: translateY(-50%);
   background: none;
   border: none;
@@ -287,7 +288,7 @@
   font-size: 20px;
   font-weight: 400;
   letter-spacing: 8px;
-  margin-top: 30px;
+  /* margin-top: 30px; */
   margin-bottom: 30px;
 }
 
@@ -319,7 +320,7 @@
 .registerContent span {
     color: var(--info-orange, #FF4F4F);
     display: block;
-    margin-right: 80px;
+    margin-left: 40px;
     margin-top: 15px;
 }
 
@@ -409,8 +410,9 @@
 }
 
 .red{
-  color: var(--orange, #ff4f4f);
+  color: var(--wine);
   text-decoration: none;
+  font-weight: 500;
 }
 
 .btnBack Link .notice {
@@ -455,4 +457,124 @@
     font-size: 14px;
     font-weight: 400;
     letter-spacing: 1.4px;
+}
+
+.blue{
+  color:#5B839A;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+
+.checkbox {
+  margin-right: 10px;
+}
+
+.checkboxLabel {
+  font-size: 12px;
+  color: #9A5B69;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.checkRead{
+  margin-top: 20px;
+  margin-bottom: 8px;
+  font-size:smaller;
+}
+
+
+/* 自定義checkbox樣式 */
+.formCheck {
+  position: relative;
+  padding-left: 25px; 
+  /* 為複選框留出空間 */
+}
+
+.formCheckInput {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+  transform: translateY(-50%);
+  z-index: 1; /* 確保可點擊 */
+}
+
+.registerContent .formCheck .formCheckLabel,
+.registerContent .formCheck .formCheckLabelrwd {
+  cursor: pointer;
+  font-size: 14px;
+  color: #A66E7B;
+  
+
+}
+
+.registerContent .formCheck .formCheckLabelrwd {
+  cursor: pointer;
+  font-size: 11px;
+  color: #A66E7B;
+}
+
+.formCheckLabel::before,
+.formCheckLabelrwd::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 70%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid #D4C0C0;
+  border-radius: 0;
+  background-color: white;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.formCheckInput:checked + .formCheckLabel::before,
+.formCheckInput:checked + .formCheckLabelrwd::before {
+  background-color: white;
+}
+
+.formCheckInput:checked + .formCheckLabel::after,
+.formCheckInput:checked + .formCheckLabelrwd::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 70%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background-color: #A66E7B;
+  border: none;
+}
+
+/* 可訪問性：焦點樣式 */
+.formCheckInput:focus + .formCheckLabel::before,
+.formCheckInput:focus + .formCheckLabelrwd::before  {
+  box-shadow: 0 0 0 3px rgba(166, 110, 123, 0.3);
+}
+
+
+/* 移動設備樣式調整 */
+@media (max-width: 768px) {
+  .registerContent .formCheck .formCheckLabelrwd {
+    font-size: 12px; /* 縮小字體大小 */
+  }
+
+  .formCheckLabelrwd::before {
+    width: 18px; /* 稍微縮小checkbox大小 */
+    height: 18px;
+  }
+
+  .formCheckInput:checked + .formCheckLabelrwd::after {
+    left: 4px;
+    font-size: 12px;
+  }
 }

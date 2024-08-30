@@ -50,6 +50,7 @@ export default function RegisterForm() {
     password: '',
     password2: '',
     email: '',
+    agreeTerms: false,
   });
 
   const [errors, setErrors] = useState({
@@ -64,10 +65,10 @@ export default function RegisterForm() {
   const [showPassword2, setShowPassword2] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prevFormData => ({
       ...prevFormData,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
 
     // 即時驗證
@@ -75,7 +76,7 @@ export default function RegisterForm() {
 
     if (name === 'password') {
       if (value.length < 6 || value.length > 12) {
-        newErrors.password = '密碼長度至少6字元以上12字元以下';
+        newErrors.password = '密碼長度須為6-12字元';
       } else {
         newErrors.password = '';
       }
@@ -95,6 +96,14 @@ export default function RegisterForm() {
         newErrors.email = '';
       }
     }
+    if (name === 'agreeTerms') {
+      if (!checked) {
+        newErrors.agreeTerms = '請閱讀並同意會員服務條款與隱私權政策';
+      } else {
+        newErrors.agreeTerms = '';
+      }
+    }
+
 
     setErrors(newErrors);
   };
@@ -113,7 +122,7 @@ export default function RegisterForm() {
       newErrors.password = '密碼為必填';
       isValid = false;
     } else if (formData.password.length < 6 || formData.password.length > 12) {
-      newErrors.password = '密碼長度必須在6-12字元之間';
+      newErrors.password = '密碼長度須為6-12字元';
       isValid = false;
     }
 
@@ -138,6 +147,12 @@ export default function RegisterForm() {
       }
     }
 
+    if (!formData.agreeTerms) {
+      newErrors.agreeTerms = '請閱讀並同意會員服務條款與隱私權政策';
+      isValid = false;
+    }
+
+
     setErrors(newErrors);
 
     // 顯示所有錯誤訊息
@@ -146,6 +161,14 @@ export default function RegisterForm() {
         icon: 'error',
         title: '填寫資料錯誤',
         html: Object.values(newErrors).map(error => `<p>${error}</p>`).join(''),
+        showConfirmButton: true,
+      });
+    }
+    if (newErrors.agreeTerms) {
+      Swal.fire({
+        icon: 'warning',
+        title: '尚未同意條款',
+        text: '請閱讀並同意會員服務條款與隱私權政策',
         showConfirmButton: true,
       });
     }
@@ -300,7 +323,7 @@ export default function RegisterForm() {
 
             {/* tel */}
             <FloatingLabelInput
-              label="手機號碼 *"
+              label="手機號碼 "
               type="tel"
               name="phone"
               value={formData.phone}
@@ -336,6 +359,26 @@ export default function RegisterForm() {
               </div>
             </div>
 
+            {/* 同意政策 */}
+            <div className={`${styles.formCheck} ${styles.checkRead} align-items-center d-flex`}>
+              <input
+                name="agreeTerms"
+                className={styles.formCheckInput}
+                type="checkbox"
+                checked={formData.agreeTerms}
+                onChange={handleChange}
+                 id="agreeTerms"
+              />
+              <label className={styles.formCheckLabel} htmlFor="agreeTerms">
+                已閱讀並同意
+                <Link href="/terms" className={styles.red}>會員服務條款</Link>
+                與
+                <Link href="/privacy" className={styles.red}>隱私權政策</Link>
+              </label>
+          
+            </div>
+
+         
             {/* 按鈕 */}
             <button type="submit" className={styles.button}>註冊</button>
             <br />
@@ -343,7 +386,7 @@ export default function RegisterForm() {
             <p className={styles.hadAccount}>
               已經是會員了嗎？
               <Link href="/member/login" className={styles.red}>
-                去登入
+                現在登入
               </Link>。
             </p>
             <div
@@ -352,7 +395,7 @@ export default function RegisterForm() {
 
               <Link
                 href="/"
-                className={styles.red}
+                className={styles.blue}
               >
                 返回首頁
               </Link>
@@ -429,7 +472,7 @@ export default function RegisterForm() {
 
               {/* tel */}
               <FloatingLabelInput
-                label="手機號碼 *"
+                label="手機號碼 "
                 type="tel"
                 name="phone"
                 value={formData.phone}
@@ -465,13 +508,31 @@ export default function RegisterForm() {
                 </div>
               </div>
 
+    {/* 同意政策 */}
+<div className={`${styles.formCheck} ${styles.checkRead} align-items-center d-flex`}>
+  <input
+    name="agreeTerms"
+    className={styles.formCheckInput}
+    type="checkbox"
+    checked={formData.agreeTerms}
+    onChange={handleChange}
+    id="agreeTermsRwd"
+  />
+  <label className={styles.formCheckLabelrwd} htmlFor="agreeTermsRwd">
+    已閱讀並同意
+    <Link href="/terms" className={styles.red}>會員服務條款</Link>
+    與
+    <Link href="/privacy" className={styles.red}>隱私權政策</Link>
+  </label>
+</div>
+
               {/* 按鈕 */}
               <button type="submit" className={styles.button}>註冊</button>
               <br />
               <p className={styles.hadAccount}>
                 已經是會員了嗎？
                 <Link href="/member/login" className={styles.red} >
-                  登入
+                  現在登入
                 </Link>。
               </p>
               <div
@@ -480,7 +541,7 @@ export default function RegisterForm() {
 
                 <Link
                   href="/"
-                  className={styles.red}
+                  className={styles.blue}
                 >
                   返回首頁
                 </Link>

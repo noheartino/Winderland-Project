@@ -155,9 +155,17 @@ router.post('/register', async function (req, res) {
     !newUser.account ||
     !newUser.password ||
     !newUser.user_name ||
-    !newUser.email
+    !newUser.email ||
+    !newUser.agreeTerms
   ) {
     return res.status(400).json({ status: 'error', message: '缺少必要資料' })
+  }
+
+  // 確保 agreeTerms 為 true
+  if (newUser.agreeTerms !== true) {
+    return res
+      .status(400)
+      .json({ status: 'error', message: '必須同意服務條款才能註冊' })
   }
 
   try {

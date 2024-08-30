@@ -271,7 +271,7 @@ export default function LoginForm() {
                 >
                   <p>目前還沒有帳號嗎？</p>{' '}
                   <Link href="/member/register"
-                    className={styles.red}>加入我們</Link>
+                    className={styles.blue}>立即註冊新帳號</Link>
                 </div>
                 {/* 第三方登入 */}
                 {/* <div className={styles.fastLogin}>
@@ -370,7 +370,7 @@ export default function LoginForm() {
                 >
                   <p>目前還沒有帳號嗎？</p>
                   <Link href="/member/register"
-                    className={`${styles.red} mb-5`}>加入我們</Link>
+                    className={`${styles.blue} mb-5`}>立即註冊新帳號</Link>
 
                 </div>
 
