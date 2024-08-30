@@ -1,6 +1,7 @@
 .course_wrap,
 .tarot_wrap,
-.course-comment-area {
+.course-comment-area,
+.course-manage-wrap {
   --course_purple_light: #a66e7b;
   --course_wine_light: #db738a;
   --course_yellow_hover: #ffc831;
@@ -710,6 +711,697 @@
   }
 
   /* ↑ course */
+
+  /* ↓ course-manage */
+  @keyframes line {
+    0%{
+        transform: scaleX(0);
+        transform-origin: left; 
+    }
+    20%{
+        transform: scaleX(1);
+        transform-origin: left; 
+    }
+
+    80%{
+        transform: scaleX(1);
+        transform-origin: right; 
+    }
+    100%{
+        transform: scaleX(0);
+        transform-origin: right; 
+    }
+}
+
+@keyframes linearr {
+    0%{
+        opacity: 0;
+        transform: rotate(0deg);
+    }
+    20%{
+        opacity: 1;
+        transform: rotate(35deg);
+    }
+
+    80%{
+        opacity: 1;
+        transform: rotate(35deg);
+    }
+    100%{
+        opacity: 0;
+        transform: rotate(0deg);
+    }
+}
+
+.C-A-rmpre{
+    text-decoration: none;
+}
+
+.CArmall{
+    text-decoration: none;
+    display: block;
+}
+
+.CArmallc{
+    text-decoration: none;
+    display: block;
+    color: #916B51;
+}
+
+.CArmallmt{
+    text-decoration: none;
+    display: block;
+    margin-top: auto;
+}
+  .CmanageHeader{
+    width: 100%;
+    height: 250px;
+    background: url('/images/course_and_tarot/Rectangle 115.png') no-repeat 50%30%/cover;
+
+    @media screen and (max-width: 992px){
+        height: 150px;
+    }
+
+    .eventHeader_img{
+        width: 400px;
+        padding-top: 65px;
+
+        @media screen and (max-width: 992px){
+            width: 250px;
+            padding-top: 40px;
+            padding-left: 15px;
+        }
+    }
+}
+  .CManageNav{
+    width: 100%;
+
+    @media screen and (max-width: 992px){
+        padding-inline: 15px;
+    }
+
+    .CManageNavT{
+        color: var(--text_primary);
+        font-weight: 900;
+        font-size: 22px;
+        padding-block: 30px;
+
+        @media screen and (max-width: 992px){
+            font-size: 18px;
+            padding-block: 20px;
+        }
+
+    }
+
+    .CManageNavList{
+        width: 100%;
+        display: flex;
+        position: relative;
+        background: url(/event/Line\ 14.png) no-repeat bottom/100% 5%;
+
+       a{
+            /* border: 2px solid lightblue; */
+            @media screen and (max-width: 576px){
+                font-size: 14px;
+                width: 25%;
+                letter-spacing: 1px;
+            }
+       }
+
+        .CNavListLi{
+            text-align: center;
+            font-weight: 900;
+            padding-block: 15px;
+            width: 130px;
+            letter-spacing: 1px;
+            color: #916B51;
+            cursor: pointer;
+
+            @media screen and (max-width: 992px){
+                padding-block: 10px;
+                font-size: 14px;
+                width: 110px;
+                letter-spacing: 1px;
+            }
+
+            @media screen and (max-width: 576px){
+                width: 100%;
+            }
+
+            
+        }
+
+        .CNowUnderLI{
+            border-bottom: 6px solid #916B51;
+        }
+    }
+}
+
+
+.eventCreateWrite{
+    padding-top: 40px;
+    padding-bottom: 80px;
+
+    @media screen and (max-width: 992px){
+        padding-top: 30px;
+        padding-bottom: 60px;
+        padding-inline: 15px;
+    }
+    .CmanageCreateTag{
+        font-weight: 900;
+        color: #916B51;
+        letter-spacing: 2px;
+        width: 100%;
+
+        @media screen and (max-width: 992px){
+            font-size: 14px;
+        }
+    }
+
+    .CourseCreateInput{
+        background-color: #FBF9F7;
+        width: 100%;
+        padding-block: 7px;
+        padding-left: 10px;
+        color: var(--text_primary);
+        letter-spacing: 2px;
+        border: 1px solid #dbdbdb;
+        font-size: 16px;
+        &::placeholder{
+          color: var(--text_gray_light)
+        }
+
+        @media screen and (max-width: 992px){
+            font-size: 12px;
+            padding-block: 5px;
+            margin-bottom: 15px;
+            padding-left: 5px;
+        }
+    }
+
+    .Cprevpic{
+        width: 100%;
+        height: 230px;
+        object-fit: cover;
+        object-position: center;
+        margin-bottom: 10px;
+    }
+
+    #classIntro{
+        width: 100%;
+        height: 500px;
+        background-color: #FBF9F7;
+        border: 1px solid #dbdbdb;
+        color: var(--text_primary);
+        padding-block: 7px;
+        padding-left: 10px;
+        letter-spacing: 1px;
+        resize: none;
+        &::placeholder{
+          color: var(--text_gray_light)
+        }
+    }
+    #classSummary{
+      width: 100%;
+      height: 250px;
+      background-color: #FBF9F7;
+      border: 1px solid #dbdbdb;
+      color: var(--text_primary);
+      padding-block: 7px;
+      padding-left: 10px;
+      letter-spacing: 1px;
+      resize: none;
+      &::placeholder{
+        color: var(--text_gray_light)
+      }
+  }
+
+    .CeventCR{
+        width: 120px;
+        padding-block: 8px;
+        font-size: 1rem;
+        background-color: var(--light);
+        color: var(--text_primary);
+        letter-spacing: 0.2rem;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 2px 3px rgb(150, 150, 150);
+        margin-right: 20px;
+    }
+    .CeventCS{
+        width: 120px;
+        padding-block: 8px;
+        font-size: 1rem;
+        background-color: #916B51;
+        color: white;
+        letter-spacing: 0.2rem;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 2px 3px rgb(150, 150, 150);
+    }
+
+    #eventCreateModal{
+        color: var(--text_primary);
+    }
+    
+}
+
+.courseMDetailArea{
+    margin-top: 20px;
+    margin-bottom: 80px;
+    min-height: 0px;
+
+
+    @media screen and (max-width: 992px){
+        padding-inline: 15px;
+    }
+
+    .classMDetailist{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .CMDetailistBox{
+        border: 1px solid var(--wine_light);
+        background-color: #FBF9F7;
+        width: 100%;
+        height: 170px;
+        display: flex;
+        position: relative;
+
+        @media screen and (max-width: 576px){
+            height: 110px;
+        }
+      
+
+
+        .CMDetailistBoxPic{
+            height: 100%;
+            width: 300px;
+            object-fit: cover;
+            object-position: top;
+            display: block;
+
+            @media screen and (max-width: 768px){
+                width: 130px;
+            }
+
+            @media screen and (max-width: 576px){
+                width: 80px;
+            }
+        }
+
+        .CMDetailistBoxT{
+            padding: 25px;
+            flex-grow: 1;
+
+            @media screen and (max-width: 576px){
+                padding: 12px;
+            }
+        }
+
+        .CMDetailistBoxTitle{
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+
+        }
+
+        .CMstatus{
+            background-color: #FEFFD3;
+            border: 1px solid #E3E3C0;
+            color: var(--green_dark);
+            letter-spacing: 2px;
+            font-weight: 900;
+            font-size: 14px;
+            padding: 5px 15px;
+            text-align: center;
+            white-space: nowrap;
+
+            @media screen and (max-width: 576px){
+                font-size: 12px;
+                padding: 2px 5px;
+                letter-spacing: 0px;
+            }
+        }
+
+        .CMstatus.past{
+            background-color: #eeeeee;
+            border: 1px solid #acacac;
+            color: #505050;
+            letter-spacing: 2px;
+            font-weight: 900;
+            font-size: 14px;
+            padding: 5px 15px;
+            text-align: center;
+            white-space: nowrap;
+
+            @media screen and (max-width: 576px){
+                font-size: 12px;
+                padding: 2px 5px;
+                letter-spacing: 0px;
+            }
+        }
+        
+
+        .CMclassTitle{
+            /* border: 2px solid lightblue; */
+            font-size: 18px;
+            color: #916B51;
+            font-weight: 900;
+            letter-spacing: 2px;
+            padding-left: 10px;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            line-clamp: 1;
+            overflow: hidden;
+
+            @media screen and (max-width: 576px){
+                font-size: 12px;
+            }
+           
+        }
+
+        .CMDetailistBoxInfo{
+            color: var(--text_primary);
+            letter-spacing: 1px;
+            font-weight: 600;
+            padding-top: 20px;
+            padding-left: 2px;
+            font-size: 14px;
+            line-height: 30px;
+            @media screen and (max-width: 576px){
+                padding-top: 15px;
+                font-size: 12px;
+                line-height: 22px;
+                font-weight: 400;
+            }
+        }
+
+        .CMDetailistBoxArr{
+            position: absolute;
+            right: 35px;
+            top: 100px;
+            width: 40px;
+            height: 40px;
+            /* border: 2px solid lightblue; */
+            cursor: pointer;
+
+            @media screen and (max-width: 576px){
+                right: 10px;
+                top: 60px;
+            }
+
+            .CMlineA{
+                width: 12px;
+                height: 2px;
+                border-radius: 2px;
+                background-color: #916B51;
+                position: absolute;
+                transform: rotate(-40deg);
+                bottom: 17px;
+                left: 10px;
+                transition: .5s;
+            }
+            .CMlineA.active{
+                transform: rotate(40deg);
+            }
+            .CMlineB{
+                width: 12px;
+                height: 2px;
+                border-radius: 2px;
+                background-color: #916B51;
+                position: absolute;
+                transform: rotate(40deg);
+                bottom: 17px;
+                right: 10px;
+                transition: .5s;
+            }
+
+            .CMlineB.active{
+                transform: rotate(-40deg);
+            }
+        }
+
+    }
+
+    .CMDetailistToggleBox.active{
+        display: block;
+    }
+
+    .CMDetailistToggleBox.scaleY{
+        transform: scaleY(1);
+    }
+
+    .CMDetailistToggleBox{
+        background-color: rgb(250, 250, 250);
+        box-shadow: 0 3px 3px rgb(230, 230, 230);
+        width: 100%;
+        padding: 35px 40px;
+        transform: scaleY(0);
+        transform-origin: top;
+        display: none;
+        transition: .5s;
+
+        @media screen and (max-width: 768px){
+            padding: 20px 25px;
+        }
+
+
+        .CMListInformationT{
+            font-weight: 900;
+            color: var(--text_primary);
+            font-size: 20px;
+            letter-spacing: 2px;
+            padding-bottom: 10px;
+            @media screen and (max-width: 992px){
+                font-size: 18px;
+            }
+        }
+
+        .CMListInfoEventT{
+            font-weight: 600;
+            color: #916B51;
+            font-size: 16px;
+            letter-spacing: 1px;
+            padding-bottom: 10px;
+            @media screen and (max-width: 576px){
+                font-size: 12px;
+            }
+        }
+
+        .CMEditIcon{
+            display: flex;
+            justify-content: flex-end;
+            .CMEditIconI{
+                cursor: pointer;
+                color: #916B51;
+                font-size: 2rem;
+            }
+            .CMEditIconT{
+                font-size: 1rem;
+                margin-right: 10px;
+                letter-spacing: 1px;
+                font-weight: 900;
+                color: #916B51;
+            }
+        }
+        .CMListStatisT{
+            font-weight: 900;
+            color: var(--text_primary);
+            font-size: 20px;
+            letter-spacing: 2px;
+            padding-bottom: 10px;
+            @media screen and (max-width: 992px){
+                font-size: 18px;
+            }
+        }
+
+        .classMLimit{
+            margin-top: 10px;
+            .classMLimiText{
+                color: #916B51;
+                letter-spacing: 2px;
+                display: flex;
+                justify-content: space-between;
+                padding-bottom: 10px;
+    
+                @media screen and (max-width: 1200px){
+                    font-size: 14px;
+                }
+                @media screen and (max-width: 768px){
+                    font-size: 12px;
+                    letter-spacing: 0px;
+                }
+            }
+        }
+    
+        .classMLimitLine{
+            background-color: #D2AD94;
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+    
+            .classMLimitLinedata{
+                width: 60%;
+                height: 10px;
+                border-radius: 5px;
+                background-color: #916B51;
+    
+            }
+        }
+    }
+    .CMDetailistBox.CMapplyEnd{
+        border: 1px solid var(--wine_light);
+        background-color: #FBF9F7;
+        width: 100%;
+        height: 170px;
+        display: flex;
+        position: relative;
+
+        @media screen and (max-width: 576px){
+            height: 110px;
+        }
+      
+
+
+        .CMDetailistBoxPic{
+            height: 100%;
+            width: 300px;
+            object-fit: cover;
+            object-position: top;
+            display: block;
+            filter:grayscale(0.5);
+
+            @media screen and (max-width: 768px){
+                width: 130px;
+            }
+
+            @media screen and (max-width: 576px){
+                width: 80px;
+            }
+        }
+
+        .CMDetailistBoxT{
+            padding: 25px;
+            flex-grow: 1;
+
+            @media screen and (max-width: 576px){
+                padding: 12px;
+            }
+        }
+
+        .CMDetailistBoxTitle{
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+
+        }
+
+        .CMstatus{
+            background-color: #FEFFD3;
+            border: 1px solid #E3E3C0;
+            color: var(--orange);
+            letter-spacing: 2px;
+            font-weight: 900;
+            font-size: 14px;
+            padding: 5px 15px;
+            text-align: center;
+            white-space: nowrap;
+
+            @media screen and (max-width: 576px){
+                font-size: 12px;
+                padding: 2px 5px;
+                letter-spacing: 0px;
+            }
+        }
+
+        .CMclassTitle{
+            /* border: 2px solid lightblue; */
+            font-size: 18px;
+            color: #916B51;
+            font-weight: 900;
+            letter-spacing: 2px;
+            padding-left: 10px;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            line-clamp: 1;
+            overflow: hidden;
+
+            @media screen and (max-width: 576px){
+                font-size: 12px;
+            }
+           
+        }
+
+        .CMDetailistBoxInfo{
+            color: var(--text_primary);
+            letter-spacing: 1px;
+            font-weight: 600;
+            padding-top: 20px;
+            padding-left: 2px;
+            font-size: 14px;
+            line-height: 30px;
+            @media screen and (max-width: 576px){
+                padding-top: 15px;
+                font-size: 12px;
+                line-height: 22px;
+                font-weight: 400;
+            }
+        }
+
+        .CMDetailistBoxArr{
+            position: absolute;
+            right: 35px;
+            top: 100px;
+            width: 40px;
+            height: 40px;
+            /* border: 2px solid lightblue; */
+            cursor: pointer;
+
+            @media screen and (max-width: 576px){
+                right: 10px;
+                top: 60px;
+            }
+
+            .CMlineA{
+                width: 12px;
+                height: 2px;
+                border-radius: 2px;
+                background-color: #916B51;
+                position: absolute;
+                transform: rotate(-40deg);
+                bottom: 17px;
+                left: 10px;
+                transition: .5s;
+            }
+            .CMlineA.active{
+                transform: rotate(40deg);
+            }
+            .CMlineB{
+                width: 12px;
+                height: 2px;
+                border-radius: 2px;
+                background-color: #916B51;
+                position: absolute;
+                transform: rotate(40deg);
+                bottom: 17px;
+                right: 10px;
+                transition: .5s;
+            }
+
+            .CMlineB.active{
+                transform: rotate(-40deg);
+            }
+        }
+
+    }
+}
+  /* ↑ course-manage */
 
   /* ↓ tarot */
   & .tarot-quest-area {

@@ -315,4 +315,16 @@ router.post('/:courseId', async (req, res) => {
   }
 })
 
+// !! 課程管理 create
+router.post('course/teacher/management', async (req, res) => {
+
+  try {
+    // const [courseWriteInCart] = await connection.execute(courseWriteInCartSQL)
+    // res.json({ courseWriteInCart })
+    console.log('測試POST:' + req.originalUrl)
+  } catch (err) {
+    res.status(500).json({ error: 'error' + err.message })
+  }
+})
+
 export default router
