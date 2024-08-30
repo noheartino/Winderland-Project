@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '@/hooks/use-auth'
 import { useRouter } from 'next/router'
+import Swal from 'sweetalert2'
 
 export default function ProfileUpdateUser() {
   // 驗證登入
@@ -55,41 +56,41 @@ export default function ProfileUpdateUser() {
     }))
   }
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault()
-  //   try {
-  //     const response = await fetch('http://localhost:3005/api/dashboard/profile', {
-  //       method: 'PUT',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       credentials: 'include',
-  //       body: JSON.stringify(formData)
-  //     })
-  //     if (!response.ok) {
-  //       throw new Error('Failed to update profile')
-  //     }
-  //     // 更新成功後的操作，例如顯示成功消息
-  //     alert('Profile updated successfully')
-  //     fetchUserData() // 重新獲取用戶數據以刷新頁面
-  //   } catch (err) {
-  //     setError(err.message)
-  //   }
-  // }
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       // console.log('Submitting form data:', formData);
       const result = await updateUserInfo(formData);      
       if (result.success) {
-        alert('個人資料更新成功');
+        // alert('個人資料更新成功');
+        await Swal.fire({
+          icon: 'success',
+          title: '個人資料更新成功',
+          text: '已完成資料修改',
+          showConfirmButton: false,
+          timer: 1500
+        });
         // console.log('Updated user data:', result.user);
         updateFormData(result.user);
       } else {
-        alert('更新個人資料失敗：' + (result.error || '未知錯誤'));
+        // alert('更新個人資料失敗：' + (result.error || '未知錯誤'));
+        await Swal.fire({
+          icon: 'error',
+          title: '更新個人資料失敗',
+          text: result.error || '未知錯誤',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     } catch (err) {
-      alert('更新個人資料失敗：' + err.message);
+      // alert('更新個人資料失敗：' + err.message);
+      await Swal.fire({
+        icon: 'error',
+        title: '更新個人資料失敗',
+        text: err.message,
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
   }
 
@@ -130,7 +131,7 @@ export default function ProfileUpdateUser() {
                   value={formData.gender}
                   onChange={handleInputChange}
                   style={{ width: "45%" }}>
-                  <option value="option1">選擇性別</option>
+                  {/* <option value="option1">選擇性別</option> */}
                   <option value="Male">男</option>
                   <option value="Female">女</option>
                   <option value="Other">不願透露</option>

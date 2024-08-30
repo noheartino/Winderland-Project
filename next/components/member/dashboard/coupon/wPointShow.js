@@ -2,7 +2,7 @@ import React from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import Image from "next/image";
 
-export default function WPointShow() {
+export default function WPointShow({userPoints}) {
   return (
     <>
       {/* 電腦 */}
@@ -30,7 +30,7 @@ export default function WPointShow() {
             />
             <div className={`col py-3`}>
               <h2 className={`${style.wpoint}`}>W Point</h2>
-              <div className={`${style.totalPoints}`}>1238P</div>
+              <div className={`${style.totalPoints}`}>{userPoints.points_balance}P</div>
             </div>
           </div>
         </div>
@@ -60,7 +60,7 @@ export default function WPointShow() {
             />
             <div className={`col py-3`}>
               <h2 className={`${style.wpoint}`} style={{fontSize: "20px"}}>W Point</h2>
-              <div className={`${style.totalPoints}`} style={{fontSize: "40px"}}>1238P</div>
+              <div className={`${style.totalPoints}`} style={{fontSize: "40px"}}>{userPoints.points_balance}P</div>
             </div>
           </div>
         </div>

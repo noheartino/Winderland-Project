@@ -1,12 +1,71 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import css from '@/components/cart/cart3/cartProductTotal.module.css';
 
 export default function CartProductTotalM() {
+  const [orderData, setOrderData] = useState({
+    image: '/images/cart/wine.png',
+    name: '',
+    quantity: 0,
+    totalAmount: 0,
+    transportText: '', // 新增欄位
+    paymentText: ''    // 新增欄位
+  });
+
+  useEffect(() => {
+    // 從 sessionStorage 獲取資料
+    const productData = JSON.parse(sessionStorage.getItem('productData')) || [];
+    const classData = JSON.parse(sessionStorage.getItem('classData')) || [];
+    const discountedAmount = parseFloat(sessionStorage.getItem('discountedAmount')) || 0;
+    const selectedTransport = sessionStorage.getItem('selectedTransport') || '';
+    const selectedPayment = sessionStorage.getItem('selectedPayment') || '';
+
+    let transportText = '';
+    let paymentText = '';
+
+    // 根據 selectedTransport 設置 transportText
+    if (selectedTransport === 'transport711') {
+      transportText = '7-11';
+    } else if (selectedTransport === 'blackcat') {
+      transportText = '黑貓宅急便';
+    }
+
+    // 根據 selectedPayment 設置 paymentText
+    if (selectedPayment === 'creditpay') {
+      paymentText = '信用卡';
+    } else if (selectedPayment === 'productpay') {
+      paymentText = '貨到付款';
+    }
+
+    if (productData.length > 0) {
+      // 如果有商品資料
+      const firstProduct = productData[0];
+      setOrderData({
+        image: `/images/cart/cartProduct/images/${firstProduct.product_image}`,
+        name: firstProduct.product_name,
+        quantity: productData.reduce((acc, item) => acc + item.product_quantity, 0) + classData.length,
+        totalAmount: discountedAmount,
+        transportText, // 更新欄位
+        paymentText   // 更新欄位
+      });
+    } else if (classData.length > 0) {
+      // 如果沒有商品資料但有課程資料
+      const firstClass = classData[0];
+      setOrderData({
+        image: `/images/cart/cartClass/upload_class/${firstClass.class_image}`, // 課程沒有圖片，假設使用預設圖片
+        name: firstClass.class_name,
+        quantity: classData.length,
+        totalAmount: discountedAmount,
+        transportText, // 更新欄位
+        paymentText   // 更新欄位
+      });
+    }
+  }, []);
+
   return (
     <>
       <div className={css.cartProductBox3M}>
         <div className={css.cartProductImg3M}>
-          <img src="/images/cart/wine.png" alt="" />
+          <img src={orderData.image} alt="Order Item" />
         </div>
         <div className={css.cartProductOrderBox3M}>
           <div className={css.cartProductOrderBox3ML}>
@@ -24,14 +83,13 @@ export default function CartProductTotalM() {
             </div>
           </div>
           <div>
-            <div className={css.orderNumber2M}>共12件</div>
-            <div className={css.orderPay2M}>貨到付款(7-11)</div>
+            <div className={css.orderNumber2M}>共{orderData.quantity}件</div>
+            <div className={css.orderPay2M}>{orderData.paymentText} ({orderData.transportText})</div>
             <div className={css.orderStatus2M}>出貨準備中</div>
-            <div className={css.orderTotal2M}>NT$ 171,996</div>
+            <div className={css.orderTotal2M}>NT$ {Math.floor(orderData.totalAmount)}</div>
           </div>
         </div>
       </div>
     </>
   );
 }
-

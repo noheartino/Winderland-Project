@@ -56,17 +56,19 @@ const createOtp = async (email, exp = 30, limit = 60) => {
 
     // 到期時間 預設 exp = 30 分鐘到期
     const exp_timestamp = Date.now() + exp * 60 * 1000
+    const expires_at = new Date(exp_timestamp)
 
     if (foundOtp && shouldReset(foundOtp.exp_timestamp, exp, limit)) {
       // 修改Otp
       await connection.execute(
-        'UPDATE otp SET token = ?, exp_timestamp = ? WHERE email = ?',
-        [token, exp_timestamp, email]
+        'UPDATE otp SET token = ?, exp_timestamp = ?, expires_at = ? WHERE email = ?',
+        [token, exp_timestamp, expires_at, email]
       )
 
       return {
         ...foundOtp,
         exp_timestamp,
+        expires_at,
         token,
       }
     }
@@ -74,8 +76,8 @@ const createOtp = async (email, exp = 30, limit = 60) => {
     // 以下為"沒找到otp記錄"
     // 建立新記錄
     const [result] = await connection.execute(
-      'INSERT INTO otp (user_id, email, token, exp_timestamp) VALUES (?, ?, ?, ?)',
-      [user.id, email, token, exp_timestamp]
+      'INSERT INTO otp (user_id, email, token, exp_timestamp, expires_at) VALUES (?, ?, ?, ?, ?)',
+      [user.id, email, token, exp_timestamp, expires_at]
     )
 
     console.log('New OTP created:', token)
@@ -85,6 +87,7 @@ const createOtp = async (email, exp = 30, limit = 60) => {
       email,
       token,
       exp_timestamp,
+      expires_at,
     }
   } catch (error) {
     console.error('Error in createotps:', error)

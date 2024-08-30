@@ -14,6 +14,11 @@ export default function CouponCard({coupon}) {
           cardClass: style.couponDiscountCard,
           categoryClass: style.couponDiscountCategory,
         };
+      case "金額折扣":
+        return {
+          cardClass: style.couponCard,
+          categoryClass: style.couponC,
+        };
       default:
         return {
           cardClass: "",
@@ -27,9 +32,9 @@ export default function CouponCard({coupon}) {
     <>
       {/* 一組優惠券 */}
       <div className={`col-12 col-lg-4 px-5 py-3`}>
-        <div className={`${style.couponCard} row align-items-center py-3 ${couponcss.cardClass}`}>
+        <div className={`row align-items-center py-3 ${couponcss.cardClass}`}>
           <div className={`col-auto pe-0`}>
-            <p className={`${style.couponC} p-2 m-0 ${couponcss.categoryClass}`}>{coupon.category}</p>
+            <p className={`p-2 m-0 ${couponcss.categoryClass}`}>{coupon.category}</p>
           </div>
           <div className={`col p-0`}>
             <p className={`${style.couponN} m-0`}>{coupon.name}</p>
