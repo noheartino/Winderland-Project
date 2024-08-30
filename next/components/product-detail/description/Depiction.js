@@ -12,7 +12,7 @@ export default function Depiction() {
   return (
     <>
       {product[0].descriptions.map((d) => (
-        <div className={`${styles["product-part"]}`}>{d.part}</div>
+        <div key={d.id} className={`${styles["product-part"]}`}>{d.part}</div>
       ))}
     </>
   );
