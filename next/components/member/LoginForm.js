@@ -282,7 +282,7 @@ export default function LoginForm() {
                   <div className={styles.buttonGruop}>
                     <button
                       className={`${styles.googleLogin} d-flex justify-content-center align-items-center`}
-                      onClick={handleGoogleLogin}
+                      onClick={googleLogin}
                       type="button"  // 確保這不會觸發表單提交
                     >
                       <GoogleLogo className="mx-3" />

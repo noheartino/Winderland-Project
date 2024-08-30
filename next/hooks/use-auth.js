@@ -10,8 +10,9 @@ import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
 
 // google登入
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { useFirebase } from './useFirebase';
+// import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+// import { useFirebase } from './useFirebase';
+import useFirebase from './use-firebase';
 
 // * Context使用1.建立context與導出
 // 傳入參數為defaultValue，是在套用context時錯誤或失敗才會得到的值
@@ -24,6 +25,8 @@ export function AuthProvider({ children }) {
   // 建立路由器
   const router = useRouter()
   // const { auth, firebaseInitialized } = useFirebase();
+  // goole登入
+  const { loginGoogle } = useFirebase()
 
   // 會員使用的認証&授權狀態
   const [auth, setAuth] = useState({
@@ -88,7 +91,7 @@ export function AuthProvider({ children }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ account, password, rememberMe }), 
+        body: JSON.stringify({ account, password, rememberMe }),
         credentials: 'include',
       })
       const data = await response.json()
@@ -102,7 +105,7 @@ export function AuthProvider({ children }) {
         });
         const profileData = await profileResponse.json();
         console.log('Profile data:', profileData);
-  
+
         if (profileResponse.ok && profileData.status === 'success') {
           const userData = {
             ...profileData.data.user,
@@ -111,7 +114,7 @@ export function AuthProvider({ children }) {
             member_level_id: profileData.data.user.member_level_id || '',
             phone: profileData.data.user.phone || '',
             address: profileData.data.user.address || '',
-            email: profileData.data.user.email || '', 
+            email: profileData.data.user.email || '',
           };
           setAuth({
             isAuth: true,
@@ -210,17 +213,18 @@ export function AuthProvider({ children }) {
   };
 
   // * google登入
-  const googleLogin = async () => {
-    if (!auth) {
-      console.error('Firebase auth is not initialized');
-      return { success: false, message: 'Firebase auth is not initialized' };
-    }
-  
+  const cbGoogleLogin = async (providerData) => {
+    // if (!auth) {
+    //   console.error('Firebase auth is not initialized');
+    //   return { success: false, message: 'Firebase auth is not initialized' };
+    // }
+
     try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-  
+      // const provider = new GoogleAuthProvider();
+      // const result = await signInWithPopup(auth, provider);
+      // const user = result.user;
+      const user = providerData
+
       // 向後端發送 Google 用戶資訊
       const response = await fetch('http://localhost:3005/api/google-login', {
         method: 'POST',
@@ -228,6 +232,7 @@ export function AuthProvider({ children }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          providerId:"google.com",
           displayName: user.displayName,
           email: user.email,
           uid: user.uid,
@@ -235,9 +240,9 @@ export function AuthProvider({ children }) {
         }),
         credentials: 'include',
       });
-  
+
       const data = await response.json();
-  
+
       if (data.status === 'success') {
         setAuth({
           isAuth: true,
@@ -254,7 +259,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ auth, login, logout, checkAuth, updateUserInfo, googleLogin }}>
+    <AuthContext.Provider value={{ auth, login, logout, checkAuth, updateUserInfo, googleLogin: () => loginGoogle(cbGoogleLogin) }}>
       {children}
     </AuthContext.Provider>
   )

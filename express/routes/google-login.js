@@ -38,7 +38,7 @@ router.post('/', async function (req, res) {
     if (total > 0) {
       // 用戶已存在，獲取用戶資料
       const [users] = await connection.execute(
-        'SELECT id, username, google_uid, line_uid FROM users WHERE google_uid = ?',
+        'SELECT id, user_name, google_uid, line_uid FROM users WHERE google_uid = ?',
         [google_uid]
       )
       const dbUser = users[0]
@@ -51,7 +51,7 @@ router.post('/', async function (req, res) {
     } else {
       // 創建新用戶
       const [result] = await connection.execute(
-        'INSERT INTO users (name, email, google_uid, photo_url) VALUES (?, ?, ?, ?)',
+        'INSERT INTO users (user_name, email, google_uid, photo_url) VALUES (?, ?, ?, ?)',
         [displayName, email, google_uid, photoURL]
       )
       returnUser = {
