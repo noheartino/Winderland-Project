@@ -40,16 +40,20 @@ router.get('/info/:id', async (request, response) => {
 
   const queryToFetchapplyinfo = `SELECT * FROM event_apply WHERE event_id = ?`;
 
+  const queryToFetchapplyimg = `SELECT * FROM images_user`;
+
 
   try {
-    const [eventsResults, applysResults] = await Promise.all([
+    const [eventsResults, applysResults, imgResults] = await Promise.all([
       conn.query(queryToFetcheventinfo,[infoId]),
-      conn.query(queryToFetchapplyinfo,[infoId])
+      conn.query(queryToFetchapplyinfo,[infoId]),
+      conn.query(queryToFetchapplyimg),
     ]);
 
     response.json({
       eventinfo: eventsResults[0],
       applyinfo: applysResults[0],
+      userimg: imgResults[0]
     });
     
   } catch (error) {
