@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import FavoritePCardRWD from '@/components/member/dashboard/favorite/FavoritePCardRwd'
+// import FavoritePCardRWD from '@/components/member/dashboard/favorite/FavoritePCardRwd'
 import FavoritePCard from '@/components/member/dashboard/favorite/FavoritePCard'
 
 export default function FavoritePrwd() {

@@ -467,13 +467,16 @@
         .button-send-rwd {
             background: var(--wine, #BA435D);
             color: var(--light, #F4EBEB);
-            margin-right: 24px;
+            margin-right: -50px;
         }
     }
 }
 
 .form-update {
     width: 100%;
+}
+.profileArea{
+    width: 90%;
 }
 
 #account-content-rwd {
@@ -594,6 +597,7 @@
         }
 
         .editPwd-card-rwd {
+            width: 80%;
             color: var(--text_primary, #60464C);
             font-size: 12px;
             letter-spacing: 3px;
