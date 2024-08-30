@@ -116,7 +116,7 @@ export default function LoginForm() {
         await Swal.fire({
           icon: 'success',
           title: '登入成功',
-          text: loginResult.message,
+          text: '歡迎來到醺迷仙園',
           showConfirmButton: false,
           timer: 1500
         });

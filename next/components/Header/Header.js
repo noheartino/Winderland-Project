@@ -41,13 +41,13 @@ export default function Nav() {
 
 
 
-  let userinfo = infodata?.userinfo?.[0].img || [];
+  // let userinfo = infodata?.userinfo?.[0].img || [];
 
-  if (typeof userinfo === 'string') {
-    userinfo = userinfo.replace(/[\r\n]+/g, '');
-  } else {
-    userinfo = ''
-  }
+  // if (typeof userinfo === 'string') {
+  //   userinfo = userinfo.replace(/[\r\n]+/g, '');
+  // } else {
+  //   userinfo = ''
+  // }
 
 
 
@@ -279,14 +279,14 @@ export default function Nav() {
               </button>
             </div>
             <div className="nav_user">
-              <img src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user_pr.jpg'} alt="" />
+              {/* <img src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user_pr.jpg'} alt="" /> */}
             </div>
             <div className="user_area">
               <div className="user_area_t">
                 {userData && <div className={`userlvis lv${userData.member_level_id}`}>Lv.{userData.member_level_id}</div> }
                 {/* <div className={`userlvis lv${userData.member_level_id}`}>Lv.4</div> */}
                 <div className="user_area_tl">
-                  <img src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user.jpg'} alt="" />
+                  {/* <img src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user.jpg'} alt="" /> */}
                 </div>
                 <div className="user_area_tr">
                   <p>{userData ? userData.user_name : '訪客'}</p>
@@ -432,7 +432,7 @@ export default function Nav() {
         <div className="nav_rwdArea_head">
           <div className="nav_rwdArea_head_t">
             <div className="nrht_l d-flex align-items-center">
-              <img className="rounded-circle nrht_lpic" src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user.jpg'} alt="" width={60} height={60}/>
+              {/* <img className="rounded-circle nrht_lpic" src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user.jpg'} alt="" width={60} height={60}/> */}
               <div className="nrht_l_text ms-3">
                 <div>{userData ? userData.user_name : '訪客'}</div>
                 <div>{userData ? userData.account : '--'}</div>

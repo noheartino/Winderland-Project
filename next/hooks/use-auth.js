@@ -128,7 +128,7 @@ export function AuthProvider({ children }) {
             userData: userData,
           });
           console.log('Updated auth state after login:', { isAuth: true, userData });
-          router.push('/dashboard/profile');
+          // router.push('/dashboard/profile');
           return { success: true, message: '登入成功！' };
         } else {
           console.error('Failed to fetch complete profile data');
