@@ -23,30 +23,7 @@ export default function DashboardFavorite() {
     articles: []
   });
 
-  // useEffect(() => {
-  //   fetchFavorites();
-  // }, []);
-
-  // const fetchFavorites = async () => {
-  //   try {
-  //     const productRes = await fetch('/api/favorites?type=products');
-  //     const courseRes = await fetch('/api/favorites?type=courses');
-  //     const articleRes = await fetch('/api/favorites?type=articles');
-
-  //     const products = await productRes.json();
-  //     const courses = await courseRes.json();
-  //     const articles = await articleRes.json();
-
-  //     setFavorites({
-  //       products: products.data || [],
-  //       courses: courses.data || [],
-  //       articles: articles.data || []
-  //     });
-  //   } catch (error) {
-  //     console.error('獲取收藏時出錯:', error);
-  //   }
-  // };
-
+ 
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
   };

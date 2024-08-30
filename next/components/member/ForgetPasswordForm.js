@@ -2,18 +2,42 @@
 
 // @ 導入
 import React, { useState } from 'react'
-import styles from '@/components/member/member.module.css'
+import styles from '@/components/member/forgetPassword.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Link from 'next/link'
+import Swal from 'sweetalert2'
 
+// * 漂浮標籤
+const FloatingLabelInput = ({ label, type, name, value, onChange, error }) => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    return (
+      <div className={`${styles.floatingLabelInput} position-relative mb-3`}>
+        <input
+          type={type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className={`${styles.forgetPwdInput} ${error ? styles.inputError : ''} ${isFocused || value ? styles.hasContent : ''}`}
+          placeholder=" "
+        />
+        <label className={styles.floatingLabel}>{label}</label>
+        {error && <span className={`${styles.error} ${styles.show}`}>{error}</span>}
+      </div>
+    );
+  };
 
 // @ 預設導出
 export default function ForgetPasswordForm() {
     const [email, setEmail] = useState('')
-    const [message, setMessage] = useState('')
+    const [error, setError] = useState('')
 
+    // 送出表單
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setError('') // 清除之前的錯誤信息
         try {
             const response = await fetch('http://localhost:3005/api/member/forget-password', {
                 method: 'POST',
@@ -21,16 +45,44 @@ export default function ForgetPasswordForm() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email }),
+                credentials: 'include', // 包含 cookies
             })
             const data = await response.json()
+
             if (response.ok) {
-                setMessage('已將重設密碼連結寄送到所填寫的信箱!')
+                await Swal.fire({
+                    icon: 'success',
+                    title: '重設密碼郵件已發送',
+                    text: '請點擊信中連結完成密碼設定',
+                    confirmButtonText: '確定'
+                })
             } else {
-                setMessage(data.message || '發生錯誤,請稍後再試')
+                if (data.message === '此電子郵件未註冊') {
+                    setError('此電子郵件未註冊')
+                } else if (data.message === '請稍後再試') {
+                    await Swal.fire({
+                        icon: 'error',
+                        title: '請求過於頻繁',
+                        text: '請稍後再試',
+                        confirmButtonText: '確定'
+                    })
+                } else {
+                    await Swal.fire({
+                        icon: 'error',
+                        title: '發送失敗',
+                        text: data.message || '發生錯誤,請稍後再試',
+                        confirmButtonText: '確定'
+                    })
+                }
             }
         } catch (error) {
             console.error('Error:', error)
-            setMessage('發生錯誤,請稍後再試')
+            await Swal.fire({
+                icon: 'error',
+                title: '發生錯誤',
+                text: '請稍後再試',
+                confirmButtonText: '確定'
+            })
         }
     }
 
@@ -47,20 +99,15 @@ export default function ForgetPasswordForm() {
                                     <div
                                         className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent}`}
                                     >
-                                        <label className={`${styles.label} mt-5 mb-4`} htmlFor="forgetPWD">
-                                            忘記密碼
-                                        </label>{' '}
-                                        <br />
-                                        <input
+                                    <h2 className={`${styles.label} mt-5 mb-4`}>忘記密碼</h2>
+                                        <FloatingLabelInput
+                                            label="請輸入註冊時Email"
                                             type="email"
                                             name="email"
-                                            className={styles.forgetPwdInput}
-                                            placeholder='請輸入Email'
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
-                                            required
+                                            error={error}
                                         />
-
                                         <br />
 
                                         <div className={` d-flex justify-content-around  `}>   
@@ -70,9 +117,9 @@ export default function ForgetPasswordForm() {
                                         {/* 按鈕 */}
                                         <button
                                             type="submit"
-                                            className={`${styles.button} mt-5 mb-5`}
+                                            className={`${styles.button} mt-3 mb-5`}
                                         >
-                                            重設密碼
+                                            送出驗證
                                         </button>
 
 
@@ -80,7 +127,6 @@ export default function ForgetPasswordForm() {
 
                                 </div>
                             </form>
-                            {message && <div className={`${styles.message} ms-5`}>{message}</div>}
                         </div>
                     </div>
                 </main>
@@ -89,7 +135,7 @@ export default function ForgetPasswordForm() {
             </div>
 
             {/* RWD */}
-            <div className="d-block d-lg-none">
+            <div className="d-block d-lg-none ms-4">
                 <div>
                     <div className={`${styles.tabContent} ms-5 mt-5`}>
                         <form onSubmit={handleSubmit}>
@@ -99,30 +145,25 @@ export default function ForgetPasswordForm() {
                                 role="tabpanel"
                                 aria-labelledby="login-tab-rwd"
                             >
-                                <label className={`${styles.label} mt-5 mb-4 ms-5`} htmlFor="forgetPWD">
-                                    忘記密碼
-                                </label>
-                                <br />
-                                <input
-                                    type="email"
-                                    name="forgetPWD"
-                                    id="forgetPWD"
-                                    className={`${styles.loginInput} ${styles.forgetPWD} ms-5 mb-5`}
-                                    placeholder='請輸入Email'
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                />
+                                   <h2 className={`${styles.label} mt-5 mb-4 `}>忘記密碼</h2>
+                            <FloatingLabelInput
+                                label="請輸入註冊時Email"
+                                type="email"
+                                name="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                error={error}
+                            />
                                 <br />
 
 
 
-                                <button className={`${styles.loginButton} mb-5 mt-5 ms-5`} type="submit">重設密碼</button>
+                                <button className={`${styles.button} mb-5 mt-3 `} type="submit">送出驗證</button>
 
 
                             </div>
                         </form>
-                        {message && <div className={`${styles.message} ms-5`}>{message}</div>}
+                        {/* {message && <div className={`${styles.message} ms-5`}>{message}</div>} */}
                     </div>
                 </div>
             </div>

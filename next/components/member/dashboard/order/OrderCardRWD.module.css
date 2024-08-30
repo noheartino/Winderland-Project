@@ -1,0 +1,181 @@
+.orderListRwd {
+  margin-top: 30px;
+  width: 100%;
+  padding: 10px;
+}
+
+.orderCardRwd {
+  border: 1px solid var(--primary_color-light, #F4EBEB);
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+}
+
+.cardBodyRwd {
+  display: flex;
+  align-items: flex-start;
+  padding: 15px;
+}
+
+.cardImg {
+  flex: 0 0 80px;
+  margin-right: 15px;
+}
+
+
+.orderImg {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #D4C0C0;
+}
+
+.orderDetail {
+  list-style: none;
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+}
+
+
+.thRwd, .tdRwd {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  /* flex-grow: 1; */
+ 
+}
+
+.thRwd li, .tdRwd li {
+  margin-bottom: 5px;
+  text-decoration: none;
+}
+
+.thRwd {
+  font-weight: bold;
+  color: #666;
+  flex: 0 0 40%;
+}
+
+.tdRwd {
+  /* text-align: right; */
+  flex: 0 0 60%;
+  margin-left: 20px;
+  margin-top: 3px;
+}
+
+.span {
+  color: #FF4F4F;
+  font-weight: bold;
+  margin-top: -10px;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background: #f8f8f8;
+  font-size: 0.9em;
+  color: #666;
+  width: 100%;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cardFooter div:last-child {
+  cursor: pointer;
+}
+
+/* 新增的樣式 */
+.orderCardRwd.expanded {
+  margin-bottom: 30px;
+}
+
+.orderDetailExpanded {
+  padding: 15px;
+  background: #f9f9f9;
+  border-top: 1px solid #eee;
+}
+
+/* 為小屏幕設備進一步優化 */
+@media (max-width: 480px) {
+  .cardBodyRwd {
+    flex-direction: row;
+    align-items: center;
+    /* margin-bottom: 10px; */
+  }
+  .cardImg {
+    flex: 0 0 97px;
+    margin-right: 10px;
+  }
+
+  .orderImg {
+    width: 97px;
+    height: 97px;
+    margin-bottom: 10px;
+    border: 1px solid var(--primary_color-wine_light, #D4C0C0);
+    object-fit: contain;
+
+  }
+
+  .orderDetail {
+    flex: 1;
+
+  }
+
+
+.thRwd li {
+  margin-bottom: 5px;
+  text-decoration: none;
+  color: var(--text_color-text_primary, #60464C);
+font-family: Inter;
+font-size: 12px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+letter-spacing: 0.6px;
+margin-left: 25px;
+}
+.tdRwd li{
+  color: var(--primary_color-purple, #9A5B69);
+font-family: Inter;
+font-size: 10px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+letter-spacing: 2.5px;
+}
+.span{
+  color: var(--orange, #FF4F4F);
+font-family: Inter;
+font-size: 12px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+letter-spacing: 0.6px;
+margin-bottom: -15px;
+}
+.cardFooter{
+  width: 100%;
+height: 40px;
+flex-shrink: 0;
+background: var(--light, #F4EBEB);
+}
+.orderTitle{
+  white-space: nowrap;
+  color: var(--purple, #9A5B69);
+font-family: Inter;
+font-size: 10px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+letter-spacing: 2.5px;
+margin-top: 5px;
+}
+}
