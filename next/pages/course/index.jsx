@@ -61,7 +61,18 @@ export default function CourseIndex() {
     return district.districtStr
 })])
 
-
+  useEffect(()=>{
+    apiUrl=`http://localhost:3005/api/course?userId=${userId}`
+    router.push({
+      pathname: "/course",
+      query:{}
+    })
+  }, [])
+  useEffect(()=>{
+    if(!view){
+      setIsHomePage(true)
+    }
+  }, [router.query])
   useEffect(()=>{
     setFilterCourses(courses)
   }, [courses])

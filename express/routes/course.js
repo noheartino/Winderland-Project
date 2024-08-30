@@ -5,10 +5,10 @@ import connection from '##/configs/mysql.js'
 const router = express.Router()
 
 router.get('/teacher/:teacherId', async (req, res) => {
-  let {userId} = req.query
+  // let { userId } = req.query
   // 目前 teacher ID
   const teacherId = req.params.teacherId
-  console.log("---teacherID="+teacherId);
+  console.log('---teacherID=' + teacherId)
 
   // SELECT 目前teacher
   let teacherSQL = `SELECT teacher.*, teacher.id AS teacher_id, images_teacher.teacher_id, images_teacher.path AS teacher_path FROM teacher JOIN images_teacher ON teacher.id = images_teacher.teacher_id WHERE teacher.id = ?;`
@@ -20,8 +20,12 @@ router.get('/teacher/:teacherId', async (req, res) => {
   let teacherCoursesSQL = `SELECT class.*, class.name AS class_name, images_class.class_id, images_class.path AS class_path, teacher.name AS teacher_name FROM class JOIN images_class ON class.id = images_class.class_id JOIN teacher ON class.teacher_id = teacher.id WHERE class.teacher_id = ?`
   try {
     const [teacher] = await connection.execute(teacherSQL, [teacherId])
-    const [teacherComments] = await connection.execute(teacherCommentsSQL, [teacherId])
-    const [teacherCourses] = await connection.execute(teacherCoursesSQL, [teacherId])
+    const [teacherComments] = await connection.execute(teacherCommentsSQL, [
+      teacherId,
+    ])
+    const [teacherCourses] = await connection.execute(teacherCoursesSQL, [
+      teacherId,
+    ])
     res.json({ teacher, teacherComments, teacherCourses })
     console.log('測試:' + req.originalUrl)
   } catch (err) {
@@ -31,7 +35,7 @@ router.get('/teacher/:teacherId', async (req, res) => {
 
 router.get('/teacher', async (req, res) => {
   // teacher 列表
-  let {userId} = req.query
+  // let { userId } = req.query
   const { searchT } = req.query
   let teacherSQLParamsStr = ``
   let teachersSQLParams = []
@@ -64,7 +68,7 @@ router.get('/teacher', async (req, res) => {
 })
 
 router.get('/', async (req, res) => {
-  const {userId} = req.query
+  const { userId } = req.query
   const { search, view } = req.query
   let querySQL = null
   let querySQLParams = []
@@ -129,7 +133,7 @@ router.get('/', async (req, res) => {
                     class.id, class.name, teacher.id, teacher.name, images_class.class_id, images_class.path, images_teacher.teacher_id, images_teacher.path
                 ORDER BY 
                     class.id ASC;`
-      querySQLParams = [`%${search}%`, `%${search}%`]
+    querySQLParams = [`%${search}%`, `%${search}%`]
   }
   console.log('送出的查詢詞語是: ' + search)
   let querySQLComments = `SELECT comments.* FROM comments`
@@ -163,6 +167,7 @@ router.get('/', async (req, res) => {
     courseBtnSQLwords = `AND order_details.class_id > 0 AND class.online = '1'`
     console.log(courseBtnSQLwords + '點擊:' + view)
   }
+  let todayDateOnly = new Date().toISOString().split('T')[0]
   // let querySQLMyCourse = `select class.* from class`
   let querySQLMyCourse = `SELECT order_details.order_uuid, order_details.class_id, orders.user_id, orders.order_uuid, class.*, class.id AS class_id, images_class.class_id, images_class.path AS class_path, class.name AS class_name, teacher.id AS teacher_id, teacher.name AS teacher_name
                             FROM
@@ -177,24 +182,27 @@ router.get('/', async (req, res) => {
                                 teacher ON class.teacher_id = teacher.id
                             WHERE orders.user_id = ${userId}
                                 ${courseBtnSQLwords}
+                                AND (class.online = 1 OR (class.online = 0 AND class.course_end < ${todayDateOnly}))
                             ORDER BY orders.order_uuid ASC;`
-                            // if(userId){
-                            //   console.log("userId-----> "+userId);
-                            // }
-                            // if(courseBtnSQLwords){
-                            //   console.log("courseBtnSQLwords-----> "+courseBtnSQLwords);
-                            // }
-                            // if(view){
-                            //   console.log("view-----> "+view);
-                            // }
-                            // if(search){
-                            //   console.log("search-----> "+search);
-                            // }     
-  console.log('測試:' + req.originalUrl)               
+  // if(userId){
+  //   console.log("userId-----> "+userId);
+  // }
+  // if(courseBtnSQLwords){
+  //   console.log("courseBtnSQLwords-----> "+courseBtnSQLwords);
+  // }
+  // if(view){
+  //   console.log("view-----> "+view);
+  // }
+  // if(search){
+  //   console.log("search-----> "+search);
+  // }
+  console.log('測試:' + req.originalUrl)
   try {
     console.log('測試:' + req.originalUrl)
-    
-    const [courses] = search ? await connection.execute(querySQL, querySQLParams) : await connection.execute(querySQL)
+
+    const [courses] = search
+      ? await connection.execute(querySQL, querySQLParams)
+      : await connection.execute(querySQL)
     const [classSum] = await connection.execute(classSumSQL)
     const [comments] = await connection.execute(querySQLComments)
     const [classAssigns] = await connection.execute(querySQLClassAsign)
@@ -217,15 +225,11 @@ router.get('/', async (req, res) => {
     console.log('來源測試:' + req.originalUrl)
   }
 })
-
 router.get('/:courseId', async (req, res) => {
   const { series, userId } = req.query
   const courseId = req.params.courseId
-  console.log(courseId+"courseId");
-  console.log(userId+"userId");
-
-  // 這邊要寫PUT資料進購物車的SQL語法，要寫入userID到cart_items.user_id、courseId到cart_items.class_id、new Date(now)到cart_items.updated_at
-
+  console.log(courseId + 'courseId')
+  console.log(userId + 'userId')
 
   let courseSQL = `SELECT 
                     class.*,
@@ -271,15 +275,37 @@ router.get('/:courseId', async (req, res) => {
     commentSQLparams = `comments.created_at DESC`
   }
   let commentsSQL = `SELECT comments.*, users.account, users.id AS user_id FROM comments JOIN users ON comments.user_id = users.id WHERE comments.entity_type = 'class' AND comments.entity_id = ${courseId} ORDER BY ${commentSQLparams}`
-  console.log("------"+commentSQLparams+"------");
-  console.log("------"+series+"------");
-  if(series){console.log(series);}
+  console.log('------' + commentSQLparams + '------')
+  console.log('------' + series + '------')
+  if (series) {
+    console.log(series)
+  }
   try {
     const [course] = await connection.execute(courseSQL)
     const [theCourseAssigned] = await connection.execute(theCourseAssignedSQL)
     const [comments] = await connection.execute(commentsSQL)
     res.json({ course, theCourseAssigned, comments })
     console.log('測試:' + req.originalUrl)
+  } catch (err) {
+    res.status(500).json({ error: 'error' + err.message })
+  }
+})
+
+// !! 寫入購物車
+router.post('/:courseId', async (req, res) => {
+  const { userId } = req.query
+  const courseId = req.params.courseId
+  console.log(courseId + 'courseId')
+  console.log(userId + 'userId')
+
+  // 這邊要寫PUT資料進購物車的SQL語法，要寫入userID到cart_items.user_id、courseId到cart_items.class_id、new Date(now)到cart_items.updated_at
+  let courseWriteInCartSQL = `INSERT INTO cart_items (user_id, class_id) VALUES (${userId}, ${courseId});`
+  console.log(courseWriteInCartSQL)
+
+  try {
+    const [courseWriteInCart] = await connection.execute(courseWriteInCartSQL)
+    res.json({ courseWriteInCart })
+    console.log('測試POST:' + req.originalUrl)
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
   }

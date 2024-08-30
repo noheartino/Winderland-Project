@@ -127,6 +127,14 @@
       color: var(--primary) !important;
     }
   }
+  & .btn-prim-to-wine {
+    background-color: var(--primary);
+    color: var(--light) !important;
+    &:hover {
+      background-color: var(--wine);
+      color: #ffffff !important;
+    }
+  }
   & .btn-light-to-prim {
     background-color: var(--light);
     color: var(--primary) !important;

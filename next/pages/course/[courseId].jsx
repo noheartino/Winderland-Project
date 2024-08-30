@@ -24,7 +24,8 @@ export default function CourseIndex() {
     }, [auth])
 
    useEffect(() => {
-    fetch(`http://localhost:3005/api/course?userId=${userId}`)
+    if(userId){
+      fetch(`http://localhost:3005/api/course?userId=${userId}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response not ok");
@@ -39,6 +40,7 @@ export default function CourseIndex() {
       .catch((error) => {
         console.log(error);
       });
+    }
   }, [userId]);
   
 
@@ -104,20 +106,6 @@ function querySeries04(e) {
 
   useEffect(() => {
     if (courseId && classSum.length > 0) {
-      // let apiUrl = `http://localhost:3005/api/course/${courseId}`;
-
-      // if (courseId > classSum.length) {
-      //   apiUrl = `http://localhost:3005/api/course?userId=${userId}`;
-      //   router.push(`/course/1`);
-      // } else {
-      //   if (series === 'timeOldToNew') {
-      //     apiUrl += `?series=timeOldToNew`;
-      //   } else if (series === 'scoreHtoL') {
-      //     apiUrl += `?series=scoreHtoL`;
-      //   } else if (series === 'scoreLtoH') {
-      //     apiUrl += `?series=scoreLtoH`;
-      //   }
-      // }
 
       fetch(apiUrl)
         .then((response) => {
@@ -139,6 +127,31 @@ function querySeries04(e) {
     }
   }, [courseId, classSum, series, userId]);
 
+  // 寫入購物車
+    function handleCourseWriteInCart(){
+      if(courseId && userId){
+        fetch(`http://localhost:3005/api/course/${courseId}?userId=${userId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(),
+        })
+          .then((response) => {
+            console.log(`送出POST fetch，URL=http://localhost:3005/api/course/${courseId}?userId=${userId}`);
+            if (!response.ok) {
+              throw new Error("Network response not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log('成功寫入購物車', data);
+          })
+          .catch((error) => {
+            console.log('發生錯誤:', error);
+          });
+      }
+    }
 
 
   if (comments.length>0) {
@@ -386,8 +399,94 @@ function querySeries04(e) {
                     </div>
                     <div className="row h-100">
                       <div className="col-12 d-flex align-items-end">
-                        <button className="btn spac-3 btn-sec-orange w-100 mt-3 py-4">
-                          加入購物車
+                      {/* Button trigger modal */}
+                      <button
+                        type="button"
+                        className="btn spac-3 btn-sec-orange w-100 mt-3 py-4"
+                        data-bs-toggle="modal"
+                        data-bs-target="#courseWriteInCartModal"
+                      >
+                        加入購物車
+                      </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Modal 01*/}
+                <div
+                  className="modal fade"
+                  id="courseWriteInCartModal"
+                  tabIndex={-1}
+                  aria-labelledby="courseWriteInCartModalLabel"
+                  aria-hidden="true"
+                >
+                  <div className="modal-dialog">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title fs-5 spac-1" id="courseWriteInCartModalLabel">
+                          請確認是否加入購物車
+                        </h5>
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        />
+                      </div>
+                      <div className="modal-body py-4">
+                        <div className="row row-gap-3">
+                          <div className="col-12">
+                            <h3 className="spac-1 text-prim-text-prim">確認將課程加入購物車嗎?</h3>
+                          </div>
+                          <div className="col-12">
+                            <h5 className="spac-1 text-gray-light">{course?.class_name}</h5>
+                          </div>
+                          <div className="mt-3 col-12 d-flex align-items-center justify-content-end">
+                            <h4 className="spac-1 text-sec-orange">NT${course.price && course.sale_price===0 ? course.price.toLocaleString() : course.sale_price>0 ? course.sale_price.toLocaleString() : 0 }</h4>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-white"
+                          data-bs-dismiss="modal"
+                        >
+                          取消
+                        </button>
+                        <button type="button" className="btn btn-prim-to-wine" onClick={handleCourseWriteInCart} data-bs-toggle="modal"
+                        data-bs-target="#courseWriteInCartOK">
+                          確認
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Modal 02*/}
+                <div
+                  className="modal fade"
+                  id="courseWriteInCartOK"
+                  tabIndex={-1}
+                  aria-labelledby="courseWriteInCartOKLabel"
+                  aria-hidden="true"
+                >
+                  <div className="modal-dialog">
+                    <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title fs-5 spac-1" id="courseWriteInCartModalLabel">
+                          成功加入購物車
+                        </h5>
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        />
+                      </div>
+                      <div className="modal-body spac-1 text-gray py-4">課程「{course?.class_name}」已成功加入購物車</div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-prim-to-wine" data-bs-dismiss="modal">
+                          確認
                         </button>
                       </div>
                     </div>
