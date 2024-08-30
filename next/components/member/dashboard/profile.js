@@ -238,6 +238,7 @@ export default function DashboardProfile() {
                 />
               </div>
 
+              {/* 更換頭像 */}
               <label htmlFor="avatarUpload" className="avatarButton avatarbuttonOutlined">
                 更換頭像
               </label>
@@ -249,7 +250,6 @@ export default function DashboardProfile() {
                 onChange={handleAvatarChange}
                 accept="image/*"
               />
-             {/* {uploadStatus && <div className="uploadStatus">{uploadStatus}</div>} */}
             </div>
 
 
@@ -288,15 +288,15 @@ export default function DashboardProfile() {
                 <div className="userName-rwd">{auth.userData.user_name}</div>
 
                 <div className="membership-detail-rwd d-flex">
-              <div className="membership-rwd">{userMembership}</div>
-              {/* <p className="membership-exp-rwd">白金會員到期日 - 2025.07.10</p> */}
-            </div>
+                  <div className="membership-rwd">{userMembership}</div>
+                  {/* <p className="membership-exp-rwd">白金會員到期日 - 2025.07.10</p> */}
+                </div>
 
                 <div className="userID-rwd">ID：{auth.userData.account}</div>
                 <div className="userAge-rwd">{userGender} / {userAge}歲 / {auth.userData.birthday}</div>
               </div>
               <div className="user-img-rwd ">
-              <Image
+                <Image
                   src={avatarUrl || '/images/member/avatar/default-avatar.jpg'}
                   alt="User Avatar"
                   width={130}
@@ -307,11 +307,24 @@ export default function DashboardProfile() {
                   unoptimized  // 禁用 Next.js 的圖片優化
                 />
               </div>
+
+               {/* 更換頭像 */}
+               <label htmlFor="avatarUpload" className="avatarButtonrwd avatarbuttonOutlinedrwd">
+                更換頭像
+              </label>
+              <input
+                name='avatar'
+                type="file"
+                id="avatarUpload"
+                style={{ display: 'none' }}
+                onChange={handleAvatarChange}
+                accept="image/*"
+              />
             </div>
 
-           
+
           </section>
-      <hr className='hrProfile'/>
+          <hr className='hrProfile' />
 
           {/* 修改區 */}
           <div className="edit-card edit-card-rwd">
