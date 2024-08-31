@@ -4,11 +4,6 @@
         height: 30vh;
         color: #ffffff;
         overflow: hidden;
-        transition: opacity 0.3s ease-in-out;
-    }
-
-    .shop-header-img.loading {
-        opacity: 0;
     }
 
     .background-layer {
@@ -39,53 +34,29 @@
     .shop-header-title {
         position: absolute;
         top: 0;
-        left: 0;
         width: 100%;
         height: 100%;
-        display: flex;
-        flex-direction: row;
         align-items: center;
         justify-content: center;
+        display: flex;
         z-index: 99;
+        text-shadow: 2px 2px 8px rgb(0, 0, 0);
         transition: opacity 0.3s ease-in-out;
-        text-shadow:2px 2px 8px rgb(0, 0, 0);
     }
 
-    .shop-header-img.transitioning .shop-header-title {
+    .shop-header-title.title-transitioning {
         opacity: 0;
     }
 
-    .shop-header-title {
-        position: absolute;
-        top: 0;
-        transition: opacity 0.3s ease-in-out;
-        width: 100%;
-        height: 100%;
-        align-items: center;
-        justify-content: center;
-        display: flex;
-        z-index: 9;
+    .shop-header-title h1 {
+        margin-bottom: 0;
+        letter-spacing: 1.1rem;
+    }
 
-        & h1 {
-            margin-bottom: 0;
-            letter-spacing: 1.1rem;
-
-            &.loading {
-                opacity: 0;
-                transition: 0.3s;
-            }
-        }
-
-        & h5 {
-            margin-bottom: 0;
-            margin-left: 0.5rem;
-            letter-spacing: 0.4rem;
-
-            &.loading {
-                opacity: 0;
-                transition: 0.3s;
-            }
-        }
+    .shop-header-title h5 {
+        margin-bottom: 0;
+        margin-left: 0.5rem;
+        letter-spacing: 0.4rem;
     }
 }
 

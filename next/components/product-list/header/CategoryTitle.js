@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import styles from "./CategoryTitle.module.css";
 
 export default function CategoryTitle({ filters, selectFilters }) {
@@ -7,6 +7,7 @@ export default function CategoryTitle({ filters, selectFilters }) {
   const [nextImage, setNextImage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [categoryChange, setCategoryChange] = useState(false);
+  const prevCategoryRef = useRef();
 
   // 使用useMemo記憶當前category
   const currentCategory = useMemo(() => {
@@ -26,22 +27,26 @@ export default function CategoryTitle({ filters, selectFilters }) {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    setCategoryChange(true);
-    const newImage = getImageUrl(currentCategory.img);
+    if (prevCategoryRef.current !== selectFilters.category) {
+      setIsLoading(true);
+      setCategoryChange(true);
+      const newImage = getImageUrl(currentCategory.img);
 
-    const img = new Image();
-    img.src = newImage;
-    img.onload = () => {
-      setNextImage(newImage);
-      setIsLoading(false);
+      const img = new Image();
+      img.src = newImage;
+      img.onload = () => {
+        setNextImage(newImage);
+        setIsLoading(false);
 
-      setTimeout(() => {
-        setCurrentImage(newImage);
-        setCategoryChange(false);
-      }, 300);
-    };
-  }, [currentCategory]);
+        setTimeout(() => {
+          setCurrentImage(newImage);
+          setCategoryChange(false);
+        }, 500);
+      };
+
+      prevCategoryRef.current = selectFilters.category;
+    }
+  }, [currentCategory, selectFilters.category]);
 
   return (
     <>
@@ -58,7 +63,11 @@ export default function CategoryTitle({ filters, selectFilters }) {
           className={`${styles["background-layer"]} ${styles["next"]}`}
           style={{ backgroundImage: `url(${nextImage})` }}
         ></div>
-        <div className={styles["shop-header-title"]}>
+        <div
+          className={`${styles["shop-header-title"]} ${
+            categoryChange ? styles["title-transitioning"] : ""
+          }`}
+        >
           <h1 className={`h3 `}>
             {currentCategory ? currentCategory.name : "全部商品"}
           </h1>
