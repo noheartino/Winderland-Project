@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useAuth } from '@/hooks/use-auth'
+import Swal from 'sweetalert2'
 
 import ProfileUpdateUser from './profile/ProfileUpdateUser'
 import ProfileUpdatePwd from './profile/ProfileUpdatePwd'
@@ -117,7 +118,14 @@ export default function DashboardProfile() {
         throw new Error('Failed to update profile')
       }
       // 更新成功後的操作，例如顯示成功消息
-      alert('Profile updated successfully')
+      // alert('Profile updated successfully')
+      await Swal.fire({
+        icon: 'success',
+        title: '修改成功',
+        text: '已完成會員資料修改',
+        showConfirmButton: false,
+        timer: 1500
+      });
       fetchUserData() // 重新獲取用戶數據以刷新頁面
     } catch (err) {
       setError(err.message)
@@ -148,7 +156,14 @@ export default function DashboardProfile() {
         throw new Error('Failed to update password')
       }
       // 密碼更新成功後的操作
-      alert('Password updated successfully')
+      // alert('Password updated successfully')
+      await Swal.fire({
+        icon: 'success',
+        title: '密碼修改成功',
+        text: '已完成會員密碼修改',
+        showConfirmButton: false,
+        timer: 1500
+      });
       setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' })
     } catch (err) {
       setError(err.message)

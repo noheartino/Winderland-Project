@@ -1,0 +1,49 @@
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    margin-left: 650px;
+  }
+  
+  .pageButton,
+  .firstPageButton,
+  .prevPageButton,
+  .nextPageButton,
+  .lastPageButton {
+    height: 40px;
+    width: 35px;
+    border: 2px solid var(--wine_light);
+    color: var(--purple_light);
+    margin: 0 2px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .pageButton:hover,
+  .firstPageButton:hover,
+  .prevPageButton:hover,
+  .nextPageButton:hover,
+  .lastPageButton:hover {
+    background-color: var(--wine_light);
+    color: white;
+  }
+  
+  .currentPage {
+    background-color: var(--wine_light);
+    color: white;
+  }
+  
+  .pageButton:disabled,
+  .firstPageButton:disabled,
+  .prevPageButton:disabled,
+  .nextPageButton:disabled,
+  .lastPageButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }

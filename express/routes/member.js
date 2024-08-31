@@ -3,19 +3,10 @@
 import express from 'express'
 import bcrypt from 'bcrypt'
 const router = express.Router()
-
-// 存取`.env`設定檔案使用
 import 'dotenv/config.js'
-
-// 資料庫使用
 import connection from '##/configs/mysql.js'
-
-// token
 import jsonwebtoken from 'jsonwebtoken'
-// 中介軟體，存取隱私會員資料用
 import authenticate from '#middlewares/authenticate.js'
-
-// 驗証加密密碼字串用
 import { compareHash } from '#db-helpers/password-hash.js'
 
 // 定義安全的私鑰字串
@@ -160,21 +151,46 @@ router.post('/register', async function (req, res) {
   const newUser = req.body
 
   // ! 檢查從前端來的資料哪些為必要
-  if (!newUser.account || !newUser.password || !newUser.user_name) {
+  if (
+    !newUser.account ||
+    !newUser.password ||
+    !newUser.user_name ||
+    !newUser.email ||
+    !newUser.agreeTerms
+  ) {
     return res.status(400).json({ status: 'error', message: '缺少必要資料' })
+  }
+
+  // 確保 agreeTerms 為 true
+  if (newUser.agreeTerms !== true) {
+    return res
+      .status(400)
+      .json({ status: 'error', message: '必須同意服務條款才能註冊' })
   }
 
   try {
     // ! 檢查會員帳號是否已存在
-    const [rows] = await connection.execute(
-      'SELECT * FROM users WHERE account = ? ',
+    const [accountRows] = await connection.execute(
+      'SELECT * FROM users WHERE account = ?',
       [newUser.account]
     )
 
-    if (rows.length > 0) {
+    if (accountRows.length > 0) {
       return res
         .status(409)
         .json({ status: 'error', message: '會員帳號已存在' })
+    }
+
+    // ! 檢查 email 是否已存在
+    const [emailRows] = await connection.execute(
+      'SELECT * FROM users WHERE email = ?',
+      [newUser.email]
+    )
+
+    if (emailRows.length > 0) {
+      return res
+        .status(409)
+        .json({ status: 'error', message: '此電子郵件已被使用' })
     }
 
     // 加密密碼
@@ -182,7 +198,7 @@ router.post('/register', async function (req, res) {
 
     // 插入新用戶
     const [result] = await connection.execute(
-      'INSERT INTO users (user_name, phone, birthday, gender, account, password ,member_level_id,total_spending) VALUES (?, ?, ?, ?, ?, ?, ?,?)',
+      'INSERT INTO users (user_name, phone, birthday, gender, account, password, email, member_level_id, total_spending) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
       [
         newUser.user_name,
         newUser.phone || ' ',
@@ -190,6 +206,7 @@ router.post('/register', async function (req, res) {
         newUser.gender || ' ',
         newUser.account,
         hashedPassword,
+        newUser.email,
         1,
         0.0,
       ]
@@ -204,6 +221,7 @@ router.post('/register', async function (req, res) {
           id: result.insertId,
           user_name: newUser.user_name,
           account: newUser.account,
+          email: newUser.email,
         },
       })
     } else {
@@ -247,7 +265,7 @@ ${resetLink}
 客服專線：886-2-26535588
 傳真電話：886-2-27885008`
 
-// @ 發送重設密碼郵件
+// @ 忘記密碼-發送重設密碼郵件
 router.post('/forget-password', async (req, res) => {
   const { email } = req.body
 
@@ -255,17 +273,45 @@ router.post('/forget-password', async (req, res) => {
     return res.status(400).json({ status: 'error', message: '缺少必要資料' })
 
   try {
-    console.log('Attempting to create OTP for email:', email)
+    // 檢查是否為會員
+    const [userRows] = await connection.execute(
+      'SELECT * FROM users WHERE email = ?',
+      [email]
+    )
+
+    if (userRows.length === 0) {
+      return res
+        .status(400)
+        .json({ status: 'error', message: '此電子郵件未註冊' })
+    }
+
+    // 檢查是否在短時間內重複請求
+    const [otpRows] = await connection.execute(
+      'SELECT created_at FROM otp WHERE email = ? ORDER BY created_at DESC LIMIT 1',
+      [email]
+    )
+
+    if (otpRows.length > 0) {
+      const lastRequestTime = new Date(otpRows[0].created_at)
+      const currentTime = new Date()
+      const timeDiff = (currentTime - lastRequestTime) / 1000 / 60 // 轉換為分鐘
+
+      if (timeDiff < 5) {
+        // 假設 5 分鐘內不能重複請求
+        return res.status(400).json({ status: 'error', message: '請稍後再試' })
+      }
+    }
+
     // 建立otp資料表記錄，成功回傳otp記錄物件，失敗為空物件{}
     const otp = await createOtp(email)
 
-    console.log('OTP creation result:', otp)
+    // console.log('OTP creation result:', otp)
 
     if (!otp || !otp.token) {
-      console.log('OTP creation failed')
+      // console.log('OTP creation failed')
       return res
         .status(400)
-        .json({ status: 'error', message: 'Email錯誤或期間內重覆要求' })
+        .json({ status: 'error', message: 'OTP 創建失敗，請稍後再試' })
     }
 
     // 創建重設密碼連結
@@ -273,8 +319,7 @@ router.post('/forget-password', async (req, res) => {
 
     // 寄送email
     const mailOptions = {
-      // 這裡要改寄送人名稱，email在.env檔中代入
-      from: `"Winderland support team"<${process.env.SMTP_TO_EMAIL}>`,
+      from: `"醺迷仙園Winderland-客服團隊"<${process.env.SMTP_TO_EMAIL}>`,
       to: email,
       subject: '重設密碼要求',
       text: mailText(resetLink),

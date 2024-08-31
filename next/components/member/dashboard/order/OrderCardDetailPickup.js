@@ -27,7 +27,7 @@ export default function OrderCardDetailPickup({ orderInfo }) {
             <div className={`${styles.pickupArea} d-flex`}>
                 <h5 className={`${styles.orderGetLabel}`}>配送資訊 |</h5>
                 <p className={styles.pickupDetail}> 
-                    {orderInfo.transport} — {orderInfo.pickup_address || orderInfo.pickup_store_name
+                    {orderInfo.transport} <br /> {orderInfo.pickup_address || orderInfo.pickup_store_name
                 }</p>
             </div>
             <div className={`${styles.pickupArea} d-flex mb-4`}>
