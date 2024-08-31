@@ -1,8 +1,55 @@
 import express from 'express'
 import 'dotenv/config.js'
 import connection from '##/configs/mysql.js'
+import multer from 'multer';
 
 const router = express.Router()
+
+// 更新 class 資料表的 status，0:報名已截止；1:可報名；2:報名尚未開始
+const updateClassStatus = async () => {
+  const query = `UPDATE
+                    class
+                  SET status = CASE
+                    WHEN appointment_start > CURDATE() THEN 2
+                    WHEN appointment_end >= CURDATE() THEN 1
+                    ELSE 0
+                  END`;
+  try {
+    await connection.query(query);
+  } catch (error) {
+    console.error('Error updating class status:', error);
+  }
+};
+
+// 在每個請求前自動更新 status
+router.use(async (req, res, next) => {
+  await updateClassStatus();
+  next();
+});
+
+const upload = multer();
+
+// !! 課程管理 list 顯示所有課程
+router.get('/teacher/management', upload.none(), async (req, res) => {
+  let coursesSQL = `SELECT
+                        class.id AS class_id, class.name AS class_name, class.student_limit, class.assigned, class.teacher_id, price, class.sale_price, class.online, class.address, class.appointment_start, class.appointment_end, class.course_start, class.course_end, class.daily_start_time, class.daily_end_time, class.class_summary, class.description AS class_description, class.status AS class_status, teacher.name AS teacher_name, images_class.path AS class_path, images_teacher.path AS teacher_path,
+                        COALESCE(AVG(comments.rating), 0) AS average_rating
+                      FROM class
+                      LEFT JOIN teacher ON class.teacher_id = teacher.id
+                      LEFT JOIN images_class ON class.id = images_class.class_id
+                      LEFT JOIN images_teacher ON class.teacher_id = images_teacher.teacher_id
+                      LEFT JOIN comments ON class.id = comments.entity_id AND comments.entity_type = 'class'
+                      GROUP BY 
+                          class_id, class_name, student_limit, class.assigned, class.teacher_id, class.price, class.sale_price, class.online, class.address, class.appointment_start, class.appointment_end, class.course_start, class.course_end, class.daily_start_time, class.daily_end_time, class.class_summary, class_description, class_status, teacher_name, class_path, teacher_path
+                      ORDER BY class.id ASC;`
+  try {
+    const [courses] = await connection.execute(coursesSQL)
+    res.json({ courses })
+    console.log('-----> GET:' + req.originalUrl)
+  } catch (err) {
+    res.status(500).json({ error: 'error' + err.message })
+  }
+})
 
 router.get('/teacher/:teacherId', async (req, res) => {
   // let { userId } = req.query
@@ -315,16 +362,50 @@ router.post('/:courseId', async (req, res) => {
   }
 })
 
-// !! 課程管理 create
-router.post('course/teacher/management', async (req, res) => {
-
+// !! 課程管理 create 獲取教師資料
+router.get('/teacher/management/getTeacherData', async (req, res) => {
+  let teachersSQL = `SELECT teacher.id, teacher.name FROM teacher`
   try {
-    // const [courseWriteInCart] = await connection.execute(courseWriteInCartSQL)
-    // res.json({ courseWriteInCart })
+    const [teachers] = await connection.execute(teachersSQL)
+    res.json({ teachers })
+    console.log('測試GET Teacher:' + req.originalUrl)
+  } catch (err) {
+    res.status(500).json({ error: 'error' + err.message })
+  }
+})
+
+// !! 課程管理 create
+router.post('/teacher/management/create', async (req, res) => {
+ const { class_name, teacher_id, on_and_underline, student_limit, class_start_date, class_end_date, assign_start_date, assign_end_date, daily_start_time, daily_end_time, class_city, class_city_detail, classSummary, classIntro, class_price, class_sale_price } = req.body;
+ console.log(class_name);
+ console.log("--->");
+ console.log(req.body);
+
+//   const city = (class_city || "").trim();
+//   const cityDetail = (class_city_detail || "").trim();
+//   const address = `${city}${cityDetail}`.trim();
+
+//  let createCourseSQL = `INSERT INTO class
+//                         (class.name, class.student_limit, class.assigned, class.teacher_id, price, class.sale_price, class.online, class.address, class.appointment_start, class.appointment_end, class.course_start, class.course_end, class.daily_start_time, class.daily_end_time, class.class_summary, class.description , class.status)
+//                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
+  
+//   let createCourseParams = [class_name || null, student_limit || null, 0, teacher_id || null, class_price || null, class_sale_price || null, on_and_underline || null, address || null, assign_start_date || null, assign_end_date || null, class_start_date || null, class_end_date || null, daily_start_time || null, daily_end_time || null, classSummary || null, classIntro || null, 0]
+
+//   const { classImgFile, classVdioFile } = req.body;
+//   let insertImgAndVdioSQL = `INSERT INTO images_class
+//   (path, video_path) VALUES (?, ?);`
+
+  // let insertImgAndVdioSQLParams = [classImgFile || null, classVdioFile || null]
+  try {
+    // const [createCourse] = await connection.execute(createCourseSQL, createCourseParams)
+    // const [insertImgAndVdio] = await connection.execute(insertImgAndVdioSQL, insertImgAndVdioSQLParams)
+    res.json({ class_name })
     console.log('測試POST:' + req.originalUrl)
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
   }
 })
+
+
 
 export default router

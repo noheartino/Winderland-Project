@@ -9,16 +9,33 @@ import Link from "next/link";
 export default function ClassManIndex() {
 
   const router = useRouter();
+  const [courses, setCourses] = useState([]);
 
   // 抓取 user 資料
   const authData = useAuth().auth.userData
   const [userId, setUserId] = useState(null)
-  useEffect(()=>{
-    if(authData && authData.id>0){
+  const [isAdmin, setIsAdmin] = useState(false)
+  useEffect(() => {
+    if (authData && authData.id > 0) {
       setUserId(authData.id)
-      console.log("----> set UserId = "+authData.id);
+      setIsAdmin(true)
+      console.log("----> set UserId = " + authData.id);
     }
   }, [authData])
+  // 驗證登入者有權限
+
+  // 抓取所有教師資料
+  const [teachers, setTeachers] = useState([])
+  useEffect(()=>{
+    fetch(`http://localhost:3005/api/course/teacher/management/getTeacherData`)
+        .then(response => response.json())
+        .then((data) => {
+          const { teachers } = data
+          setTeachers(teachers)
+        })
+        .catch(error => console.error('Error:', error));
+  }, [])
+  // 23 : {id: 24, name: '蘭居岳'}
 
   // 選擇上傳圖片
   const [Cimage, setCImage] = useState("/images/course_and_tarot/classImgDefault.png"); // 存儲圖片 URL
@@ -37,7 +54,7 @@ export default function ClassManIndex() {
   }
 
   // 選擇上傳影片
-  const [Cvideo, setCvideo] = useState("/images/course_and_tarot/classImgDefault.png"); // 存儲圖片 URL
+  const [Cvideo, setCvideo] = useState(null); // 存儲圖片 URL
   const handleVdioUpload = (event) => {
     const file = event.target.files[0]; // 獲取選中的文件
     if (file) {
@@ -48,6 +65,29 @@ export default function ClassManIndex() {
       reader.readAsDataURL(file); // 讀取文件為 data URL
     }
   };
+
+  // 處理上傳
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault(); // 防止默認的表單提交
+  //   const formData = new FormData(event.target); // 獲取表單數據
+  
+  //   if(formData){
+  //     try {
+      
+  //       const response = await fetch('http://localhost:3005/api/course/teacher/management/create', {
+  //         method: 'POST',
+  //         body: formData
+  //       });
+  //       console.log(formData);
+  //       const result = await response.json();
+  //       console.log('Form submission result:', result);
+  //     } catch (error) {
+  //       console.error('送出有問題!!!!!!!!!!!!!!:', error);
+  //       console.log("送出有問題!!!!!!!!!!!!!!:");
+  //     }
+  //   }
+  //   console.log("formData是空的");
+  // };
 
   return (
     <>
@@ -67,7 +107,8 @@ export default function ClassManIndex() {
 
         <div className="eventCreateWrite">
           <div className="container">
-            <form action="http://localhost:3005/course/teacher/management" method="post" encType="multipart/form-data">
+          <form action={'http://localhost:3005/api/course/teacher/management/create'} method="post" encType="multipart/form-data">
+          <input type="text" name="testtttt" value="123456" />
               <div className="row row-gap-3">
                 <div className="col-12 col-lg-8 d-flex flex-column gap-3">
                   <div className="row gx-2 gx-lg-4 row-gap-3">
@@ -85,11 +126,40 @@ export default function ClassManIndex() {
                   </div>
                   <div className="row gx-2 gx-lg-4 row-gap-3">
                     <div className="col-4 d-flex flex-column gap-1">
-                      <label htmlFor="teacherName" className="CmanageCreateTag">
+                      <label htmlFor="teacherId" className="CmanageCreateTag">
                         授課教師
-                        {/* 必填，改下拉選單 */}
                       </label>
-                      <input type="text" name="teacher_name" id="teacherName" className="CourseCreateInput" />
+
+                      <select className="form-select form-select-sm CourseCreateInput" aria-label="Small select example" name="teacher_id" id="teacherId" defaultValue="">
+                        <option value="" disabled>--請選擇授課教師</option>
+                        {/* 必填 */}
+                        {teachers.map((teacher)=>{
+                          return (
+                              <option key={teacher?.id} value={teacher?.id}>{teacher?.name}</option>
+                          )
+                        })}
+                      </select>
+
+                    </div>
+
+                    <div className="col-4 d-flex flex-column gap-1">
+                      <label htmlFor="onAndUnderLine" className="CmanageCreateTag">
+                        開課性質
+                      </label>
+                      <div className='d-flex gap-3'>
+                        <div className="form-check CM-check-box">
+                          <input className="form-check-input CM-check-input" type="radio" name="on_and_underline" id="onLine"/>
+                          <label className="form-check-label CmanageCreateTag" htmlFor="onLine">
+                            線上
+                          </label>
+                        </div>
+                        <div className="form-check CM-check-box">
+                          <input className="form-check-input CM-check-input" type="radio" name="on_and_underline" id="underLine"/>
+                          <label className="form-check-label CmanageCreateTag" htmlFor="underLine">
+                            實體
+                          </label>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="col-4 d-flex flex-column gap-1">
@@ -214,6 +284,37 @@ export default function ClassManIndex() {
                       {/* 線上不顯示欄位。實體必填，不可超過50字元 */}
                     </div>
                   </div>
+                  
+                  <div className='row gx-2 gx-lg-4 row-gap-3'>
+                    <div className="col-4 d-flex flex-column gap-1">
+                      <label htmlFor="classPrice" className="CmanageCreateTag">
+                        課程金額
+                      </label>
+                      <input
+                        type="text"
+                        name="class_price"
+                        id="classPrice"
+                        className="CourseCreateInput"
+                        placeholder="--請輸入課程原價"
+                      />
+                      {/* 必填，需要是正整數 */}
+                    </div>
+
+                    <div className="col-4 d-flex flex-column gap-1">
+                      <label htmlFor="classSalePrice" className="CmanageCreateTag">
+                        課程優惠金額
+                      </label>
+                      <input
+                        type="text"
+                        name="class_sale_price"
+                        id="classSalePrice"
+                        className="CourseCreateInput"
+                        placeholder="--請選擇性輸入折扣後金額"
+                      />
+                      {/* 非必填，不可大於課程原價，需要是正整數 */}
+                    </div>
+                  </div>
+
                 </div>
                 <div className="col-12 col-lg-4 d-flex flex-column gap-1">
                   <label htmlFor="classPic" className="form-label CmanageCreateTag">
@@ -225,7 +326,6 @@ export default function ClassManIndex() {
                     type="file"
                     id="classPic"
                     name="classImgFile"
-                    onChange={handleImageUpload}
                   />
                   <label htmlFor="classVdio" className="form-label CmanageCreateTag mt-2">
                     課程影片
@@ -235,9 +335,8 @@ export default function ClassManIndex() {
                     type="file"
                     id="classVdio"
                     name="classVdioFile"
-                    onChange={handleVdioUpload}
                   />
-                  {/* 實體時隱藏欄位 */}
+                  {/* 實體時隱藏欄位，線上時必填 */}
                 </div>
                 <div className="col-12 d-flex flex-column gap-1">
                   <label htmlFor="classSummary" className="CmanageCreateTag">

@@ -23,7 +23,9 @@ export default function CourseIndex() {
         console.log("以下是auth內容");
         console.log(auth);
         console.log("======auth結束======");
+        return;
       }
+      console.log("userId 未設定成功");
     }, [auth])
 
     
@@ -108,9 +110,10 @@ export default function CourseIndex() {
     console.log("search 或 view 偵測到變動");
     
     // 當組件掛載時執行 fetch 請求
-    fetch(apiUrl)
+    if(userId){
+      fetch(apiUrl)
     .then((response) => {
-      
+        console.log("送出fetch URL: "+apiUrl);
         if (!response.ok) {
           throw new Error("Network response not ok");
         }
@@ -137,6 +140,7 @@ export default function CourseIndex() {
       .catch((error) => {
         console.log(error);
       });
+    }
   }, [view, search, userId]);
   // console.log(myFirstFavoriteCourse[0]);
 
