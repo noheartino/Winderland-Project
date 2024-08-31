@@ -199,9 +199,10 @@ export default function RegisterForm() {
           title: '註冊成功',
           text: '歡迎成為醺迷仙園會員，請先登入',
           showConfirmButton: false,
-          timer: 1500
+          timer: 1000
         });
-        setTimeout(() => router.push('/member/login'), 1000)
+        // router.push('/member/login')
+        setTimeout(() => router.push('/member/login'), 500)
       } else {
         // 處理後端返回的錯誤
         let errorMessage = result.message || '註冊失敗，請稍後再試';

@@ -155,6 +155,9 @@
 /* 配送資訊 */
 .pickupArea {
     margin-left: 56px;
+    font-size: medium;
+    color: var(--wine);
+    font-weight: 500;
     /* margin-top: 32px; */
 }
 
@@ -279,6 +282,18 @@
 
     /* margin-bottom: 80px; */
 }
+.orderPickLabel {
+    width: 130px;
+    color: #6A6A6A;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 3.8px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: -40px;
 
+    /* margin-bottom: 80px; */
+}
 
 }
