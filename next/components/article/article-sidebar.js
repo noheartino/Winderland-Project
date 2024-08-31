@@ -1,53 +1,98 @@
-import React from 'react'
-import ArticleDateSearch from './article-date-search'
+import React from "react";
+import ArticleDateSearch from "./article-date-search";
+import { useRouter } from "next/router";
+import style from "@/components/article/sortCheckbox.module.css";
 
-export default function ArticleSidebar() {
+export default function ArticleSidebar({
+  onDateFilterChange,
+  startDate,
+  endDate,
+  onStartDateChange,
+  onEndDateChange,
+  selectedDate,
+  onCategoryChange
+}) {
+  const router = useRouter();
+
   return (
     <>
-     <div className="d-none d-lg-block a-sidebar col-2">
-              <ul>
-                類型
-                <li>
-                  <a href="">歷史典故</a>
-                </li>
-                <li>
-                  <a href="">酒類介紹</a>
-                </li>
-                <li>
-                  <a href="">教育</a>
-                </li>
-                <li>
-                  <a href="">知識</a>
-                </li>
-                <li>
-                  <a href="">冷門知識</a>
-                </li>
-                <li>
-                  <a href="">趣味</a>
-                </li>
-                <li>
-                  <a href="">新奇</a>
-                </li>
-                <li>
-                  <a href="">感動</a>
-                </li>
-              </ul>
-              <ul>
-                發布日期
-                <li>全部</li>
-                <li>本日</li>
-                <li>本週</li>
-                <li>本月</li>
-                <li>近半年</li>
-                <li>近一年</li>
-                <li>一年以上</li>
-              </ul>
-              {/* 日期 */}
-              <ArticleDateSearch />
-              <button className="btn a-btn-select">
-                進行篩選 <img src="/images/article/select.svg" alt="" />
-              </button>
-            </div> 
+      <ul className="pt-3">
+        類型
+        <li
+          className="aCategoryLi"
+          onClick={() => onCategoryChange("knowledge")}
+        >
+          <p>知識</p>
+        </li>
+        <li
+          className="aCategoryLi"
+          onClick={() => onCategoryChange("regional")}
+        >
+          <p>產區特色</p>
+        </li>
+        <li
+          className="aCategoryLi"
+          onClick={() => onCategoryChange("varieties")}
+        >
+          <p>品種介紹</p>
+        </li>
+        <li
+          className="aCategoryLi"
+          onClick={() => onCategoryChange("pairing")}
+        >
+          <p>搭配餐點</p>
+        </li>
+        <li
+          className="aCategoryLi"
+          onClick={() => onCategoryChange("cocktail")}
+        >
+          <p>調酒知識</p>
+        </li>
+      </ul>
+      {/* radio */}
+      <ul className="pt-3">
+        發布日期
+        {["全部", "本日", "本週", "本月", "近半年", "近一年", "一年以上"].map((label) => (
+          <li className={`${style.aCheckLi} pt-2`} key={label}>
+            <input
+              className={`${style.aCheckbox}`}
+              id={label}
+              type="radio"
+              name="dateFilter"
+              value={label}
+              checked={selectedDate === label}
+              onChange={onDateFilterChange}
+            />
+            <label className={`${style.aLabelCheckbox}`} htmlFor={label}>
+              {label}
+            </label>
+          </li>
+        ))}
+      </ul>
+      {/* 日期 */}
+      {/* <ArticleDateSearch /> */}
+      <ul className="pt-3">
+        日期區間
+        <div className="a-date row my-3">
+          <div className="a-date-block p-0 col">
+            <input
+              className="a-date-input py-1"
+              type="date"
+              value={startDate}
+              onChange={(e) => onStartDateChange(e.target.value)}
+            />
+          </div>
+          <p className="col-auto mb-0">-</p>
+          <div className="a-date-block p-0 col">
+            <input
+              className="a-date-input py-1"
+              type="date"
+              value={endDate}
+              onChange={(e) => onEndDateChange(e.target.value)}
+            />
+          </div>
+        </div>
+      </ul>
     </>
-  )
+  );
 }

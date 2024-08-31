@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
+  // 當前課程 / 當前課程平均得分 / 課程已報名人數
   const {
     class_name='',
     student_limit,
@@ -10,6 +11,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
     address,
     teacher_name,
     class_path,
+    assigned,
   } = course;
   const isOnline = parseInt(online) === 0 ? false : true;
   return (
@@ -135,7 +137,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
                   上課縣市-{address.slice(0, 3)}
                 </span>
               </div>
-              <div className="course-process-footer mt-2 d-flex align-items-center justify-content-end justify-content-md-start">
+              <div className="course-process-footer mt-2 d-flex align-items-center justify-content-end justify-content-md-start flex-wrap row-gap-2 gap-3">
                 <span
                   className={`h6 text-gray-light spac-2 origin-price mx-2 ${
                     sale_price > 0 ? "d-inline-block d-md-none" : "d-none"
@@ -143,6 +145,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
                 >
                   <del>NT${price.toLocaleString()}</del>
                 </span>
+                
                 <span className="h5 spac-2">
                   NT$
                   {sale_price > 0
@@ -150,7 +153,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
                     : price.toLocaleString()}
                 </span>
                 <span
-                  className={`h6 text-gray-light spac-2 origin-price mx-2 ${
+                  className={`h6 text-gray-light spac-2 origin-price ${
                     sale_price > 0 ? "d-none d-md-inline-block" : "d-none"
                   }`}
                 >
@@ -165,7 +168,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
             isOnline === true ? "d-none" : "d-flex"
           }`}
         >
-          <div className="col-12 course-process-header d-flex justify-content-between mt-3 px-0">
+          <div className="col-12 course-process-header d-flex justify-content-between mt-3 px-0 flex-wrap row-gap-2">
             <span className="h6 text-sec-blue spac-1">
               限額總數 - {parseInt(student_limit)}人
             </span>
@@ -173,7 +176,8 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
                         已報名 {classAssignsQ>0 ? classAssignsQ/student_limit*100 : '0'}%
                       </span> */}
             <span className="h6 text-sec-blue spac-1">
-            已報名 {classAssignsQ > 0 ? `${((classAssignsQ / student_limit) * 100).toFixed(1)}%` : '0%'}
+            {/* 已報名 {classAssignsQ > 0 ? `${((classAssignsQ / student_limit) * 100).toFixed(1)}%` : '0%'} */}
+            已報名 {assigned>0?(assigned/student_limit*100).toFixed(0):"0"}%
           </span>
           </div>
           <div
@@ -187,7 +191,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
           >
             <div
               className="progress-bar bg-sec-blue-dark"
-              style={{ width: `${(classAssignsQ / student_limit) * 100}%` }}
+              style={{ width: `${assigned>0?(assigned/student_limit*100).toFixed(0):"0"}%` }}
             />
           </div>
         </div>

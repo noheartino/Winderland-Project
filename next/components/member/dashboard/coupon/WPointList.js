@@ -9,7 +9,7 @@ export default function WPointList() {
         <div
           className={`${style.wpointCard} row align-items-center py-3 d-none d-lg-flex`}
         >
-          <div className={`col-auto pe-0 row align-items-center`}>
+          <div className={`col-auto pe-0 row align-items-center ms-1`}>
             <Image
               className="col-auto"
               src="/images/member/wpoint.png"
@@ -18,16 +18,16 @@ export default function WPointList() {
               height={50}
             />
             <p className={`${style.listWpoint} m-0 p-0 col`}>W Point</p>
-          </div>
-          <div className={`col d-flex justify-content-end ps-0`}>
-            <div className={`${style.listUsedPoint} m-0`}>1000P</div>
-          </div>
+            <div className={`${style.listUsedPoint} m-0 col`}>1020P</div>
+            </div>
+          {/* <div className={`col d-flex justify-content-end ps-0`}>
+          </div> */}
         </div>
         {/* 手機 */}
         <div
           className={`${style.wpointCard} row align-items-center py-4 d-lg-none`}
         >
-          <div className={`col-auto pe-0 row align-items-center`}>
+          <div className={`col-auto pe-0 ms-1 row align-items-center`}>
             <Image
               className="col-auto"
               src="/images/member/wpoint.png"
@@ -36,10 +36,10 @@ export default function WPointList() {
               height={30}
             />
             <p className={`${style.listWpoint} m-0 p-0 col`} style={{fontSize:"10px"}}>W Point</p>
+            <div className={`${style.listUsedPoint} m-0 col`} style={{fontSize:"14px"}}>1000P</div>
           </div>
-          <div className={`col d-flex justify-content-end ps-0`}>
-            <div className={`${style.listUsedPoint} m-0`} style={{fontSize:"14px"}}>1000P</div>
-          </div>
+          {/* <div className={`col d-flex justify-content-end ps-0`}>
+          </div> */}
         </div>
       </div>
       <div className="col-3 my-2">

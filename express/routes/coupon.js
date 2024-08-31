@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
       WHERE 
         (
           (MONTH(coupon.start_date) = 9 OR MONTH(coupon.end_date) = 9)
-          OR (coupon.start_date = '0000/00/00' OR coupon.end_date = '0000/00/00')
+          OR (coupon.start_date = '0000-00-00' OR coupon.end_date = '0000-00-00')
         )
         AND coupon.status = '已啟用'
     `
@@ -32,7 +32,39 @@ router.get('/', async (req, res) => {
   }
 })
 
-// 儲存優惠券到 user_coupon 資料表
+// 獲取會員來搜尋的擁有的優惠券、點數
+router.get('/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params
+
+    // 獲取優惠券
+    const [userCoupons] = await connection.execute(
+      `SELECT uc.*, 
+             c.name, 
+             c.category, 
+             c.min_spend
+      FROM user_coupon uc
+      JOIN coupon c ON uc.coupon_id = c.id
+      WHERE uc.user_id = ?`,
+      [userId]
+    )
+
+    // 獲取點數
+    const [userPoints] = await connection.execute(
+      'SELECT * FROM user_points WHERE user_id = ?',
+      [userId]
+    )
+
+    res.json({ userCoupons, userPoints })
+  } catch (err) {
+    console.error(err)
+    res
+      .status(500)
+      .json({ status: 'error', message: '無法獲取已領取的會員優惠券' })
+  }
+})
+
+// 新增優惠券到 user_coupon 資料表
 router.post('/save-coupons', async (req, res) => {
   try {
     const { user_id, coupons } = req.body
@@ -66,29 +98,27 @@ router.post('/save-coupons', async (req, res) => {
   }
 })
 
-// 優惠券倉庫資料
-router.post('/get-coupon', async (req, res) => {
-  const { user_id } = req.body // 從請求體中獲取 user_id
+// 獲取會員等級的名稱
+router.post('/member-level', async (req, res) => {
+  const { member_level_id } = req.body
 
   try {
     const query = `
-      SELECT uc.*, 
-        c.name, 
-        c.category, 
-        c.min_spend
-      FROM user_coupon uc
-      JOIN coupon c ON uc.coupon_id = c.id
+    SELECT 
+        ml.id, 
+        ml.name 
+      FROM 
+        member_level ml 
       WHERE 
-        uc.user_id = ?
-        AND uc.status = 'get'
-        AND c.status = '已啟用'
-    `
+        ml.id = ?
+  `
 
     // 使用參數化查詢以避免 SQL 注入
-    const [userCoupons] = await connection.execute(query, [user_id])
-
-    // 返回查詢結果
-    res.json(userCoupons)
+    const [memberLevel] = await connection.execute(query, [member_level_id])
+    res.json({
+      status: 'success',
+      data: memberLevel,
+    })
   } catch (err) {
     console.error('SQL Error:', err.message)
     res.status(500).json({
@@ -99,40 +129,69 @@ router.post('/get-coupon', async (req, res) => {
   }
 })
 
-// 優惠券使用的
-router.post('/used-coupon', async (req, res) => {
-  console.log('Request body:', req.body)
+// // 優惠券倉庫(已獲取)資料
+// router.post('/get-coupon', async (req, res) => {
+//   const { user_id } = req.body
 
-  const { user_id } = req.body // 從請求體中獲取 user_id
+//   try {
+//     const query = `
+//       SELECT uc.*,
+//              c.name,
+//              c.category,
+//              c.min_spend
+//       FROM user_coupon uc
+//       JOIN coupon c ON uc.coupon_id = c.id
+//       WHERE uc.user_id = ?
+//         AND uc.status = 'get'
+//     `
 
-  try {
-    const query = `
-      SELECT uc.*, 
-        c.name, 
-        c.category, 
-        c.min_spend,
-        c.discount
-      FROM user_coupon uc
-      JOIN coupon c ON uc.coupon_id = c.id
-      WHERE 
-        uc.user_id = ?
-        AND uc.status = 'used'
-        AND c.status = '已啟用'
-    `
+//     // 使用參數化查詢以避免 SQL 注入
+//     const [userCoupons] = await connection.execute(query, [user_id])
 
-    // 使用參數化查詢以避免 SQL 注入
-    const [userCoupons] = await connection.execute(query, [user_id])
+//     // 返回查詢結果
+//     res.json(userCoupons)
+//   } catch (err) {
+//     console.error('SQL Error:', err.message)
+//     res.status(500).json({
+//       status: 'error',
+//       message: '無法查詢資料',
+//       error: err.message,
+//     })
+//   }
+// })
 
-    // 返回查詢結果
-    res.json(userCoupons)
-  } catch (err) {
-    console.error('SQL Error:', err.message)
-    res.status(500).json({
-      status: 'error',
-      message: '無法查詢資料',
-      error: err.message,
-    })
-  }
-})
+// // 使用過的優惠券資料
+// router.post('/used-coupon', async (req, res) => {
+//   const { user_id } = req.body // 從請求體中獲取 user_id
+
+//   try {
+//     const query = `
+//       SELECT uc.*,
+//         c.name,
+//         c.category,
+//         c.min_spend,
+//         c.discount
+//       FROM user_coupon uc
+//       JOIN coupon c ON uc.coupon_id = c.id
+//       WHERE
+//         uc.user_id = ?
+//         AND uc.status = 'used'
+//         AND c.status = '已啟用'
+//     `
+
+//     // 使用參數化查詢以避免 SQL 注入
+//     const [userCoupons] = await connection.execute(query, [user_id])
+
+//     // 返回查詢結果
+//     res.json(userCoupons)
+//   } catch (err) {
+//     console.error('SQL Error:', err.message)
+//     res.status(500).json({
+//       status: 'error',
+//       message: '無法查詢資料',
+//       error: err.message,
+//     })
+//   }
+// })
 
 export default router

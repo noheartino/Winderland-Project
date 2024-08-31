@@ -1,7 +1,7 @@
 import React, { useState, useEffect, use } from "react";
 import styles from "./Amount.module.css";
 
-export default function Amount() {
+export default function Amount({ changeAmount }) {
   // 數字輸入js start//
   const minLimit = 0;
   const maxLimit = 99;
@@ -33,6 +33,10 @@ export default function Amount() {
     const newInputValue = Number(e.target.value);
     setInputValue(newInputValue);
   };
+
+  useEffect(() => {
+    changeAmount?.(inputValue);
+  }, [inputValue, changeAmount]);
 
   //數字輸入js end//
   return (

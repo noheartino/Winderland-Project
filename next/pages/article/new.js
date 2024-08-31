@@ -1,14 +1,14 @@
 import Footer from "@/components/footer/footer";
 import Nav from "@/components/Header/Header";
 import React from "react";
-import style from "@/components/article/articleCreate.module.css";
+// import style from "@/components/article/articleCreate.module.css";
 
 export default function New() {
   return (
     <>
       {/* Header */}
       <Nav />
-      <title>新增文章</title>
+      {/* <title>新增文章</title>
       <div className="container-fuild ACbg row">
         <div className={`container ${style.AcreatePage} col-lg-7 col-11`}>
           <div className={`${style.ACnav} col row`}>
@@ -27,7 +27,7 @@ export default function New() {
             </div>
           </form>
         </div>
-      </div>
+      </div> */}
       {/* 評論區 */}
       {/* <ArticleCommentArea articleId={article.id}  /> */}
       {/* Footer */}
