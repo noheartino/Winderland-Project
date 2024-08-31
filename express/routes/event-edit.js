@@ -63,6 +63,31 @@ router.put('/edit/:id', upload.none(), async (req, res) => {
   }
 });
 
+
+router.put('/delete/:id', upload.none(), async (req, res) => {
+  try {
+    const infoId = req.params.id;
+
+    const tostatus = 0
+    
+    
+    const [result1] = await conn.query(
+       `UPDATE event SET 
+        status = ? 
+        WHERE id = ?
+    `,
+    [tostatus, infoId]
+    );  
+    
+    res.status(200).json({ message: 'Event updated successfully', result: result1 });
+
+  } catch (error) {
+    console.error('Error processing request:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+});
+
+
 // router.put('/edit/:id', async (request, response) => {
 //     const itemId = request.params.id
 //     const { event_name, event_date, event_time_start, event_time_end, apply_start, apply_end, event_city, event_venue, 
@@ -101,18 +126,18 @@ router.get('/:id', async (request, response) => {
 
     const infoId = request.params.id;
     const queryapplyon = `SELECT * FROM event WHERE id = ?`;
-    const queryapplyoff = `SELECT * FROM event WHERE status = 0`;
+    const queryapplyoff = `SELECT * FROM event_apply WHERE event_id = ?`;
 
 
     try {
         const [eventonResults, eventoffResults] = await Promise.all([
             conn.query(queryapplyon,[infoId]),
-            conn.query(queryapplyoff)
+            conn.query(queryapplyoff,[infoId])
         ]);
 
         response.json({
             myevent: eventonResults[0],
-            applyoff: eventoffResults[0],
+            allapply: eventoffResults[0],
         });
 
     } catch (error) {

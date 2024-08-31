@@ -1353,6 +1353,18 @@ a.Armallmt{
         box-shadow: 0 2px 3px rgb(150, 150, 150);
         margin-right: 20px;
     }
+    .eventCRR{
+        width: 120px;
+        padding-block: 8px;
+        font-size: 14px;
+        background-color: var(--orange);
+        color: white;
+        letter-spacing: 2px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 2px 3px rgb(255, 30, 30);
+        margin-right: 20px;
+    }
     .eventCS{
         width: 120px;
         padding-block: 8px;
