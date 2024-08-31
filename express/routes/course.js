@@ -30,7 +30,7 @@ router.use(async (req, res, next) => {
 const upload = multer();
 
 // !! 課程管理 list 顯示所有課程
-router.get('/teacher/management', upload.none(), async (req, res) => {
+router.get('/teacher/management', async (req, res) => {
   let coursesSQL = `SELECT
                         class.id AS class_id, class.name AS class_name, class.student_limit, class.assigned, class.teacher_id, price, class.sale_price, class.online, class.address, class.appointment_start, class.appointment_end, class.course_start, class.course_end, class.daily_start_time, class.daily_end_time, class.class_summary, class.description AS class_description, class.status AS class_status, teacher.name AS teacher_name, images_class.path AS class_path, images_teacher.path AS teacher_path,
                         COALESCE(AVG(comments.rating), 0) AS average_rating
@@ -44,7 +44,10 @@ router.get('/teacher/management', upload.none(), async (req, res) => {
                       ORDER BY class.id ASC;`
   try {
     const [courses] = await connection.execute(coursesSQL)
-    res.json({ courses })
+    res.json({ 
+      status: 'success',
+      message: '課程管理的課程list獲取成功', 
+      courses })
     console.log('-----> GET:' + req.originalUrl)
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
@@ -73,7 +76,12 @@ router.get('/teacher/:teacherId', async (req, res) => {
     const [teacherCourses] = await connection.execute(teacherCoursesSQL, [
       teacherId,
     ])
-    res.json({ teacher, teacherComments, teacherCourses })
+    res.json({
+      status: 'success',
+      message: '教師詳情頁面成功取得 目前教師資訊、目前教師評論、目前教師開課課程',
+      teacher,
+      teacherComments,
+      teacherCourses })
     console.log('測試:' + req.originalUrl)
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
@@ -107,7 +115,11 @@ router.get('/teacher', async (req, res) => {
     const [teachers] = await connection.execute(teachersSQL, teachersSQLParams)
     const [comments] = await connection.execute(commentsSQL)
 
-    res.json({ teachers, comments })
+    res.json({
+      status: 'success',
+      message: '教師列表成功獲取 所有教師資訊、所有評論',
+      teachers,
+      comments })
     console.log('來源url:' + req.originalUrl)
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
@@ -258,6 +270,8 @@ router.get('/', async (req, res) => {
     const [myCourse] = await connection.execute(querySQLMyCourse)
     const [teachers] = await connection.execute(teachersSQL)
     res.json({
+      status: 'success',
+      message: '課程首頁獲取"/"路由資料成功',
       courses,
       comments,
       classAssigns,
@@ -355,7 +369,10 @@ router.post('/:courseId', async (req, res) => {
 
   try {
     const [courseWriteInCart] = await connection.execute(courseWriteInCartSQL)
-    res.json({ courseWriteInCart })
+    res.json({
+      status: 'success',
+      message: '成功寫入購物車',
+      courseWriteInCart })
     console.log('測試POST:' + req.originalUrl)
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
@@ -367,7 +384,11 @@ router.get('/teacher/management/getTeacherData', async (req, res) => {
   let teachersSQL = `SELECT teacher.id, teacher.name FROM teacher`
   try {
     const [teachers] = await connection.execute(teachersSQL)
-    res.json({ teachers })
+    res.json({
+      status: 'success',
+      message: '管理頁成功獲取所有教師資料',
+      teachers
+    })
     console.log('測試GET Teacher:' + req.originalUrl)
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
@@ -375,32 +396,33 @@ router.get('/teacher/management/getTeacherData', async (req, res) => {
 })
 
 // !! 課程管理 create
-router.post('/teacher/management/create', async (req, res) => {
+router.post('/teacher/management/create', upload.none(), async (req, res) => {
  const { class_name, teacher_id, on_and_underline, student_limit, class_start_date, class_end_date, assign_start_date, assign_end_date, daily_start_time, daily_end_time, class_city, class_city_detail, classSummary, classIntro, class_price, class_sale_price } = req.body;
- console.log(class_name);
- console.log("--->");
- console.log(req.body);
 
-//   const city = (class_city || "").trim();
-//   const cityDetail = (class_city_detail || "").trim();
-//   const address = `${city}${cityDetail}`.trim();
+  const city = (class_city || "").trim();
+  const cityDetail = (class_city_detail || "").trim();
+  const address = `${city}${cityDetail}`.trim();
 
-//  let createCourseSQL = `INSERT INTO class
-//                         (class.name, class.student_limit, class.assigned, class.teacher_id, price, class.sale_price, class.online, class.address, class.appointment_start, class.appointment_end, class.course_start, class.course_end, class.daily_start_time, class.daily_end_time, class.class_summary, class.description , class.status)
-//                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
+ let createCourseSQL = `INSERT INTO class
+                        (class.name, class.student_limit, class.assigned, class.teacher_id, price, class.sale_price, class.online, class.address, class.appointment_start, class.appointment_end, class.course_start, class.course_end, class.daily_start_time, class.daily_end_time, class.class_summary, class.description , class.status)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
   
-//   let createCourseParams = [class_name || null, student_limit || null, 0, teacher_id || null, class_price || null, class_sale_price || null, on_and_underline || null, address || null, assign_start_date || null, assign_end_date || null, class_start_date || null, class_end_date || null, daily_start_time || null, daily_end_time || null, classSummary || null, classIntro || null, 0]
+  let createCourseParams = [class_name || null, student_limit || null, 0, teacher_id || null, class_price || null, class_sale_price || null, on_and_underline || null, address || null, assign_start_date || null, assign_end_date || null, class_start_date || null, class_end_date || null, daily_start_time || null, daily_end_time || null, classSummary || null, classIntro || null, 0]
 
-//   const { classImgFile, classVdioFile } = req.body;
-//   let insertImgAndVdioSQL = `INSERT INTO images_class
-//   (path, video_path) VALUES (?, ?);`
+  const { classImgFile, classVdioFile } = req.body;
+  let insertImgAndVdioSQL = `INSERT INTO images_class
+  (path, video_path) VALUES (?, ?);`
 
-  // let insertImgAndVdioSQLParams = [classImgFile || null, classVdioFile || null]
+  let insertImgAndVdioSQLParams = [classImgFile || null, classVdioFile || null]
   try {
-    // const [createCourse] = await connection.execute(createCourseSQL, createCourseParams)
-    // const [insertImgAndVdio] = await connection.execute(insertImgAndVdioSQL, insertImgAndVdioSQLParams)
-    res.json({ class_name })
+    await connection.execute(createCourseSQL, createCourseParams)
+    await connection.execute(insertImgAndVdioSQL, insertImgAndVdioSQLParams)
     console.log('測試POST:' + req.originalUrl)
+    res.json({
+      status: 'success',
+      message: '增加課程成功',
+      createCourseParams 
+    })
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
   }

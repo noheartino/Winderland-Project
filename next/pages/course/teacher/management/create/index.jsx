@@ -5,16 +5,36 @@ import TeacherManageHeader from '@/components/course/teacher-manage-header'
 import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/use-auth';
 import Link from "next/link";
+import Swal from 'sweetalert2'
 
 export default function ClassManIndex() {
 
   const router = useRouter();
   const [courses, setCourses] = useState([]);
+  const districts = [{dId: 1, districtStr: "台北市"}, {dId: 2, districtStr: "新北市"}, {dId: 3, districtStr: "桃園市"}, {dId: 4, districtStr: "台中市"}, {dId: 5, districtStr: "台南市"}, {dId: 6, districtStr: "高雄市"}, {dId: 7, districtStr: "新竹縣"}, {dId: 8, districtStr: "苗栗縣"}, {dId: 9, districtStr: "彰化縣"}, {dId: 10, districtStr: "南投縣"}, {dId: 11, districtStr: "雲林縣"}, {dId: 12, districtStr: "嘉義縣"}, {dId: 13, districtStr: "屏東縣"}, {dId: 14, districtStr: "宜蘭縣"}, {dId: 15, districtStr: "花蓮縣"}, {dId: 16, districtStr: "台東縣"}, {dId: 17, districtStr: "澎湖縣"}, {dId: 18, districtStr: "金門縣"}, {dId: 19, districtStr: "連江縣"}, {dId: 20, districtStr: "基隆市"}, {dId: 21, districtStr: "新竹市"}, {dId: 22, districtStr: "嘉義市"}]
 
   // 抓取 user 資料
   const authData = useAuth().auth.userData
   const [userId, setUserId] = useState(null)
   const [isAdmin, setIsAdmin] = useState(false)
+  const [mustBeValued, setMustBeValued] = useState({
+    className: '',
+      teacherId: '',
+      studentLimit: '',
+      on_and_underline: '',
+      classStartDate: '',
+      classEndDate: '',
+      assignStartDate: '',
+      assignEndDate: '',
+      dailyStartTime: '',
+      dailyEndTime: '',
+      classCity: '',
+      classCityDetail: '',
+      classPrice: '',
+      classIntro: '',
+      classVdio: '',
+  })
+
   useEffect(() => {
     if (authData && authData.id > 0) {
       setUserId(authData.id)
@@ -67,27 +87,146 @@ export default function ClassManIndex() {
   };
 
   // 處理上傳
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault(); // 防止默認的表單提交
-  //   const formData = new FormData(event.target); // 獲取表單數據
-  
-  //   if(formData){
-  //     try {
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // 防止默認的表單提交
+    const formData = new FormData(event.target); // 獲取表單數據
+
+    // 錯誤檢查狀態
+
+    // 表單檢查--- START ---
+    
+    // !! 這邊是必 填欄位檢查區~
+    const newMustBeValuedArr = {
+      className: '',
+      teacherId: '',
+      studentLimit: '',
+      on_and_underline: '',
+      classStartDate: '',
+      classEndDate: '',
+      assignStartDate: '',
+      assignEndDate: '',
+      dailyStartTime: '',
+      dailyEndTime: '',
+      classCity: '',
+      classCityDetail: '',
+      classPrice: '',
+      classIntro: '',
+      classVdio: '',
+    }
+    if(!document.querySelector("#className").value){
+      newMustBeValuedArr.className=`課程名稱為必 填欄位`;
+    }
+    if(!document.querySelector("#teacherId").value){
+      newMustBeValuedArr.teacherId=`請選擇授課教師!`;
+    }
+    if(!document.querySelector('input[name="on_and_underline"]:checked')){
+      newMustBeValuedArr.on_and_underline=`請選擇開課性質!`;
+    }
+    if(document.querySelector('#underLine').checked){
+      if(!(document.querySelector("#studentLimit").value)){
+        newMustBeValuedArr.studentLimit=`實體課程必須輸入報名人數上限!`;
+      }
+      if(!(document.querySelector("#classStartDate").value)){
+        newMustBeValuedArr.classStartDate=`實體課程必須選擇開課日期!`;
+      }
+      if(!(document.querySelector("#classEndDate").value)){
+        newMustBeValuedArr.classEndDate=`實體課程必須選擇課程結束日期!`;
+      }
+      if(!(document.querySelector("#assignStartDate").value)){
+        newMustBeValuedArr.assignStartDate=`實體課程必須選擇開始報名日期!`;
+      }
+      if(!(document.querySelector("#assignEndDate").value)){
+        newMustBeValuedArr.assignEndDate=`實體課程必須選擇報名截止日期!`;
+      }
+      if(!(document.querySelector("#dailyStartTime").value)){
+        newMustBeValuedArr.dailyStartTime=`實體課程必須選擇上課時間!`;
+      }
+      if(!(document.querySelector("#dailyEndTime").value)){
+        newMustBeValuedArr.dailyEndTime=`實體課程必須選擇下課時間!`;
+      }
+      if((!document.querySelector("#classCity").value)){
+        newMustBeValuedArr.classCity=`實體課程必須選擇開課縣市!`;
+      }
+      if((!document.querySelector("#classCityDetail").value)){
+        newMustBeValuedArr.classCityDetail=`實體課程必須填寫詳細開課地址!`;
+      }
+    }
+    if(!document.querySelector("#classPrice").value){
+      newMustBeValuedArr.classPrice=`課程金額是必填欄位!`;
+    }
+    if(!document.querySelector("#classIntro").value){
+      newMustBeValuedArr.classIntro=`課程內容是必填欄位!`;
+    }
+    if(document.querySelector('#onLine').checked){
+      if((document.querySelector('#classVdio').files.length === 0)){
+        newMustBeValuedArr.classVdio=`線上課程必須上傳課程影片!`;
+      }
+    }
+    
+    
+
+
+    const firstEmptyErrMsg = (Object.values(newMustBeValuedArr).filter(value => value !== ''))[0]
+    console.log(Object.values(newMustBeValuedArr).filter(value => value !== ''));
+    console.log("應該要有錯誤訊息: "+firstEmptyErrMsg);
+    
+
+    setMustBeValued(newMustBeValuedArr)
+    console.log("抓mustBeValued");
+    console.log(newMustBeValuedArr);
+
+    const hasErrors = Object.values(newMustBeValuedArr).some((v) => v)
+    if (hasErrors) {
+      await Swal.fire({
+        icon: 'warning',
+        title: '請檢查必 填欄位!',
+        text: firstEmptyErrMsg,
+        showConfirmButton: false,
+        timer: 1500
+      });
+      return;
+    }
+
+    
+    // 表單檢查--- END ---
+    try{
+        const createCourse = async ()=>{
+          try {
+            const response = await fetch('http://localhost:3005/api/course/teacher/management/create', {
+              method: 'POST',
+              body: formData,
+              credentials: 'include',
+            });
+            const result = await response.json();
+            console.log('送出成功: ', result);
+            return result;
+          } catch (error) {
+            console.error('送出有問題!', error);
+          }
+        }
+      const result = await createCourse()
+      // 跳出新增成功or失敗
+
+      if(result.status && result.status==='success'){
+        await Swal.fire({
+          icon: 'success',
+          title: '課程新增成功',
+          text: result.message,
+          showConfirmButton: false,
+          timer: 1500
+        });
+        router.push({pathname: "/course/teacher/management"})
+      }
       
-  //       const response = await fetch('http://localhost:3005/api/course/teacher/management/create', {
-  //         method: 'POST',
-  //         body: formData
-  //       });
-  //       console.log(formData);
-  //       const result = await response.json();
-  //       console.log('Form submission result:', result);
-  //     } catch (error) {
-  //       console.error('送出有問題!!!!!!!!!!!!!!:', error);
-  //       console.log("送出有問題!!!!!!!!!!!!!!:");
-  //     }
-  //   }
-  //   console.log("formData是空的");
-  // };
+    }catch (error) {
+      console.error('新增課程發生錯誤:', error);
+      await Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '新增課程發生錯誤',
+      });
+    }
+  };
 
   return (
     <>
@@ -107,8 +246,7 @@ export default function ClassManIndex() {
 
         <div className="eventCreateWrite">
           <div className="container">
-          <form action={'http://localhost:3005/api/course/teacher/management/create'} method="post" encType="multipart/form-data">
-          <input type="text" name="testtttt" value="123456" />
+          <form method="post" onSubmit={handleSubmit} encType="multipart/form-data">
               <div className="row row-gap-3">
                 <div className="col-12 col-lg-8 d-flex flex-column gap-3">
                   <div className="row gx-2 gx-lg-4 row-gap-3">
@@ -119,7 +257,7 @@ export default function ClassManIndex() {
 
                       <label htmlFor="className" className="CmanageCreateTag">
                         課程名稱 (0/25)
-                        {/* 必填、不可超過25字 */}
+                        {/* 不可超過25字 */}
                       </label>
                       <input type="text" name="class_name" id="className" className="CourseCreateInput" />
                     </div>
@@ -132,10 +270,9 @@ export default function ClassManIndex() {
 
                       <select className="form-select form-select-sm CourseCreateInput" aria-label="Small select example" name="teacher_id" id="teacherId" defaultValue="">
                         <option value="" disabled>--請選擇授課教師</option>
-                        {/* 必填 */}
                         {teachers.map((teacher)=>{
                           return (
-                              <option key={teacher?.id} value={teacher?.id}>{teacher?.name}</option>
+                            <option key={teacher?.id} value={teacher?.id}>{teacher?.name}</option>
                           )
                         })}
                       </select>
@@ -172,7 +309,7 @@ export default function ClassManIndex() {
                         id="studentLimit"
                         className="CourseCreateInput"
                       />
-                      {/* 必填，檢查數字必須是大於0的整數 */}
+                      {/* 檢查數字必須是大於0的整數 */}
                     </div>
                   </div>
                   <div className="row gx-2 gx-lg-4 row-gap-3">
@@ -180,7 +317,7 @@ export default function ClassManIndex() {
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="courseStartDate" className="CmanageCreateTag">
                         開始上課日期
-                        {/* 線上不顯示欄位。實體必填且不可晚於結束日期 */}
+                        {/* 線上不顯示欄位。實體不可晚於結束日期 */}
                       </label>
                       <input
                         type="date"
@@ -192,7 +329,7 @@ export default function ClassManIndex() {
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="courseEndDate" className="CmanageCreateTag">
                         課程結束日期
-                        {/* 線上不顯示欄位。實體必填 */}
+                        {/* 線上不顯示欄位。 */}
                       </label>
                       <input
                         type="date"
@@ -205,7 +342,7 @@ export default function ClassManIndex() {
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="assignStartDate" className="CmanageCreateTag">
                         報名開始日期
-                        {/* 線上不顯示欄位。實體必填且不可晚於結束日期 */}
+                        {/* 線上不顯示欄位。實體不可晚於結束日期 */}
                       </label>
                       <input
                         type="date"
@@ -218,7 +355,7 @@ export default function ClassManIndex() {
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="assignEndDate" className="CmanageCreateTag">
                         報名截止日期
-                        {/* 線上不顯示欄位。實體必填 */}
+                        {/* 線上不顯示欄位。 */}
                       </label>
                       <input
                         type="date"
@@ -231,7 +368,7 @@ export default function ClassManIndex() {
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="dailyStartTime" className="CmanageCreateTag">
                         上課時間
-                        {/* 線上不顯示欄位。實體必填且不可晚於結束時間 */}
+                        {/* 線上不顯示欄位。實體不可晚於結束時間 */}
                       </label>
                       <input
                         type="time"
@@ -244,7 +381,7 @@ export default function ClassManIndex() {
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="dailyEndTime" className="CmanageCreateTag">
                         下課時間
-                        {/* 線上不顯示欄位。實體必填 */}
+                        {/* 線上不顯示欄位。 */}
                       </label>
                       <input
                         type="time"
@@ -257,17 +394,19 @@ export default function ClassManIndex() {
                   </div>
                   <div className='row gx-2 gx-lg-4 row-gap-3'>
                     <div className="col-4 d-flex flex-column gap-1">
+                      
                       <label htmlFor="classCity" className="CmanageCreateTag">
                         開課縣市
                       </label>
-                      <input
-                        type="text"
-                        name="class_city"
-                        id="classCity"
-                        className="CourseCreateInput"
-                        placeholder="--請選擇縣市"
-                      />
-                      {/* 線上不顯示欄位。實體必填，改成下拉選單 */}
+                      <select className="form-select form-select-sm CourseCreateInput" aria-label="Small select example" name="class_city" id="classCity" defaultValue="">
+                          <option value="" disabled>--請選擇縣市</option>
+                          {districts.map((district)=>{
+                            return (
+                              <option key={district?.dId} value={district?.districtStr}>{district?.districtStr}</option>
+                            )
+                          })}
+                      </select>
+                      {/* 線上不顯示欄位。 */}
                     </div>
 
                     <div className="col-8 d-flex flex-column gap-1">
@@ -281,7 +420,7 @@ export default function ClassManIndex() {
                         className="CourseCreateInput"
                         placeholder="--請輸入不包含縣市在內的詳細地點"
                       />
-                      {/* 線上不顯示欄位。實體必填，不可超過50字元 */}
+                      {/* 線上不顯示欄位。實體不可超過50字元 */}
                     </div>
                   </div>
                   
@@ -297,7 +436,7 @@ export default function ClassManIndex() {
                         className="CourseCreateInput"
                         placeholder="--請輸入課程原價"
                       />
-                      {/* 必填，需要是正整數 */}
+                      {/* 需要是正整數 */}
                     </div>
 
                     <div className="col-4 d-flex flex-column gap-1">
@@ -311,7 +450,7 @@ export default function ClassManIndex() {
                         className="CourseCreateInput"
                         placeholder="--請選擇性輸入折扣後金額"
                       />
-                      {/* 非必填，不可大於課程原價，需要是正整數 */}
+                      {/* 不可大於課程原價，需要是正整數 */}
                     </div>
                   </div>
 
@@ -327,6 +466,7 @@ export default function ClassManIndex() {
                     id="classPic"
                     name="classImgFile"
                   />
+                  {/* 只能上傳圖片格式(jpg,jpeg,png,gif,webp,svg,) */}
                   <label htmlFor="classVdio" className="form-label CmanageCreateTag mt-2">
                     課程影片
                   </label>
@@ -336,7 +476,7 @@ export default function ClassManIndex() {
                     id="classVdio"
                     name="classVdioFile"
                   />
-                  {/* 實體時隱藏欄位，線上時必填 */}
+                  {/* 實體時隱藏欄位，只能上傳影片格式 */}
                 </div>
                 <div className="col-12 d-flex flex-column gap-1">
                   <label htmlFor="classSummary" className="CmanageCreateTag">
@@ -347,7 +487,7 @@ export default function ClassManIndex() {
                     id="classSummary"
                     placeholder="請輸入課程摘要"
                   />
-                  {/* 非必填，字數檢查500字 */}
+                  {/* 字數檢查500字 */}
                 </div>
                 <div className="col-12 d-flex flex-column gap-1">
                   <label htmlFor="classIntro" className="CmanageCreateTag">
@@ -358,7 +498,7 @@ export default function ClassManIndex() {
                     id="classIntro"
                     placeholder="請輸入課程內容"
                   />
-                  {/* 必填，字數檢查1500字 */}
+                  {/* 字數檢查1500字 */}
                 </div>
                 <div className="col-12 d-flex gap-1 justify-content-end mt-3">
                   <button type="reset" className="CeventCR" onClick={handleReset}>
