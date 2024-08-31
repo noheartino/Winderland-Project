@@ -8,11 +8,11 @@
     }
 
     .shop-header-img.loading {
-        opacity: 0.6;
+        opacity: 0;
     }
 
     .background-layer {
-        position: relative;
+        position: absolute;
         top: 0;
         left: 0;
         width: 100%;
@@ -20,7 +20,7 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
-        transition: opacity 0.3s ease-in-out;
+        transition: opacity 0.5s ease-in-out;
     }
 
     .background-layer.current {
@@ -28,29 +28,37 @@
     }
 
     .background-layer.next {
-        transition: opacity 0.5s ease-in-out;
         z-index: 2;
         opacity: 0;
     }
 
-    .shop-header-img:not(.loading) .background-layer.next {
+    .shop-header-img.transitioning .background-layer.next {
         opacity: 1;
-    }
-
-
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 3;
     }
 
     .shop-header-title {
         position: absolute;
         top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        z-index: 99;
+        transition: opacity 0.3s ease-in-out;
+        text-shadow:2px 2px 8px rgb(0, 0, 0);
+    }
 
+    .shop-header-img.transitioning .shop-header-title {
+        opacity: 0;
+    }
+
+    .shop-header-title {
+        position: absolute;
+        top: 0;
+        transition: opacity 0.3s ease-in-out;
         width: 100%;
         height: 100%;
         align-items: center;
