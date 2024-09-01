@@ -57,7 +57,7 @@ export default function ClassManIndex() {
 
         <div className="CManageNav">
           <div className="container">
-            <div className="CManageNavT">新增課程</div>
+            <div className="CManageNavT">編輯課程</div>
             <div className="CManageNavList">
               <Link href='/course/teacher/management' className='CArmallc'><div className="CNavListLi">課程管理</div></Link>
               <Link href='/course/teacher/management/create' className='CArmall'><div className="CNavListLi">新增課程</div></Link>

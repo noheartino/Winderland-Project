@@ -288,8 +288,6 @@ router.get('/', async (req, res) => {
 router.get('/:courseId', async (req, res) => {
   const { series, userId } = req.query
   const courseId = req.params.courseId
-  console.log(courseId + 'courseId')
-  console.log(userId + 'userId')
 
   let courseSQL = `SELECT 
                     class.*,
@@ -334,9 +332,10 @@ router.get('/:courseId', async (req, res) => {
   } else {
     commentSQLparams = `comments.created_at DESC`
   }
-  let commentsSQL = `SELECT comments.*, users.account, users.id AS user_id FROM comments JOIN users ON comments.user_id = users.id WHERE comments.entity_type = 'class' AND comments.entity_id = ${courseId} ORDER BY ${commentSQLparams}`
+   let commentsSQL = `SELECT comments.*, users.account FROM comments JOIN users ON comments.user_id = users.id WHERE comments.entity_type = 'class' AND comments.entity_id = ${courseId} ORDER BY ${commentSQLparams}`
   console.log('------' + commentSQLparams + '------')
   console.log('------' + series + '------')
+  console.log("courseId="+courseId);
   if (series) {
     console.log(series)
   }
@@ -349,7 +348,14 @@ router.get('/:courseId', async (req, res) => {
       'SELECT * FROM user_like WHERE user_id = ? AND item_id = ? AND item_type = "class"',
       [userId, courseId]
     )
-    res.json({ course, theCourseAssigned, comments, existing })
+    res.json({
+      status: 'success',
+      message: '成功寫入購物車',
+      course,
+      theCourseAssigned,
+      comments,
+      existing,
+    })
     console.log('測試:' + req.originalUrl)
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })

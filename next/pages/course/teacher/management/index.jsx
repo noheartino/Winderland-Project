@@ -116,8 +116,7 @@ export default function Applyevent() {
                 }
               }
               return (
-                <>
-                  <div className={`classMDetailist`}>
+                  <div className={`classMDetailist`} key={course?.class_id}>
                     <div className={`CMDetailistBox d-flex`}>
                       <div className='CMDetailistBoxPic'>
                         <img src={`/images/course_and_tarot/${course?.class_path}`} alt="" className="" />
@@ -189,7 +188,6 @@ export default function Applyevent() {
                       </div>
                     </div>
                   </div>
-                </>
               )
             })}
 

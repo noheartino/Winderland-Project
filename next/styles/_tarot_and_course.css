@@ -956,17 +956,27 @@
         border-radius: 5px;
         box-shadow: 0 2px 3px rgb(150, 150, 150);
         margin-right: 20px;
+        transition: .3s;
+        &:hover{
+          background-color: #fdf6f0;
+          color: var(--text_primary);
+        }
     }
     .CeventCS{
         width: 120px;
         padding-block: 8px;
         font-size: 1rem;
-        background-color: #916B51;
+        background-color: rgb(145, 107, 81);
         color: white;
         letter-spacing: 0.2rem;
         border: none;
         border-radius: 5px;
         box-shadow: 0 2px 3px rgb(150, 150, 150);
+        transition: .3s;
+        &:hover{
+          background-color: rgb(114, 67, 36);
+          color: white;
+        }
     }
 
     #eventCreateModal{

@@ -17,6 +17,16 @@ export default function ClassManIndex() {
   const authData = useAuth().auth.userData
   const [userId, setUserId] = useState(null)
   const [isAdmin, setIsAdmin] = useState(false)
+  useEffect(() => {
+    if (authData && authData.id > 0) {
+      setUserId(authData.id)
+      setIsAdmin(true)
+      console.log("----> set UserId = " + authData.id);
+    }
+  }, [authData])
+  // 驗證登入者有權限
+
+  const [classNameWordsNum, setClassNameWordsNum] = useState(0)
   const [mustBeValued, setMustBeValued] = useState({
     className: '',
       teacherId: '',
@@ -34,16 +44,7 @@ export default function ClassManIndex() {
       classIntro: '',
       classVdio: '',
   })
-
-  useEffect(() => {
-    if (authData && authData.id > 0) {
-      setUserId(authData.id)
-      setIsAdmin(true)
-      console.log("----> set UserId = " + authData.id);
-    }
-  }, [authData])
-  // 驗證登入者有權限
-
+  
   // 抓取所有教師資料
   const [teachers, setTeachers] = useState([])
   useEffect(()=>{
@@ -86,7 +87,133 @@ export default function ClassManIndex() {
     }
   };
 
-  // 處理上傳
+
+  // 送出表單前檢查 ErrorMsgBox 是否有值
+  // ! 推送錯誤訊息至warningBox
+  const [errorMsgBox, setErrorMsgBox] = useState({
+    className: '',
+    teacherId: '',
+    studentLimit: '',
+    on_and_underline: '',
+    classStartDate: '',
+    classEndDate: '',
+    assignStartDate: '',
+    assignEndDate: '',
+    dailyStartTime: '',
+    dailyEndTime: '',
+    classCity: '',
+    classCityDetail: '',
+    classPrice: '',
+    classIntro: '',
+    classVdio: '',
+  })
+  const [remindMsgBox, setRemindMsgBox] = useState({
+    className: '',
+    teacherId: '',
+    studentLimit: '',
+    on_and_underline: '',
+    classStartDate: '',
+    classEndDate: '',
+    assignStartDate: '',
+    assignEndDate: '',
+    dailyStartTime: '',
+    dailyEndTime: '',
+    classCity: '',
+    classCityDetail: '',
+    classPrice: '',
+    classIntro: '',
+    classVdio: '',
+  })
+  const newRemindMsgBoxArr = {
+    className: '',
+    teacherId: '',
+    studentLimit: '',
+    on_and_underline: '',
+    classStartDate: '',
+    classEndDate: '',
+    assignStartDate: '',
+    assignEndDate: '',
+    dailyStartTime: '',
+    dailyEndTime: '',
+    classCity: '',
+    classCityDetail: '',
+    classPrice: '',
+    classIntro: '',
+    classVdio: '',
+  }
+  const newErrorMsgBoxArr = {
+    className: '',
+    teacherId: '',
+    studentLimit: '',
+    on_and_underline: '',
+    classStartDate: '',
+    classEndDate: '',
+    assignStartDate: '',
+    assignEndDate: '',
+    dailyStartTime: '',
+    dailyEndTime: '',
+    classCity: '',
+    classCityDetail: '',
+    classPrice: '',
+    classIntro: '',
+    classVdio: '',
+  }
+
+  // 字數限制提醒
+  const handleWordsLimit = (e, wordLimit)=>{
+      let currentWordsNum = e.target.value.trim().length;
+      let columnName= '';
+      if(e.target.id === 'className'){
+        columnName = '課程名稱'
+        document.querySelector('#classNameWordNum').textContent = currentWordsNum
+      }
+    if(parseInt(currentWordsNum)>wordLimit){
+        const currentIdStr = e.target.id.trim()
+        newRemindMsgBoxArr[currentIdStr] = `提醒: ${columnName}欄位已達字數上限 ${wordLimit}`
+        e.target.value = e.target.value.slice(0, wordLimit)
+        console.log(newRemindMsgBoxArr);
+        document.querySelector('#classNameWordNum').textContent = e.target.id === 'className' && currentWordsNum - 1;
+    }
+    setRemindMsgBox(newRemindMsgBoxArr)
+  }
+  useEffect(()=>{
+    const remindMsgBoxHasErrors = Object.values(remindMsgBox).some((v) => v)
+    if (remindMsgBoxHasErrors) {
+      console.log("remindMsgBox 將顯示提醒");
+      return;
+    }
+  }, [remindMsgBox])
+
+  const handleOnlineClickClear = ()=>{
+    // 清除實體課程才有的欄位
+  }
+
+  const handleUnderlineClickClear = ()=>{
+    // 清除線上課程才有的欄位
+  }
+
+  
+// *欄位檢查:
+
+// 字數上限檢查
+
+// 正整數檢查
+
+// 開始日期不可晚於結束日期
+
+// 開始時間不可晚於結束時間
+
+// 檔案格式檢查(圖片、影片)
+
+
+// *線上時隱藏欄位
+
+
+// *檔案上傳函數
+  
+
+
+  // 處理送出表單
   const handleSubmit = async (event) => {
     event.preventDefault(); // 防止默認的表單提交
     const formData = new FormData(event.target); // 獲取表單數據
@@ -95,7 +222,7 @@ export default function ClassManIndex() {
 
     // 表單檢查--- START ---
     
-    // !! 這邊是必 填欄位檢查區~
+    // !! 這邊是必填欄位檢查區~
     const newMustBeValuedArr = {
       className: '',
       teacherId: '',
@@ -114,7 +241,7 @@ export default function ClassManIndex() {
       classVdio: '',
     }
     if(!document.querySelector("#className").value){
-      newMustBeValuedArr.className=`課程名稱為必 填欄位`;
+      newMustBeValuedArr.className=`課程名稱為必填欄位`;
     }
     if(!document.querySelector("#teacherId").value){
       newMustBeValuedArr.teacherId=`請選擇授課教師!`;
@@ -162,24 +289,20 @@ export default function ClassManIndex() {
         newMustBeValuedArr.classVdio=`線上課程必須上傳課程影片!`;
       }
     }
-    
-    
-
 
     const firstEmptyErrMsg = (Object.values(newMustBeValuedArr).filter(value => value !== ''))[0]
     console.log(Object.values(newMustBeValuedArr).filter(value => value !== ''));
     console.log("應該要有錯誤訊息: "+firstEmptyErrMsg);
-    
 
     setMustBeValued(newMustBeValuedArr)
-    console.log("抓mustBeValued");
+    console.log("newMustBeValuedArr");
     console.log(newMustBeValuedArr);
 
-    const hasErrors = Object.values(newMustBeValuedArr).some((v) => v)
-    if (hasErrors) {
+    const mustBeHasErrors = Object.values(newMustBeValuedArr).some((v) => v)
+    if (mustBeHasErrors) {
       await Swal.fire({
         icon: 'warning',
-        title: '請檢查必 填欄位!',
+        title: '請檢查必填欄位!',
         text: firstEmptyErrMsg,
         showConfirmButton: false,
         timer: 1500
@@ -256,10 +379,10 @@ export default function ClassManIndex() {
                       {/* <input type="hidden" name="noweventid"/> */}
 
                       <label htmlFor="className" className="CmanageCreateTag">
-                        課程名稱 (0/25)
+                        課程名稱 (<span id='classNameWordNum'>{}</span>/25)
                         {/* 不可超過25字 */}
                       </label>
-                      <input type="text" name="class_name" id="className" className="CourseCreateInput" />
+                      <input type="text" name="class_name" id="className" className="CourseCreateInput" onChange={(e) => handleWordsLimit(e, 25)} />
                     </div>
                   </div>
                   <div className="row gx-2 gx-lg-4 row-gap-3">
@@ -420,7 +543,7 @@ export default function ClassManIndex() {
                         className="CourseCreateInput"
                         placeholder="--請輸入不包含縣市在內的詳細地點"
                       />
-                      {/* 線上不顯示欄位。實體不可超過50字元 */}
+                      {/* 線上不顯示欄位。實體字數不可超過50字元 */}
                     </div>
                   </div>
                   

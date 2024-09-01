@@ -2,6 +2,7 @@ import Comment from "@/components/course/course-comment";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Image from 'next/image';
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 import { useAuth } from '@/hooks/use-auth';
@@ -25,6 +26,7 @@ export default function CourseIndex() {
 
   const router = useRouter();
   const { courseId, series } = router.query;
+  console.log("本頁courseId抓取為:"+courseId);
   const [course, setCourse] = useState([]);
   const [theCourseAssigned, setCourseAssigned] = useState([]);
   const [comments, setComments] = useState([]);
@@ -129,8 +131,8 @@ function querySeries04(e) {
             pathname: "/course/1",
             query: {}
           })
+          apiUrl = `http://localhost:3005/api/course/1?userId=${userId}`;
         }
-        apiUrl= `http://localhost:3005/api/course/1?userId=${userId}`;
 
       fetch(apiUrl)
         .then((response) => {
@@ -239,12 +241,12 @@ function querySeries04(e) {
         <div className="container-fluid px-0 m-0">
           <div className="container-fluid px-0">
             <div className="container-sm px-0">
-            <div className="row px-0 m-0 justify-content-center justify-content-md-start px-10px">
+            <div className="row px-10px m-0 justify-content-center justify-content-md-start px-10px my-4">
               <Link className={`px-0 col-auto`} href={"/course"}>
-                <div className="spac-1 btn-border-wine btn mt-4 mb-3"><i className="fa-solid fa-chevron-left me-1"></i>回到課程首頁</div>
+                <div className="spac-1 btn-border-wine btn"><i className="fa-solid fa-chevron-left me-1"></i>回到課程首頁</div>
               </Link>
             </div>
-              <div className="row px-0 mx-0 pt-5 mb-4 d-none d-md-flex">
+              <div className="row px-0 mx-0 pt-3 mb-4 d-none d-md-flex">
                 <div className="col px-10px">
                   <span
                     className={`me-4 py-2 px-3 h6 ${
@@ -280,7 +282,7 @@ function querySeries04(e) {
                             src="/images/course_and_tarot/rectangle128.png"
                             alt=""
                           />
-                          <div className="absolute-t0-l0 w-100 h-100 d-flex justify-content-center align-items-center">
+                          <div className={`absolute-t0-l0 w-100 h-100 d-flex justify-content-center align-items-center ${ course?.online === 0 ? "d-none" : "d-flex" }`}>
                             <a href="">
                               <i className="fa-solid fa-circle-play text-white opacity-50 course-detail-player" />
                             </a>
@@ -795,11 +797,11 @@ function querySeries04(e) {
           {/* course detail 評論 start */}
           <div className="container-fluid course-detail-comment-bg py-5 px-10px">
             <div className="container-sm">
-              <div className="course-comment-header d-flex flex-column justify-content-center flex-md-row justify-content-md-between align-items-center mt-3 mb-5 row-gap-3">
+              <div className="course-comment-header d-flex flex-column justify-content-center flex-md-row justify-content-md-between align-items-center my-3 row-gap-3">
                 <h4 className="text-prim-text-prim lh-15 spac-2 text-center text-md-start">
                   學員回饋&nbsp;|&nbsp;Comment
                 </h4>
-                <div className="btn-group course-comment-filter">
+                <div className={`btn-group course-comment-filter ${comments && comments.length===0?'d-none':'d-block'}`}>
                   <button
                     type="button"
                     className="btn btn-border-prim dropdown-toggle rounded-5 px-20px"
@@ -827,7 +829,7 @@ function querySeries04(e) {
                   </ul>
                 </div>
               </div>
-              <div className="course-comment-scorebars-box mb-5 row d-flex d-md-none">
+              <div className={`course-comment-scorebars-box mb-5 mx-0 px-0 row ${comments && comments.length===0?'d-none':'d-flex d-md-none'}`}>
                 <div className="col-auto d-flex flex-column align-items-center justify-content-center">
                   <h1 className="spac-2 text-prim-text-prim ms-2">{averageRating}</h1>
                   {/* bigStar start */}
@@ -844,7 +846,7 @@ function querySeries04(e) {
                 <div className="col course-comment-progress-bar d-flex flex-column justify-content-between">
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-10">
+                    <div className="col-11">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -860,7 +862,7 @@ function querySeries04(e) {
                         ></div>
                       </div>
                     </div>
-                    <div className="col-2">
+                    <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
                       {comments.filter((v) => v.rating === 5).length}
                       </p>
@@ -869,7 +871,7 @@ function querySeries04(e) {
                   {/* 單條評分bar end */}
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-10">
+                    <div className="col-11">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -885,7 +887,7 @@ function querySeries04(e) {
                         ></div>
                       </div>
                     </div>
-                    <div className="col-2">
+                    <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
                       {comments.filter((v) => v.rating === 4).length}
                       </p>
@@ -894,7 +896,7 @@ function querySeries04(e) {
                   {/* 單條評分bar end */}
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-10">
+                    <div className="col-11">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -910,7 +912,7 @@ function querySeries04(e) {
                         ></div>
                       </div>
                     </div>
-                    <div className="col-2">
+                    <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
                       {comments.filter((v) => v.rating === 3).length}
                       </p>
@@ -919,7 +921,7 @@ function querySeries04(e) {
                   {/* 單條評分bar end */}
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-10">
+                    <div className="col-11">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -935,7 +937,7 @@ function querySeries04(e) {
                         ></div>
                       </div>
                     </div>
-                    <div className="col-2">
+                    <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
                       {comments.filter((v) => v.rating === 2).length}
                       </p>
@@ -944,7 +946,7 @@ function querySeries04(e) {
                   {/* 單條評分bar end */}
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-10">
+                    <div className="col-11">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -960,7 +962,7 @@ function querySeries04(e) {
                         ></div>
                       </div>
                     </div>
-                    <div className="col-2">
+                    <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
                       {comments.filter((v) => v.rating === 1).length}
                       </p>
@@ -970,13 +972,21 @@ function querySeries04(e) {
                   
                 </div>
               </div>
-              {comments?.map((comment, index)=>{
+              {comments && comments.length>0 ?
+              comments?.map((comment, index)=>{
                 return(
                     <div key={comment.id} className="course-comment-area" style={{margin: "0 0 40px 0"}}>
                       <Comment comment={comment} index={index + 1}/>
                     </div>
                     )
-              })}
+              })
+            :
+            <div className="row justify-content-center my-3">
+                <div className="col-auto" style={{ maxWidth: '400px', maxHeight: '378px', width: '100%' }}>
+                <Image src={`/images/course_and_tarot/comments-no-result.png`} alt="course list no result" layout="responsive" width={370} height={350} style={{ width: '100%', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}/>
+              </div>
+            </div>
+            }
               
             </div>
           </div>
@@ -985,17 +995,15 @@ function querySeries04(e) {
         {/* page three course-detail end */}
 
         {/* page-nav-bar start */}
-        <div className="container-fluid py-3">
-          <div className="container-sm">
-            <div className="row justify-content-between">
-              <a className="col-auto" href="">
-                <span className="h5 text-prim-text-prim spac-1">
-                  查看所有講師
-                  <i className="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i>
-                </span>
-              </a>
+        <div className="container-fluid py-3 my-5">
+          <div className="container-sm px-0">
+            <div className="row justify-content-between px-0 mx-0">
+                        <Link className='col-auto px-0 mx-0' href="/course/teacher"> 
+                          <div type="button" className="btn-light-to-prim btn py-2 px-3 spac-1 d-flex justify-content-center align-items-center">
+                            查看所有講師<i className="fa-solid fa-chevron-right ms-2"></i>
+                          </div>
+                        </Link>
             </div>
-            <div className="col-auto">page-nav</div>
           </div>
         </div>
         {/* page-nav-bar end */}
