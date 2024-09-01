@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useMemo } from "react";
 import styles from "./PcFliterAside.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -60,12 +60,10 @@ export default function PcFliterAside({
   };
 
   // 雙滑塊js end//
+  if (!filters || !filters.varieties) return null;
 
-  const uniqueVarieties = Array.from(
-    new Set(filters.varieties.map((v) => v.name))
-  ).map((name) => {
-    return filters.varieties.find((v) => v.name === name);
-  });
+  const uniqueVarieties = Array.from(new Set(filters.varieties.map((v) => v.name)))
+  .map((name) => filters.varieties.find((v) => v.name === name));
 
   // 開關選項的函式
   const toggleShowAllVarieties = () => {
@@ -122,7 +120,7 @@ export default function PcFliterAside({
                 onChange={() => changeFilter("variet", "")}
               />
               <label htmlFor="allVarieties">全部品種</label>
-              {filters.varieties
+              {(filters.varieties || [])
                 .slice(0, showAllVarieties ? undefined : INITIAL_SHOW_COUNT)
                 .map((v, index) => (
                   <div key={index}>
