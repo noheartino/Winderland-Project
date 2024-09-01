@@ -47,7 +47,6 @@ export default function CartTransport({ addressLabel = "門市選擇", hideSelec
     }, [storeName, storeAddress, pickupName, pickupPhone]);
 
     const clearLocalStorage = () => {
-        console.log("Clearing local storage");
         localStorage.removeItem('storeName');
         localStorage.removeItem('storeAddress');
     };

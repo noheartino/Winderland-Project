@@ -14,8 +14,6 @@ export default function CartMoneyTotal({ userId }) {
         const storedPoints = sessionStorage.getItem("pointsUsed");
         const storedDiscountedAmount = parseFloat(sessionStorage.getItem('discountedAmount')) || 0;
 
-        console.log('Received userId in CartMoneyTotal:', userId);
-
         // 更新狀態
         setPointsUsed(JSON.parse(storedPoints));
         setDiscountedAmount(storedDiscountedAmount);

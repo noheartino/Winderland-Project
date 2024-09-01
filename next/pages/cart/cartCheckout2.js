@@ -30,7 +30,6 @@ export default function CartCheckout2() {
   const [originalPoints, setOriginalPoints] = useState(0); // 儲存原本點數
   const [transportData, setTransportData] = useState({}); //運送資料7-11
   const [transportBlackCatData, setTransportBlackCatData] = useState({}); // 新增狀態來儲存黑貓運送資料
-  console.log(userId);
 
   useEffect(() => {
     const storedUserId = sessionStorage.getItem("user_id");
@@ -40,7 +39,6 @@ export default function CartCheckout2() {
       "transportBlackCatData"
     );
     const storedPoints = sessionStorage.getItem("pointsUsed");
-    console.log("Points from sessionStorage:", storedPoints);
 
     if (storedUserId) {
       setUserId(storedUserId);
@@ -74,7 +72,6 @@ export default function CartCheckout2() {
   const handleTransportChange = (event) => {
     const value = event.target.value;
     setSelectedTransport(value);
-    console.log("Pickup Name Updated:", value);
 
     if (value === "blackCat") {
       // 清除其他運送方式的資料
@@ -97,7 +94,6 @@ export default function CartCheckout2() {
 
   const handlePointsChange = (newPoints) => {
     setPointsUsed(newPoints);
-    console.log("Updated Points:", newPoints); // 顯示點數變化
     sessionStorage.setItem("pointsUsed", newPoints);
   };
 
@@ -108,7 +104,6 @@ export default function CartCheckout2() {
 
   const handleTransportDataChange = (newTransportData) => {
     setTransportData(newTransportData);
-    console.log("Updated Transport Data:", newTransportData); // 顯示運送資料變化
     sessionStorage.setItem("transportData", JSON.stringify(newTransportData));
   };
 
