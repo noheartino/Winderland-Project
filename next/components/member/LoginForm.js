@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { useAuth } from '@/hooks/use-auth'
 import Swal from 'sweetalert2'
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useFirebase } from '@/hooks/useFirebase';
 
 
 // 漂浮標籤
@@ -44,6 +45,7 @@ const FloatingLabelInput = React.memo(({ label, type, name, value, onChange, err
 
 // @ 預設導出
 export default function LoginForm() {
+  const { firebaseInitialized } = useFirebase();
   const { login, googleLogin, isLoading } = useAuth();
   const router = useRouter()
 
@@ -114,11 +116,11 @@ export default function LoginForm() {
         await Swal.fire({
           icon: 'success',
           title: '登入成功',
-          text: loginResult.message,
+          text: '歡迎來到醺迷仙園',
           showConfirmButton: false,
           timer: 1500
         });
-        router.push('/dashboard');
+        router.push('/');
       } else {
         // 使用 SweetAlert2 替代 alert
         await Swal.fire({
@@ -138,47 +140,76 @@ export default function LoginForm() {
     }
   }
 
-  // 處理 Google 登入
-  const handleGoogleLogin = async () => {
-    if (isLoading) {
-      // 如果 auth 狀態正在加載，顯示一個加載消息或返回
-      Swal.fire({
-        title: '請稍候',
-        text: '正在初始化登入服務...',
-        icon: 'info',
-        showConfirmButton: false,
-        timer: 1500
-      });
-      return;
-    }
+  // * Google 登入
+  // const handleGoogleLogin = async () => {
+  //   if (!firebaseInitialized) {
+  //     Swal.fire({
+  //       title: '請稍候',
+  //       text: '正在初始化登入服務...',
+  //       icon: 'info',
+  //       showConfirmButton: false,
+  //       timer: 1500
+  //     });
+  //     return;
+  //   }
 
-    try {
-      const result = await googleLogin();
-      if (result.success) {
-        await Swal.fire({
-          icon: 'success',
-          title: '登入成功',
-          text: 'Google 登入成功！',
-          showConfirmButton: false,
-          timer: 1500
-        });
-        router.push('/dashboard');
-      } else {
-        await Swal.fire({
-          icon: 'error',
-          title: '登入失敗',
-          text: result.message || 'Google 登入失敗',
-        });
-      }
-    } catch (error) {
-      console.error('Google 登入過程中發生錯誤:', error);
-      await Swal.fire({
-        icon: 'error',
-        title: '錯誤',
-        text: 'Google 登入過程中發生錯誤',
-      });
-    }
-  };
+  //   try {
+  //     const result = await googleLogin();
+  //     if (result.success) {
+  //       await Swal.fire({
+  //         icon: 'success',
+  //         title: '登入成功',
+  //         text: 'Google 登入成功！',
+  //         showConfirmButton: false,
+  //         timer: 1500
+  //       });
+  //       router.push('/dashboard');
+  //     } else {
+  //       await Swal.fire({
+  //         icon: 'error',
+  //         title: '登入失敗',
+  //         text: result.message || 'Google 登入失敗',
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Google 登入過程中發生錯誤:', error);
+  //     await Swal.fire({
+  //       icon: 'error',
+  //       title: '錯誤',
+  //       text: 'Google 登入過程中發生錯誤',
+  //     });
+  //   }
+  // };
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     const result = await googleLogin();
+  //     if (result.success) {
+  //       await Swal.fire({
+  //         icon: 'success',
+  //         title: '登入成功',
+  //         text: 'Google 登入成功！',
+  //         showConfirmButton: false,
+  //         timer: 1500
+  //       });
+  //       router.push('/');// 重定向到首頁
+  //     } else {
+  //       await Swal.fire({
+  //         icon: 'error',
+  //         title: '登入失敗',
+  //         text: result.message || 'Google 登入失敗',
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Google 登入過程中發生錯誤:', error);
+  //     await Swal.fire({
+  //       icon: 'error',
+  //       title: '錯誤',
+  //       text: 'Google 登入過程中發生錯誤',
+  //     });
+  //   }
+  // };
+
+
 
   const togglePasswordVisibility = useCallback(() => {
     setShowPassword(prev => !prev);
@@ -274,18 +305,19 @@ export default function LoginForm() {
                     className={styles.blue}>立即註冊新帳號</Link>
                 </div>
                 {/* 第三方登入 */}
-                {/* <div className={styles.fastLogin}>
+                <div className={styles.fastLogin}>
                   <hr className={styles.hr} />
                   <div className={styles.buttonGruop}>
                     <button
                       className={`${styles.googleLogin} d-flex justify-content-center align-items-center`}
-                      onClick={handleGoogleLogin}
-                      type="button"  // 確保這不會觸發表單提交
+                      onClick={googleLogin}
+                      // onClick={handleGoogleLogin}
+                      type="button"  
                     >
                       <GoogleLogo className="mx-3" />
                       使用GOOGLE登入
                     </button>
-                    <button
+                    {/* <button
                       className={`${styles.lineLogin} d-flex justify-content-center align-items-center`}
                     >
                       <Image
@@ -296,9 +328,9 @@ export default function LoginForm() {
                         className={`${styles.img} mx-2`}
                       />
                       使用LINE登入
-                    </button>
+                    </button> */}
                   </div>
-                </div> */}
+                </div>
               </div>
             </form>
           </div> </div>
