@@ -60,10 +60,20 @@ export default function PcFliterAside({
   };
 
   // 雙滑塊js end//
-  if (!filters || !filters.varieties) return null;
+  useEffect(() => {
+    if (selectFilters.category) {
+      changeFilter("country", "");
+      changeFilter("origin", "");    }
+  }, [selectFilters.category, changeFilter]);
 
-  const uniqueVarieties = Array.from(new Set(filters.varieties.map((v) => v.name)))
-  .map((name) => filters.varieties.find((v) => v.name === name));
+  const uniqueVarieties = useMemo(() => {
+    if (!filters || !filters.varieties) return [];
+    return Array.from(new Set(filters.varieties.map((v) => v.name)))
+      .map((name) => filters.varieties.find((v) => v.name === name));
+  }, [filters]);
+
+  // 如果 filters 或 filters.varieties 不存在，提前返回
+  if (!filters || !filters.varieties) return null;
 
   // 開關選項的函式
   const toggleShowAllVarieties = () => {
@@ -97,9 +107,9 @@ export default function PcFliterAside({
               key={c.id}
               type="button"
               className={`${styles["category-button"]} ${
-                selectFilters.category === c.id ? styles.selected : ""
+                selectFilters.category === c.id.toString() ? styles.selected : ""
               }`}
-              onClick={() => changeFilter("category", c.id)}
+              onClick={() => changeFilter("category", c.id.toString())}
             >
               {c.name}&nbsp;&nbsp;{c.name_en}{" "}
             </button>

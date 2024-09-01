@@ -8,11 +8,16 @@ export default function CategoryTitle({ filters, selectFilters }) {
   const [isLoading, setIsLoading] = useState(true);
   const [categoryChange, setCategoryChange] = useState(false);
   const prevCategoryRef = useRef();
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   // 使用useMemo記憶當前category
   const currentCategory = useMemo(() => {
+    const categoryId = parseInt(selectFilters.category) || selectFilters.category;
+    if (filters.categories.length === 0) {
+      return null; // 如果分类数据还没加载，返回 null
+    }
     return (
-      filters.categories.find((c) => c.id === selectFilters.category) || {
+      filters.categories.find((c) => c.id === categoryId) || {
         name: "全部商品",
         name_en: "All Wine",
         img: "all.jpg",
@@ -27,13 +32,25 @@ export default function CategoryTitle({ filters, selectFilters }) {
   };
 
   useEffect(() => {
+    if (filters.categories.length > 0 && !isDataLoaded) {
+      setIsDataLoaded(true);
+    }
+  }, [filters.categories, isDataLoaded]);
+
+  useEffect(() => {
+    if (!isDataLoaded || !currentCategory) return;
+
+    console.log('Current category:', currentCategory);
+    console.log('Select filters:', selectFilters);
+    console.log('Filters categories:', filters.categories);
     if (prevCategoryRef.current !== selectFilters.category) {
       setIsLoading(true);
       setCategoryChange(true);
       const newImage = getImageUrl(currentCategory.img);
-
+      
       const img = new Image();
       img.src = newImage;
+      console.log('New image:', newImage);
       img.onload = () => {
         setNextImage(newImage);
         setIsLoading(false);
@@ -46,7 +63,11 @@ export default function CategoryTitle({ filters, selectFilters }) {
 
       prevCategoryRef.current = selectFilters.category;
     }
-  }, [currentCategory, selectFilters.category]);
+  }, [currentCategory, selectFilters.category, isDataLoaded]);
+
+  if (!isDataLoaded || !currentCategory) {
+    return <div>載入中...</div>;
+  }
 
   return (
     <>
@@ -69,9 +90,9 @@ export default function CategoryTitle({ filters, selectFilters }) {
           }`}
         >
           <h1 className={`h3 `}>
-            {currentCategory ? currentCategory.name : "全部商品"}
+            {currentCategory.name}
           </h1>
-          <h5>({currentCategory ? currentCategory.name_en : "All Wine"})</h5>
+          <h5>({currentCategory.name_en})</h5>
         </div>
       </div>
     </>
