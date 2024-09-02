@@ -139,7 +139,7 @@ export default function CartCheckout3() {
             <b>已完成結帳!!</b>
           </div>
           <div className="checkOutEnd">
-            <button className="goOrder">訂單查詢</button>
+            <button className="goOrder" onClick={goOrder}>訂單查詢</button>
             <button className="goPage" onClick={goHome}>
               回首頁
             </button>

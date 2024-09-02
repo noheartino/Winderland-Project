@@ -41,7 +41,7 @@ export default function Nav() {
 
 
 
-  let userinfo = infodata?.userinfo?.[0].img || [];
+  let userinfo = infodata?.userinfo?.[0]?.img || [];
 
   // 修改會員頭像路徑
   const avatarUrl = userData && userData.avatar_url

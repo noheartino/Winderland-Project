@@ -7,7 +7,6 @@ import CartCoupon from "@/components/cart/cart1/cartCoupon";
 import CartProductM from "@/components/cart/cart1/cartPorductM";
 import CartClassM from "@/components/cart/cart1/cartClassM";
 import CartMoneyM from "@/components/cart/cart1/cartMoneyM";
-import CartCouponM from "@/components/cart/cart1/cartCouponM";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 import CartZero from "@/components/cart/cartObject/cartZero";
@@ -28,7 +27,6 @@ export default function CartCheckout1() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [coupons, setCoupons] = useState([]);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -377,8 +375,6 @@ export default function CartCheckout1() {
               </div>
             )}
 
-            <div style={{ height: "150px" }}></div>
-
             {/* 仅在商品或课程勾选时传递数据 */}
             <CartMoneyM
               totalAmount={totalAmount}
@@ -387,14 +383,13 @@ export default function CartCheckout1() {
               classData={classChecked ? classData : []}
               userId={userId}
             />
-            <CartCouponM
+            <CartCoupon
               userId={userId}
               selectedCoupon={selectedCoupon}
               totalAmount={totalAmount}
               onCouponChange={handleCouponChange}
             />
-            <div style={{ height: "150px" }}>
-            </div>
+            <div style={{ height: "150px" }}></div>
           </div>
         </main>
       )}

@@ -19,7 +19,7 @@ export default function CartProductM() {
       // 如果有商品資料
       const firstProduct = productData[0];
       setOrderData({
-        image: `/images/cart/cartProduct/images/${firstProduct.product_image}`,
+        image: `/images/product/${firstProduct.product_image}`,
         name: firstProduct.product_name,
         quantity: productData.reduce((acc, item) => acc + item.product_quantity, 0) + classData.length,
         totalAmount: finalAmount + 60
@@ -28,7 +28,7 @@ export default function CartProductM() {
       // 如果沒有商品資料但有課程資料
       const firstClass = classData[0];
       setOrderData({
-        image: `/images/cart/cartClass/upload_class/${firstClass.class_image}`, // 課程沒有圖片，假設使用預設圖片
+        image: `/images/course_and_tarot/${firstClass.class_image}`, // 課程沒有圖片，假設使用預設圖片
         name: firstClass.class_name,
         quantity: classData.length,
         totalAmount: finalAmount + 60
