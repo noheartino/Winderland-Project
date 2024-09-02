@@ -124,7 +124,7 @@ export default function ClassManIndex() {
     classIntro: '',
     classVdio: '',
   })
-  const newRemindMsgBoxArr = {
+  let newRemindMsgBoxArr = {
     className: '',
     teacherId: '',
     studentLimit: '',
@@ -160,22 +160,37 @@ export default function ClassManIndex() {
   }
 
   // 字數限制提醒
-  const handleWordsLimit = (e, wordLimit)=>{
-      let currentWordsNum = e.target.value.trim().length;
-      let columnName= '';
-      if(e.target.id === 'className'){
-        columnName = '課程名稱'
-        document.querySelector('#classNameWordNum').textContent = currentWordsNum
-      }
-    if(parseInt(currentWordsNum)>wordLimit){
-        const currentIdStr = e.target.id.trim()
-        newRemindMsgBoxArr[currentIdStr] = `提醒: ${columnName}欄位已達字數上限 ${wordLimit}`
-        e.target.value = e.target.value.slice(0, wordLimit)
-        console.log(newRemindMsgBoxArr);
-        document.querySelector('#classNameWordNum').textContent = e.target.id === 'className' && currentWordsNum - 1;
-    }
-    setRemindMsgBox(newRemindMsgBoxArr)
+const handleWordsLimit = (e, wordLimit) => {
+  let currentWordsNum = e.target.value.trim().length;
+  let columnName = '';
+
+  if (e.target.id === 'className') {
+      columnName = '課程名稱';
+      document.querySelector('#classNameWordNum').textContent = currentWordsNum;
   }
+  if (e.target.id === 'classCityDetail') {
+      columnName = '詳細開課地址';
+      document.querySelector('#CmanageCreateTagWordNum').textContent = currentWordsNum;
+  }
+
+  if (parseInt(currentWordsNum) > wordLimit) {
+      const currentIdStr = e.target.id.trim();
+      newRemindMsgBoxArr[currentIdStr] = `提醒: ${columnName}欄位已達字數上限 ${wordLimit}`;
+      e.target.value = e.target.value.slice(0, wordLimit);
+      console.log(newRemindMsgBoxArr);
+
+      // 更新字數顯示
+      if (e.target.id === 'className') {
+          document.querySelector('#classNameWordNum').textContent = wordLimit;
+      }
+      if (e.target.id === 'classCityDetail') {
+          document.querySelector('#CmanageCreateTagWordNum').textContent = wordLimit;
+      }
+
+      // 更新提醒訊息
+      setRemindMsgBox(newRemindMsgBoxArr);
+  }
+}
   useEffect(()=>{
     const remindMsgBoxHasErrors = Object.values(remindMsgBox).some((v) => v)
     if (remindMsgBoxHasErrors) {
@@ -183,6 +198,8 @@ export default function ClassManIndex() {
       return;
     }
   }, [remindMsgBox])
+  
+
 
   const handleOnlineClickClear = ()=>{
     // 清除實體課程才有的欄位
@@ -379,7 +396,7 @@ export default function ClassManIndex() {
                       {/* <input type="hidden" name="noweventid"/> */}
 
                       <label htmlFor="className" className="CmanageCreateTag">
-                        課程名稱 (<span id='classNameWordNum'>{}</span>/25)
+                        課程名稱 (<span id='classNameWordNum'>0</span>/25)
                         {/* 不可超過25字 */}
                       </label>
                       <input type="text" name="class_name" id="className" className="CourseCreateInput" onChange={(e) => handleWordsLimit(e, 25)} />
@@ -534,7 +551,7 @@ export default function ClassManIndex() {
 
                     <div className="col-8 d-flex flex-column gap-1">
                       <label htmlFor="classCityDetail" className="CmanageCreateTag">
-                        詳細開課地址 (0/40)
+                        詳細開課地址 (<span id='CmanageCreateTagWordNum'>0</span>/40)
                       </label>
                       <input
                         type="text"
@@ -542,8 +559,9 @@ export default function ClassManIndex() {
                         id="classCityDetail"
                         className="CourseCreateInput"
                         placeholder="--請輸入不包含縣市在內的詳細地點"
+                        onChange={(e) => handleWordsLimit(e, 40)}
                       />
-                      {/* 線上不顯示欄位。實體字數不可超過50字元 */}
+                      {/* 線上不顯示欄位。實體字數不可超過40字元 */}
                     </div>
                   </div>
                   
