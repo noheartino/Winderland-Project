@@ -1,9 +1,13 @@
+import dynamic from "next/dynamic";
 import Footer from "@/components/footer/footer";
 import Nav from "@/components/Header/Header";
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import style from "./articleCreate.module.css";
 import { MdAddPhotoAlternate } from "react-icons/md";
-import axios from 'axios';
+import axios from "axios";
+import "quill/dist/quill.snow.css";
+// 动态导入 Quill
+const Quill = dynamic(() => import("quill").then((mod) => mod.default), { ssr: false });
 
 export default function New() {
   const [title, setTitle] = useState("");
@@ -11,17 +15,62 @@ export default function New() {
   const [mainImage, setMainImage] = useState(null);
   const [inlineImages, setInlineImages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [mainImagePreview, setMainImagePreview] = useState(null);
+  const [inlineImagePreviews, setInlineImagePreviews] = useState([]);
+  const [isClient, setIsClient] = useState(false);
+  const editorRef = useRef(null);
+  const quillRef = useRef(null); // 用來保存 Quill 編輯器的參考
+
+  useEffect(() => {
+    if (isClient && editorRef.current && Quill) {
+      quillRef.current = new Quill.default(editorRef.current, {
+        theme: "snow",
+        placeholder: "在這裡輸入文章內容...",
+        modules: {
+          toolbar: [
+            [{ header: [1, 2, false] }],
+            ["bold", "italic", "underline"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["link", "image"],
+          ],
+        },
+      });
+  
+      // 当内容改变时，更新 content 状态
+      quillRef.current.on("text-change", () => {
+        setContent(quillRef.current.root.innerHTML);
+      });
+  
+      // 自定义图片上传处理
+      quillRef.current.getModule("toolbar").addHandler("image", () => {
+        const input = document.createElement("input");
+        input.setAttribute("type", "file");
+        input.setAttribute("accept", "image/*");
+        input.click();
+  
+        input.onchange = async () => {
+          const file = input.files[0];
+          const formData = new FormData();
+          formData.append("image", file);
+  
+          // 模拟图片上传，替换成你的API路径
+          const res = await axios.post("/api/article/upload-image", formData);
+          const imageUrl = res.data.imageUrl;
+  
+          // 插入图片到 Quill 编辑器
+          const range = quillRef.current.getSelection();
+          quillRef.current.insertEmbed(range.index, "image", imageUrl);
+        };
+      });
+    }
+  }, [isClient]);
 
   const handleFileChange = (e) => {
     if (e.target.files.length > 0) {
-      setMainImage(e.target.files[0]);
+      const file = e.target.files[0];
+      setMainImage(file);
+      setMainImagePreview(URL.createObjectURL(file));
     }
-  };
-
-  const handleInlineImageUpload = (e) => {
-    // 在此處理內嵌圖片上傳
-    const files = Array.from(e.target.files);
-    setInlineImages(files);
   };
 
   const handleSubmit = async (e) => {
@@ -29,40 +78,33 @@ export default function New() {
     setLoading(true);
 
     try {
-      // 步驟 1: 提交文章基本資料
-      const response = await axios.post('/api/article/new', {
+      const response = await axios.post("/api/article/new", {
         title,
-        content,
-        author: "Admin", // 替換為實際作者
+        content: quillRef.current.root.innerHTML, // 提交時獲取編輯器內容
+        author: "Admin", 
         update_time: new Date().toISOString(),
         valid: true,
-        images: [] // 初始不需要圖片資料
+        images: [],
       });
 
       const articleId = response.data.articleId;
 
-      // 步驟 2: 上傳首圖
       if (mainImage) {
         const formData = new FormData();
-        formData.append('image', mainImage);
+        formData.append("image", mainImage);
         await axios.post(`/api/article/upload-main-image/${articleId}`, formData);
       }
 
-      // 步驟 3: 上傳內嵌圖片
-      for (const image of inlineImages) {
-        const formData = new FormData();
-        formData.append('image', image);
-        await axios.post(`/api/article/upload-inline-image/${articleId}`, formData);
-      }
-
-      alert('文章和圖片成功上傳');
+      alert("文章和圖片成功上傳");
     } catch (error) {
       console.error(error);
-      alert('上傳失敗');
+      alert("上傳失敗");
     } finally {
       setLoading(false);
     }
   };
+
+
   return (
     <>
       {/* Header */}
@@ -79,33 +121,69 @@ export default function New() {
               <div className={`${style.ACtime}`}>發佈於 08/22</div>
             </div>
           </div>
-          <form className="row px-5">
-            <div class={`${style.ACDropArea} my-3`} id="dropArea">
-              拖曳文章首圖到這裡
+          <form className="row px-5" onSubmit={handleSubmit}>
+            <div className={`${style.ACDropArea} my-3`} id="dropArea">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+                id="mainImage"
+              />
+              <label htmlFor="mainImage">
+                {mainImagePreview ? (
+                  <img
+                    src={mainImagePreview}
+                    alt="Main preview"
+                    className={style.previewImage}
+                  />
+                ) : (
+                  "拖曳文章首圖到這裡"
+                )}
+              </label>
             </div>
             <input
               className={`${style.ACtitle} py-1 mt-3 col-12 border-0`}
               placeholder="標題"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
-            <p className={`${style.ACtitleLimit}`}>(0/80)</p>
-            <textarea
-              className={`${style.ACtextarea} col-12 `}
-              placeholder="在這裡輸入文章內容..."
-              rows={10}
-            ></textarea>
-            <div className={`${style.AcreateBtn} my-3 col-12 gap-3`}>
+            <p className={`${style.ACtitleLimit}`}>({title.length}/80)</p>
+            <div className={`${style.ACtextarea} col-12`}>
+              {isClient && <div ref={editorRef}></div>}
+            </div>
+            {/* <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleInlineImageUpload}
+              style={{ display: "none" }}
+              id="inlineImages"
+            />
+            <label
+              htmlFor="inlineImages"
+              className="col-auto d-flex align-items-center"
+            >
               <MdAddPhotoAlternate className={`${style.ACaddPhoto}`} />
-              <button className={`${style.ACcloseBtn} btn btn-secondary`}>
+            </label> */}
+            <div className={`${style.AcreateBtn} my-3 col gap-3`}>
+              <button
+                className={`${style.ACcloseBtn} btn btn-secondary`}
+                type="button"
+              >
                 取消
               </button>
-              <button className={`${style.ACplusBtn} btn`}>新增文章</button>
+              <button
+                className={`${style.ACplusBtn} btn`}
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "新增中..." : "新增文章"}
+              </button>
             </div>
           </form>
         </div>
       </div>
-      {/* 評論區 */}
-      {/* <ArticleCommentArea articleId={article.id}  /> */}
-      {/* Footer */}
       <Footer />
     </>
   );
