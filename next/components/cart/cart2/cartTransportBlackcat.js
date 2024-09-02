@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import css from '@/components/cart/cart2/cartTransport.module.css';
 
-export default function CartTransportBlackCat({ addressLabel = "地址", onClear, onTransportBlackCatDataChange }) {
+export default function CartTransportBlackCat({ addressLabel = "*地址", onClear, onTransportBlackCatDataChange }) {
     const [address, setAddress] = useState('');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
@@ -71,7 +71,7 @@ export default function CartTransportBlackCat({ addressLabel = "地址", onClear
             </div>
             <div className={css.transportContent1}>
                 <div className={css.transportContent2}>
-                    <div>取貨姓名</div>
+                    <div>*取貨姓名</div>
                     <div>
                         <input
                             type="text"
@@ -84,7 +84,7 @@ export default function CartTransportBlackCat({ addressLabel = "地址", onClear
                     </div>
                 </div>
                 <div>
-                    <div>取貨手機號碼</div>
+                    <div>*取貨手機號碼</div>
                     <div>
                         <input
                             type="text"
