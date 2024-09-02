@@ -37,6 +37,21 @@ export default function ProductIndex() {
   const [isInitialLoad, setIsInitialLoad] = useState(true); // 新增的狀態
   const router = useRouter();
 
+  const resetFilters = () => {
+    setFilters({
+      category: '',
+      variet: '',
+      origin: '',
+      country: '',
+      minPrice: 0,
+      maxPrice: 0,
+    });
+  };
+
+  const restSearch = () => {
+    setSearch("");
+  }
+
   const urlParams = useMemo(() => {
     if (!router.isReady) return null;
     const { page, sort, search, category, variet, origin, country } =
@@ -59,38 +74,38 @@ export default function ProductIndex() {
     }
   }, [router.isReady, router.query, selectFilters]);
 
-  const fetchProducts = useCallback(async (filters) => {
-    try {
-      const response = await axios.get(`http://localhost:3005/api/product`, {
-        params: {
-          page: currentPage,
-          limit: itemsPerPage,
-          sort: currentSort,
-          search: search,
-          category: filters.category,
-          variet: filters.variet,
-          origin: filters.origin,
-          country: filters.country,
-          minPrice: filters.minPrice,
-          maxPrice: filters.maxPrice,
-        },
-      });
-      console.log("API 請求參數:", response.config.params);
-      setProducts(response.data.products);
-      setCategoryies(response.data.categories);
-      setTotalPages(response.data.pagination.totalPages);
-      setTotalItems(response.data.pagination.totalItems);
-      setLoading(false);
-    } catch (err) {
-      setError("加載商品時出錯");
-      setLoading(false);
-    }
-  }, [
-    currentPage,
-    itemsPerPage,
-    currentSort,
-    search,
-  ]);
+  const fetchProducts = useCallback(
+    async (filters) => {
+      try {
+        const response = await axios.get(`http://localhost:3005/api/product`, {
+          params: {
+            page: currentPage,
+            limit: itemsPerPage,
+            sort: currentSort,
+            search: search,
+            category: filters.category,
+            variet: filters.variet,
+            origin: filters.origin,
+            country: filters.country,
+            minPrice: filters.minPrice,
+            maxPrice: filters.maxPrice,
+          },
+        });
+        console.log("API 請求參數:", response.config.params);
+        setProducts(response.data.products);
+        setCategoryies(response.data.categories);
+        setTotalPages(response.data.pagination.totalPages);
+        setTotalItems(response.data.pagination.totalItems);
+        setLoading(false);
+      } catch (err) {
+        resetFilters();
+        restSearch();
+        console.error("加載商品時出錯:", err);
+        setLoading(false);
+      }
+    },
+    [currentPage, itemsPerPage, currentSort, search]
+  );
 
   useEffect(() => {
     if (router.isReady) {
@@ -240,7 +255,8 @@ export default function ProductIndex() {
               changeFilter={changeFilter}
             />
             {/* 商品list */}
-            <ProductGroup products={products} />
+            {loading && <p>加载中...</p>}
+            {!loading && <ProductGroup products={products} error={error} />}
             {/* 分頁 */}
             <ListPageNation
               currentPage={currentPage}

@@ -12,9 +12,14 @@ export default function CategoryTitle({ filters, selectFilters }) {
 
   // 使用useMemo記憶當前category
   const currentCategory = useMemo(() => {
-    const categoryId = parseInt(selectFilters.category) || selectFilters.category;
-    if (filters.categories.length === 0) {
-      return null; // 如果分类数据还没加载，返回 null
+    const categoryId =
+      parseInt(selectFilters.category) || selectFilters.category;
+    if (!filters || !filters.categories || filters.categories.length === 0) {
+      return {
+        name: "全部商品",
+        name_en: "All Wine",
+        img: "all.jpg",
+      }; // 如果分類資料還未回傳，返回預設值
     }
     return (
       filters.categories.find((c) => c.id === categoryId) || {
@@ -23,7 +28,7 @@ export default function CategoryTitle({ filters, selectFilters }) {
         img: "all.jpg",
       }
     );
-  }, [selectFilters.category, filters.categories]);
+  }, [selectFilters.category, filters]);
 
   // 取得圖片的路徑
   const getImageUrl = (filename) => {
@@ -32,25 +37,25 @@ export default function CategoryTitle({ filters, selectFilters }) {
   };
 
   useEffect(() => {
-    if (filters.categories.length > 0 && !isDataLoaded) {
+    if (filters && filters.categories && filters.categories.length > 0 && !isDataLoaded) {
       setIsDataLoaded(true);
     }
-  }, [filters.categories, isDataLoaded]);
+  }, [filters, isDataLoaded]);
 
   useEffect(() => {
     if (!isDataLoaded || !currentCategory) return;
 
-    console.log('Current category:', currentCategory);
-    console.log('Select filters:', selectFilters);
-    console.log('Filters categories:', filters.categories);
+    console.log("Current category:", currentCategory);
+    console.log("Select filters:", selectFilters);
+    console.log("Filters categories:", filters.categories);
     if (prevCategoryRef.current !== selectFilters.category) {
       setIsLoading(true);
       setCategoryChange(true);
       const newImage = getImageUrl(currentCategory.img);
-      
+
       const img = new Image();
       img.src = newImage;
-      console.log('New image:', newImage);
+      console.log("New image:", newImage);
       img.onload = () => {
         setNextImage(newImage);
         setIsLoading(false);
@@ -89,9 +94,7 @@ export default function CategoryTitle({ filters, selectFilters }) {
             categoryChange ? styles["title-transitioning"] : ""
           }`}
         >
-          <h1 className={`h3 `}>
-            {currentCategory.name}
-          </h1>
+          <h1 className={`h3 `}>{currentCategory.name}</h1>
           <h5>({currentCategory.name_en})</h5>
         </div>
       </div>

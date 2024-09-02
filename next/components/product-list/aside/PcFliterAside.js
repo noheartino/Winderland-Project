@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styles from "./PcFliterAside.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,6 +8,8 @@ export default function PcFliterAside({
   changeFilter,
   selectFilters,
 }) {
+  const router = useRouter();
+
   // 開啟更多選項
   const [showAllVarieties, setShowAllVarieties] = useState(false);
   const [showAllOrigins, setShowAllOrigins] = useState(false);
@@ -84,6 +86,29 @@ export default function PcFliterAside({
     setShowAllOrigins(!showAllOrigins);
   };
 
+  const handleCategoryChange = (categoryId) => {
+    // 构建新的 URL，只包含 category 参数
+    const newQuery = categoryId ? { category: categoryId } : {};
+    
+    // 使用 router.push 来更新 URL，替换当前的历史记录
+    router.push({
+      pathname: '/product',
+      query: newQuery,
+    }, undefined, { shallow: true });
+
+    // 调用 changeFilter 来更新组件状态
+    changeFilter("category", categoryId);
+
+    // 重置其他筛选条件
+    changeFilter("country", "");
+    changeFilter("origin", "");
+    changeFilter("variet", "");
+    changeFilter("price", { min: minLimit, max: maxLimit });
+    setMinValue(minLimit);
+    setMaxValue(maxLimit);
+    setPriceRange("0-150000");
+  };
+
   return (
     <>
       <aside className={`col-3 pe-5 ${styles["product-pc-aside"]}`}>
@@ -98,7 +123,7 @@ export default function PcFliterAside({
                 ? styles.selected
                 : ""
             }`}
-            onClick={() => changeFilter("category", "")}
+            onClick={() => handleCategoryChange("")}
           >
             全部商品&nbsp;&nbsp;All Wine
           </button>
@@ -109,7 +134,7 @@ export default function PcFliterAside({
               className={`${styles["category-button"]} ${
                 selectFilters.category === c.id.toString() ? styles.selected : ""
               }`}
-              onClick={() => changeFilter("category", c.id.toString())}
+              onClick={() => handleCategoryChange(c.id.toString())}
             >
               {c.name}&nbsp;&nbsp;{c.name_en}{" "}
             </button>
