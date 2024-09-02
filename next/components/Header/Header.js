@@ -53,10 +53,10 @@ export default function Nav() {
 
 
   const memberLevels = {
-    1: '初級會員',
-    2: '白銀會員',
-    3: '黃金會員',
-    4: '白金會員'
+    1: '初級',
+    2: '白銀',
+    3: '黃金',
+    4: '白金'
   }
 
   const GoCart = () => {
@@ -438,21 +438,24 @@ export default function Nav() {
                 <div>{userData ? userData.account : '--'}</div>
               </div>
             </div>
-            {userData ? <div className={`nrht_r lv${userData.member_level_id}`}>{memberLevels[userData.member_level_id]}</div> : <div className="nrht_r">尚未登入</div>}
+            <Link className="Ano" href="/dashboard/profile" onClick={hamburgerHook}>
+              <div className="d-flex align-items-center">
+              {userData ? <div className={`nrht_r me-3 lv${userData.member_level_id}`}>{memberLevels[userData.member_level_id]}</div> : <div className="nrht_r me-3 lv0">尚未登入</div>}
+              <i className="fa-solid fa-chevron-right" />
+              </div>
+            </Link>
           </div>
-          <div className="nav_rwdArea_head_b">
+          {/* <div className="nav_rwdArea_head_b">
             <div className="nrhb_l">
-              <i className="fa-solid fa-circle-dollar-to-slot me-1" />{" "}
-              <span className="me-3">78P</span>
-              <i className="fa-solid fa-ticket-simple me-1" /> <span>x4</span>
+              
             </div>
             <div className="nrhb_r">
               <Link href="/dashboard/profile" onClick={hamburgerHook}>
-                會員頁面
+                
                 <i className="fa-solid fa-chevron-right" />
               </Link>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="nav_rwdArea_bottom">
           <ul>
@@ -487,6 +490,9 @@ export default function Nav() {
               </li>
             </Link>
           </ul>
+        </div>
+        <div className="nav_rwdArea_logout">
+            {userData && <button className="rwd_logout" onClick={() => { handleLogout(); hamburgerHook(); }}>帳號登出</button>}
         </div>
       </div>
       {/* {userData ? <pre>{JSON.stringify(userData, null, 2)}</pre> : 'Loading...'}
