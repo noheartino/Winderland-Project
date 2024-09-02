@@ -37,6 +37,7 @@ export default function ProductIndex() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true); // 新增的狀態
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const router = useRouter();
 
   const resetFilters = useCallback(() => {
@@ -249,12 +250,15 @@ export default function ProductIndex() {
             search={search}
             changeSearch={changeSearch}
             totalItems={totalItems}
+            onOpenMobileFilter={() => setIsMobileFilterOpen(true)}
           />
           {/* 手機&平板版的開關aside */}
           <MobileFliterAside
             filters={filters}
             selectFilters={selectFilters}
             changeFilter={changeFilter}
+            isOpen={isMobileFilterOpen}
+            onClose={() => setIsMobileFilterOpen(false)}
           />
           {/* 主要內容 */}
           <div className="row main-content">

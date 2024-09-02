@@ -1,8 +1,22 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./MobileFliterAside.module.css";
 import Link from "next/link";
 
-export default function MobileFliterAside({ isOpen, onClose }) {
+export default function MobileFliterAside({
+  isOpen,
+  onClose,
+  filters,
+  selectFilters,
+  changeFilter,
+}) {
+
+  // 確保filters存在並且包含categories
+  useEffect(() => {
+    if(!filters || !filters.categories){
+      console.error("filters or filters.categories 不存在");
+    }
+  }, [filters]);
+
   // 雙滑塊js start//
   const minLimit = 500;
   const maxLimit = 100000;
@@ -34,6 +48,11 @@ export default function MobileFliterAside({ isOpen, onClose }) {
     ((value - minLimit) / (maxLimit - minLimit)) * 100;
 
   // 雙滑塊js end//
+  
+  // 確保filters.categories存在後再渲染
+  if (!filters || !filters.categories) {
+    return null;  
+  }
 
   return (
     <>
@@ -57,11 +76,17 @@ export default function MobileFliterAside({ isOpen, onClose }) {
         <form action="">
           <div className={`${styles["shop-category-fliter-m"]}`}>
             <div className={`${styles["shop-category-title"]}`}>類型</div>
-            <select name="" id="">
-              <option value={0}>Red 紅酒</option>
+            <select name="" id=""> 
+              {filters.categories && 
+                filters.categories.map((category, index) => (
+                <option key={index} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+              {/* <option value={0}>Red 紅酒</option>
               <option value={1}>Port Wine 波特酒</option>
               <option value={2}>Cult Wine 美國膜拜酒</option>
-              <option value={3}>GCC 波爾多級數酒</option>
+              <option value={3}>GCC 波爾多級數酒</option> */}
             </select>
             <div className={`${styles["shop-category-tags"]}`}>
               <div className={`${styles["category-tag"]}`}>Red 紅酒</div>
