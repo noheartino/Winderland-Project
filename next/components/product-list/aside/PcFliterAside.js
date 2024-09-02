@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styles from "./PcFliterAside.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,6 +8,8 @@ export default function PcFliterAside({
   changeFilter,
   selectFilters,
 }) {
+  const router = useRouter();
+
   // 開啟更多選項
   const [showAllVarieties, setShowAllVarieties] = useState(false);
   const [showAllOrigins, setShowAllOrigins] = useState(false);
@@ -60,12 +62,20 @@ export default function PcFliterAside({
   };
 
   // 雙滑塊js end//
+  useEffect(() => {
+    if (selectFilters.category) {
+      changeFilter("country", "");
+      changeFilter("origin", "");    }
+  }, [selectFilters.category, changeFilter]);
 
-  const uniqueVarieties = Array.from(
-    new Set(filters.varieties.map((v) => v.name))
-  ).map((name) => {
-    return filters.varieties.find((v) => v.name === name);
-  });
+  const uniqueVarieties = useMemo(() => {
+    if (!filters || !filters.varieties) return [];
+    return Array.from(new Set(filters.varieties.map((v) => v.name)))
+      .map((name) => filters.varieties.find((v) => v.name === name));
+  }, [filters]);
+
+  // 如果 filters 或 filters.varieties 不存在，提前返回
+  if (!filters || !filters.varieties) return null;
 
   // 開關選項的函式
   const toggleShowAllVarieties = () => {
@@ -74,6 +84,29 @@ export default function PcFliterAside({
 
   const toggleShowAllOrigins = () => {
     setShowAllOrigins(!showAllOrigins);
+  };
+
+  const handleCategoryChange = (categoryId) => {
+    // 构建新的 URL，只包含 category 参数
+    const newQuery = categoryId ? { category: categoryId } : {};
+    
+    // 使用 router.push 来更新 URL，替换当前的历史记录
+    router.push({
+      pathname: '/product',
+      query: newQuery,
+    }, undefined, { shallow: true });
+
+    // 调用 changeFilter 来更新组件状态
+    changeFilter("category", categoryId);
+
+    // 重置其他筛选条件
+    changeFilter("country", "");
+    changeFilter("origin", "");
+    changeFilter("variet", "");
+    changeFilter("price", { min: minLimit, max: maxLimit });
+    setMinValue(minLimit);
+    setMaxValue(maxLimit);
+    setPriceRange("0-150000");
   };
 
   return (
@@ -90,7 +123,7 @@ export default function PcFliterAside({
                 ? styles.selected
                 : ""
             }`}
-            onClick={() => changeFilter("category", "")}
+            onClick={() => handleCategoryChange("")}
           >
             全部商品&nbsp;&nbsp;All Wine
           </button>
@@ -99,9 +132,9 @@ export default function PcFliterAside({
               key={c.id}
               type="button"
               className={`${styles["category-button"]} ${
-                selectFilters.category === c.id ? styles.selected : ""
+                selectFilters.category === c.id.toString() ? styles.selected : ""
               }`}
-              onClick={() => changeFilter("category", c.id)}
+              onClick={() => handleCategoryChange(c.id.toString())}
             >
               {c.name}&nbsp;&nbsp;{c.name_en}{" "}
             </button>
@@ -122,7 +155,7 @@ export default function PcFliterAside({
                 onChange={() => changeFilter("variet", "")}
               />
               <label htmlFor="allVarieties">全部品種</label>
-              {filters.varieties
+              {(filters.varieties || [])
                 .slice(0, showAllVarieties ? undefined : INITIAL_SHOW_COUNT)
                 .map((v, index) => (
                   <div key={index}>

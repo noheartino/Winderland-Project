@@ -1,8 +1,17 @@
-
 @media (max-width: 1920px) {
     .shop-product-list {
         font-size: 14px;
         color: var(--text_primary);
+        height: auto;
+    }
+
+    .no-data {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .no-data img {
+        max-width: 50%;
         height: auto;
     }
 }
@@ -22,5 +31,3 @@
         }
     }
 }
-
-
