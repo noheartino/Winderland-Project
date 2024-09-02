@@ -1,21 +1,77 @@
 import Comment from "@/components/course/course-comment";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import Image from 'next/image';
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
+import { useAuth } from '@/hooks/use-auth';
 
 export default function CourseIndex() {
+
+  const [classSum, setClassSum] = useState([])
+
+  const { auth } = useAuth();
+  const [userId, setUserId] = useState("")
+    useEffect(()=>{
+      if(auth.isAuth){
+        setUserId(auth.userData?.id);
+        console.log("userId 是否已設定: "+auth?.isAuth);
+
+        console.log("以下是auth內容");
+        console.log(auth);
+        console.log("======auth結束======");
+      }
+    }, [auth])
+
   const router = useRouter();
   const { courseId, series } = router.query;
+  console.log("本頁courseId抓取為:"+courseId);
   const [course, setCourse] = useState([]);
   const [theCourseAssigned, setCourseAssigned] = useState([]);
   const [comments, setComments] = useState([]);
+  const [existing, setExisting] = useState([]);
   let averageRating = 0;
-
-  const seriesDefaultBtn = useRef(null);
+  
+  // 到/api/獲取課程總數，避免網址輸入不存在的課程導致顯示錯誤
+  useEffect(() => {
+    if(userId){
+      fetch(`http://localhost:3005/api/course?userId=${userId}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const { classSum } = data;
+        setClassSum(classSum);
+        console.log("userId= "+userId);
+        console.log("classSum numbers= "+classSum.length);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+  }, [userId, courseId]);
   
 
-  let apiUrl = `http://localhost:3005/api/course/${courseId}`;
+  const seriesDefaultBtn = useRef(null);
+
+  let apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}`;
+
+  // useEffect(()=>{
+  //   if(courseId && classSum.length>0){
+  //     // console.log(courseId+"+"+classSum.length);
+  //     if(courseId>classSum.length){
+  //       router.push({
+  //         pathname: "/course/1",
+  //         query: {}
+  //       })
+  //     }
+  //     apiUrl= `http://localhost:3005/api/course/1?userId=${userId}`;
+  //   }
+  // }, [courseId])
 
   function querySeries01(e) {
     router.push({
@@ -56,37 +112,75 @@ function querySeries04(e) {
 
   useEffect(()=>{
     if(series==='timeOldToNew'){
-      apiUrl = `http://localhost:3005/api/course/${courseId}?series=timeOldToNew`;
+      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}&series=timeOldToNew`;
     }else if(series==='scoreHtoL'){
-      apiUrl = `http://localhost:3005/api/course/${courseId}?series=scoreHtoL`;
+      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}&series=scoreHtoL`;
     }else if(series==='scoreLtoH'){
-      apiUrl = `http://localhost:3005/api/course/${courseId}?series=scoreLtoH`;
+      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}&series=scoreLtoH`;
     }else{
-      apiUrl = `http://localhost:3005/api/course/${courseId}`;
+      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}`;
     }
-  }, [series])
+  }, [series, userId])
 
+  // 獲取當前課程資訊
   useEffect(() => {
-    if (courseId) {
+    if (courseId && classSum.length > 0) {
+        // console.log(courseId+"+"+classSum.length);
+        if(!(classSum.length > parseInt(courseId) && parseInt(courseId) > 0)){
+          router.push({
+            pathname: "/course/1",
+            query: {}
+          })
+          apiUrl = `http://localhost:3005/api/course/1?userId=${userId}`;
+        }
+
       fetch(apiUrl)
         .then((response) => {
-          console.log("送出fetch，URL="+apiUrl);
+          console.log("送出fetch，URL=" + apiUrl);
           if (!response.ok) {
             throw new Error("Network response not ok");
           }
           return response.json();
         })
         .then((data) => {
-          const { course, theCourseAssigned, comments } = data;
+          const { course, theCourseAssigned, comments, existing } = data;
           setCourse(course[0]);
           setCourseAssigned(theCourseAssigned);
           setComments(comments);
+          setExisting(existing);
         })
         .catch((error) => {
           console.log(error);
         });
     }
-  }, [courseId, series]);
+  }, [courseId, classSum, series, userId]);
+
+  // 寫入購物車
+    function handleCourseWriteInCart(){
+      if(courseId && userId){
+        fetch(`http://localhost:3005/api/course/${courseId}?userId=${userId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(),
+        })
+          .then((response) => {
+            console.log(`送出POST fetch，URL=http://localhost:3005/api/course/${courseId}?userId=${userId}`);
+            if (!response.ok) {
+              throw new Error("Network response not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log('成功寫入購物車', data);
+          })
+          .catch((error) => {
+            console.log('發生錯誤:', error);
+          });
+      }
+    }
+
 
   if (comments.length>0) {
     averageRating = (
@@ -126,6 +220,9 @@ function querySeries04(e) {
     return timeVar.split(":").slice(0,2).join(":")
   }
 
+  function handleCourseAddToFav(){}
+  function handleCourseRmFromFav(){}
+
   return (
     <>
      
@@ -144,7 +241,12 @@ function querySeries04(e) {
         <div className="container-fluid px-0 m-0">
           <div className="container-fluid px-0">
             <div className="container-sm px-0">
-              <div className="row px-0 m-0 pt-5 mb-4 d-none d-md-flex">
+            <div className="row px-10px m-0 justify-content-center justify-content-md-start px-10px my-4">
+              <Link className={`px-0 col-auto`} href={"/course"}>
+                <div className="spac-1 btn-border-wine btn"><i className="fa-solid fa-chevron-left me-1"></i>回到課程首頁</div>
+              </Link>
+            </div>
+              <div className="row px-0 mx-0 pt-3 mb-4 d-none d-md-flex">
                 <div className="col px-10px">
                   <span
                     className={`me-4 py-2 px-3 h6 ${
@@ -180,7 +282,7 @@ function querySeries04(e) {
                             src="/images/course_and_tarot/rectangle128.png"
                             alt=""
                           />
-                          <div className="absolute-t0-l0 w-100 h-100 d-flex justify-content-center align-items-center">
+                          <div className={`absolute-t0-l0 w-100 h-100 d-flex justify-content-center align-items-center ${ course?.online === 0 ? "d-none" : "d-flex" }`}>
                             <a href="">
                               <i className="fa-solid fa-circle-play text-white opacity-50 course-detail-player" />
                             </a>
@@ -197,13 +299,7 @@ function querySeries04(e) {
                             </span>
                             <span className="h6 text-sec-dark-blue spac-1">
                               已報名-
-                              {theCourseAssigned.length > 0
-                                ? (
-                                    (theCourseAssigned.length /
-                                      course.student_limit) *
-                                    100
-                                  ).toFixed(0)
-                                : "0"}
+                              {course?.assigned>0?(course?.assigned/course?.student_limit*100).toFixed(0):"0"}
                               %
                             </span>
                           </div>
@@ -219,15 +315,7 @@ function querySeries04(e) {
                             <div
                               className="progress-bar bg-sec-blue-dark"
                               style={{
-                                width: `${
-                                  theCourseAssigned.length > 0
-                                    ? (
-                                        (theCourseAssigned.length /
-                                          course.student_limit) *
-                                        100
-                                      ).toFixed(0)
-                                    : "0"
-                                }%`,
+                                width: `${course?.assigned>0?(course?.assigned/course?.student_limit*100).toFixed(0):"0"}%`,
                               }}
                             />
                           </div>
@@ -240,11 +328,11 @@ function querySeries04(e) {
                       <strong>{course?.class_name}</strong>
                     </h2>
 
-                    <div className="row align-items-center mt-3 justify-content-between mx-0">
+                    <div className="row align-items-center mt-3 justify-content-between mx-0 row-gap-3">
                       <h5 className="col-auto text-prim-text-prim spac-1">
                         by {course?.name}
                       </h5>
-                      <div className="col-auto stars mt-2 d-flex align-items-center px-0">
+                      <div className="col-auto stars d-flex align-items-center px-0">
                         <i
                           className={`fa-solid fa-star ${
                             averageRating > 0.5
@@ -323,7 +411,7 @@ function querySeries04(e) {
                     <div className="row mt-5 justify-content-between align-items-start">
                       <div className="col-auto">
                         <div className="h2 spac-2 text-sec-orange">
-                          <strong>NT${course.price && course.sale_price===0 ? course.price.toLocaleString() : course.sale_price>0 ? course.sale_price.toLocaleString() : 0 }</strong>
+                          <strong>NT${course.price && course.sale_price===0 ? course.price.toLocaleString() : course.sale_price && course.sale_price>0 ? course.sale_price.toLocaleString() : 0 }</strong>
                         </div>
                         <p className={`text-gray-light h5 spac-2 mt-3 ${course.sale_price===0 ? "d-none" :"d-block" }`}>
                           <del>NT${course.sale_price>0 ? course.price.toLocaleString() : 0}</del>
@@ -334,16 +422,107 @@ function querySeries04(e) {
                         className="col-auto d-flex align-items-center mt-1"
                       >
                         <h5 className="text-prim-text-prim spac-2">收藏</h5>
+                        {existing.length>0?
+                        <i className="ms-2 fa-solid fa-bookmark text-prim-text-prim"
+                        style={{ fontSize: "1.7rem" }} onClick={handleCourseAddToFav}></i>
+                        :
                         <i
                           className="ms-2 fa-regular fa-bookmark text-prim-text-prim"
-                          style={{ fontSize: "1.7rem" }}
-                        />
+                          style={{ fontSize: "1.7rem" }} onClick={handleCourseRmFromFav}
+                        />}
+                        
                       </a>
                     </div>
                     <div className="row h-100">
                       <div className="col-12 d-flex align-items-end">
-                        <button className="btn spac-3 btn-sec-orange w-100 mt-3 py-4">
-                          加入購物車
+                      {/* Button trigger modal */}
+                      <button
+                        type="button"
+                        className="btn spac-3 btn-sec-orange w-100 mt-3 py-4"
+                        data-bs-toggle="modal"
+                        data-bs-target="#courseWriteInCartModal"
+                      >
+                        加入購物車
+                      </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Modal 01*/}
+                <div
+                  className="modal fade"
+                  id="courseWriteInCartModal"
+                  tabIndex={-1}
+                  aria-labelledby="courseWriteInCartModalLabel"
+                  aria-hidden="true"
+                >
+                  <div className="modal-dialog">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title fs-5 spac-1" id="courseWriteInCartModalLabel">
+                          請確認是否加入購物車
+                        </h5>
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        />
+                      </div>
+                      <div className="modal-body py-4">
+                        <div className="row row-gap-3">
+                          <div className="col-12">
+                            <h3 className="spac-1 text-prim-text-prim">確認將課程加入購物車嗎?</h3>
+                          </div>
+                          <div className="col-12">
+                            <h5 className="spac-1 text-gray-light">{course?.class_name}</h5>
+                          </div>
+                          <div className="mt-3 col-12 d-flex align-items-center justify-content-end">
+                            <h4 className="spac-1 text-sec-orange">NT${course.price && course.sale_price===0 ? course.price.toLocaleString() : course.sale_price>0 ? course.sale_price.toLocaleString() : 0 }</h4>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-white"
+                          data-bs-dismiss="modal"
+                        >
+                          取消
+                        </button>
+                        <button type="button" className="btn btn-prim-to-wine" onClick={handleCourseWriteInCart} data-bs-toggle="modal"
+                        data-bs-target="#courseWriteInCartOK">
+                          確認
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Modal 02*/}
+                <div
+                  className="modal fade"
+                  id="courseWriteInCartOK"
+                  tabIndex={-1}
+                  aria-labelledby="courseWriteInCartOKLabel"
+                  aria-hidden="true"
+                >
+                  <div className="modal-dialog">
+                    <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title fs-5 spac-1" id="courseWriteInCartModalLabel">
+                          成功加入購物車
+                        </h5>
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        />
+                      </div>
+                      <div className="modal-body spac-1 text-gray py-4">課程「{course?.class_name}」已成功加入購物車</div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-prim-to-wine" data-bs-dismiss="modal">
+                          確認
                         </button>
                       </div>
                     </div>
@@ -446,10 +625,10 @@ function querySeries04(e) {
                     </strong>
                   </h1>
 
-                  <div className="row mx-0 text-sec-dark-blue spac-1 mt-4">
+                  <div className={`row mx-0 text-sec-dark-blue spac-1 mt-4 ${course?.online===1 ? "d-none" :"d-flex"}`}>
                     <div className="col-12 p-0">
                       <p className="text-sec-dark-blue">
-                        <i className={`fa-regular fa-calendar-days me-1 ${course?.online===1 ? "d-none" :"d-flex"}`}></i>
+                        <i className={`fa-regular fa-calendar-days me-1`}></i>
                         上課日期：{handleDateFormat(course?.course_start)}-{handleDateFormat(course?.course_end)}
                       </p>
                     </div>
@@ -514,13 +693,14 @@ function querySeries04(e) {
                       限額總數-{course?.student_limit}人
                       </span>
                       <span className="h6 text-sec-dark-blue spac-1">已報名-
-                              {theCourseAssigned.length > 0
+                              {/* {theCourseAssigned.length > 0
                                 ? (
                                     (theCourseAssigned.length /
                                       course.student_limit) *
                                     100
                                   ).toFixed(0)
-                                : "0"}
+                                : "0"} */}
+                                {course?.assigned>0?(course?.assigned/course?.student_limit*100).toFixed(0):"0"}
                               %</span>
                     </div>
                     <div
@@ -535,15 +715,7 @@ function querySeries04(e) {
                       <div
                         className="progress-bar bg-sec-blue-dark"
                         style={{
-                                width: `${
-                                  theCourseAssigned.length > 0
-                                    ? (
-                                        (theCourseAssigned.length /
-                                          course.student_limit) *
-                                        100
-                                      ).toFixed(0)
-                                    : "0"
-                                }%`,
+                                width: `${course?.assigned>0?(course?.assigned/course?.student_limit*100).toFixed(0):"0"}%`,
                               }}
                       />
                     </div>
@@ -625,11 +797,11 @@ function querySeries04(e) {
           {/* course detail 評論 start */}
           <div className="container-fluid course-detail-comment-bg py-5 px-10px">
             <div className="container-sm">
-              <div className="course-comment-header d-flex flex-column justify-content-center flex-md-row justify-content-md-between align-items-center mt-3 mb-5 row-gap-3">
+              <div className="course-comment-header d-flex flex-column justify-content-center flex-md-row justify-content-md-between align-items-center my-3 row-gap-3">
                 <h4 className="text-prim-text-prim lh-15 spac-2 text-center text-md-start">
                   學員回饋&nbsp;|&nbsp;Comment
                 </h4>
-                <div className="btn-group course-comment-filter">
+                <div className={`btn-group course-comment-filter ${comments && comments.length===0?'d-none':'d-block'}`}>
                   <button
                     type="button"
                     className="btn btn-border-prim dropdown-toggle rounded-5 px-20px"
@@ -657,7 +829,7 @@ function querySeries04(e) {
                   </ul>
                 </div>
               </div>
-              <div className="course-comment-scorebars-box mb-5 row d-flex d-md-none">
+              <div className={`course-comment-scorebars-box mb-5 mx-0 px-0 row ${comments && comments.length===0?'d-none':'d-flex d-md-none'}`}>
                 <div className="col-auto d-flex flex-column align-items-center justify-content-center">
                   <h1 className="spac-2 text-prim-text-prim ms-2">{averageRating}</h1>
                   {/* bigStar start */}
@@ -674,7 +846,7 @@ function querySeries04(e) {
                 <div className="col course-comment-progress-bar d-flex flex-column justify-content-between">
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-10">
+                    <div className="col-11">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -690,7 +862,7 @@ function querySeries04(e) {
                         ></div>
                       </div>
                     </div>
-                    <div className="col-2">
+                    <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
                       {comments.filter((v) => v.rating === 5).length}
                       </p>
@@ -699,7 +871,7 @@ function querySeries04(e) {
                   {/* 單條評分bar end */}
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-10">
+                    <div className="col-11">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -715,7 +887,7 @@ function querySeries04(e) {
                         ></div>
                       </div>
                     </div>
-                    <div className="col-2">
+                    <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
                       {comments.filter((v) => v.rating === 4).length}
                       </p>
@@ -724,7 +896,7 @@ function querySeries04(e) {
                   {/* 單條評分bar end */}
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-10">
+                    <div className="col-11">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -740,7 +912,7 @@ function querySeries04(e) {
                         ></div>
                       </div>
                     </div>
-                    <div className="col-2">
+                    <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
                       {comments.filter((v) => v.rating === 3).length}
                       </p>
@@ -749,7 +921,7 @@ function querySeries04(e) {
                   {/* 單條評分bar end */}
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-10">
+                    <div className="col-11">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -765,7 +937,7 @@ function querySeries04(e) {
                         ></div>
                       </div>
                     </div>
-                    <div className="col-2">
+                    <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
                       {comments.filter((v) => v.rating === 2).length}
                       </p>
@@ -774,7 +946,7 @@ function querySeries04(e) {
                   {/* 單條評分bar end */}
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-10">
+                    <div className="col-11">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -790,7 +962,7 @@ function querySeries04(e) {
                         ></div>
                       </div>
                     </div>
-                    <div className="col-2">
+                    <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
                       {comments.filter((v) => v.rating === 1).length}
                       </p>
@@ -800,13 +972,21 @@ function querySeries04(e) {
                   
                 </div>
               </div>
-              {comments?.map((comment, index)=>{
+              {comments && comments.length>0 ?
+              comments?.map((comment, index)=>{
                 return(
                     <div key={comment.id} className="course-comment-area" style={{margin: "0 0 40px 0"}}>
                       <Comment comment={comment} index={index + 1}/>
                     </div>
                     )
-              })}
+              })
+            :
+            <div className="row justify-content-center my-3">
+                <div className="col-auto" style={{ maxWidth: '400px', maxHeight: '378px', width: '100%' }}>
+                <Image src={`/images/course_and_tarot/comments-no-result.png`} alt="course list no result" layout="responsive" width={370} height={350} style={{ width: '100%', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}/>
+              </div>
+            </div>
+            }
               
             </div>
           </div>
@@ -815,17 +995,15 @@ function querySeries04(e) {
         {/* page three course-detail end */}
 
         {/* page-nav-bar start */}
-        <div className="container-fluid py-3">
-          <div className="container-sm">
-            <div className="row justify-content-between">
-              <a className="col-auto" href="">
-                <span className="h5 text-prim-text-prim spac-1">
-                  查看所有講師
-                  <i className="fa-solid fa-chevron-right ms-2 text-prim-text-prim"></i>
-                </span>
-              </a>
+        <div className="container-fluid py-3 my-5">
+          <div className="container-sm px-0">
+            <div className="row justify-content-between px-0 mx-0">
+                        <Link className='col-auto px-0 mx-0' href="/course/teacher"> 
+                          <div type="button" className="btn-light-to-prim btn py-2 px-3 spac-1 d-flex justify-content-center align-items-center">
+                            查看所有講師<i className="fa-solid fa-chevron-right ms-2"></i>
+                          </div>
+                        </Link>
             </div>
-            <div className="col-auto">page-nav</div>
           </div>
         </div>
         {/* page-nav-bar end */}

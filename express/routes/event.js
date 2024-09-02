@@ -6,11 +6,14 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
 
-  const sort = req.query.sort
+  const sort = req.query.sort || 'desc';
 
-  const queryapplyon = `SELECT * FROM event WHERE status = 2 ORDER BY event_date ${sort}`;
+  const pageSize = 6
+  const currentPage = parseInt(req.query.currentPage, 10) || 1;
+
+  const queryapplyon = `SELECT * FROM event WHERE status = 2 ORDER BY event_date ${sort} LIMIT ${pageSize} OFFSET ${(currentPage - 1) * pageSize};`;
   const queryapplyoff = `SELECT * FROM event WHERE status = 1`;
-
+  
   try {
     const [eventonResults, eventoffResults] = await Promise.all([
         conn.query(queryapplyon),
@@ -20,6 +23,7 @@ router.get('/', async (req, res) => {
     res.json({
         applyon: eventonResults[0],
         applyoff: eventoffResults[0],
+        currentPage
     });
     
   } catch (error) {

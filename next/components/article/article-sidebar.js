@@ -53,7 +53,7 @@ export default function ArticleSidebar({
       <ul className="pt-3">
         發布日期
         {["全部", "本日", "本週", "本月", "近半年", "近一年", "一年以上"].map((label) => (
-          <li className={`${style.aCheckLi} pt-2`} key={label}>
+          <li className={`${style.aCheckLi} pt-1`} key={label}>
             <input
               className={`${style.aCheckbox}`}
               id={label}

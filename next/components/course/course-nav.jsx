@@ -24,7 +24,7 @@ export default function CourseNav({setIsHomePage, isHomePage}) {
     if(searchTerm.trim().length<1){
       router.push({
         pathname: '/course',
-        query: {search:"ssss"},
+        query: {},
       });
       setIsHomePage(true)
     }

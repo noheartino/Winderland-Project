@@ -41,11 +41,11 @@ export default function OrderCard({ order }) {
         <Image
            src={imagePath}
           alt="First item"
-          width={150}
-          height={150}
+          width={97}
+          height={97}
           className="order-img mt-4 ms-4"
               //  layout="fill"
-        objectFit="cover"
+        objectFit="contain"
         />
 
         <div className="order-detail mt-4">

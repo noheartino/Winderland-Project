@@ -47,7 +47,6 @@ export default function CartTransport({ addressLabel = "門市選擇", hideSelec
     }, [storeName, storeAddress, pickupName, pickupPhone]);
 
     const clearLocalStorage = () => {
-        console.log("Clearing local storage");
         localStorage.removeItem('storeName');
         localStorage.removeItem('storeAddress');
     };
@@ -118,7 +117,7 @@ export default function CartTransport({ addressLabel = "門市選擇", hideSelec
                         <input
                             type="text"
                             className={css.transportphone}
-                            placeholder="請輸入手機號碼"
+                            placeholder="手機號碼"
                             value={pickupPhone}
                             maxLength="10"
                             minLength="10"

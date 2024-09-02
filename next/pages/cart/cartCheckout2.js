@@ -5,7 +5,6 @@ import CartWpoint from "@/components/cart/cart2/cartWpoint";
 import CartMoney from "@/components/cart/cart2/cartMoney";
 import CartPay from "@/components/cart/cart2/cartPay";
 import CartProductM from "@/components/cart/cart2/cartProductM";
-import CartTransportM from "@/components/cart/cart2/cartTranportM";
 import CartWpointM from "@/components/cart/cart2/cartWpointM";
 import CartMoneyM from "@/components/cart/cart2/cartMoneyM";
 import CartProductDetail from "@/components/cart/cart3/cartProductDetail";
@@ -30,7 +29,6 @@ export default function CartCheckout2() {
   const [originalPoints, setOriginalPoints] = useState(0); // 儲存原本點數
   const [transportData, setTransportData] = useState({}); //運送資料7-11
   const [transportBlackCatData, setTransportBlackCatData] = useState({}); // 新增狀態來儲存黑貓運送資料
-  console.log(userId);
 
   useEffect(() => {
     const storedUserId = sessionStorage.getItem("user_id");
@@ -40,7 +38,6 @@ export default function CartCheckout2() {
       "transportBlackCatData"
     );
     const storedPoints = sessionStorage.getItem("pointsUsed");
-    console.log("Points from sessionStorage:", storedPoints);
 
     if (storedUserId) {
       setUserId(storedUserId);
@@ -74,7 +71,6 @@ export default function CartCheckout2() {
   const handleTransportChange = (event) => {
     const value = event.target.value;
     setSelectedTransport(value);
-    console.log("Pickup Name Updated:", value);
 
     if (value === "blackCat") {
       // 清除其他運送方式的資料
@@ -97,7 +93,6 @@ export default function CartCheckout2() {
 
   const handlePointsChange = (newPoints) => {
     setPointsUsed(newPoints);
-    console.log("Updated Points:", newPoints); // 顯示點數變化
     sessionStorage.setItem("pointsUsed", newPoints);
   };
 
@@ -108,7 +103,6 @@ export default function CartCheckout2() {
 
   const handleTransportDataChange = (newTransportData) => {
     setTransportData(newTransportData);
-    console.log("Updated Transport Data:", newTransportData); // 顯示運送資料變化
     sessionStorage.setItem("transportData", JSON.stringify(newTransportData));
   };
 
@@ -364,10 +358,17 @@ export default function CartCheckout2() {
             />
             <label htmlFor="blackcatM">黑貓宅急便</label>
           </div>
-          {selectedTransport === "transprot711" && <CartTransportM />}
-          {selectedTransport === "blackcat" && <CartTransportBlackCatM />}
+          {selectedTransport === "transprot711" && (
+            <CartTransport
+              handleTransportDataChange={handleTransportDataChange}
+            />
+          )}
+          {selectedTransport === "blackcat" && (
+            <CartTransportBlackCatM
+              onTransportBlackCatDataChange={handleTransportBlackCatDataChange}
+            />
+          )}
           <div className="checkBoxWpoint">
-            <img src="/images/cart/wPoint.png" alt="" />
             <input
               type="checkbox"
               id="wPointcheckM"
@@ -386,7 +387,19 @@ export default function CartCheckout2() {
             onPointsFetch={handlePointsFetch}
           />
           <div style={{ height: "180px" }}></div>
-          <CartMoneyM />
+          <CartMoneyM
+            userId={userId}
+            pointsUsed={pointsUsed}
+            originalPoints={originalPoints}
+            selectedPayment={selectedPayment}
+            selectedTransport={selectedTransport}
+            transportData={
+              selectedTransport === "transprot711" ? transportData : {}
+            }
+            transportBlackCatData={
+              selectedTransport === "blackcat" ? transportBlackCatData : {}
+            }
+          />
         </div>
       </main>
       <Footer showMobileFooter={false} />

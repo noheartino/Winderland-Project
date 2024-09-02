@@ -5,18 +5,19 @@ import Link from 'next/link';
 
 // 格式化價格輔助函數
 const formatPrice = (price) => {
+  if (price == null || isNaN(price)) return 'N/A';
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-export default function FavoriteCrwd() {
+export default function FavoriteCrwd({ searchResults, searchTerm }) {
   const [favoriteCourses, setFavoriteCourses] = useState([]);
   const { auth } = useAuth();
 
   useEffect(() => {
-    if (auth.isAuth) {
+    if (auth.isAuth && !searchTerm) {
       fetchFavoriteCourses();
     }
-  }, [auth.isAuth]);
+  }, [auth.isAuth, searchTerm]);
 
   // @ 獲取收藏課程
   const fetchFavoriteCourses = async () => {
@@ -50,17 +51,22 @@ export default function FavoriteCrwd() {
     }
   }
 
+  const displayCourses = searchTerm ? searchResults : favoriteCourses;
+
+
   return (
     <>
       <span>課程收藏</span>
       <hr />
   {/* 空收藏庫邏輯 */}
-  {favoriteCourses.length === 0 ? (
-        <div className="no-favorites">目前還沒有任何收藏喔 .ᐟ.ᐟ.ᐟ </div>
+  {displayCourses.length === 0 ? (
+        <div className="no-favorites">
+          {searchTerm ? "沒有符合搜尋條件的課程收藏" : "目前還沒有任何收藏喔 .ᐟ.ᐟ.ᐟ"}
+        </div>
       ) : (
       <div className="favorite-c-group ">
-      {favoriteCourses.map((course) => (
-        <div key={course.class_id} className="favorite-c-card-rwd">
+      {displayCourses.map((course) => (
+        <div key={course.id} className="favorite-c-card-rwd">
           {/* 課程資訊 */}
           <div className="d-flex" >
             <Image
@@ -72,15 +78,19 @@ export default function FavoriteCrwd() {
             />
             <div className="favorite-c-detail-rwd">
 
-            <Link href={`/course/${course.class_id}`} className='classTitleLinkrwd' >
-                      <div className='classTitleLinkrwd'>
-                        {course.class_name}
-                      </div>
-                    </Link>
+            <Link href={`/course/${course.id || course.class_id}`} className='classTitleLinkrwd' >
+                    <div className='classTitleLinkrwd'>
+                      {course.name || course.class_name}
+                    </div>
+                  </Link>
 
               <div className="favorite-c-title-rwd d-flex align-item-center">
-                <div className="online">{course.online ? "線上" : "實體"}</div>
-                <p className="byTeacher">by {course.teacher_name}</p>
+                <div className="online">
+                {course.online ? "線上" : "實體"}
+                </div>
+                <p className="byTeacher">
+                by {course.teacher_name}
+                </p>
                 <svg
                   className="svg-bookmark"
                   xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +98,7 @@ export default function FavoriteCrwd() {
                   height={25}
                   viewBox="0 0 20 25"
                   fill="none"
-                  onClick={() => removeFavorite(course.class_id)}
+                  onClick={() => removeFavorite(course.id)}
                   style={{ cursor: 'pointer' }}
                 >
                   <path

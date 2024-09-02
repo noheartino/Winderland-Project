@@ -1,0 +1,165 @@
+.noFavorites{
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    color: #666;
+}
+.favoritesList {
+    width: 100%;
+}
+
+.favoritesGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.favoritePCard {
+    color: var(--text_primary, #60464C);
+    font-size: 14.298px;
+    font-weight: 400;
+    letter-spacing: 1.43px;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.favoritePImgBox {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: 1.192px solid #F2E6E6;
+    position: relative;
+}
+
+.productImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.bookmarkIcon {
+    position: absolute;
+    right: 5%;
+    top: 5%;
+    font-size: 30px;
+    color: var(--purple);
+}
+
+.favoritePDetail {
+    margin-top: 10px;
+}
+
+.price {
+    color: var(--orange, #FF4F4F);
+    font-size: 14.298px;
+    font-weight: 700;
+    letter-spacing: 0.715px;
+    display: block;
+    margin-top: 5px;
+}
+
+
+.productTitleLink {
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
+.productTitleLink:hover,
+.productTitleLink:visited,
+.productTitleLink:active {
+  text-decoration: none !important;
+  color: var(--wine);
+}
+
+.favoriteProductName  {
+    color: #3F3034;
+    font-family: Inter, sans-serif;
+    font-size: 14.298px;
+    font-weight: 400;
+    letter-spacing: 1.43px;
+    margin-bottom: 5px;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+
+.favoritePGroupRwd {
+    width: 100%;
+
+}
+
+.favoritePCardRwd {
+    margin-right: 5px;
+    margin-left: -3px;
+    width: 100%;
+    color: var(--text_primary, #60464C);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    /* margin-top: 25px; */
+    /* margin-left: -10px; */
+}
+
+/* 響應式調整 */
+@media (max-width: 1200px) {
+    .favoritesGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .favoritesGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .favoritesGrid {
+        margin-left: 10px;
+        margin-right: 10px;
+        grid-template-columns: repeat(2, 1fr);
+        /* gap: 20px; */
+    }
+    
+    .favoritePCard {
+        font-size: 12px;
+    }
+    
+    .favoritePImgBox {
+        aspect-ratio: 3 / 4;  /* 調整圖片比例，使其更高 */
+    }
+    
+    .bookmarkIcon {
+        font-size: 24px;
+    }
+    
+    .favoriteProductName {
+        font-size: 12px;
+    }
+    
+    .price {
+        font-size: 12px;
+    }
+    .favoritePImgBox {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border: 1.192px solid #F2E6E6;
+        position: relative;
+    }
+    .productImage {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .favoritePDetail {
+        margin-top: 10px;
+        /* width: 50%; */
+    }
+    .favoritePCard {
+        color: var(--text_primary, #60464C);
+        font-size: 14.298px;
+        font-weight: 400;
+        letter-spacing: 1.43px;
+        position: relative;
+        margin-bottom: 15px;
+    }
+}

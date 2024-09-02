@@ -28,20 +28,26 @@ export default function Nav() {
     }
   };
 
-  
-  
+
+
   useEffect(() => {
     if (userId) {
-        fetch(`http://localhost:3005/api/header/${userId}`)
-            .then(response => response.json())
-            .then(infodata => setInfo(infodata))
-            .catch(error => console.error('Error:', error));
+      fetch(`http://localhost:3005/api/header/${userId}`)
+        .then(response => response.json())
+        .then(infodata => setInfo(infodata))
+        .catch(error => console.error('Error:', error));
     }
   }, [userId]);
 
 
 
-  let userinfo = infodata?.userinfo?.[0].img || [];
+  let userinfo = infodata?.userinfo?.[0]?.img || [];
+
+  // 修改會員頭像路徑
+  const avatarUrl = userData && userData.avatar_url
+    ? `http://localhost:3005${userData.avatar_url}`
+    : '/nav-footer/default_user.jpg';
+
 
   if (typeof userinfo === 'string') {
     userinfo = userinfo.replace(/[\r\n]+/g, '');
@@ -53,10 +59,10 @@ export default function Nav() {
 
 
   const memberLevels = {
-    1: '初級會員',
-    2: '白銀會員',
-    3: '黃金會員',
-    4: '白金會員'
+    1: '初級',
+    2: '白銀',
+    3: '黃金',
+    4: '白金'
   }
 
   const GoCart = () => {
@@ -217,7 +223,7 @@ export default function Nav() {
   const handleLogout = async () => {
     try {
       await logout();
-      router.push('/'); // 登出成功後導航到首頁或登錄頁面
+      router.push('/'); // 登出成功後導航到首頁
     } catch (error) {
       console.error('登出失敗:', error);
     }
@@ -251,25 +257,25 @@ export default function Nav() {
               <li>活動專區</li>
             </a> */}
             <Link href="/product" id="shop_li">
-                  <li>商品列表+</li>
+              <li>商品列表+</li>
             </Link>
-           
+
             <Link href="/article" >
-                  <li>相關文章</li>
+              <li>相關文章</li>
             </Link>
             <Link href="/course" >
-                  <li>品酒課程</li>
+              <li>品酒課程</li>
             </Link>
             <Link href="/event" >
-                  <li>活動專區</li>
+              <li>活動專區</li>
             </Link>
-           
-           
+
+
           </ul>
           <div className="HeaderCNavR">
             <div className="NavCSearch">
               <i className="fa-solid fa-magnifying-glass NavCSearchIcon" />
-              <input id="nav_search" type="text" placeholder="搜 尋" onKeyDown={handleKeyPress}/>
+              <input id="nav_search" type="text" placeholder="搜 尋" onKeyDown={handleKeyPress} />
             </div>
             <div className="HeaderCart">
               <button onClick={GoCart}>
@@ -279,14 +285,17 @@ export default function Nav() {
               </button>
             </div>
             <div className="nav_user">
-              <img src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user_pr.jpg'} alt="" />
+              {/* 修正頭像路徑 */}
+              <img src={avatarUrl} alt="" />
+              {/* <img src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user_pr.jpg'} alt="" /> */}
             </div>
             <div className="user_area">
               <div className="user_area_t">
-                {userData && <div className={`userlvis lv${userData.member_level_id}`}>Lv.{userData.member_level_id}</div> }
+                {userData && <div className={`userlvis lv${userData.member_level_id}`}>Lv.{userData.member_level_id}</div>}
                 {/* <div className={`userlvis lv${userData.member_level_id}`}>Lv.4</div> */}
                 <div className="user_area_tl">
-                  <img src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user.jpg'} alt="" />
+                  {/* 修正頭像路徑 */}
+                  <img src={avatarUrl} alt="" />
                 </div>
                 <div className="user_area_tr">
                   <p>{userData ? userData.user_name : '訪客'}</p>
@@ -336,12 +345,12 @@ export default function Nav() {
             alt=""
             width={100}
           />
-            <div className="HeaderCart">
-              <button onClick={GoCart}>
-                <i className="fa-solid fa-cart-shopping" />
-                <div className="dot">{cartQuantity}</div>
-              </button>
-            </div>
+          <div className="HeaderCart">
+            <button onClick={GoCart}>
+              <i className="fa-solid fa-cart-shopping" />
+              <div className="dot">{cartQuantity}</div>
+            </button>
+          </div>
         </div>
       </div>
       <div className="navShop">
@@ -432,27 +441,31 @@ export default function Nav() {
         <div className="nav_rwdArea_head">
           <div className="nav_rwdArea_head_t">
             <div className="nrht_l d-flex align-items-center">
-              <img className="rounded-circle nrht_lpic" src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user.jpg'} alt="" width={60} height={60}/>
+              {/* <img className="rounded-circle nrht_lpic" src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user.jpg'} alt="" width={60} height={60}/> */}
+              <img className="rounded-circle nrht_lpic" src={avatarUrl} alt="" width={60} height={60} />
               <div className="nrht_l_text ms-3">
                 <div>{userData ? userData.user_name : '訪客'}</div>
                 <div>{userData ? userData.account : '--'}</div>
               </div>
             </div>
-            {userData ? <div className={`nrht_r lv${userData.member_level_id}`}>{memberLevels[userData.member_level_id]}</div> : <div className="nrht_r">尚未登入</div>}
+            <Link className="Ano" href="/dashboard/profile" onClick={hamburgerHook}>
+              <div className="d-flex align-items-center">
+              {userData ? <div className={`nrht_r me-3 lv${userData.member_level_id}`}>{memberLevels[userData.member_level_id]}</div> : <div className="nrht_r me-3 lv0">尚未登入</div>}
+              <i className="fa-solid fa-chevron-right" />
+              </div>
+            </Link>
           </div>
-          <div className="nav_rwdArea_head_b">
+          {/* <div className="nav_rwdArea_head_b">
             <div className="nrhb_l">
-              <i className="fa-solid fa-circle-dollar-to-slot me-1" />{" "}
-              <span className="me-3">78P</span>
-              <i className="fa-solid fa-ticket-simple me-1" /> <span>x4</span>
+              
             </div>
             <div className="nrhb_r">
               <Link href="/dashboard/profile" onClick={hamburgerHook}>
-                會員頁面
+                
                 <i className="fa-solid fa-chevron-right" />
               </Link>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="nav_rwdArea_bottom">
           <ul>
@@ -487,6 +500,9 @@ export default function Nav() {
               </li>
             </Link>
           </ul>
+        </div>
+        <div className="nav_rwdArea_logout">
+            {userData && <button className="rwd_logout" onClick={() => { handleLogout(); hamburgerHook(); }}>帳號登出</button>}
         </div>
       </div>
       {/* {userData ? <pre>{JSON.stringify(userData, null, 2)}</pre> : 'Loading...'}

@@ -1,18 +1,18 @@
 // @ 導入模組
 import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
+// import Image from 'next/image'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { faFilter } from '@fortawesome/free-solid-svg-icons'
+// import { faFilter } from '@fortawesome/free-solid-svg-icons'
 import Pagination from '@/components/member/dashboard/order/orderPagination'
 
 import OrderAside from '@/components/member/dashboard/order/OrderAside'
 import OrderFilterOffcanvas from '@/components/member/dashboard/order/OrderFilterOffcanvas';
 import OrderCard from './order/OrderCard'
 import OrderCardDetail from './order/OrderCardDetail'
-import OrderCardDetailRWD from '@/components/member/dashboard/order/OrderCardDetailRWD'
-import OrderCardRWD from './order/OrderCardRWD'
+// import OrderCardDetailRWD from '@/components/member/dashboard/order/OrderCardDetailRWD'
+// import OrderCardRWD from './order/OrderCardRWD'
 import OrderListRWD from '@/components/member/dashboard/order/OrderListRWD'
 
 import styles from '@/components/member/dashboard/order/OrderCardDetail.module.css'
@@ -24,7 +24,8 @@ export default function DashboardOrder() {
     status: [],
     startDate: '',
     endDate: '',
-    sortOrder: ''
+    sortOrder: '',
+    searchTerm: ''
   })
 
   // 使用對象來存儲每個訂單的展開狀態
@@ -58,6 +59,10 @@ export default function DashboardOrder() {
       if (filters.sortOrder) {
         params.append('sortOrder', filters.sortOrder)
       }
+      if (filters.searchTerm) {
+        params.append('searchTerm', filters.searchTerm)
+      }
+
 
       if (params.toString()) {
         url += `?${params.toString()}`
@@ -92,6 +97,14 @@ export default function DashboardOrder() {
     setFilters(prevFilters => ({
       ...prevFilters,
       ...newFilters
+    }))
+  }
+
+  //處理搜尋
+  const handleSearch = (searchTerm) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      searchTerm
     }))
   }
 
@@ -178,16 +191,21 @@ export default function DashboardOrder() {
         <div className="d-flex align-items-center searchArea">
           <div className="search ms-4 mt-2">
             <FontAwesomeIcon icon={faMagnifyingGlass} className="search_icon" />
-            <input id="search" type="search" placeholder="搜 尋 關 鍵 字 " />
+            <input 
+            id="search" 
+            type="search" 
+            placeholder="搜 尋 訂單編號 ／ 日期 " 
+            onChange={(e) => handleSearch(e.target.value)}
+            />
           </div>
           {/* 篩選手風琴元件 */}
-          <OrderFilterOffcanvas />
+          <OrderFilterOffcanvas onFilterChange={handleFilterChange} />
         </div>
-        
+
         <OrderListRWD orders={currentOrders} isLoading={isLoading} />
 
-     
-        
+
+
       </div>
     </>
   )

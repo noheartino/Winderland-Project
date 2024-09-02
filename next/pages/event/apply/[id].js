@@ -12,6 +12,8 @@ export default function Applyevent() {
     const { id } = router.query;
     const [infodata, setInfo] = useState(null);
 
+    const { auth, updateUserInfo } = useAuth();
+
     const authData = useAuth().auth
     const UserData = authData.userData
 
@@ -24,6 +26,12 @@ export default function Applyevent() {
         age: 25,
         introduce: ''
     });
+
+    useEffect(() => {
+        if (!auth.isAuth) {
+         router.push('/member/login');
+       } 
+     }, [auth, router]);
 
     useEffect(() => {
         if (id) {
