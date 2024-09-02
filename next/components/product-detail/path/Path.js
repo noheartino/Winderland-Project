@@ -18,13 +18,13 @@ export default function Path() {
           <img className={`${styles['top-arrow']}`} src="/product_images/top-arrow.svg" alt="" />
         </div>
         <div className={`col ${styles['path']}`}>
-          <a className={`${styles['link']}`} href={`/product/category/${product[0].category_id}`}>{product[0].category_name}</a>
+          <a className={`${styles['link']}`} href={`/product?category=${product[0].category_id}`}>{product[0].category_name}</a>
         </div>
         <div className={`col ${styles['product-top-arrow']}`}>
           <img className={`${styles['top-arrow']}`} src="/product_images/top-arrow.svg" alt="" />
         </div>
         <div className={`col ${styles['path']}`}>
-          <a className={`${styles['link']}`} href="/product/category/">{product[0].variet_name}</a>
+          <a className={`${styles['link']}`} href={`/product?category=${product[0].category_id}&variet=${product[0].variet_name}`}>{product[0].variet_name}</a>
         </div>
     </>
   );

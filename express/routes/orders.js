@@ -8,7 +8,7 @@ const router = express.Router()
 router.get('/history', authenticate, async (req, res) => {
   try {
     const userId = req.user.id
-    const { status, startDate, endDate, sortOrder } = req.query
+    const { status, startDate, endDate, sortOrder, searchTerm } = req.query
 
     let query = `
    SELECT 
@@ -68,6 +68,12 @@ router.get('/history', authenticate, async (req, res) => {
     if (startDate && endDate) {
       query += ` AND o.created_at BETWEEN ? AND ?`
       queryParams.push(startDate, endDate)
+    }
+
+    //搜尋條件
+    if (searchTerm) {
+      query += ` AND (o.order_uuid LIKE ? OR DATE(o.created_at) = ?)`
+      queryParams.push(`%${searchTerm}%`, searchTerm)
     }
 
     // 排序邏輯

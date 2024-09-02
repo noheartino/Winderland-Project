@@ -50,28 +50,6 @@ export default function OrderAside({ onFilterChange }) {
         <ul className="list-unstyled ">
           <span>訂單狀態</span>
 
-          {/* <li>出貨準備中</li>
-              <li>已出貨</li>
-              <li>已送達</li>
-              <li>已完成</li>
-            </ul>
-            <hr />
-            <ul className="list-unstyled ">
-              <span>其他狀態</span>
-              <li>尚未付款</li>
-              <li>訂單已取消</li> */}
-
-          {/* <li onClick={() => handleStatusChange('all')}
-            style={{ cursor: 'pointer', color: selectedStatus.length === statuses.length ? 'blue' : 'inherit' }}>
-            全部
-          </li>
-          {statuses.map(status => (
-            <li key={status}
-              onClick={() => handleStatusChange(status)}
-              style={{ cursor: 'pointer', color: selectedStatus.includes(status) ? 'blue' : 'inherit' }}>
-              {status}
-            </li>
-          ))} */}
           {statuses.map(status => (
             <li
               key={status}

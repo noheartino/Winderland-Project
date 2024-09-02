@@ -6,13 +6,13 @@ import ArticleSortdropdown from "@/components/article/article-sortdropdown";
 import ArticleRwdSidebar from "@/components/article/article-rwd-sidebar";
 
 import ArticleIndexList from "@/components/article/ArticleIndexList";
-import ArticlePagination from "@/components/article/article-pagination";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 
 export default function Index() {
   const [articles, setArticles] = useState([]);
   const [articleHead, setArticleHead] = useState(null);
+  const [loading, setLoading] = useState(true); // 新增 loading 狀態
   useEffect(() => {
     fetch("http://localhost:3005/api/article")
       .then((response) => {
@@ -38,9 +38,11 @@ export default function Index() {
         } else {
           setArticleHead(null);
         }
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
   }, []);
 
@@ -49,6 +51,10 @@ export default function Index() {
     router.push(`/article`);
   };
   // console.log(articleHead)
+  // 如果正在加載，顯示 loading 畫面
+  if (loading) {
+    return <div>Loading...</div>; // 你可以替換成更符合風格的 loading 畫面
+  }
   return (
     <>
       {/* Header */}
