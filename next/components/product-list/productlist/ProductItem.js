@@ -36,7 +36,7 @@ export default function ProductItem({ product }) {
           {product.details[0]?.capacity}ml&nbsp;/&nbsp;{product.country_name}
         </div>
         <div className={`${styles["shop-card-money"]}`}>
-          <div className={`${styles["shop-card-year"]}`}>{product.details[0].years}年</div>
+          <div className={`${styles["shop-card-year"]}`}>{product.details[0]?.years}年</div>
           <div className={`${styles["shop-card-price"]}`}>
             NT ${formatCurrency(product.details[0]?.price)}
           </div>
