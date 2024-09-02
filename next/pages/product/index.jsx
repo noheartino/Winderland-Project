@@ -105,7 +105,7 @@ export default function ProductIndex() {
         if (err.response && err.response.status === 500) {
           setServerError(true);
           setError("伺服器錯誤，請稍後再試。");
-        };
+        }
         console.error("加載商品時出錯:", err);
         setError(err.message); // 只設置錯誤信息,而不是整個錯誤對象
         setProducts([]);
@@ -146,6 +146,20 @@ export default function ProductIndex() {
       setIsInitialLoad(false); // 初始加載完成
     }
   }, [router.isReady]);
+
+  // 新增 useEffect 來控制 body 的滾動
+  useEffect(() => {
+    if (isMobileFilterOpen) {
+      document.body.classList.add("body-no-scroll");
+    } else {
+      document.body.classList.remove("body-no-scroll");
+    }
+
+    // 清理函數
+    return () => {
+      document.body.classList.remove("body-no-scroll");
+    };
+  }, [isMobileFilterOpen]);
 
   const updateURL = useCallback(() => {
     if (isInitialLoad) return; // 初始加載時不更新URL
@@ -211,8 +225,7 @@ export default function ProductIndex() {
       if (filterType === "price") {
         newFilters.minPrice = value.min;
         newFilters.maxPrice = value.max;
-      }
-      else {
+      } else {
         newFilters[filterType] = value;
       }
       return newFilters;
