@@ -15,15 +15,21 @@ export default function Eventindex() {
 
     const [sort, setSort] = useState('desc');
 
+    const [currentPage, setPage] = useState(1);
+
     useEffect(() => {
-        fetch(`http://localhost:3005/api/event?sort=${sort}`)
+        fetch(`http://localhost:3005/api/event?sort=${sort}&currentPage=${currentPage}`)
             .then(response => response.json())
             .then(eventData => setData(eventData))
             .catch(error => console.error('Error:', error));
-    }, [sort]);
+    }, [sort, currentPage]);
 
     const handleSortChange = (newSort) => {
         setSort(newSort);
+    }
+
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
     }
 
     return (
@@ -31,7 +37,7 @@ export default function Eventindex() {
             <Nav />
             <EventHeader/>
             {/* {userlv ? <pre>{JSON.stringify(userlv, null, 2)}</pre> : 'Loading...'} */}
-            <EventHomeList events={eventData} userlv={userlv} onSortChange={handleSortChange} currentSort={sort}/>
+            <EventHomeList events={eventData} userlv={userlv} onSortChange={handleSortChange} currentSort={sort} onpage={handlePageChange} currentpage={currentPage}/>
             <Footer/>
         </>
     );

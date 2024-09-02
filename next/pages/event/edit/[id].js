@@ -14,8 +14,8 @@ export default function Applyevent() {
 
     const [infodata, setInfo] = useState(null);
     const authData = useAuth().auth
-    // const UserData = authData.userData
-    // const useridis = UserData ? UserData.id : 0
+    const UserData = authData.userData
+    const useridis = UserData ? UserData.id : 0
     // const birthday = UserData ? UserData.birthday : ''
     // const mygender = UserData?.gender === 'Female' ? 1 : 0
     // const myname = UserData ? UserData.user_name : ''
@@ -41,7 +41,15 @@ export default function Applyevent() {
     }, [id]);
 
     const myeventdata = infodata?.myevent || [];
+    const allapplydata = infodata?.allapply || [];
     const myevent = myeventdata[0] || {};
+    const ownerusers = allapplydata[0] || {};
+    const ownerid = ownerusers.user_id || 0;
+ 
+
+
+    
+
 
     const [file, setFile] = useState(null);
     const [image, setImage] = useState(`http://localhost:3005/uploads/${myevent.event_cover_image}`);
@@ -121,6 +129,51 @@ export default function Applyevent() {
             console.error('Error:', error.response ? error.response.data : error.message);
         }
     };
+
+
+    const todelete = async (event) => {
+        event.preventDefault();
+ 
+        try {
+          
+            const response = await axios({
+                method: 'PUT',
+                url: `http://localhost:3005/api/event-edit/delete/${id}`, 
+            });
+    
+            console.log('Success:', response.data);
+    
+
+            router.push('/event/pastevent');
+    
+        } catch (error) {
+            console.error('Error:', error.response ? error.response.data : error.message);
+        }
+    };
+
+
+    useEffect(() => {
+        if (infodata && useridis) {
+            // const ownerid = infodata.allapply?.[0]?.user_id || 0;
+
+            const allapply = infodata.allapply || [];
+            const ownerid = allapply.length > 0 ? allapply[0]?.user_id || 0 : 0;
+
+            console.log('Current User ID:', useridis);
+            console.log('Owner ID:', ownerid);
+
+            if (useridis !== ownerid) {
+                console.log('Redirecting to login...');
+                router.push('/member/login');
+            }
+        }
+    }, [infodata, useridis, router]);
+
+    // const myeventdata = infodata?.myevent || [];
+    // const allapplydata = infodata?.allapply || [];
+    // const myevent = myeventdata[0] || {};
+    // const ownerusers = allapplydata[0] || {};
+    // const ownerid = ownerusers.user_id || 0;
 
 
 
@@ -209,13 +262,22 @@ export default function Applyevent() {
     //     }
     // };
     
+    // useEffect(() => {
+    //     if(useridis != ownerid){
+    //         router.push('/member/login')
+    //     }
+    //  }, [ownerid, useridis]);
+
+    
 
     return (
         <>
             <Nav />
             <EventHeader />
           
-            {/* {myevent ? <pre>{JSON.stringify(myevent, null, 2)}</pre> : 'Loading...'} */}
+            {/* {myevent ? <pre>{JSON.stringify(myevent, null, 2)}</pre> : 'Loading...'}
+            {ownerid ? <pre>{JSON.stringify(ownerid, null, 2)}</pre> : 'Loading...'}
+            {useridis ? <pre>{JSON.stringify(useridis, null, 2)}</pre> : 'Loading...'} */}
             
             <div className="eventManageNav">
                     <div className="container">
@@ -400,8 +462,8 @@ export default function Applyevent() {
                                     />
                                 </div>
                                 <div className="col-12 d-flex justify-content-end mt-3">
-                                    <button type="reset" className="eventCR">
-                                        清空
+                                    <button onClick={todelete} className="eventCRR">
+                                        <i class="fa-solid fa-trash-can"></i> 活動移除
                                     </button>
 
                                     <button type="submit" className="eventCS d-block">
