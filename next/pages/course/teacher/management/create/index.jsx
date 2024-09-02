@@ -115,7 +115,7 @@ export default function ClassManIndex() {
   }
 
   const handleOnlineClickClear = ()=>{
-    setOnOrUnderline("online")
+    setOnOrUnderline(1)
     console.log(onOrUnderline);
     // 清除實體課程才有的欄位
     const onlyShowWhenUnderline = ["studentLimit", "classStartDate", "classEndDate", "assignStartDate", "assignEndDate", "dailyStartTime", "dailyEndTime", "classCity", "classCityDetail"]
@@ -126,7 +126,7 @@ export default function ClassManIndex() {
   }
 
   const handleUnderlineClickClear = ()=>{
-    setOnOrUnderline("underline")
+    setOnOrUnderline(0)
     console.log(onOrUnderline);
     // 清除線上課程才有的欄位
     const onlyShowWhenOnline = ["classVdio"]
@@ -135,6 +135,19 @@ export default function ClassManIndex() {
       currentElm.value=""
     })
   }
+  useEffect(() => {
+    if(onOrUnderline != null){
+      console.log("現在的onOrUnderline是"+onOrUnderline);
+      const onlineRadio = document.getElementById('onLine');
+      const underlineRadio = document.getElementById('underLine');
+
+      if (onOrUnderline === 1) {
+        onlineRadio.checked = true;
+      } else if (onOrUnderline === 0) {
+        underlineRadio.checked = true;
+      }
+    }
+  }, [onOrUnderline]);
 
   
 // *欄位檢查:
@@ -401,7 +414,7 @@ export default function ClassManIndex() {
                     <div className="col-12 d-flex flex-column gap-1">
 
                       {/* 用來寫入不顯示的資料 */}
-                      {/* <input type="hidden" name="noweventid"/> */}
+                      <input type="hidden" name="onlineValue" value={onOrUnderline}/>
 
                       <label htmlFor="className" className="CmanageCreateTag">
                         課程名稱 (<span id='classNameWordNum'>0</span>/25)
@@ -426,7 +439,6 @@ export default function ClassManIndex() {
                       </select>
 
                     </div>
-
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="onAndUnderLine" className="CmanageCreateTag">
                         開課性質
@@ -447,7 +459,7 @@ export default function ClassManIndex() {
                       </div>
                     </div>
 
-                    <div className={`col-4 flex-column gap-1 ${onOrUnderline && onOrUnderline === "online" ? 'd-none' : 'd-flex'}`}>
+                    <div className={`col-4 flex-column gap-1 ${onOrUnderline && onOrUnderline === 1 ? 'd-none' : 'd-flex'}`}>
                       <label htmlFor="studentLimit" className="CmanageCreateTag">
                         人數上限
                       </label>
@@ -460,7 +472,7 @@ export default function ClassManIndex() {
                       {/* 檢查數字必須是大於0的整數 */}
                     </div>
                   </div>
-                  <div className={`row gx-2 gx-lg-4 row-gap-3 ${onOrUnderline && onOrUnderline === "online" ? 'd-none' : 'd-flex'}`}>
+                  <div className={`row gx-2 gx-lg-4 row-gap-3 ${onOrUnderline && onOrUnderline === 1 ? 'd-none' : 'd-flex'}`}>
 
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="courseStartDate" className="CmanageCreateTag">
@@ -537,7 +549,7 @@ export default function ClassManIndex() {
                     </div>
 
                   </div>
-                  <div className={`row gx-2 gx-lg-4 row-gap-3 ${onOrUnderline && onOrUnderline === "online" ? 'd-none' : 'd-flex'}`}>
+                  <div className={`row gx-2 gx-lg-4 row-gap-3 ${onOrUnderline && onOrUnderline === 1 ? 'd-none' : 'd-flex'}`}>
                     <div className="col-4 d-flex flex-column gap-1">
                       
                       <label htmlFor="classCity" className="CmanageCreateTag">
@@ -605,23 +617,37 @@ export default function ClassManIndex() {
                     課程縮圖
                   </label>
                   <img src={Cimage} alt="" className="Cprevpic" />
-                  <input
+                  {/* <input
                     className="form-control vidAndImg-input"
                     type="file"
                     id="classPic"
                     name="fileUpload"
                     onChange={handleImageUpload}
+                  /> */}
+                  <input
+                    className="form-control vidAndImg-input"
+                    type="file"
+                    id="classPic"
+                    name="classPic"
+                    onChange={handleImageUpload}
                   />
                   {/* 只能上傳圖片格式(jpg,jpeg,png,gif,webp,svg,) */}
-                  <div className={`${onOrUnderline && onOrUnderline === "underline" ? 'd-none' : 'd-block'}`}>
+                  <div className={`${onOrUnderline && onOrUnderline === 0 ? 'd-none' : 'd-block'}`}>
                     <label htmlFor="classVdio" className="form-label CmanageCreateTag mt-2">
                       課程影片
                     </label>
-                    <input
+                    {/* <input
                       className="form-control vidAndImg-input"
                       type="file"
                       id="classVdio"
                       name="fileUpload"
+                      onChange={handleVdioUpload}
+                    /> */}
+                    <input
+                      className="form-control vidAndImg-input"
+                      type="file"
+                      id="classVdio"
+                      name="classVdio"
                       onChange={handleVdioUpload}
                     />
                   </div>
