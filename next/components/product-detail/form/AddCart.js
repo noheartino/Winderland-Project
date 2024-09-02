@@ -1,7 +1,7 @@
 import React,{useState,useEffect, use} from "react";
 import styles from "./AddCart.module.css";
 
-export default function AddCart() {
+export default function AddCart({addToCart}) {
 
   // 點擊收藏按鈕的效果 start
 
@@ -23,7 +23,7 @@ export default function AddCart() {
       <div
         className={`col-lg-11 col-md-11 col-11 ${styles["product-add-cart"]}`}
       >
-        <button className={`${styles["product-add-cart-button"]}`}>
+        <button type="button" onClick={addToCart} className={`${styles["product-add-cart-button"]}`}>
           加入購物車
         </button>
       </div>

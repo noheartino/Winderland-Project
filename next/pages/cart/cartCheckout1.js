@@ -29,7 +29,6 @@ export default function CartCheckout1() {
   const [coupons, setCoupons] = useState([]);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
 
-  console.log("User ID:", userId);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,7 +115,6 @@ export default function CartCheckout1() {
   };
 
   const handleCouponChange = (coupon) => {
-    console.log("Coupon changed:", coupon);
     setSelectedCoupon(coupon);
   };
 

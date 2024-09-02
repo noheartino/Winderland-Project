@@ -8,6 +8,7 @@ const router = express.Router()
 let getProducts = `SELECT 
     product.*,
     variet.name AS variet_name,
+    variet.name_en AS variet_nameEN,
     category.id AS category_id,
     category.name AS category_name,
     country.id AS country_id,
@@ -159,41 +160,38 @@ const tidyCategories = async (categories) => {
 // 商品首頁,取得所有商品的內容
 router.get('/', async (req, res) => {
   try {
+    const { category, variet, origin, country, search, minPrice, maxPrice } =
+      req.query
     // 設定預設頁數1，limit一頁限制多少筆，offset要跳過幾筆
     const page = parseInt(req.query.page) || 1
-    const limit = parseInt(req.query.limit) || 16
+    const limit = parseInt(req.query.limit) || 20
     const sort = req.query.sort || 'id_asc'
-    const search = req.query.search || ''
-    const { category, variet, origin, country } = req.query
 
     let query = getProducts
     let conditions = ['product.valid = 1']
     let params = []
 
     // 取得搜尋參數塞進搜尋商品的sql語法
-    if (search) {
-      conditions.push('product.name LIKE ?')
-      params.push(`%${search}%`)
-    }
-
     if (category) {
-      conditions.push('category_id = ?')
+      conditions.push('category.id = ?')
       params.push(category)
     }
 
     if (variet) {
-      conditions.push('variet_id = ?')
+      conditions.push('variet.name = ?')
       params.push(variet)
     }
-
+    if (origin) {
+      conditions.push('origin.id = ?')
+      params.push(origin)
+    }
     if (country) {
-      conditions.push('country_id = ?')
+      conditions.push('country.id = ?')
       params.push(country)
     }
-
-    if (origin) {
-      conditions.push('origin_id = ?')
-      params.push(origin)
+    if (search) {
+      conditions.push('product.name LIKE ?')
+      params.push(`%${search}%`)
     }
 
     if (conditions.length > 1) {
@@ -205,8 +203,20 @@ router.get('/', async (req, res) => {
     const [categories] = await db.query(getCategories)
 
     // 獲取所有商品跟商品的詳細數據、所有分類+品種
-    const productWithDetails = await tidyProducts(products)
+    let productWithDetails = await tidyProducts(products)
     const categoryWithVarieds = await tidyCategories(categories)
+
+    // 價格篩選
+    if (minPrice || maxPrice) {
+      productWithDetails = productWithDetails.filter((product) => {
+        const price =
+          product.details[0]?.sale_price || product.details[0]?.price
+        return (
+          (!minPrice || price >= parseInt(minPrice)) &&
+          (!maxPrice || price <= parseInt(maxPrice))
+        )
+      })
+    }
 
     // 取得了product + detail後再排序
     productWithDetails.sort((a, b) => {
@@ -254,23 +264,129 @@ router.get('/', async (req, res) => {
 // 獲取篩選選項的API
 router.get('/filters', async (req, res) => {
   try {
-    // 取得所有國家、品種、產地
-    const [categories] = await db.query(getCategories)
-    const [countries] = await db.query('SELECT * FROM country')
-    const [origins] = await db.query('SELECT * FROM origin')
-    const [varieties] = await db.query(
-      'SELECT DISTINCT name,id,category_id FROM variet'
+    const { category, variet, origin, country, minPrice, maxPrice } = req.query
+
+    // 獲取所有類別
+    const [allCategories] = await db.query(
+      'SELECT id, name, name_en, img FROM category'
     )
 
-    res.json({
-      categories: categories,
-      countries: countries,
-      origins: origins,
-      varieties: varieties,
+    // 獲取品種
+    let varietQuery = `
+      SELECT DISTINCT v.name, v.name_en
+      FROM variet v
+      JOIN product p ON v.id = p.variet_id
+    `
+    let varietParams = []
+    if (category) {
+      varietQuery += ' WHERE v.category_id = ?'
+      varietParams.push(category)
+    }
+    const [varieties] = await db.query(varietQuery, varietParams)
+
+    // 獲取所有國家
+    const [allCountries] = await db.query('SELECT id, name FROM country')
+
+    // 獲取所有產地
+    let originQuery = `
+      SELECT DISTINCT o.id, o.name, o.country_id, c.name as country_name
+      FROM origin o
+      JOIN country c ON o.country_id = c.id
+      JOIN product p ON p.origin_id = o.id
+    `
+    const [allOrigins] = await db.query(originQuery)
+
+    // 篩選商品查詢
+    let productQuery = `
+      SELECT DISTINCT
+        p.id,
+        p.variet_id,
+        v.category_id,
+        p.origin_id,
+        o.country_id
+      FROM product p
+      JOIN variet v ON p.variet_id = v.id
+      JOIN origin o ON p.origin_id = o.id
+    `
+    let conditions = []
+    let params = []
+
+    if (category) {
+      conditions.push('v.category_id = ?')
+      params.push(category)
+    }
+    if (variet) {
+      conditions.push('p.variet_id = ?')
+      params.push(variet)
+    }
+    if (origin) {
+      conditions.push('p.origin_id = ?')
+      params.push(origin)
+    }
+    if (country) {
+      conditions.push('o.country_id = ?')
+      params.push(country)
+    }
+
+    if (conditions.length > 0) {
+      productQuery += ' WHERE ' + conditions.join(' AND ')
+    }
+
+    // 獲取所有符合條件的產品
+    const [products] = await db.query(productQuery, params)
+
+    // 獲取產品詳情
+    const productIds = products.map((p) => p.id)
+    const [details] = await db.query(getProductsDetails, [productIds])
+
+    const filteredProducts = products.filter((product) => {
+      const productDetails = details.find((d) => d.product_id === product.id)
+      if (!productDetails) return false
+
+      const price = productDetails.sale_price || productDetails.price
+      return (
+        (!minPrice || price >= parseInt(minPrice)) &&
+        (!maxPrice || price <= parseInt(maxPrice))
+      )
     })
+
+    // 標記可選取的選項
+    const categories = allCategories.map((c) => ({
+      ...c,
+      available: filteredProducts.some((p) => p.category_id === c.id),
+    }))
+
+    const availableVarieties = varieties.map((v) => ({
+      ...v,
+      available: filteredProducts.some((p) => p.variet_id === v.id),
+    }))
+
+    const origins = allOrigins.map((o) => ({
+      ...o,
+      available: filteredProducts.some((p) => p.origin_id === o.id),
+      belongsToSelectedCountry: country
+        ? o.country_id.toString() === country
+        : true,
+    }))
+
+    const countries = allCountries.map((c) => ({
+      ...c,
+      available: filteredProducts.some((p) => p.country_id === c.id),
+    }))
+
+    const result = {
+      categories,
+      varieties,
+      origins,
+      countries,
+    }
+
+    res.json(result)
   } catch (error) {
-    console.log('Error Fetching filter options', error)
-    res.status(500).json({ error: 'Failed to fetch filter options' })
+    console.error('Detailed error:', error)
+    res
+      .status(500)
+      .json({ error: 'Failed to fetch filters', details: error.message })
   }
 })
 
@@ -285,6 +401,46 @@ router.get('/:pid', async (req, res) => {
   } catch (error) {
     console.error('Error in tidyProduct:', error)
     throw error
+  }
+})
+
+router.post('/addCart', async (req, res) => {
+  try {
+    const { user_id, product_detail_id, product_quantity } = req.body
+
+    const currentFormattedDate = new Date()
+      .toLocaleString('zh-TW', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      })
+      .replace(/\//g, '-')
+      .replace(/24:/, '00:')
+
+    console.log(currentFormattedDate)
+
+    const result = await db.query(
+      'INSERT INTO cart_items(user_id, product_detail_id, product_quantity, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
+      [
+        user_id,
+        product_detail_id,
+        product_quantity,
+        currentFormattedDate,
+        currentFormattedDate,
+      ]
+    )
+
+    res.json({
+      success: true,
+      time: currentFormattedDate,
+      result: result,
+    })
+  } catch (error) {
+    res.status(500).json({ success: false })
   }
 })
 

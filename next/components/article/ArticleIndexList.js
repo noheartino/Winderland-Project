@@ -42,10 +42,10 @@ export default function ArticleIndexList({ Article }) {
       apiUrl.searchParams.append("endDate", endDate);
     }
     apiUrl.searchParams.append("page", currentPage);
-    apiUrl.searchParams.append("limit", 8); // 每頁顯示6筆
+    apiUrl.searchParams.append("limit", 6); // 每頁顯示6筆
 
     // 當組件掛載時執行 fetch 請求
-    console.log(apiUrl.toString()); // 檢查 URL 是否正確
+    // console.log(apiUrl.toString()); // 檢查 URL 是否正確
     fetch(apiUrl.toString())
       .then((response) => {
         if (!response.ok) {
@@ -62,7 +62,7 @@ export default function ArticleIndexList({ Article }) {
           ...article,
           images: article.images ? article.images.split(",") : [],
         }));
-        console.log(processedArticles)
+        // console.log(processedArticles)
         setArticles(processedArticles);
         setFirstTwoArticles(processedArticles.slice(0, 2));
         setRemainArticles(processedArticles.slice(2));
@@ -73,13 +73,12 @@ export default function ArticleIndexList({ Article }) {
       });
   }, [search, category, dateFilter, startDate, endDate, currentPage]);
 
-
   // 取得背景圖片的路徑
+  const [isHovered, setIsHovered] = useState(false);
   const backgroundImage =
     Article?.images.length > 0
       ? `url(/images/article/${Article.images[0]})`
       : `url(/images/article/titlePic.jpeg)`;
-
   // 導向某篇文章
   const handleLink = () => {
     if (Article.id) {
@@ -107,7 +106,6 @@ export default function ArticleIndexList({ Article }) {
 
   const handleFilterSubmit = (e) => {
     setDateFilter(e.target.value);
-
   };
 
   // 輸入日期篩選用
@@ -158,21 +156,50 @@ export default function ArticleIndexList({ Article }) {
       {/* 文章一格格 */}
       <div className="a-content col-lg-9 row g-3">
         {/* 文章頭條 */}
-        <div className="col-9 col-lg-8">
+        <div className="col-9 col-lg-8 aTitleBlock">
           <div
             className="a-title d-none d-lg-flex"
-            style={{ backgroundImage: backgroundImage }}
+            style={{
+              backgroundImage: backgroundImage,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              position: "relative", // 使遮罩層的絕對定位有效
+              height: "350px",
+              cursor: "pointer",
+            }}
             onClick={handleLink}
+            onMouseEnter={() => setIsHovered(true)} // 滑鼠移入時增加遮罩
+            onMouseLeave={() => setIsHovered(false)} // 滑鼠移出時移除遮罩
           >
-            <h3>{Article ? Article.title : "..."}</h3>
+            <h3 style={{zIndex:"1"}}>{Article ? Article.title : "..."}</h3>
+            {/* 遮罩層 */}
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: "linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))", // 遮罩的顏色
+                opacity: isHovered ? 1 : 0, // 使用 opacity 進行漸變
+                transition: "opacity 0.6s ease", // 平滑過渡效果
+                pointerEvents: "none", // 避免遮罩阻擋點擊事件
+              }}
+            ></div>
           </div>
           {/* 手機頭條 */}
           <div
             className="a-title d-lg-none"
-            style={{ backgroundImage: backgroundImage, height:"200px", padding:"20px" }}
+            style={{
+              backgroundImage: backgroundImage,
+              height: "200px",
+              padding: "20px",
+            }}
             onClick={handleLink}
           >
-            <h3 style={{fontSize:"18px"}}>{Article ? Article.title : "..."}</h3>
+            <h3 style={{ fontSize: "18px" }}>
+              {Article ? Article.title : "..."}
+            </h3>
           </div>
         </div>
         {/* 收藏 */}
@@ -186,9 +213,17 @@ export default function ArticleIndexList({ Article }) {
           </Link>
           {/* 手機收藏 */}
           <Link className="aLink d-lg-none" href="/dashboard/favorite">
-            <div className="a-collection p-2" style={{height:"200px"}}>
-              <FaBookmark className="mb-2" style={{fontSize:"18px", color:"var(--light)"}}/>
-              <h3 className="" style={{fontSize:"18px", writingMode: "vertical-rl"}}>收藏庫</h3>
+            <div className="a-collection p-2" style={{ height: "200px" }}>
+              <FaBookmark
+                className="mb-2"
+                style={{ fontSize: "18px", color: "var(--light)" }}
+              />
+              <h3
+                className=""
+                style={{ fontSize: "18px", writingMode: "vertical-rl" }}
+              >
+                收藏庫
+              </h3>
             </div>
           </Link>
         </div>

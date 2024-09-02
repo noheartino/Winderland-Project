@@ -5,16 +5,19 @@ import { getAuth } from 'firebase/auth';
 import { firebaseConfig } from './firebase-config';
 
 let app;
+let auth;
 
 export function useFirebase() {
-  const [firebaseApp, setFirebaseApp] = useState(null);
+  const [firebaseInitialized, setFirebaseInitialized] = useState(false);
 
   useEffect(() => {
     if (!app) {
       app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      setFirebaseInitialized(true);
     }
-    setFirebaseApp(app);
   }, []);
 
-  return { app: firebaseApp, auth: firebaseApp ? getAuth(firebaseApp) : null };
+
+  return { app, auth, firebaseInitialized };
 }

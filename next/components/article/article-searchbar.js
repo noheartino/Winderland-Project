@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { FaSearch } from "react-icons/fa";
 
 export default function ArticleSearchbar() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,7 +11,7 @@ export default function ArticleSearchbar() {
   const handleSearch = () => {
     if (searchTerm.trim()) {
       router.push({
-        pathname: '/article',
+        pathname: "/article",
         query: { search: searchTerm },
       });
     }
@@ -18,7 +19,7 @@ export default function ArticleSearchbar() {
 
   // 處理鍵盤事件
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSearch();
     }
   };
@@ -27,7 +28,14 @@ export default function ArticleSearchbar() {
     <>
       {/* 搜尋列 */}
       <div className="d-none d-lg-block col-lg-3 a-search-block">
-        <i className="fa-solid fa-magnifying-glass" />
+        <FaSearch
+          style={{
+            fontSize: "18px",
+            position: "absolute",
+            right: "23px",
+            top: "10px",
+          }}
+        />
         <input
           type="text"
           className="a-search px-3 py-2"
@@ -39,14 +47,22 @@ export default function ArticleSearchbar() {
       </div>
       {/* 搜尋列小 */}
       <div className="d-lg-none col-10 a-search-sm-block">
+        <FaSearch
+          style={{
+            fontSize: "18px",
+            position: "absolute",
+            left: "20px",
+            top: "10px",
+            color:"#9A9A9A"
+          }}
+        />
         <input
           type="text"
-          className="a-search-sm px-5 py-2"
-          placeholder="搜尋關鍵字"
+          className="a-search-sm px-5 py-3"
+          placeholder="搜尋您想要的文章"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <i className="fa-solid fa-magnifying-glass" />
       </div>
     </>
   );

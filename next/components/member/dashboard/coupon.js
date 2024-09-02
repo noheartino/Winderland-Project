@@ -147,7 +147,10 @@ export default function DashboardCoupon() {
     }
   }, [memberLevelId]);
 
-  // console.log(userExpiredCoupons)
+  // 如果正在加載，顯示 loading 畫面
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

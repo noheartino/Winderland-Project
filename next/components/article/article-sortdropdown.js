@@ -1,4 +1,5 @@
 import React from "react";
+import { FaAngleDown } from "react-icons/fa6";
 
 export default function ArticleSortdropdown() {
   return (
@@ -9,7 +10,7 @@ export default function ArticleSortdropdown() {
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          默認排序 <i className="fa-solid fa-angle-down" />
+          默認排序 <FaAngleDown style={{color:"var(--purple_light)"}} />
         </button>
         <ul className="dropdown-menu a-dropdown-menu dropdown-menu-end">
           <li>
