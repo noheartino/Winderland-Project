@@ -1,0 +1,107 @@
+.ACbg {
+  background-color: var(--light);
+}
+.AcreatePage {
+  background-color: #fff;
+  /* padding-top: 50px; */
+}
+.ACnav {
+  height: 50px;
+  .ACicon {
+    height: 100%;
+    width: 50px;
+    border-radius: 50px;
+    background-color: var(--wine);
+  }
+
+  .ACname {
+    color: var(--text_primary);
+    letter-spacing: 1.4px;
+  }
+}
+
+.ACDropArea{
+  width: 50%;
+  height: 200px;
+  border: 2px dashed #ccc;
+  display: grid;
+  place-items: center;
+  color: #ccc;
+  transition: border 0.3s ease;
+  &:hover {
+    border-color: var(--purple_light);
+  }
+}
+
+.ACtitle {
+  outline: none;
+  font-size: 24px;
+  &::placeholder {
+    color: var(--wine_light);
+    letter-spacing: 2px;
+    font-size: 24px;
+  }
+}
+
+.ACtitleLimit {
+  color: var(--purple_light);
+}
+
+.ACtextarea {
+  outline: none;
+  resize: none;
+  font-size: 18px;
+  letter-spacing: 2px;
+  border: 0;
+  &::placeholder {
+    color: var(--wine_light);
+    letter-spacing: 2px;
+    font-size: 18px;
+  }
+}
+
+.AcreateBtn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .ACaddPhoto {
+    font-size: 28px;
+    color: var(--purple_light);
+    cursor: pointer;
+    transition: 0.5s all ease;
+    &:hover {
+      color: var(--wine);
+    }
+    &:active {
+      transform: scale(0.7);
+    }
+  }
+
+  .ACcloseBtn {
+    background-color: #fff;
+    color: var(--purple_light);
+    transition: 0.5s all ease;
+    border: 1px solid #fff;
+
+    &:hover {
+      color: var(--wine);
+      background-color: var(--light);
+      border: 1px solid var(--light);
+    }
+    &:active {
+      transform: scale(0.7);
+    }
+  }
+  .ACplusBtn {
+    background-color: var(--primary);
+    color: var(--light);
+    transition: 0.5s all ease;
+    &:hover {
+      background-color: #9b4457;
+    }
+    &:active {
+      transform: scale(0.7);
+    }
+  }
+}
