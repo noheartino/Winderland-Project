@@ -1,22 +1,54 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from "next/router";
 import Link from "next/link";
 
 
-export default function EventHomeList({ events, userlv, onSortChange, currentSort }) {
+export default function EventHomeList({ events, userlv, onSortChange, currentSort, onpage, currentpage }) {
 
     const applyon = events.applyon || [];
     const applyoff = events.applyoff || [];
     const router = useRouter();
+    const [newPage, setnewp] = useState(1)
+
+    const alldatais = applyon.length;
 
     const toggleSort = () => {
         const newSort = currentSort === 'asc' ? 'desc' : 'asc';
         onSortChange(newSort);
     }
 
+    // const clickpage = (e) => {
+    //     currentpage = setnewp(e.target.value);
+        
+    //     onpage(newPage);
+    //     console.log(newPage);
+        
+    // }
+
+    const clickpage = (e) => {
+        const selectedPage = parseInt(e.target.value, 10);
+        setnewp(selectedPage);
+        onpage(selectedPage);
+        console.log(selectedPage);
+    }
+
+    const clickarrprev = () => {
+        const previousPage = newPage>1 ? newPage - 1 : 1;
+        console.log(previousPage)
+        setnewp(previousPage);
+        onpage(previousPage);
+    }
+
+    const clickarrnext = () => {
+        const nextiousPage = newPage + 1 ;
+        console.log(nextiousPage)
+        setnewp(nextiousPage);
+        onpage(nextiousPage);
+    }
+
     return (
         <>
-        {/* {applyon ? <pre>{JSON.stringify(applyon, null, 2)}</pre> : 'Loading...'} */}
+        {/* {alldatais ? <pre>{JSON.stringify(alldatais, null, 2)}</pre> : 'Loading...'} */}
             <div className="eventHomeBoxArea">
                 <div className="container">
                     <div className="eventHomeBoxAreaTitle d-none d-lg-flex">
@@ -130,7 +162,7 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
                         }
                         {
                             [...applyoff].map((t, i) => (
-                                <div className="col-12 col-lg-4 mb-4" key={i}>
+                                <div className={`col-12 col-lg-4 mb-4 ${alldatais >= 6 ? 'd-none' : ''}`} key={i}>
                                     <div className="eventHomeBox_disable">
                                         <div className="apply_disable">報名已截止</div>
                                         <img src={`/event/${t.event_cover_image}`} alt="" className="eventHomeBoxImg" />
@@ -160,8 +192,34 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
 
 
                     </div>
+
+                
+                    <div className="eventPagearea">
+
+                        <button className='EventPage-toarr' onClick={clickarrprev}>
+                            <i className="fa-solid fa-chevron-left px-1 emmit1-pageNav"></i>
+                        </button>
+
+                        <button className='EventPage-to' value={1} onClick={clickpage}>
+                            1
+                        </button>
+
+                        <button className='EventPage-to' value={2} onClick={clickpage}>
+                            2
+                        </button>
+                
+                        <button className='EventPage-toarr'  onClick={clickarrnext} disabled={alldatais < 6}>
+                            <i className="fa-solid fa-chevron-right px-1 emmit1-pageNav"></i>
+                        </button>
+
+                    </div>
+            
+
+
                 </div>
             </div>
+
+            
 
         </>
     )

@@ -466,6 +466,46 @@ a.Armallmt{
     
 }
 
+
+.eventPagearea{
+    width: 100%;
+    /* border: 3px solid lightcoral; */
+    display: flex;
+    justify-content: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    align-items: center;
+
+    .EventPage-to{
+        font-size: 14px;
+        color: #916B51;
+        text-align: center;
+        background-color: #F9F7EF;
+        border: 1px solid #d3c0ab;
+        width: 35px;
+        height: 40px;
+        border-radius: 2px;
+        margin-right: 7px;
+        &:hover{
+            background-color: #d3c0ab;
+        }
+    }
+    .EventPage-toarr{
+        font-size: 10px;
+        color: #916B51;
+        text-align: center;
+        background-color: #F9F7EF;
+        border: 1px solid #d3c0ab;
+        width: 35px;
+        height: 40px;
+        border-radius: 2px;
+        margin-right: 7px;
+        &:hover{
+            background-color: #d3c0ab;
+        }
+    }
+}
+
 /* info */
 
 
@@ -1353,6 +1393,18 @@ a.Armallmt{
         box-shadow: 0 2px 3px rgb(150, 150, 150);
         margin-right: 20px;
     }
+    .eventCRR{
+        width: 120px;
+        padding-block: 8px;
+        font-size: 14px;
+        background-color: var(--orange);
+        color: white;
+        letter-spacing: 2px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0 2px 3px rgb(255, 30, 30);
+        margin-right: 20px;
+    }
     .eventCS{
         width: 120px;
         padding-block: 8px;
@@ -1958,4 +2010,207 @@ a.Armallmt{
         }
 
     }
+}
+
+
+
+
+  /* level */
+
+  
+  .member_levelPage_intro{
+
+
+    .introall{
+        @media screen and (max-width: 576px){
+            padding-inline: 8px;
+        }
+    }
+
+    .splitline{
+        width: 100%;
+        height: 1px;
+        background-color: var(--wine_light);
+        margin-top: 20px;
+
+        @media screen and (max-width: 576px){
+            margin-top: 0px;
+        }
+    }
+    
+
+    .levelPageTitle{
+        color: var(--text_primary);
+        font-weight: 900;
+        font-size: 20px;
+        padding-block: 30px;
+    }
+
+    .levelPageBox{
+        width: 90%;
+        border-radius: 5px;
+        aspect-ratio: 16/10;
+        padding: 25px 30px;
+
+        @media screen and (max-width: 768px){
+            width: 100%;
+        }
+        
+       
+
+        &:hover{
+            box-shadow: 1px 2px 7px rgb(215, 215, 215);
+        }
+    }
+
+    .levelPageBoxText{
+        font-size: 18px;
+        letter-spacing: 3px;
+        font-weight: 900;
+        color: var(--text_dark);
+        margin-top: 22px;
+
+        @media screen and (max-width: 768px){
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 25px;
+        }
+    }
+
+    .levelPageBoxText.BoxTextrwd{
+        .BoxT{
+            font-size: 16px;
+        }
+        .BoxC{
+            color: var(--wine);
+        }
+    }
+
+
+
+    .levelPageBox.Lv1{
+        background: url(/event/Mask\ Wh.png) no-repeat 100%100%/110%, var(--primary);
+        color: rgb(245, 245, 245);
+
+        .PageBoxT{
+            font-weight: 900;
+            font-size: 18px;
+            letter-spacing: 1px;
+            margin-bottom: 17px;
+        }
+
+        .PageBoxC{
+            font-size: 14px;
+            letter-spacing: 1px;
+
+            p{
+                margin-bottom: 6px;
+            }
+        }
+
+    }
+
+    .levelPageBox.Lv2{
+        background: url(/event/Mask\ group.png) no-repeat 100%100%/110%, linear-gradient(180deg, #E7E2D3 0%, #FFF 47.5%, #D0C7B0 100%);
+        color: var(--text_primary);
+
+        .PageBoxT{
+            font-weight: 900;
+            font-size: 18px;
+            letter-spacing: 1px;
+            margin-bottom: 17px;
+        }
+
+        .PageBoxC{
+            font-size: 14px;
+            letter-spacing: 1px;
+
+            p{
+                margin-bottom: 6px;
+            }
+        }
+
+    }
+
+    .levelPageBox.Lv3{
+        background: url(/event/Mask\ group.png) no-repeat 100%100%/110%, linear-gradient(180deg, #FCC63E 0%, #FFE7A9 47.5%, #FBC741 100%);
+        color: var(--text_primary);
+
+        .PageBoxT{
+            font-weight: 900;
+            font-size: 18px;
+            letter-spacing: 1px;
+            margin-bottom: 17px;
+        }
+
+        .PageBoxC{
+            font-size: 14px;
+            letter-spacing: 1px;
+
+            p{
+                margin-bottom: 6px;
+            }
+        }
+
+    }
+
+    .levelPageBox.Lv4{
+        background: url(/event/Mask\ group.png) no-repeat 100%100%/110%, linear-gradient(180deg, #FBE09B 0%, #FFF1CF 47.5%, #E5C369 100%);
+        color: var(--text_primary);
+
+        .PageBoxT{
+            font-weight: 900;
+            font-size: 18px;
+            letter-spacing: 1px;
+            margin-bottom: 17px;
+        }
+
+        .PageBoxC{
+            font-size: 14px;
+            letter-spacing: 1px;
+
+            p{
+                margin-bottom: 6px;
+            }
+        }
+
+    }
+
+
+    .eventCardWarn{
+        width: 100%;
+        padding-top: 60px;
+        padding-bottom: 60px;
+        text-align: justify;
+
+        @media screen and (max-width: 576px){
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        .WarnT{
+            font-weight: 900;
+            color: var(--purple);
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .WarnLine{
+            font-size: 14px;
+            display: flex;
+            padding-block: 10px;
+            letter-spacing: 1px;
+            color: var(--text_primary);
+
+            .dot{
+                width: 5px;
+                height: 5px;
+                background-color: var(--text_primary);
+                margin-top: 8px;
+                margin-right: 10px;
+            }
+        }
+    }
+
 }
