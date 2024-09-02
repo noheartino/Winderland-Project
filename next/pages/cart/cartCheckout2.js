@@ -359,10 +359,17 @@ export default function CartCheckout2() {
             />
             <label htmlFor="blackcatM">黑貓宅急便</label>
           </div>
-          {selectedTransport === "transprot711" && <CartTransportM />}
-          {selectedTransport === "blackcat" && <CartTransportBlackCatM />}
+          {selectedTransport === "transprot711" && (
+            <CartTransportM
+              handleTransportDataChange={handleTransportDataChange}
+            />
+          )}
+          {selectedTransport === "blackcat" && (
+            <CartTransportBlackCatM
+              onTransportBlackCatDataChange={handleTransportBlackCatDataChange}
+            />
+          )}
           <div className="checkBoxWpoint">
-            <img src="/images/cart/wPoint.png" alt="" />
             <input
               type="checkbox"
               id="wPointcheckM"
@@ -381,7 +388,19 @@ export default function CartCheckout2() {
             onPointsFetch={handlePointsFetch}
           />
           <div style={{ height: "180px" }}></div>
-          <CartMoneyM />
+          <CartMoneyM
+            userId={userId}
+            pointsUsed={pointsUsed}
+            originalPoints={originalPoints}
+            selectedPayment={selectedPayment}
+            selectedTransport={selectedTransport}
+            transportData={
+              selectedTransport === "transprot711" ? transportData : {}
+            }
+            transportBlackCatData={
+              selectedTransport === "blackcat" ? transportBlackCatData : {}
+            }
+          />
         </div>
       </main>
       <Footer showMobileFooter={false} />

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import css from "@/components/cart/cart1/cartProduct.module.css";
+import Swal from 'sweetalert2';
 
 export default function CartProduct({ cartItems, onRemove, onUpdateQuantity }) {
   if (cartItems.length === 0) return null;
@@ -12,7 +13,12 @@ export default function CartProduct({ cartItems, onRemove, onUpdateQuantity }) {
         onUpdateQuantity(item.cart_item_id, item.product_amount);
 
         // 顯示提示訊息
-        alert(`"${item.product_name}" 已超過庫存量，數量已調整為最大可用庫存 ${item.product_amount}。`);
+        Swal.fire({
+          title: '數量調整',
+          text: `"${item.product_name}" 已超過庫存量，數量已調整為最大可用庫存 ${item.product_amount}。`,
+          icon: 'warning',
+          confirmButtonText: '確定'
+        });
       }
     });
   }, [cartItems, onUpdateQuantity]);
@@ -32,7 +38,12 @@ export default function CartProduct({ cartItems, onRemove, onUpdateQuantity }) {
       const newQuantity = currentQuantity + 1;
       await onUpdateQuantity(itemId, newQuantity);
     } else {
-      alert("超過現有商庫存量");
+      Swal.fire({
+        title: '數量超過限制',
+        text: '商品數量已經達到最大庫存量。',
+        icon: 'error',
+        confirmButtonText: '確定'
+      });
     }
   };
 
@@ -48,7 +59,7 @@ export default function CartProduct({ cartItems, onRemove, onUpdateQuantity }) {
               <div className={css.cartProductImg}>
                 {item.product_image ? (
                   <img
-                    src={`/images/cart/cartProduct/images/${item.product_image}`}
+                    src={`/images/product/${item.product_image}`}
                     alt="Product"
                   />
                 ) : null}

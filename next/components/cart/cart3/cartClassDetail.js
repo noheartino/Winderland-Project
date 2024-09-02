@@ -20,7 +20,7 @@ export default function CartClassDetail() {
         <div key={index} className={css.cartProductDetailList}>
           <div className={css.cartProductDetailImg}>
             <img
-              src={`/images/cart/cartClass/upload_class/${item.class_image}`}
+              src={`/images/course_and_tarot/${item.class_image}`}
               alt="Class Image"
             />
           </div>

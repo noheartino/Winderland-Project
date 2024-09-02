@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import css from "@/components/cart/cart2/cartPay.module.css";
 import axios from "axios"; // 引入 axios 或其他 HTTP 請求庫
 import { useRouter } from "next/router"; // 引入 useRouter
+import Swal from "sweetalert2";
 
 export default function CartPay({
   userId,
@@ -27,13 +28,16 @@ export default function CartPay({
     const storedProductData = sessionStorage.getItem("productData");
     const storedClassData = sessionStorage.getItem("classData");
     const storedCoupon = sessionStorage.getItem("selectedCoupon");
-    const storedDiscountAmounts = Math.floor(parseFloat(sessionStorage.getItem('discountAmount')) || 0)
+    const storedDiscountAmounts = Math.floor(
+      parseFloat(sessionStorage.getItem("discountAmount")) || 0
+    );
 
     if (storedFinalAmount) setFinalAmount(parseFloat(storedFinalAmount));
     if (storedProductData) setProductData(JSON.parse(storedProductData));
     if (storedClassData) setClassData(JSON.parse(storedClassData));
     if (storedCoupon) setSelectedCoupon(JSON.parse(storedCoupon));
-    if(storedDiscountAmounts) setDiscountAmounts(JSON.parse(storedDiscountAmounts));
+    if (storedDiscountAmounts)
+      setDiscountAmounts(JSON.parse(storedDiscountAmounts));
   }, []);
 
   const minLength = {
@@ -48,7 +52,7 @@ export default function CartPay({
   const validateForm = () => {
     let valid = true;
     let errorMessages = [];
-  
+
     if (!selectedPayment || !selectedTransport) {
       valid = false;
       errorMessages.push("請選擇付款方式和運送方式");
@@ -58,7 +62,8 @@ export default function CartPay({
           valid = false;
           errorMessages.push("請填寫7-11資料");
         } else {
-          const { storeName, storeAddress, pickupName, pickupPhone } = transportData;
+          const { storeName, storeAddress, pickupName, pickupPhone } =
+            transportData;
           if (!storeName || !storeAddress || !pickupName) {
             valid = false;
             errorMessages.push("7-11資料不完整");
@@ -71,13 +76,20 @@ export default function CartPay({
           }
         }
       }
-  
+
       if (selectedTransport === "blackcat") {
-        if (!transportBlackCatData || Object.keys(transportBlackCatData).length === 0) {
+        if (
+          !transportBlackCatData ||
+          Object.keys(transportBlackCatData).length === 0
+        ) {
           valid = false;
           errorMessages.push("請填寫黑貓宅急便資料");
         } else {
-          const { address: blackCatAddress, name, phone: blackCatPhoneNumber } = transportBlackCatData;
+          const {
+            address: blackCatAddress,
+            name,
+            phone: blackCatPhoneNumber,
+          } = transportBlackCatData;
           if (!blackCatAddress || !name) {
             valid = false;
             errorMessages.push("黑貓宅急便資料不完整");
@@ -91,12 +103,11 @@ export default function CartPay({
         }
       }
     }
-  
+
     setIsFormValid(valid);
     setFormError(errorMessages.join(" / ").replace(/ \//g, " <br />"));
     return valid;
   };
-  
 
   useEffect(() => {
     validateForm();
@@ -112,7 +123,7 @@ export default function CartPay({
     if (validateForm()) {
       try {
         let response;
-                sessionStorage.setItem("productData", JSON.stringify(productData));
+        sessionStorage.setItem("productData", JSON.stringify(productData));
         sessionStorage.setItem("classData", JSON.stringify(classData));
         sessionStorage.setItem("selectedPayment", selectedPayment);
         sessionStorage.setItem("selectedTransport", selectedTransport);
@@ -140,14 +151,24 @@ export default function CartPay({
           );
 
           setOrderNumber(response.data.orderNumber);
+          // 清除 sessionStorage 中的優惠券資料
+          sessionStorage.removeItem("selectedCoupon");
 
           // 導航到確認頁
           router.push("/cart/cartCheckout3");
         } else if (selectedPayment === "creditpay") {
           const goECPayTestOnly = (discountedAmount) => {
-            if (window.confirm('確認要導向至ECPay進行付款?')) {
-              window.location.href = `http://localhost:3005/api/ecpay-test-only?amount=${discountedAmount}`;
-            }
+            Swal.fire({
+              title: "確認要導向至ECPay進行付款?",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "確定",
+              cancelButtonText: "取消",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.href = `http://localhost:3005/api/ecpay-test-only?amount=${discountedAmount}`;
+              }
+            });
           };
 
           // 信用卡付款
@@ -171,6 +192,9 @@ export default function CartPay({
           // 假設後端返回了訂單編號
           setOrderNumber(response.data.orderNumber);
 
+          // 清除 sessionStorage 中的優惠券資料
+          sessionStorage.removeItem("selectedCoupon");
+
           // 在處理完成後，可能需要導航至某個頁面
           goECPayTestOnly(discountedAmount);
         }
@@ -178,10 +202,18 @@ export default function CartPay({
         console.log("Order created successfully:", response.data);
       } catch (error) {
         console.error("Error creating order:", error);
-        alert("訂單建立失敗，請稍後再試");
+        Swal.fire({
+          icon: "error",
+          title: "訂單建立失敗",
+          text: "請稍後再試",
+        });
       }
     } else {
-      alert(formError); // 彈出提示訊息
+      Swal.fire({
+        icon: "warning",
+        title: "表單驗證錯誤",
+        html: formError, // 使用 HTML 格式顯示錯誤消息
+      });
     }
   };
 
