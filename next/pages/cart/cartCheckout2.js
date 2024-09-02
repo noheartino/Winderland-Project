@@ -5,7 +5,6 @@ import CartWpoint from "@/components/cart/cart2/cartWpoint";
 import CartMoney from "@/components/cart/cart2/cartMoney";
 import CartPay from "@/components/cart/cart2/cartPay";
 import CartProductM from "@/components/cart/cart2/cartProductM";
-import CartTransportM from "@/components/cart/cart2/cartTranportM";
 import CartWpointM from "@/components/cart/cart2/cartWpointM";
 import CartMoneyM from "@/components/cart/cart2/cartMoneyM";
 import CartProductDetail from "@/components/cart/cart3/cartProductDetail";
@@ -360,7 +359,7 @@ export default function CartCheckout2() {
             <label htmlFor="blackcatM">黑貓宅急便</label>
           </div>
           {selectedTransport === "transprot711" && (
-            <CartTransportM
+            <CartTransport
               handleTransportDataChange={handleTransportDataChange}
             />
           )}
