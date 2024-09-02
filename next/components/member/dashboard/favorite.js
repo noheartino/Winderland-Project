@@ -98,7 +98,7 @@ export default function DashboardFavorite() {
               type="text"
               value={searchTerm}
               onChange={handleSearch}
-              id="search" placeholder="搜 尋 關 鍵 字 " />
+              id="search" placeholder="搜 尋 商品／課程／文章名稱 " />
           </div>
           {/* 篩選手風琴元件 */}
           <FavoriteFilterOffcanvas />
