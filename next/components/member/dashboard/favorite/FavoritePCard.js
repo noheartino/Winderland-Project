@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from './FavoritePCard.module.css'
 import Link from 'next/link';
 
-export default function FavoritePCard() {
+export default function FavoritePCard({ product }) {
     const [favorites, setFavorites] = useState([]);
     const [error, setError] = useState(null);
 
@@ -22,7 +22,7 @@ export default function FavoritePCard() {
             const response = await fetch('http://localhost:3005/api/favorites/products', {
                 credentials: 'include',
             });
-            console.log('Response status:', response.status);
+            // console.log('Response status:', response.status);
             // if (response.ok) {
             //     const data = await response.json();
             //     setFavorites(data.data);
@@ -38,7 +38,7 @@ export default function FavoritePCard() {
                 data = { data: [] }; // 臨時措施，實際應該從緩存中獲取
             } else if (response.ok) {
                 data = await response.json();
-                console.log('Received data:', data);
+                // console.log('Received data:', data);
             } else {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

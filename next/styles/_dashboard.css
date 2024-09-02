@@ -1386,6 +1386,7 @@ font-size: 22px;
     text-decoration: none;
     color: var(--wine);
     cursor: pointer;
+
   }
 
   
@@ -1400,6 +1401,10 @@ font-size: 22px;
     text-decoration: none;
     color: var(--text_dark);
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+line-height: normal;
+letter-spacing: 1.44px;
 }
 
 
@@ -1435,10 +1440,6 @@ font-size: 22px;
         top: 12px;
         font-size: 12px;
     }
-
-
-
-
 
     .favorite-list-rwd {
         span {
@@ -1554,7 +1555,7 @@ font-size: 22px;
                         margin-top: 5px;
                         width: 200px;
 
-                        .online {
+                        .onlineRwd {
                             white-space: nowrap;
                             width: 50px;
                             height: 20px;
@@ -1709,6 +1710,189 @@ font-size: 22px;
     font-size: 18px;
     color: #666;
   }
+
+.favorite-c-rwd {
+    margin-bottom: 15%;
+    width: 95%;
+}
+.favorite-c-card-rwd {
+    width: 60%;
+    /* 265.835px */
+    /* margin-left: 13.17px; */
+    /* margin-top: 37px; */
+    margin-bottom: 15px;
+}
+.favorite-c-detail-rwd {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    margin-left: 10px;
+    color: var(--text_primary, #60464C);
+    white-space: nowrap;
+
+
+    .favorite-c-title-rwd {
+        margin-top: 5px;
+        width: 200px;
+
+        .onlineRwd {
+            white-space: nowrap;
+            width: 50px;
+            height: 20px;
+            border-radius: 7.137px;                            background: var(--blue, #A5D1DF);
+
+            font-size: 13px;
+            color: var(--blue_dark, #5B839A);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 9px;
+
+        }
+
+        
+    }
+
+    .byTeacherRWD {
+        /* margin-top: 3px; */
+        /* margin-left: 1px; */
+        margin-right: 28%;
+        color: var(--purple_light, #A66E7B);
+        white-space: nowrap;
+    }
+
+
+
+    .nowPrice {
+        color: var(--text_primary, #60464C);
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.7px;
+        margin-top: 10.44px;
+        margin-left: 25px;
+
+    }
+    .nowPriceLeft{
+        color: var(--text_primary, #60464C);
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.7px;
+        margin-left: 120px;
+        /* display: flex;
+        justify-content: end; */
+    }
+
+    .oldPrice {
+        color: #BEBEBE;
+        font-family: Inter;
+        font-size: 10px;
+        letter-spacing: 1px;
+        text-decoration: line-through;
+        margin-top: 12px;
+        margin-left: 40px;
+
+    }
+
+}
+.favorite-c-img-rwd {
+    width: 70%;
+    height: 105px;
+    border-radius: 5.947px;
+    position: relative;
+
+    /* .svg-bookmark {
+        position: absolute;
+        right: 23px;
+        top: 14px;
+        font-size: 30px;
+        color: var(--blue_dark);
+        stroke-width: 1px;
+        stroke: #FFF;
+
+    } */
+}
+.onlineRwd {
+    white-space: nowrap;
+    width: 40px;
+    height: 20px;
+    border-radius: 7.137px;                            background: var(--blue, #A5D1DF);
+
+    font-size: 13px;
+    color: var(--blue_dark, #5B839A);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 9px;
+    margin-left: 5px;
+
+}
+
+.favorite-a {
+    width: 95%;
+}
+.favorite-a-card {
+    border: 0.807px solid var(--wine_light, #D4C0C0);
+    width: 100%;
+    height: 125px;
+    margin-right: 10px;
+    /* margin-top: 37px; */
+    margin-bottom: 10px;
+    position: relative;
+}
+.favorite-a-img {
+    width: 47%;
+    height: 100%;
+    background: url(/images/member/fav-a1.jpeg) lightgray 50% / cover no-repeat;
+}
+
+.favorite-a-detail {
+    color: var(--text_dark, #3F3034);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+    margin-left: 20px;
+    margin-right: 30px;
+}
+.a-category {
+    color: var(--purple_light, #A66E7B);
+    letter-spacing: 1.2px;
+    margin-top: 16px;
+    margin-bottom: 11px;
+font-size: 12px;
+font-weight: 400;
+letter-spacing: 1px;
+margin-left: -5px;
+}
+
+.svg-bookmark {
+    position: absolute;
+    right: 3%;
+    top: 8%;
+    font-size: 15px;
+    color: var(--orange);
+}
+
+.articleTitle {
+    color: var(--text_dark, #3F3034);
+    font-family: Inter;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+}
+
+.articleTitle:hover{
+    color: var(--primary); 
+}
+
+.favoritePoster {
+    margin-top: 15px;
+    color: var(--text_dark, #3F3034);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
 
 .error-message-pwd , .success-message-pwd{
  color: var(--orange);
