@@ -86,11 +86,11 @@ export default function FavoriteArwd() {
                 </svg>
               </div>
               <Link href={`/article/${article.id}`} className={styles.articleTitleLink}>
-              <span className={styles.articleTitle}>
+              <div className={styles.articleTitle}>
               {article.title}
-              </span>
+              </div>
               </Link>
-              <p >by {article.poster} l {new Date(article.update_time).toLocaleDateString()}</p>
+              <div className='favoritePoster' >by {article.poster} l {new Date(article.update_time).toLocaleDateString()}</div>
             </div>
           </div>
 
