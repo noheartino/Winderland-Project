@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
       startDate = '',
       endDate = '',
       page = 1,
-      limit = 8,
+      limit = 6,
     } = req.query
 
     const categoryMap = {
@@ -313,7 +313,6 @@ router.post('/new', async (req, res) => {
   try {
     const { title, content, author, update_time, valid, images } = req.body
 
-    // Insert the new article into the `article` table
     const query = `
       INSERT INTO article (title, content, author, update_time, valid)
       VALUES (?, ?, ?, ?, ?)
@@ -328,9 +327,8 @@ router.post('/new', async (req, res) => {
       valid,
     ])
 
-    // If there are images, insert them into the `images_article` table
     if (images && images.length > 0) {
-      const articleId = result.insertId // Get the newly inserted article's ID
+      const articleId = result.insertId
       const imageQuery = `
         INSERT INTO images_article (article_id, path)
         VALUES (?, ?)

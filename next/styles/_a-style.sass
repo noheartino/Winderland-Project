@@ -53,6 +53,10 @@
   /* 搜尋 */
   .a-search-block
     position: relative
+    ::placeholder
+      font-size: 15px
+      color: var(--purple_light)
+      letter-spacing: 1.5px
     .a-search
       width: 100%
       border: 1px solid var(--purple_light)
@@ -60,22 +64,13 @@
       color: var(--purple_light)
       font-size: 14px
 
-    i
-      font-size: 14px
-      position: absolute
-      right: 23px
-      top: 10px
-
   /* 搜尋列小 */
   .a-search-sm-block
     position: relative
-    i
-      font-size: 14px
-      position: absolute
-      left: 23px
-      top: 10px
-      color: #7c7c7c
-
+    ::placeholder
+      font-size: 15px
+      color: #9A9A9A
+      letter-spacing: 1.5px
     .a-search-sm
       width: 100%
       background-color: #f1f1f1
@@ -188,6 +183,7 @@
   .a-content
     margin: 0
     /* 文章頭條 */
+    .aTitleBlock
     .a-title
       height: 350px
       background: url(/images/article/titlePic.jpeg) center center no-repeat
@@ -198,6 +194,7 @@
       display: flex
       align-items: flex-end
       cursor: pointer
+
 
       h3
         color: var(--light)
@@ -318,26 +315,29 @@
 .a-pagination
   border-radius: 0
   display: flex
-  gap: 6px
+  gap: 8px
   li
+    list-style: none
     background-color: #F4EBEB
-    border: 1px solid var(--wine_light)
+    // border: 1px solid var(--wine_light)
     color: #A66E7B
     :hover
       background-color: darken(#F4EBEB, 5%)
-      border: 1px solid var(--wine_light)
-      color: darken(#A66E7B, 5%)
-    :active
-      background-color: darken(#F4EBEB, 5%)
-      border: 1px solid var(--wine_light)
-      color: darken(#A66E7B, 5%)
+      // border: 1px solid var(--wine_light)
+      color: darken(#A66E7B, 5%) 
     :focus
-      background-color: var(--primary)
+      background-color: var(--wine_light)
+    :active
+      background-color: #F4EBEB
+      // border: 1px solid var(--wine_light)
+      color: #A66E7B
+
     a
-      border: 1px solid var(--wine_light)
+      text-decoration: none
+      padding: 10px
+      padding-right: 12px
+      padding-left: 12px
+      border: 2px solid var(--wine_light)
       background-color: var(--light)
+      transition: all 0.5s ease
       color: var(--purple_light)
-      :active
-        background-color: #F4EBEB
-        border: 1px solid var(--wine_light)
-        color: #A66E7B
