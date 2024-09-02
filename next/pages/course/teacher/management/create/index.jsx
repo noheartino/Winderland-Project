@@ -10,8 +10,8 @@ import Swal from 'sweetalert2'
 export default function ClassManIndex() {
 
   const router = useRouter();
-  const [courses, setCourses] = useState([]);
   const districts = [{dId: 1, districtStr: "台北市"}, {dId: 2, districtStr: "新北市"}, {dId: 3, districtStr: "桃園市"}, {dId: 4, districtStr: "台中市"}, {dId: 5, districtStr: "台南市"}, {dId: 6, districtStr: "高雄市"}, {dId: 7, districtStr: "新竹縣"}, {dId: 8, districtStr: "苗栗縣"}, {dId: 9, districtStr: "彰化縣"}, {dId: 10, districtStr: "南投縣"}, {dId: 11, districtStr: "雲林縣"}, {dId: 12, districtStr: "嘉義縣"}, {dId: 13, districtStr: "屏東縣"}, {dId: 14, districtStr: "宜蘭縣"}, {dId: 15, districtStr: "花蓮縣"}, {dId: 16, districtStr: "台東縣"}, {dId: 17, districtStr: "澎湖縣"}, {dId: 18, districtStr: "金門縣"}, {dId: 19, districtStr: "連江縣"}, {dId: 20, districtStr: "基隆市"}, {dId: 21, districtStr: "新竹市"}, {dId: 22, districtStr: "嘉義市"}]
+  const [onOrUnderline, setOnOrUnderline] = useState(null)
 
   // 抓取 user 資料
   const authData = useAuth().auth.userData
@@ -26,7 +26,130 @@ export default function ClassManIndex() {
   }, [authData])
   // 驗證登入者有權限
 
-  const [classNameWordsNum, setClassNameWordsNum] = useState(0)
+  // 抓取所有教師資料
+  const [teachers, setTeachers] = useState([])
+  useEffect(()=>{
+    fetch(`http://localhost:3005/api/course/teacher/management/getTeacherData`)
+        .then(response => response.json())
+        .then((data) => {
+          const { teachers } = data
+          setTeachers(teachers)
+        })
+        .catch(error => console.error('Error:', error));
+  }, [])
+  // 23 : {id: 24, name: '蘭居岳'}
+
+
+  // 選擇上傳圖片
+  const [Cimage, setCImage] = useState("/images/course_and_tarot/classImgDefault.png");
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0]; // 獲取選中的文件
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCImage(reader.result); // 設置圖片 URL 到狀態
+      };
+      reader.readAsDataURL(file); // 讀取文件為 data URL
+    }
+  };
+  
+
+  // 選擇上傳影片
+  const [Cvideo, setCvideo] = useState(null); // 存儲圖片 URL
+  const handleVdioUpload = (event) => {
+    const file = event.target.files[0]; // 獲取選中的文件
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCvideo(reader.result); // 設置圖片 URL 到狀態
+      };
+      reader.readAsDataURL(file); // 讀取文件為 data URL
+    }
+  };
+
+  // 字數限制提醒
+  const [remindMsgBox, setRemindMsgBox] = useState({})
+  const handleWordsLimit = (e, wordLimit) => {
+  let currentWordsNum = e.target.value.length;
+  let columnName = '';
+  if (e.target.id === 'className') {
+      columnName = '課程名稱';
+      document.querySelector('#classNameWordNum').textContent = currentWordsNum;
+  }
+  if (e.target.id === 'classCityDetail') {
+      columnName = '詳細開課地址';
+      document.querySelector('#CmanageCreateTagWordNum').textContent = currentWordsNum;
+  }
+  if (e.target.id === 'classSummary') {
+    columnName = '課程摘要';
+    document.querySelector('#classSummaryWordNum').textContent = currentWordsNum;
+  }
+  if (e.target.id === 'classIntro') {
+    columnName = '課程內容';
+    document.querySelector('#classIntroWordNum').textContent = currentWordsNum;
+  }
+  if (parseInt(currentWordsNum) <= wordLimit) {
+    const currentIdStr = e.target.id;
+    setRemindMsgBox(prev => ({...prev, [currentIdStr]: ``}))
+    return;
+  }
+  if (parseInt(currentWordsNum) > wordLimit) {
+      const currentIdStr = e.target.id;
+      setRemindMsgBox(prev => ({...prev, [currentIdStr]: `提醒: ${columnName}欄位已達字數上限 ${wordLimit}`}))
+      e.target.value = e.target.value.slice(0, wordLimit);
+
+      // 更新字數顯示
+      if (e.target.id === 'className') {
+          document.querySelector('#classNameWordNum').textContent = wordLimit;
+      }
+      if (e.target.id === 'classCityDetail') {
+          document.querySelector('#CmanageCreateTagWordNum').textContent = wordLimit;
+      }
+      if (e.target.id === 'classSummary') {
+        document.querySelector('#classSummaryWordNum').textContent = wordLimit;
+      }
+      if (e.target.id === 'classIntro') {
+        document.querySelector('#classIntroWordNum').textContent = wordLimit;
+      }
+    }
+  }
+
+  const handleOnlineClickClear = ()=>{
+    setOnOrUnderline("online")
+    console.log(onOrUnderline);
+    // 清除實體課程才有的欄位
+    const onlyShowWhenUnderline = ["studentLimit", "classStartDate", "classEndDate", "assignStartDate", "assignEndDate", "dailyStartTime", "dailyEndTime", "classCity", "classCityDetail"]
+    onlyShowWhenUnderline.forEach((elm)=>{
+      const currentElm = document.getElementById(`${elm}`)
+      currentElm.value=""
+    })
+  }
+
+  const handleUnderlineClickClear = ()=>{
+    setOnOrUnderline("underline")
+    console.log(onOrUnderline);
+    // 清除線上課程才有的欄位
+    const onlyShowWhenOnline = ["classVdio"]
+    onlyShowWhenOnline.forEach((elm)=>{
+      const currentElm = document.getElementById(`${elm}`)
+      currentElm.value=""
+    })
+  }
+
+  
+// *欄位檢查:
+
+// 正整數檢查
+
+// 開始日期不可晚於結束日期
+
+// 開始時間不可晚於結束時間
+
+// 檔案格式檢查(圖片、影片)
+
+
+// *檔案上傳函數
+
   const [mustBeValued, setMustBeValued] = useState({
     className: '',
       teacherId: '',
@@ -44,195 +167,55 @@ export default function ClassManIndex() {
       classIntro: '',
       classVdio: '',
   })
-  
-  // 抓取所有教師資料
-  const [teachers, setTeachers] = useState([])
-  useEffect(()=>{
-    fetch(`http://localhost:3005/api/course/teacher/management/getTeacherData`)
-        .then(response => response.json())
-        .then((data) => {
-          const { teachers } = data
-          setTeachers(teachers)
-        })
-        .catch(error => console.error('Error:', error));
-  }, [])
-  // 23 : {id: 24, name: '蘭居岳'}
+  // 檢查 mustBeValued 有有效鍵值對: Object.entries(mustBeValued).filter(([key, value]) => value != "")
 
-  // 選擇上傳圖片
-  const [Cimage, setCImage] = useState("/images/course_and_tarot/classImgDefault.png"); // 存儲圖片 URL
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0]; // 獲取選中的文件
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setCImage(reader.result); // 設置圖片 URL 到狀態
-      };
-      reader.readAsDataURL(file); // 讀取文件為 data URL
-    }
-  };
   function handleReset(){
+    clearIsEmpty();
+    setOnOrUnderline(null)
     setCImage("/images/course_and_tarot/classImgDefault.png")
+    setCvideo(null)
+    setRemindMsgBox({})
+    setMustBeValued({
+      className: '',
+        teacherId: '',
+        studentLimit: '',
+        on_and_underline: '',
+        classStartDate: '',
+        classEndDate: '',
+        assignStartDate: '',
+        assignEndDate: '',
+        dailyStartTime: '',
+        dailyEndTime: '',
+        classCity: '',
+        classCityDetail: '',
+        classPrice: '',
+        classIntro: '',
+        classVdio: '',
+    })
+    router.push('create')
   }
 
-  // 選擇上傳影片
-  const [Cvideo, setCvideo] = useState(null); // 存儲圖片 URL
-  const handleVdioUpload = (event) => {
-    const file = event.target.files[0]; // 獲取選中的文件
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setCvideo(reader.result); // 設置圖片 URL 到狀態
-      };
-      reader.readAsDataURL(file); // 讀取文件為 data URL
-    }
-  };
-
-
-  // 送出表單前檢查 ErrorMsgBox 是否有值
-  // ! 推送錯誤訊息至warningBox
-  const [errorMsgBox, setErrorMsgBox] = useState({
-    className: '',
-    teacherId: '',
-    studentLimit: '',
-    on_and_underline: '',
-    classStartDate: '',
-    classEndDate: '',
-    assignStartDate: '',
-    assignEndDate: '',
-    dailyStartTime: '',
-    dailyEndTime: '',
-    classCity: '',
-    classCityDetail: '',
-    classPrice: '',
-    classIntro: '',
-    classVdio: '',
-  })
-  const [remindMsgBox, setRemindMsgBox] = useState({
-    className: '',
-    teacherId: '',
-    studentLimit: '',
-    on_and_underline: '',
-    classStartDate: '',
-    classEndDate: '',
-    assignStartDate: '',
-    assignEndDate: '',
-    dailyStartTime: '',
-    dailyEndTime: '',
-    classCity: '',
-    classCityDetail: '',
-    classPrice: '',
-    classIntro: '',
-    classVdio: '',
-  })
-  let newRemindMsgBoxArr = {
-    className: '',
-    teacherId: '',
-    studentLimit: '',
-    on_and_underline: '',
-    classStartDate: '',
-    classEndDate: '',
-    assignStartDate: '',
-    assignEndDate: '',
-    dailyStartTime: '',
-    dailyEndTime: '',
-    classCity: '',
-    classCityDetail: '',
-    classPrice: '',
-    classIntro: '',
-    classVdio: '',
+  // 清除 isEmpty 樣式
+  const clearIsEmpty = ()=>{
+    document.querySelectorAll('.CourseCreateInput').forEach(element => {
+      element.classList.remove('isEmpty');
+    });
+    document.querySelectorAll('.CM-check-input').forEach(element => {
+      element.classList.remove('isEmpty');
+    });
+    document.querySelectorAll('.classIntro').forEach(element => {
+      element.classList.remove('isEmpty');
+    });
+    document.querySelectorAll('.vidAndImg-input').forEach(element => {
+      element.classList.remove('isEmpty');
+    });
   }
-  const newErrorMsgBoxArr = {
-    className: '',
-    teacherId: '',
-    studentLimit: '',
-    on_and_underline: '',
-    classStartDate: '',
-    classEndDate: '',
-    assignStartDate: '',
-    assignEndDate: '',
-    dailyStartTime: '',
-    dailyEndTime: '',
-    classCity: '',
-    classCityDetail: '',
-    classPrice: '',
-    classIntro: '',
-    classVdio: '',
-  }
-
-  // 字數限制提醒
-const handleWordsLimit = (e, wordLimit) => {
-  let currentWordsNum = e.target.value.trim().length;
-  let columnName = '';
-
-  if (e.target.id === 'className') {
-      columnName = '課程名稱';
-      document.querySelector('#classNameWordNum').textContent = currentWordsNum;
-  }
-  if (e.target.id === 'classCityDetail') {
-      columnName = '詳細開課地址';
-      document.querySelector('#CmanageCreateTagWordNum').textContent = currentWordsNum;
-  }
-
-  if (parseInt(currentWordsNum) > wordLimit) {
-      const currentIdStr = e.target.id.trim();
-      newRemindMsgBoxArr[currentIdStr] = `提醒: ${columnName}欄位已達字數上限 ${wordLimit}`;
-      e.target.value = e.target.value.slice(0, wordLimit);
-      console.log(newRemindMsgBoxArr);
-
-      // 更新字數顯示
-      if (e.target.id === 'className') {
-          document.querySelector('#classNameWordNum').textContent = wordLimit;
-      }
-      if (e.target.id === 'classCityDetail') {
-          document.querySelector('#CmanageCreateTagWordNum').textContent = wordLimit;
-      }
-
-      // 更新提醒訊息
-      setRemindMsgBox(newRemindMsgBoxArr);
-  }
-}
-  useEffect(()=>{
-    const remindMsgBoxHasErrors = Object.values(remindMsgBox).some((v) => v)
-    if (remindMsgBoxHasErrors) {
-      console.log("remindMsgBox 將顯示提醒");
-      return;
-    }
-  }, [remindMsgBox])
-  
-
-
-  const handleOnlineClickClear = ()=>{
-    // 清除實體課程才有的欄位
-  }
-
-  const handleUnderlineClickClear = ()=>{
-    // 清除線上課程才有的欄位
-  }
-
-  
-// *欄位檢查:
-
-// 字數上限檢查
-
-// 正整數檢查
-
-// 開始日期不可晚於結束日期
-
-// 開始時間不可晚於結束時間
-
-// 檔案格式檢查(圖片、影片)
-
-
-// *線上時隱藏欄位
-
-
-// *檔案上傳函數
-  
-
-
   // 處理送出表單
   const handleSubmit = async (event) => {
     event.preventDefault(); // 防止默認的表單提交
+    // if(){
+    //   return;
+    // }
     const formData = new FormData(event.target); // 獲取表單數據
 
     // 錯誤檢查狀態
@@ -312,8 +295,31 @@ const handleWordsLimit = (e, wordLimit) => {
     console.log("應該要有錯誤訊息: "+firstEmptyErrMsg);
 
     setMustBeValued(newMustBeValuedArr)
-    console.log("newMustBeValuedArr");
-    console.log(newMustBeValuedArr);
+
+    // 如果送出時必填欄位為空，則將所有有問題的必填欄位改紅色底
+    const newMustBeValuedCheckArr = Object.entries(newMustBeValuedArr).filter(([key, value]) => value != "");
+
+    clearIsEmpty();
+    
+    if(newMustBeValuedCheckArr && newMustBeValuedCheckArr.length>0){
+      newMustBeValuedCheckArr.forEach((elm, i)=>{
+        let elementSelect
+        if(elm[0] === "on_and_underline"){
+          elementSelect = document.querySelectorAll(`[name="on_and_underline"]`);
+          elementSelect.forEach((e)=>{
+            e.classList.add('isEmpty')
+          })
+        }else{
+          elementSelect = document.querySelector(`#${elm[0]}`);
+          elementSelect.classList.add('isEmpty');
+        }
+      })
+    }
+
+    // console.log("檢查mustbevalued");
+    // 這是 mustbevalued 去除空值的物件
+    // console.log(Object.fromEntries(Object.entries(mustBeValued).filter(([key, value]) => value !== "")));
+
 
     const mustBeHasErrors = Object.values(newMustBeValuedArr).some((v) => v)
     if (mustBeHasErrors) {
@@ -390,6 +396,8 @@ const handleWordsLimit = (e, wordLimit) => {
               <div className="row row-gap-3">
                 <div className="col-12 col-lg-8 d-flex flex-column gap-3">
                   <div className="row gx-2 gx-lg-4 row-gap-3">
+                    
+                    <div className={`col-12 flex-column gap-1 text-danger spac-1 ${Object.values(mustBeValued).some(value => value !== "") ? 'd-flex' : 'd-none'}`}>* 請檢查必填欄位 !!</div>
                     <div className="col-12 d-flex flex-column gap-1">
 
                       {/* 用來寫入不顯示的資料 */}
@@ -397,9 +405,9 @@ const handleWordsLimit = (e, wordLimit) => {
 
                       <label htmlFor="className" className="CmanageCreateTag">
                         課程名稱 (<span id='classNameWordNum'>0</span>/25)
-                        {/* 不可超過25字 */}
                       </label>
                       <input type="text" name="class_name" id="className" className="CourseCreateInput" onChange={(e) => handleWordsLimit(e, 25)} />
+                      <div className={`text-gray-light spac-1 emmit1 ${remindMsgBox['className']?"d-block":"d-none"}`}>* {remindMsgBox['className']?remindMsgBox['className']:""}</div>
                     </div>
                   </div>
                   <div className="row gx-2 gx-lg-4 row-gap-3">
@@ -425,13 +433,13 @@ const handleWordsLimit = (e, wordLimit) => {
                       </label>
                       <div className='d-flex gap-3'>
                         <div className="form-check CM-check-box">
-                          <input className="form-check-input CM-check-input" type="radio" name="on_and_underline" id="onLine"/>
+                          <input className="form-check-input CM-check-input" type="radio" name="on_and_underline" id="onLine" onClick={handleOnlineClickClear}/>
                           <label className="form-check-label CmanageCreateTag" htmlFor="onLine">
                             線上
                           </label>
                         </div>
                         <div className="form-check CM-check-box">
-                          <input className="form-check-input CM-check-input" type="radio" name="on_and_underline" id="underLine"/>
+                          <input className="form-check-input CM-check-input" type="radio" name="on_and_underline" id="underLine" onClick={handleUnderlineClickClear}/>
                           <label className="form-check-label CmanageCreateTag" htmlFor="underLine">
                             實體
                           </label>
@@ -439,7 +447,7 @@ const handleWordsLimit = (e, wordLimit) => {
                       </div>
                     </div>
 
-                    <div className="col-4 d-flex flex-column gap-1">
+                    <div className={`col-4 flex-column gap-1 ${onOrUnderline && onOrUnderline === "online" ? 'd-none' : 'd-flex'}`}>
                       <label htmlFor="studentLimit" className="CmanageCreateTag">
                         人數上限
                       </label>
@@ -452,12 +460,12 @@ const handleWordsLimit = (e, wordLimit) => {
                       {/* 檢查數字必須是大於0的整數 */}
                     </div>
                   </div>
-                  <div className="row gx-2 gx-lg-4 row-gap-3">
+                  <div className={`row gx-2 gx-lg-4 row-gap-3 ${onOrUnderline && onOrUnderline === "online" ? 'd-none' : 'd-flex'}`}>
 
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="courseStartDate" className="CmanageCreateTag">
                         開始上課日期
-                        {/* 線上不顯示欄位。實體不可晚於結束日期 */}
+                        {/* 實體不可晚於結束日期 */}
                       </label>
                       <input
                         type="date"
@@ -469,7 +477,6 @@ const handleWordsLimit = (e, wordLimit) => {
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="courseEndDate" className="CmanageCreateTag">
                         課程結束日期
-                        {/* 線上不顯示欄位。 */}
                       </label>
                       <input
                         type="date"
@@ -482,7 +489,7 @@ const handleWordsLimit = (e, wordLimit) => {
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="assignStartDate" className="CmanageCreateTag">
                         報名開始日期
-                        {/* 線上不顯示欄位。實體不可晚於結束日期 */}
+                        {/* 不可晚於結束日期 */}
                       </label>
                       <input
                         type="date"
@@ -495,7 +502,6 @@ const handleWordsLimit = (e, wordLimit) => {
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="assignEndDate" className="CmanageCreateTag">
                         報名截止日期
-                        {/* 線上不顯示欄位。 */}
                       </label>
                       <input
                         type="date"
@@ -508,7 +514,7 @@ const handleWordsLimit = (e, wordLimit) => {
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="dailyStartTime" className="CmanageCreateTag">
                         上課時間
-                        {/* 線上不顯示欄位。實體不可晚於結束時間 */}
+                        {/* 不可晚於結束時間 */}
                       </label>
                       <input
                         type="time"
@@ -521,7 +527,6 @@ const handleWordsLimit = (e, wordLimit) => {
                     <div className="col-4 d-flex flex-column gap-1">
                       <label htmlFor="dailyEndTime" className="CmanageCreateTag">
                         下課時間
-                        {/* 線上不顯示欄位。 */}
                       </label>
                       <input
                         type="time"
@@ -532,7 +537,7 @@ const handleWordsLimit = (e, wordLimit) => {
                     </div>
 
                   </div>
-                  <div className='row gx-2 gx-lg-4 row-gap-3'>
+                  <div className={`row gx-2 gx-lg-4 row-gap-3 ${onOrUnderline && onOrUnderline === "online" ? 'd-none' : 'd-flex'}`}>
                     <div className="col-4 d-flex flex-column gap-1">
                       
                       <label htmlFor="classCity" className="CmanageCreateTag">
@@ -546,7 +551,6 @@ const handleWordsLimit = (e, wordLimit) => {
                             )
                           })}
                       </select>
-                      {/* 線上不顯示欄位。 */}
                     </div>
 
                     <div className="col-8 d-flex flex-column gap-1">
@@ -561,7 +565,7 @@ const handleWordsLimit = (e, wordLimit) => {
                         placeholder="--請輸入不包含縣市在內的詳細地點"
                         onChange={(e) => handleWordsLimit(e, 40)}
                       />
-                      {/* 線上不顯示欄位。實體字數不可超過40字元 */}
+                      <div className={`text-gray-light spac-1 emmit1 ${remindMsgBox['classCityDetail']?"d-block":"d-none"}`}>* {remindMsgBox['classCityDetail']?remindMsgBox['classCityDetail']:""}</div>
                     </div>
                   </div>
                   
@@ -602,44 +606,51 @@ const handleWordsLimit = (e, wordLimit) => {
                   </label>
                   <img src={Cimage} alt="" className="Cprevpic" />
                   <input
-                    className="form-control"
+                    className="form-control vidAndImg-input"
                     type="file"
                     id="classPic"
-                    name="classImgFile"
+                    name="fileUpload"
+                    onChange={handleImageUpload}
                   />
                   {/* 只能上傳圖片格式(jpg,jpeg,png,gif,webp,svg,) */}
-                  <label htmlFor="classVdio" className="form-label CmanageCreateTag mt-2">
-                    課程影片
-                  </label>
-                  <input
-                    className="form-control"
-                    type="file"
-                    id="classVdio"
-                    name="classVdioFile"
-                  />
-                  {/* 實體時隱藏欄位，只能上傳影片格式 */}
+                  <div className={`${onOrUnderline && onOrUnderline === "underline" ? 'd-none' : 'd-block'}`}>
+                    <label htmlFor="classVdio" className="form-label CmanageCreateTag mt-2">
+                      課程影片
+                    </label>
+                    <input
+                      className="form-control vidAndImg-input"
+                      type="file"
+                      id="classVdio"
+                      name="fileUpload"
+                      onChange={handleVdioUpload}
+                    />
+                  </div>
+                  {/* 只能上傳影片格式 */}
                 </div>
                 <div className="col-12 d-flex flex-column gap-1">
                   <label htmlFor="classSummary" className="CmanageCreateTag">
-                    課程摘要 (0/500)
+                    課程摘要 (<span id='classSummaryWordNum'>0</span>/500)
                   </label>
+                  <div className={`text-gray-light spac-1 emmit1 ${remindMsgBox['classSummary']?"d-block":"d-none"}`}>* {remindMsgBox['classSummary']?remindMsgBox['classSummary']:""}</div>
                   <textarea
                     name="classSummary"
                     id="classSummary"
                     placeholder="請輸入課程摘要"
+                    onChange={(e) => handleWordsLimit(e, 500)}
                   />
-                  {/* 字數檢查500字 */}
                 </div>
                 <div className="col-12 d-flex flex-column gap-1">
                   <label htmlFor="classIntro" className="CmanageCreateTag">
-                    課程內容 (0/1500)
+                    課程內容 (<span id='classIntroWordNum'>0</span>/1500)
                   </label>
+                  <div className={`text-gray-light spac-1 emmit1 ${remindMsgBox['classIntro']?"d-block":"d-none"}`}>* {remindMsgBox['classIntro']?remindMsgBox['classIntro']:""}</div>
                   <textarea
+                    className='classIntro'
                     name="classIntro"
                     id="classIntro"
                     placeholder="請輸入課程內容"
+                    onChange={(e) => handleWordsLimit(e, 1500)}
                   />
-                  {/* 字數檢查1500字 */}
                 </div>
                 <div className="col-12 d-flex gap-1 justify-content-end mt-3">
                   <button type="reset" className="CeventCR" onClick={handleReset}>
