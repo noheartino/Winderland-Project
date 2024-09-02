@@ -23,11 +23,11 @@ export default function ProductItem({ product }) {
           <div className={`${styles["shop-card-name"]}`}>{product.name}</div>
         </Link>
         <div className={`${styles["shop-card-country"]}`}>
-          {product.details[0].capacity}ml&nbsp;/&nbsp;{product.country_name}
+          {product.details[0]?.capacity}ml&nbsp;/&nbsp;{product.country_name}
         </div>
         <div className={`${styles["shop-card-money"]}`}>
           <div className={`${styles["shop-card-price"]}`}>
-            NT ${formatCurrency(product.details[0].price)}
+            NT ${formatCurrency(product.details[0]?.price)}
           </div>
           <div className={`${styles["shop-card-price-sale"]}`}></div>
         </div>
