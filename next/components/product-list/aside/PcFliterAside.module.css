@@ -6,41 +6,51 @@
         padding-top: 17px;
     }
 
+
     .shop-category-fliter {
         border-bottom: 1px solid #E1E1E1;
         border-top: 1px solid #E1E1E1;
         line-height: 30px;
         letter-spacing: 2px;
+        padding-bottom: 8%;
 
-        & ul {
-            list-style: none;
-            padding: 0;
-            padding-bottom: 17px;
-            margin-bottom: 0;
-        }
-
-        & ul li {
-            border-radius: 5px;
-            padding-left: 10px;
-            margin-bottom: 2px;
-        }
-
-        & a {
-            text-decoration: none;
+        & .category-button {
+            width: 100%;
+            text-align: start;
             color: var(--text_primary);
-        }
+            border: none;
+            background-color: transparent;
+            padding-left: 5%;
+            padding-block: 1%;
+            border-radius: 5px;
+            margin-bottom: 2%;
 
-        & a :hover {
-            background-color: var(--light);
+            &:hover {
+                background-color: var(--light);
+            }
+
+            &.selected {
+                background-color: var(--light);
+            }
         }
 
 
     }
 
-    .shop-price-fliter {
+    .shop-variet-fliter,
+    .shop-country-fliter,
+    .shop-origin-fliter {
+        border-bottom: 1px solid #E1E1E1;
+    }
+
+    .shop-price-fliter,
+    .shop-variet-fliter,
+    .shop-country-fliter,
+    .shop-origin-fliter {
         height: auto;
         color: var(--text_primary);
         line-height: 35px;
+        text-wrap: nowrap;
 
         & form {
             padding-left: 10px;
@@ -90,6 +100,9 @@
         & label {
             margin-left: 5px;
         }
+    }
+    .disabledOption{
+        display: none;
     }
 
     /* 雙滑軌 */
@@ -165,10 +178,17 @@
         border: 1px solid var(--primary);
         color: #ffffff;
     }
+    .show-more-button{
+        margin-top: 5%;
+        width: 100%;
+        border: none;
+        background-color: transparent;
+        color: rgb(181, 124, 124);
+    }
 }
 
 @media screen and (max-width: 992px) {
-    .product-pc-aside{
+    .product-pc-aside {
         display: none;
     }
 }
