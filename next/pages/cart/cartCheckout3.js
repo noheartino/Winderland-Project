@@ -16,14 +16,12 @@ export default function CartCheckout3() {
   const [userId, setUserId] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const router = useRouter();
-  console.log(userId);
 
   useEffect(() => {
     const storedUserId = sessionStorage.getItem("user_id");
     if (storedUserId) {
       setUserId(storedUserId);
     }
-    console.log(userId);
     // 檢查是否為直接輸入網址
     if (!document.referrer && !storedUserId) {
       router.push("/member/login");
@@ -32,6 +30,10 @@ export default function CartCheckout3() {
 
   const goHome = () => {
     router.push("/");
+  };
+
+  const goOrder = () => {
+    router.push("/dashboard/order");
   };
 
   const toggleDetails = () => {
@@ -112,7 +114,7 @@ export default function CartCheckout3() {
               <CartMoneyTotal userId={userId} />
               <CartPayDividend userId={userId} />
               <div className="checkOutEnd">
-                <button className="goOrder">訂單查詢</button>
+                <button className="goOrder" onClick={goOrder}>訂單查詢</button>
                 <button className="goPage" onClick={goHome}>
                   回首頁
                 </button>
