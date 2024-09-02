@@ -124,3 +124,6 @@ export default function DashboardFavorite() {
     </>
   )
 }
+
+
+DashboardFavorite.requireAuth = true;

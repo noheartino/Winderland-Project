@@ -215,3 +215,5 @@ export default function DashboardCoupon() {
     </>
   );
 }
+
+DashboardCoupon.requireAuth = true;

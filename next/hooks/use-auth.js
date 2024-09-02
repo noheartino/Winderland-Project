@@ -8,12 +8,7 @@
 import { createContext, useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
-
-
-// google登入
-// import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-// import { useFirebase } from './useFirebase';
-import useFirebase from './use-firebase';
+import useFirebase from './use-firebase'; // google登入
 
 // * Context使用1.建立context與導出
 // 傳入參數為defaultValue，是在套用context時錯誤或失敗才會得到的值
@@ -25,7 +20,6 @@ const AuthContext = createContext(null)
 export function AuthProvider({ children }) {
   // 建立路由器
   const router = useRouter()
-  // const { auth, firebaseInitialized } = useFirebase();
   // goole登入
   const { loginGoogle } = useFirebase()
 
@@ -34,6 +28,7 @@ export function AuthProvider({ children }) {
     isAuth: false, // 會員是否有登入的信號值
     userData: null,
   })
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     checkAuth()
@@ -48,6 +43,7 @@ export function AuthProvider({ children }) {
 
   // @ 檢查狀態
   const checkAuth = async () => {
+    setIsLoading(true)
     try {
       const response = await fetch('http://localhost:3005/api/member/auth-status', {
         method: 'GET',
@@ -55,7 +51,7 @@ export function AuthProvider({ children }) {
       })
       if (response.ok) {
         const { status, data } = await response.json();
-        console.log('Auth status response:', data);
+        // console.log('Auth status response:', data);
         if (status === 'success') {
           setAuth({
             isAuth: data.isAuth,
@@ -75,18 +71,20 @@ export function AuthProvider({ children }) {
           })
         }
       } else {
-        console.error('Auth check failed:', errorData)
+        // console.error('Auth check failed:', errorData)
         setAuth({
           isAuth: false,
           userData: null,
         });
       }
     } catch (error) {
-      console.error('驗證身份時發生錯誤：', error)
+      // console.error('驗證身份時發生錯誤：', error)
       setAuth({
         isAuth: false,
         userData: null,
       })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -102,7 +100,7 @@ export function AuthProvider({ children }) {
         credentials: 'include',
       })
       const data = await response.json()
-      console.log('Login response:', data);
+      // console.log('Login response:', data);
 
       if (response.ok && data.status === 'success' && data.data && data.data.user) {
         // 登錄成功後，立即獲取完整的用戶資料
@@ -111,7 +109,7 @@ export function AuthProvider({ children }) {
           credentials: 'include',
         });
         const profileData = await profileResponse.json();
-        console.log('Profile data:', profileData);
+        // console.log('Profile data:', profileData);
 
         if (profileResponse.ok && profileData.status === 'success') {
           const userData = {
@@ -127,18 +125,17 @@ export function AuthProvider({ children }) {
             isAuth: true,
             userData: userData,
           });
-          console.log('Updated auth state after login:', { isAuth: true, userData });
-          // router.push('/dashboard/profile');
+          // console.log('Updated auth state after login:', { isAuth: true, userData })
           return { success: true, message: '登入成功！' };
         } else {
-          console.error('Failed to fetch complete profile data');
+          // console.error('Failed to fetch complete profile data');
           return { success: false, message: '獲取完整用戶資料失敗' };
         }
       } else {
         return { success: false, message: data.message || '登入失敗' };
       }
     } catch (error) {
-      console.error('登入時發生錯誤：', error);
+      // console.error('登入時發生錯誤：', error);
       return { success: false, message: '登入過程中發生錯誤，請稍後再試。' };
     }
   }
@@ -221,15 +218,8 @@ export function AuthProvider({ children }) {
 
   // * google登入
   const cbGoogleLogin = async (providerData) => {
-    // if (!auth) {
-    //   console.error('Firebase auth is not initialized');
-    //   return { success: false, message: 'Firebase auth is not initialized' };
-    // }
 
     try {
-      // const provider = new GoogleAuthProvider();
-      // const result = await signInWithPopup(auth, provider);
-      // const user = result.user;
       const user = providerData
 
       // 向後端發送 Google 用戶資訊
@@ -253,10 +243,6 @@ export function AuthProvider({ children }) {
       if (data.status === 'success') {
         await checkAuth(); // 重新檢查驗證狀態
 
-        // setAuth({
-        //   isAuth: true,
-        //   userData: data.data.user,
-        // });
         await Swal.fire({
           icon: 'success',
           title: '登入成功',
@@ -288,7 +274,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider 
-    value={{ auth, login, logout, checkAuth, updateUserInfo, googleLogin: () => loginGoogle(cbGoogleLogin) }}>
+    value={{ auth, login, logout, checkAuth, updateUserInfo, googleLogin: () => loginGoogle(cbGoogleLogin), isLoading }}>
       {children}
     </AuthContext.Provider>
   )
