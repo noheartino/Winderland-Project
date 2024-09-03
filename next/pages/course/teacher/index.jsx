@@ -5,6 +5,7 @@ import Link from "next/link";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 import Image from 'next/image';
+import Head from "next/head";
 
 export default function TeacherIndex() {
 const router = useRouter()
@@ -78,6 +79,16 @@ useEffect(()=>{
   return (
     
     <>
+    <Head>
+          <title>講師列表</title>
+
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <link rel="icon" href="/logo.png" />
+      </Head>
     <div className="course_wrap">
           {/* Header */}
      <Nav />

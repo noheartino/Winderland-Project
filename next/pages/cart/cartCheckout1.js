@@ -221,7 +221,7 @@ export default function CartCheckout1() {
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
-          <link rel="icon" href="/logo-3.png" />
+          <link rel="icon" href="/logo.png" />
       </Head>
       <Nav />
       {productData.length === 0 && classData.length === 0 ? (

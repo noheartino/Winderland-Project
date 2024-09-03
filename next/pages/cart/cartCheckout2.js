@@ -125,7 +125,7 @@ export default function CartCheckout2() {
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
-          <link rel="icon" href="/logo-3.png" />
+          <link rel="icon" href="/logo.png" />
       </Head>
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"

@@ -77,15 +77,15 @@ export default function CartMoney({ totalAmount = 0, selectedCoupon, userId, pro
         <div className={css.cartMoneyTotalContent}>
           <div className={css.cartContent}>
             <div>商品總計</div>
-            <div>NT$ {Math.floor(totalAmount)}</div>
+            <div>NT$ {Math.floor(totalAmount).toLocaleString()}</div>
           </div>
           <div className={css.cartContent}>
             <div>優惠券</div>
-            <div className={css.cartContentCoupon}>- NT$ {Math.floor(discountAmount)}</div>
+            <div className={css.cartContentCoupon}>- NT$ {Math.floor(discountAmount).toLocaleString()}</div>
           </div>
           <div className={`${css.cartContent} ${css.cartContentTotal}`}>
             <div className={css.cartContentTotal1}>訂單總金額</div>
-            <div className={css.cartContentTotal2}>NT$ {Math.floor(finalAmount)}</div>
+            <div className={css.cartContentTotal2}>NT$ {Math.floor(finalAmount).toLocaleString()}</div>
           </div>
           <div className={css.cartContent}>
             <button 

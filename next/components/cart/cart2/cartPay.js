@@ -249,7 +249,7 @@ export default function CartPay({
           </div>
           <div className={css.payContent1}>
             <div>總金額</div>
-            <div>NT$ {finalTotalAmount}</div>
+            <div>NT$ {finalTotalAmount.toLocaleString()}</div>
           </div>
           <div className={css.payContent1}>
             <div>
@@ -257,13 +257,13 @@ export default function CartPay({
               <div className={css.payWpoint}>*W point 折抵新台幣1:1</div>
             </div>
             <div>
-              <div className={css.payContentWpoint}>-NT$ {discountAmount}</div>
-              <div className={css.payWpoint}>- WP {pointsUsed}</div>
+              <div className={css.payContentWpoint}>-NT$ {discountAmount.toLocaleString()}</div>
+              <div className={css.payWpoint}>- WP {pointsUsed.toLocaleString()}</div>
             </div>
           </div>
           <div className={`${css.payContent1} ${css.payContentTotal}`}>
             <div className={css.payContentTotal1}>實付金額</div>
-            <div className={css.payContentTotal2}>NT$ {discountedAmount}</div>
+            <div className={css.payContentTotal2}>NT$ {discountedAmount.toLocaleString()}</div>
           </div>
           <div className={css.payContent1}>
             <button onClick={handleCheckout} disabled={!isFormValid}>

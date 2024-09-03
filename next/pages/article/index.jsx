@@ -66,11 +66,10 @@ export default function Index() {
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
-        <link rel="icon" href="/logo-3.png" />
+        <link rel="icon" href="/logo.png" />
       </Head>
       {/* Header */}
       <Nav />
-      <title>相關文章</title>
       {/* Required meta tags */}
       <div className="wrap">
         {/* Banner */}

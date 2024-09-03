@@ -88,7 +88,7 @@ export default function CartProductTotalM() {
             <div className={css.orderNumber2M}>共{orderData.quantity}件</div>
             <div className={css.orderPay2M}>{orderData.paymentText} ({orderData.transportText})</div>
             <div className={css.orderStatus2M}>出貨準備中</div>
-            <div className={css.orderTotal2M}>NT$ {Math.floor(orderData.totalAmount)}</div>
+            <div className={css.orderTotal2M}>NT$ {Math.floor(orderData.totalAmount).toLocaleString()}</div>
           </div>
         </div>
       </div>

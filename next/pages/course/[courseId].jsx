@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 import { useAuth } from '@/hooks/use-auth';
+import Head from "next/head";
 
 export default function CourseIndex() {
 
@@ -226,13 +227,16 @@ function querySeries04(e) {
   return (
     <>
      
-      <title>課程詳情</title>
-      {/* Required meta tags */}
-      <meta charSet="utf-8" />
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no"
-      />
+     <Head>
+          <title>{course?.class_name}</title>
+
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <link rel="icon" href="/logo.png" />
+      </Head>
       <div className="course_wrap">
       {/* Header */}
      <Nav />
