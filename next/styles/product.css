@@ -36,7 +36,15 @@
         line-height: 10px;
     }
 
+    .body-no-scroll {
+        overflow: hidden !important;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+      }
+
 }
+
 /* 手機rwd */
 
 @media screen and (max-width: 767px) {

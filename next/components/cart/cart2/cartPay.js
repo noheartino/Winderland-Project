@@ -120,100 +120,110 @@ export default function CartPay({
   ]);
 
   const handleCheckout = async () => {
-    if (validateForm()) {
-      try {
-        let response;
-        sessionStorage.setItem("productData", JSON.stringify(productData));
-        sessionStorage.setItem("classData", JSON.stringify(classData));
-        sessionStorage.setItem("selectedPayment", selectedPayment);
-        sessionStorage.setItem("selectedTransport", selectedTransport);
-        sessionStorage.setItem("discountedAmount", discountedAmount);
-        sessionStorage.setItem("pointsUsed", pointsUsed);
-        sessionStorage.setItem("userId", userId);
+    const confirmed = await Swal.fire({
+      title: "確認結帳嗎?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "確定",
+      cancelButtonText: "取消",
+    });
 
-        if (selectedPayment === "productpay") {
-          // 貨到付款
-          response = await axios.post(
-            "http://localhost:3005/api/cart/cashOnDelivery",
-            {
-              userId,
-              pointsUsed,
-              originalPoints,
-              selectedPayment,
-              selectedTransport,
-              transportData,
-              transportBlackCatData,
-              couponData: selectedCoupon || null,
-              cartItems: [...productData, ...classData],
-              discountedAmount,
-              discountAmounts,
-            }
-          );
+    if (confirmed.isConfirmed) {
+      if (validateForm()) {
+        try {
+          let response;
+          sessionStorage.setItem("productData", JSON.stringify(productData));
+          sessionStorage.setItem("classData", JSON.stringify(classData));
+          sessionStorage.setItem("selectedPayment", selectedPayment);
+          sessionStorage.setItem("selectedTransport", selectedTransport);
+          sessionStorage.setItem("discountedAmount", discountedAmount);
+          sessionStorage.setItem("pointsUsed", pointsUsed);
+          sessionStorage.setItem("userId", userId);
 
-          setOrderNumber(response.data.orderNumber);
-          // 清除 sessionStorage 中的優惠券資料
-          sessionStorage.removeItem("selectedCoupon");
-
-          // 導航到確認頁
-          router.push("/cart/cartCheckout3");
-        } else if (selectedPayment === "creditpay") {
-          const goECPayTestOnly = (discountedAmount) => {
-            Swal.fire({
-              title: "確認要導向至ECPay進行付款?",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonText: "確定",
-              cancelButtonText: "取消",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.href = `http://localhost:3005/api/ecpay-test-only?amount=${discountedAmount}`;
+          if (selectedPayment === "productpay") {
+            // 貨到付款
+            response = await axios.post(
+              "http://localhost:3005/api/cart/cashOnDelivery",
+              {
+                userId,
+                pointsUsed,
+                originalPoints,
+                selectedPayment,
+                selectedTransport,
+                transportData,
+                transportBlackCatData,
+                couponData: selectedCoupon || null,
+                cartItems: [...productData, ...classData],
+                discountedAmount,
+                discountAmounts,
               }
-            });
-          };
+            );
 
-          // 信用卡付款
-          response = await axios.post(
-            "http://localhost:3005/api/cart/creditCardPayment",
-            {
-              userId,
-              pointsUsed,
-              originalPoints,
-              selectedPayment,
-              selectedTransport,
-              transportData,
-              transportBlackCatData,
-              couponData: selectedCoupon || null,
-              cartItems: [...productData, ...classData],
-              discountedAmount,
-              discountAmounts,
-            }
-          );
+            setOrderNumber(response.data.orderNumber);
+            // 清除 sessionStorage 中的優惠券資料
+            sessionStorage.removeItem("selectedCoupon");
 
-          // 假設後端返回了訂單編號
-          setOrderNumber(response.data.orderNumber);
+            // 導航到確認頁
+            router.push("/cart/cartCheckout3");
+          } else if (selectedPayment === "creditpay") {
+            const goECPayTestOnly = (discountedAmount) => {
+              Swal.fire({
+                title: '<span style="font-size: 20px;">確認要導向至ECPay進行付款?</span>',
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "確定",
+                cancelButtonText: "取消",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.href = `http://localhost:3005/api/ecpay-test-only?amount=${discountedAmount}`;
+                }
+              });
+            };
 
-          // 清除 sessionStorage 中的優惠券資料
-          sessionStorage.removeItem("selectedCoupon");
+            // 信用卡付款
+            response = await axios.post(
+              "http://localhost:3005/api/cart/creditCardPayment",
+              {
+                userId,
+                pointsUsed,
+                originalPoints,
+                selectedPayment,
+                selectedTransport,
+                transportData,
+                transportBlackCatData,
+                couponData: selectedCoupon || null,
+                cartItems: [...productData, ...classData],
+                discountedAmount,
+                discountAmounts,
+              }
+            );
 
-          // 在處理完成後，可能需要導航至某個頁面
-          goECPayTestOnly(discountedAmount);
+            // 假設後端返回了訂單編號
+            setOrderNumber(response.data.orderNumber);
+
+            // 清除 sessionStorage 中的優惠券資料
+            sessionStorage.removeItem("selectedCoupon");
+
+            // 在處理完成後，可能需要導航至某個頁面
+            goECPayTestOnly(discountedAmount);
+          }
+
+          console.log("Order created successfully:", response.data);
+        } catch (error) {
+          console.error("Error creating order:", error);
+          Swal.fire({
+            icon: "error",
+            title: "訂單建立失敗",
+            text: "請稍後再試",
+          });
         }
-
-        console.log("Order created successfully:", response.data);
-      } catch (error) {
-        console.error("Error creating order:", error);
+      } else {
         Swal.fire({
-          icon: "error",
-          title: "訂單建立失敗",
-          text: "請稍後再試",
+          icon: "warning",
+          title: "表單驗證錯誤",
+          html: formError, // 使用 HTML 格式顯示錯誤消息
         });
       }
-    } else {
-      Swal.fire({
-        icon: "warning",
-        title: "表單驗證錯誤",
-        html: formError, // 使用 HTML 格式顯示錯誤消息
-      });
     }
   };
 
