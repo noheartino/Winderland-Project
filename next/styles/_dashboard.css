@@ -201,18 +201,19 @@
     }
 
     .userID {
-        font-size: 20px;
+        /* font-size: 20px; */
+        font-size: medium;
         letter-spacing: 2px;
         /* margin-left: 30px; */
-        margin-top: 100px;
+        margin-top: 50px;
         margin-bottom: 15px;
     }
 
     .userAge {
-        font-size: 20px;
+        font-size: medium;
         letter-spacing: 2px;
         /* margin-left: 30px; */
-        margin-bottom: -200px;
+        margin-bottom: -00px;
     }
 
     .user-img {
@@ -363,6 +364,7 @@
     }
 
     .membership-detail {
+        /* width: 10%; */
         font-size: 20px;
         letter-spacing: 2px;
 
@@ -389,7 +391,7 @@
             justify-content: center;
             align-items: center;
             margin-left: 40%;
-            margin-top: 90%;
+            margin-top: 10%;
         }
     }
 
@@ -2012,4 +2014,28 @@ margin-left: -5px;
 .levelPageBox.Lv4 {
     background: url(/event/Mask\ group.png) no-repeat 100%100%/110%, linear-gradient(180deg, #FBE09B 0%, #FFF1CF 47.5%, #E5C369 100%);
     color: var(--text_primary);
+}
+
+.profile-total-spend{
+    /* font-weight: 500; */
+    text-align: right;
+    font-size: medium;
+    margin-left: 30px;
+    width: 100%;
+            white-space: nowrap;
+            color: var(--text_dark);
+            margin-top: 48%;
+            /* margin-left: 50px; */
+            margin-right: 50px;
+.total-spend-span{
+    color: var(--wine);
+    font-weight: 700;
+}
+            
+}
+
+.next-level-span
+{
+    color: var(--blue_dark);
+    font-weight: 600;
 }
