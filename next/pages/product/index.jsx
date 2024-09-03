@@ -77,6 +77,14 @@ export default function ProductIndex() {
     }
   }, [router.isReady, router.query, selectFilters]);
 
+  useEffect(() => {
+    if (selectFilters.country) {
+      // 當國家變更時，重新獲取篩選器
+      fetchFilters();
+      console.log("selectFilters.country", selectFilters.country);
+    }
+  }, [selectFilters.country]);
+
   const fetchProducts = useCallback(
     async (filters) => {
       try {
@@ -192,6 +200,7 @@ export default function ProductIndex() {
           params: selectFilters,
         }
       );
+      console.log("Fetched filters:", response.data);
       setFilters(response.data);
     } catch (error) {
       console.error("Error fetching filters:", error);
@@ -302,6 +311,7 @@ export default function ProductIndex() {
               filters={filters}
               selectFilters={selectFilters}
               changeFilter={changeFilter}
+              fetchFilters={fetchFilters}
             />
             {/* 商品list */}
             {!noProducts ? (
