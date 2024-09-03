@@ -338,3 +338,5 @@ export default function DashboardProfile() {
     </>
   );
 }
+
+DashboardProfile.requireAuth = true;

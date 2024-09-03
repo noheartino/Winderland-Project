@@ -2,6 +2,8 @@ import express from 'express'
 import 'dotenv/config.js'
 import connection from '##/configs/mysql.js'
 import multer from 'multer'
+import fs from 'fs'
+import path from 'path'
 
 const router = express.Router()
 
@@ -12,6 +14,7 @@ const updateClassStatus = async () => {
                   SET status = CASE
                     WHEN appointment_start > CURDATE() THEN 2
                     WHEN appointment_end >= CURDATE() THEN 1
+                    WHEN online = 1 THEN 1
                     ELSE 0
                   END`
   try {
@@ -27,7 +30,35 @@ router.use(async (req, res, next) => {
   next()
 })
 
-const upload = multer()
+// const upload = multer({
+//   storage: multer.diskStorage({
+//     destination: (req, file, cb) => {
+//       const uploadDir = path.join(process.cwd(), 'public/uploads')
+//       if (!fs.existsSync(uploadDir)) {
+//         fs.mkdirSync(uploadDir, { recursive: true })
+//       }
+//       cb(null, uploadDir)
+//     },
+//     filename: (req, file, cb) => {
+//       cb(null, file.originalname)
+//     },
+//   }),
+// })
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadDir = path.join(process.cwd(), 'public/uploads')
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true })
+    }
+    cb(null, uploadDir)
+  },
+  filename: (req, file, cb) => {
+    // cb(null, ${Date.now()}-${file.originalname})
+    cb(null, `${Date.now()}-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`)
+  },
+})
+
+const upload = multer({ storage: storage })
 
 // !! 課程管理 list 顯示所有課程
 router.get('/teacher/management', async (req, res) => {
@@ -407,71 +438,98 @@ router.get('/teacher/management/getTeacherData', async (req, res) => {
 })
 
 // !! 課程管理 create
-router.post('/teacher/management/create', upload.none(), async (req, res) => {
-  const {
-    class_name,
-    teacher_id,
-    on_and_underline,
-    student_limit,
-    class_start_date,
-    class_end_date,
-    assign_start_date,
-    assign_end_date,
-    daily_start_time,
-    daily_end_time,
-    class_city,
-    class_city_detail,
-    classSummary,
-    classIntro,
-    class_price,
-    class_sale_price,
-  } = req.body
+router.post(
+  '/teacher/management/create',
+  upload.fields([
+    { name: 'classPic', maxCount: 1 },
+    { name: 'classVdio', maxCount: 1 }
+  ]),
+  async (req, res) => {
+    console.log('觀察有沒有抓到圖片和影片', req.files);
+    const {
+      class_name,
+      teacher_id,
+      onlineValue,
+      student_limit,
+      class_start_date,
+      class_end_date,
+      assign_start_date,
+      assign_end_date,
+      daily_start_time,
+      daily_end_time,
+      class_city,
+      class_city_detail,
+      classSummary,
+      classIntro,
+      class_price,
+      class_sale_price,
+    } = req.body
 
-  const city = (class_city || '').trim()
-  const cityDetail = (class_city_detail || '').trim()
-  const address = `${city}${cityDetail}`.trim()
+    const city = (class_city || '').trim()
+    const cityDetail = (class_city_detail || '').trim()
+    const address = `${city}${cityDetail}`.trim()
 
-  let createCourseSQL = `INSERT INTO class
+    let createCourseSQL = `INSERT INTO class
                         (class.name, class.student_limit, class.assigned, class.teacher_id, price, class.sale_price, class.online, class.address, class.appointment_start, class.appointment_end, class.course_start, class.course_end, class.daily_start_time, class.daily_end_time, class.class_summary, class.description , class.status)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
 
-  let createCourseParams = [
-    class_name || null,
-    student_limit || null,
-    0,
-    teacher_id || null,
-    class_price || null,
-    class_sale_price || null,
-    on_and_underline || null,
-    address || null,
-    assign_start_date || null,
-    assign_end_date || null,
-    class_start_date || null,
-    class_end_date || null,
-    daily_start_time || null,
-    daily_end_time || null,
-    classSummary || null,
-    classIntro || null,
-    0,
-  ]
+    let createCourseParams = [
+      class_name || null,
+      student_limit || null,
+      0,
+      teacher_id || null,
+      class_price || null,
+      class_sale_price || null,
+      onlineValue || null,
+      address || null,
+      assign_start_date || null,
+      assign_end_date || null,
+      class_start_date || null,
+      class_end_date || null,
+      daily_start_time || null,
+      daily_end_time || null,
+      classSummary || null,
+      classIntro || null,
+      0,
+    ]
 
-  const { classImgFile, classVdioFile } = req.body
-  let insertImgAndVdioSQL = `INSERT INTO images_class
-  (path, video_path) VALUES (?, ?);`
-
-  let insertImgAndVdioSQLParams = [classImgFile || null, classVdioFile || null]
-  try {
-    await connection.execute(createCourseSQL, createCourseParams)
-    await connection.execute(insertImgAndVdioSQL, insertImgAndVdioSQLParams)
-    console.log('測試POST:' + req.originalUrl)
-    res.json({
-      status: 'success',
-      message: '增加課程成功',
-      createCourseParams,
-    })
-  } catch (err) {
-    res.status(500).json({ error: 'error' + err.message })
+  //   let insertImgAndVdioSQL = `INSERT INTO images_class
+  // (path, video_path) VALUES (?, ?);`
+    let insertImgAndVdioSQL = `INSERT INTO images_class
+    (class_id, path, video_path) VALUES (?, ?, ?);`
+    try {
+      const [createCourse] = await connection.execute(
+        createCourseSQL,
+        createCourseParams
+      )
+      
+      const classId = createCourse.insertId;
+      
+      const classImgFile = req.files['classPic'] ? req.files['classPic'][0].filename : null;
+      const classVdioFile = req.files['classVdio'] ? req.files['classVdio'][0].filename : null;
+      
+      let insertImgAndVdioSQLParams = [
+        classId,
+        classImgFile,
+        classVdioFile
+      ]
+      
+      const [insertImgAndVdio] = await connection.execute(
+        insertImgAndVdioSQL,
+        insertImgAndVdioSQLParams
+      )
+      
+      console.log('測試POST:', req.originalUrl);
+      res.json({
+        status: 'success',
+        message: '增加課程成功',
+        createCourse,
+        insertImgAndVdio,
+      })
+    } catch (err) {
+      res.status(500).json({ error: 'error' + err.message })
+    }
   }
-})
+)
 
 export default router

@@ -348,4 +348,57 @@ router.post('/new', async (req, res) => {
   }
 })
 
+// 上傳首圖
+router.post('/upload-main-image/:articleId', async (req, res) => {
+  const { articleId } = req.params
+  const image = req.files.image // 假設使用 `express-fileupload` 中間件
+
+  if (!image) {
+    return res.status(400).json({ error: 'No image uploaded' })
+  }
+
+  const imagePath = `/path/to/uploads/${image.name}`
+  // 儲存圖片到伺服器
+  image.mv(imagePath, async (err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to upload image' })
+    }
+
+    try {
+      const query = `INSERT INTO images_article (article_id, path) VALUES (?, ?)`
+      await connection.execute(query, [articleId, imagePath])
+      res.status(200).json({ message: 'Image uploaded successfully' })
+    } catch (err) {
+      console.error(err)
+      res.status(500).json({ error: 'Failed to save image path' })
+    }
+  })
+})
+
+// 上傳內嵌圖片
+router.post('/upload-inline-image/:articleId', async (req, res) => {
+  const { articleId } = req.params
+  const image = req.files.image
+
+  if (!image) {
+    return res.status(400).json({ error: 'No image uploaded' })
+  }
+
+  const imagePath = `/path/to/uploads/${image.name}`
+  image.mv(imagePath, async (err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to upload image' })
+    }
+
+    try {
+      const query = `INSERT INTO images_article (article_id, path) VALUES (?, ?)`
+      await connection.execute(query, [articleId, imagePath])
+      res.status(200).json({ message: 'Image uploaded successfully' })
+    } catch (err) {
+      console.error(err)
+      res.status(500).json({ error: 'Failed to save image path' })
+    }
+  })
+})
+
 export default router

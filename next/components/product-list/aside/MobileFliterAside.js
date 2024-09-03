@@ -1,8 +1,22 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./MobileFliterAside.module.css";
 import Link from "next/link";
 
-export default function MobileFliterAside({ isOpen, onClose }) {
+export default function MobileFliterAside({
+  isOpen,
+  onClose,
+  filters,
+  selectFilters,
+  changeFilter,
+}) {
+
+  // 確保filters存在並且包含categories
+  useEffect(() => {
+    if (!filters || !filters.categories) {
+      console.error("filters or filters.categories 不存在");
+    }
+  }, [filters]);
+
   // 雙滑塊js start//
   const minLimit = 500;
   const maxLimit = 100000;
@@ -35,6 +49,11 @@ export default function MobileFliterAside({ isOpen, onClose }) {
 
   // 雙滑塊js end//
 
+  // 確保filters.categories存在後再渲染
+  if (!filters || !filters.categories) {
+    return null;
+  }
+
   return (
     <>
       {/* 手機&平板版的開關aside */}
@@ -55,27 +74,75 @@ export default function MobileFliterAside({ isOpen, onClose }) {
           </button>
         </div>
         <form action="">
+          {/* 類型篩選 */}
           <div className={`${styles["shop-category-fliter-m"]}`}>
             <div className={`${styles["shop-category-title"]}`}>類型</div>
             <select name="" id="">
-              <option value={0}>Red 紅酒</option>
-              <option value={1}>Port Wine 波特酒</option>
-              <option value={2}>Cult Wine 美國膜拜酒</option>
-              <option value={3}>GCC 波爾多級數酒</option>
+              <option value="0">全部商品&nbsp;&nbsp;All Wine</option>
+              {filters.categories &&
+                filters.categories.map((category, index) => (
+                  <option key={index} value={category.id}>
+                    {category.name}&nbsp;&nbsp;{category.name_en}
+                  </option>
+                ))}
             </select>
             <div className={`${styles["shop-category-tags"]}`}>
-              <div className={`${styles["category-tag"]}`}>Red 紅酒</div>
-              <div className={`${styles["category-tag"]}`}>
-                Port Wine 波特酒
-              </div>
-              <div className={`${styles["category-tag"]}`}>Sherry 雪莉酒</div>
-              <div className={`${styles["category-tag"]}`}>Rose 粉紅酒</div>
-              <div className={`${styles["category-tag"]}`}>
-                Noble-Wine 貴腐甜酒
-              </div>
-              <div className={`${styles["category-tag"]}`}>...</div>
+              {filters.categories &&
+                filters.categories.map((category, index) => (
+                  <button
+                    key={index}
+                    value={category.id}
+                    className={`${styles["category-tag"]}`}
+                  >
+                    {category.name_en.replace(/\s*Wine\s*/, "")}&nbsp;
+                    {category.name}
+                  </button>
+                ))}
             </div>
           </div>
+          {/* 品種篩選 */}
+          <div className={`${styles["shop-variet-fliter-m"]}`}>
+            <div className={`${styles["shop-variet-title"]}`}>品種</div>
+            <select name="" id="">
+              <option value="0">全部品種</option>
+              {filters.varieties &&
+                filters.varieties.map((variet, index) => (
+                  <option key={index} value={variet.id}>
+                    {variet.name}&nbsp;&nbsp;{variet.name_en}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          {/* 品種篩選 */}
+          <div className={`${styles["shop-country-fliter-m"]}`}>
+            <div className={`${styles["shop-country-title"]}`}>國家</div>
+            <select name="" id="">
+              <option value="0">全部國家</option>
+              {filters.countries &&
+                filters.countries.map((country, index) => (
+                  <option key={index} value={country.id}>
+                    {country.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          {/* 產區篩選 */}
+          <div className={`${styles["shop-origin-fliter-m"]}`}>
+            <div className={`${styles["shop-origin-title"]}`}>產地</div>
+            <select name="" id="">
+              <option value="0">全部產地</option>
+              {filters.origins &&
+                filters.origins.map((origin, index) => (
+                  <option key={index} value={origin.id}>
+                    {origin.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          {/* 價格篩選 */}
           <div className={`${styles["shop-price-fliter-m"]}`}>
             <div className={`${styles["shop-price-title"]}`}>價格</div>
             <select name="" id="">

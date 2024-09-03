@@ -21,16 +21,29 @@
 }
 
 .ACDropArea {
-  width: 50%;
-  height: 200px;
+  height: 350px;
   border: 2px dashed #ccc;
-  display: grid;
-  place-items: center;
+  /* display: grid; */
+  /* place-items: center; */
   color: #ccc;
   transition: border 0.3s ease;
   &:hover {
     border-color: var(--purple_light);
   }
+}
+.imagePreBlock{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+/* 首頁圖預覽 */
+.previewImage {
+  object-position: center;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .ACtitle {
@@ -48,7 +61,8 @@
 }
 
 .ACtextarea {
-  height: 500px;
+  height: 400px;
+  overflow: auto;
   outline: none;
   resize: none;
   font-size: 18px;
@@ -106,18 +120,15 @@
     }
   }
 }
-.previewImage {
-    object-fit: contain;
-    width: 60%;
-    height: 100%;
-  }
+
+
 .inlineImagePreviews {
   width: 100%;
   height: 300px;
-  
 }
-
-.inlineImage{
-  height: 50px;
-  width: 100px;
+.inlineImage {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px 0;
 }

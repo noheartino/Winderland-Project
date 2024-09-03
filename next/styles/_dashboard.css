@@ -1228,10 +1228,10 @@ font-size: 22px;
                 margin-top: 37px;
 
                 .favorite-c-img {
-                    /* width: 100%;
+                    width: 100%;
                     height: 165.197px;
                     border-radius: 4.747px;
-                    background: url(/images/member/fav-c1.jpg) lightgray 50% / cover no-repeat; */
+                    /* background: url(/images/member/fav-c1.jpg) lightgray 50% / cover no-repeat; */
                     position: relative;
 
                     .svg-bookmark {
@@ -1529,16 +1529,7 @@ letter-spacing: 1.44px;
                     border-radius: 5.947px;
                     position: relative;
 
-                    /* .svg-bookmark {
-                        position: absolute;
-                        right: 23px;
-                        top: 14px;
-                        font-size: 30px;
-                        color: var(--blue_dark);
-                        stroke-width: 1px;
-                        stroke: #FFF;
-
-                    } */
+                    
                 }
 
                 .favorite-c-detail-rwd {
@@ -1949,3 +1940,18 @@ margin-left: -5px;
         
     }
   } */
+
+.favcorite-c-img .svg-bookmark {
+    position: absolute;
+    right: 23px;
+    top: 14px;
+    font-size: 30px;
+    color: var(--blue_dark);
+    stroke-width: 1px;
+    stroke: #FFF;
+
+}
+
+.svg-bookmark-Crwd{
+    /* margin-right: 5px; */
+}
