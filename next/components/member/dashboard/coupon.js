@@ -51,7 +51,7 @@ export default function DashboardCoupon() {
     if (!loading) {
       if (!userId | !freeCoupon | !memberLevelId) {
         // 如果 userId 不存在，則進行重定向
-        router.push("/member/login");
+        // router.push("/member/login");
       }
     }
   }, [userId, loading, router]);

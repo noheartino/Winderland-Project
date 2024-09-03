@@ -1,12 +1,35 @@
 import Footer from "@/components/footer/footer";
 import Nav from "@/components/Header/Header";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import style from "./articleCreate.module.css";
 import { MdAddPhotoAlternate } from "react-icons/md";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function New() {
+  const { auth } = useAuth();
+  const [userAccount, setUserAccount] = useState(null);
+  const [userId, setUserId] = useState(null);
+  console.log(auth.userData);
+  // 等待獲取userId
+  useEffect(() => {
+    // 模擬從 useAuth 中獲取 userId
+    const fetchUserId = () => {
+      setTimeout(() => {
+        const id = auth.userData?.id; // 從 auth 取得 userId
+        setUserId(id);
+        setUserAccount(auth.userData?.account);
+        setLoading(false);
+      }, 1000);
+    };
+
+    fetchUserId();
+
+    return () => clearTimeout();
+  }, [auth]);
+
+  console.log(userAccount);
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
@@ -103,20 +126,23 @@ export default function New() {
     const placeholder = "UNIQUE_IMAGE_PLACEHOLDER";
     const imagePlaceholderRegex = /<img[^>]*>/g;
     let processedContent = content.replace(imagePlaceholderRegex, placeholder);
-  
+
     // 將 <br> 或 <div> 替換為換行符號，其他 HTML 標籤去除
     processedContent = processedContent
-      .replace(/<br\s*\/?>/g, "\n")  // 將 <br> 替換為換行符號
-      .replace(/<\/?div[^>]*>/g, "\n")  // 將 <div> 替換為換行符號
-      .replace(/<span[^>]*>(.*?)<\/span>/g, "$1")  // 去除 <span> 標籤，保留內部文字
-      .replace(/<[^>]+>/g, "");  // 去除所有其他 HTML 標籤
-  
+      .replace(/<br\s*\/?>/g, "\n") // 將 <br> 替換為換行符號
+      .replace(/<\/?div[^>]*>/g, "\n") // 將 <div> 替換為換行符號
+      .replace(/<span[^>]*>(.*?)<\/span>/g, "$1") // 去除 <span> 標籤，保留內部文字
+      .replace(/<[^>]+>/g, ""); // 去除所有其他 HTML 標籤
+
     // 將特殊標記替換回 <!--IMAGE_HERE-->
-    processedContent = processedContent.replace(new RegExp(placeholder, "g"), "<!--IMAGE_HERE-->");
-  
+    processedContent = processedContent.replace(
+      new RegExp(placeholder, "g"),
+      "<!--IMAGE_HERE-->"
+    );
+
     // 處理多餘的換行符號
-    processedContent = processedContent.replace(/\n{2,}/g, "\n\n");  // 將多餘的連續換行符號替換為兩個換行符號
-  
+    processedContent = processedContent.replace(/\n{2,}/g, "\n\n"); // 將多餘的連續換行符號替換為兩個換行符號
+
     return processedContent.trim();
   };
 
@@ -156,7 +182,7 @@ export default function New() {
       for (const image of inlineImages) {
         const formData = new FormData();
         formData.append("image", image);
-        console.log(formData)
+        console.log(formData);
         await axios.post(
           `http://localhost:3005/api/article/upload-inline-image/${articleId}`,
           formData
@@ -189,11 +215,25 @@ export default function New() {
               <p className="m-0"></p>
             </div>
             <div className={`${style.ACname} col`}>
-              <p className="m-0">Admin</p>
+              <p className="m-0">{userAccount}</p>
               <div className={`${style.ACtime}`}>發佈於 08/22</div>
             </div>
           </div>
           <form className="row px-5" onSubmit={handleSubmit}>
+            <select
+              className={`${style.ACCategory} ms-2 my-2 py-2 col-4`}
+              value={category} // 設定選取值
+              onChange={handleCategoryChange} // 監聽變更
+            >
+              <option value="" disabled>
+                請選擇類別
+              </option>
+              <option value="葡萄酒小知識">知識</option>
+              <option value="產區特色">產區特色</option>
+              <option value="葡萄品種介紹">品種介紹</option>
+              <option value="搭配餐點推薦">搭配餐點</option>
+              <option value="調酒知識">調酒知識</option>
+            </select>
             <div
               className={`${style.ACDropArea} my-3 col-12 p-2`}
               id="dropArea"
@@ -217,20 +257,7 @@ export default function New() {
                 )}
               </label>
             </div>
-            <select
-              className={`${style.ACCategory} ms-2 my-2 py-2 col-4`}
-              value={category} // 設定選取值
-              onChange={handleCategoryChange} // 監聽變更
-            >
-              <option value="" disabled>
-                請選擇類別
-              </option>
-              <option value="葡萄酒小知識">知識</option>
-              <option value="產區特色">產區特色</option>
-              <option value="葡萄品種介紹">品種介紹</option>
-              <option value="搭配餐點推薦">搭配餐點</option>
-              <option value="調酒知識">調酒知識</option>
-            </select>
+
             <input
               className={`${style.ACtitle} py-1 mt-2 col-12 border-0`}
               placeholder="文章標題"
