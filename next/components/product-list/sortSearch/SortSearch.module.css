@@ -140,6 +140,16 @@
                 width: 90%;
             }
         }
+
+        & .search-clear{
+            font-size: 15px;
+            border: none;
+            background: none;
+            position: absolute;
+            right:11%;
+            top: 25%;
+            color: #7C7C7C;
+        }
     }
 
     .shop-port {

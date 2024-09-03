@@ -29,11 +29,7 @@ export default function SortSearch({
       <div className={`row ${styles["shop-fliterSearch"]}`}>
         <div className={`col`}></div>
         {getSearch && totalItems > 0 && (
-          <div
-            className={`col-4 d-flex ${
-              styles["search-total"]
-            }`}
-          >
+          <div className={`col-4 d-flex ${styles["search-total"]}`}>
             <span className={`${styles["search-span"]}`}>
               &nbsp;{search}&nbsp;
             </span>{" "}
@@ -98,11 +94,37 @@ export default function SortSearch({
       {/* 手機搜尋+篩選 */}
       <div className={`row ${styles["shop-fliterSearch-m"]}`}>
         <div className={`col-md-11 col-10 ${styles["shop-search-m"]}`}>
-          <form action="" method="">
-            <input type="search" className="" placeholder="搜尋關鍵字" />
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (localSearch !== "") {
+                changeSearch(localSearch);
+              }
+            }}
+          >
+            <input
+              value={localSearch}
+              onChange={(e) => setLocalSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && localSearch !== "") {
+                  changeSearch(localSearch);
+                }
+              }}
+              placeholder="搜尋關鍵字"
+            />
             <i
               className={`fa-solid fa-magnifying-glass ${styles["search-icon"]}`}
             />
+            <button
+            type="button"
+            onClick={() => {
+              changeSearch("");
+              setLocalSearch("");
+            }}
+            className={`${getSearch ? "d-flex" : "d-none"} ${styles['search-clear']}` }
+          >
+            <i className="fa-solid fa-xmark"></i>
+          </button>
           </form>
         </div>
         <div
