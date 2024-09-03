@@ -283,12 +283,12 @@
         height: 220px;
         border-radius: 5px;
         /* opacity: 0.6; */
-        background: linear-gradient(180deg, #FBE09B 0%, #FFF1CF 47.5%, #E5C369 100%);
+        /* background: linear-gradient(180deg, #FBE09B 0%, #FFF1CF 47.5%, #E5C369 100%); */
         color: var(--text_primary);
         font-size: 16px;
         letter-spacing: 1.6px;
         margin-top: 20px;
-        margin-left: 50px;
+        /* margin-left: 50px; */
 
         .span-p {
             font-size: 22px;
@@ -374,6 +374,9 @@
             margin-left: 50px;
         }
 
+        a{
+            text-decoration: none;
+        }
         .upgrade {
             width: 100%;
             height: 60px;
@@ -1228,10 +1231,10 @@ font-size: 22px;
                 margin-top: 37px;
 
                 .favorite-c-img {
-                    /* width: 100%;
+                    width: 100%;
                     height: 165.197px;
                     border-radius: 4.747px;
-                    background: url(/images/member/fav-c1.jpg) lightgray 50% / cover no-repeat; */
+                    /* background: url(/images/member/fav-c1.jpg) lightgray 50% / cover no-repeat; */
                     position: relative;
 
                     .svg-bookmark {
@@ -1529,16 +1532,7 @@ letter-spacing: 1.44px;
                     border-radius: 5.947px;
                     position: relative;
 
-                    /* .svg-bookmark {
-                        position: absolute;
-                        right: 23px;
-                        top: 14px;
-                        font-size: 30px;
-                        color: var(--blue_dark);
-                        stroke-width: 1px;
-                        stroke: #FFF;
-
-                    } */
+                    
                 }
 
                 .favorite-c-detail-rwd {
@@ -1949,3 +1943,73 @@ margin-left: -5px;
         
     }
   } */
+
+.favcorite-c-img .svg-bookmark {
+    position: absolute;
+    right: 23px;
+    top: 14px;
+    font-size: 30px;
+    color: var(--blue_dark);
+    stroke-width: 1px;
+    stroke: #FFF;
+
+}
+
+.svg-bookmark-Crwd{
+    /* margin-right: 5px; */
+}
+
+/* 會員卡 */
+.membership-level {
+    width: 100%;
+    height: 220px;
+    margin-top: 20px;
+}
+
+.levelPageBox {
+    width: 90%;
+    border-radius: 5px;
+    aspect-ratio: 16/10;
+    padding: 25px 30px;
+    transition: all 0.3s ease;
+}
+
+.levelPageBox:hover {
+    box-shadow: 1px 2px 7px rgb(215, 215, 215);
+}
+
+.levelPageBox .PageBoxT {
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: 1px;
+    margin-bottom: 17px;
+}
+
+.levelPageBox .PageBoxC {
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.levelPageBox .PageBoxC p {
+    margin-bottom: 6px;
+}
+
+.levelPageBox.Lv1 {
+    background: url(/event/Mask\ Wh.png) no-repeat 100%100%/110%, var(--primary);
+    color: rgb(245, 245, 245);
+}
+
+.levelPageBox.Lv2 {
+    background: url(/event/Mask\ group.png) no-repeat 100%100%/110%, linear-gradient(180deg, #E7E2D3 0%, #FFF 47.5%, #D0C7B0 100%);
+    color: var(--text_primary);
+}
+
+.levelPageBox.Lv3 {
+    background: url(/event/Mask\ group.png) no-repeat 100%100%/110%, linear-gradient(180deg, #FCC63E 0%, #FFE7A9 47.5%, #FBC741 100%);
+    color: var(--text_primary);
+}
+
+.levelPageBox.Lv4 {
+    background: url(/event/Mask\ group.png) no-repeat 100%100%/110%, linear-gradient(180deg, #FBE09B 0%, #FFF1CF 47.5%, #E5C369 100%);
+    color: var(--text_primary);
+}

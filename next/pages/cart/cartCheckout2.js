@@ -5,7 +5,6 @@ import CartWpoint from "@/components/cart/cart2/cartWpoint";
 import CartMoney from "@/components/cart/cart2/cartMoney";
 import CartPay from "@/components/cart/cart2/cartPay";
 import CartProductM from "@/components/cart/cart2/cartProductM";
-import CartTransportM from "@/components/cart/cart2/cartTranportM";
 import CartWpointM from "@/components/cart/cart2/cartWpointM";
 import CartMoneyM from "@/components/cart/cart2/cartMoneyM";
 import CartProductDetail from "@/components/cart/cart3/cartProductDetail";
@@ -112,16 +111,22 @@ export default function CartCheckout2() {
     sessionStorage.setItem("transportBlackCatData", JSON.stringify(data)); // 存儲到 sessionStorage
   };
 
+  const goTo1 = () => {
+    router.push("http://localhost:3000/cart/cartCheckout1");
+  };
+
   return (
     <>
       <Head>
-        <title>Cart3</title>
+          <title>購物車</title>
+
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <link rel="icon" href="/logo.png" />
       </Head>
-      <meta charSet="utf-8" />
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no"
-      />
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -141,12 +146,16 @@ export default function CartCheckout2() {
           <div className="row">
             <div className="col-8">
               <div className="progressTitle-2">
-                <div className="progressText1-2">確認訂單</div>
+                <div className="progressText1-2">確認訂單(回上一頁)</div>
                 <div className="progressText2-2">填寫訂單詳情</div>
                 <div className="progressText3-2">完成訂單</div>
               </div>
               <div className="progressBar-2">
-                <div className="progressCircle-2 progressCircle1-2" />
+                <div
+                  className="progressCircle-2 progressCircle1-2"
+                  onClick={goTo1}
+                  style={{ cursor: "pointer" }}
+                />
                 <div className="progressLine-2 progressLine1-2" />
                 <div className="progressCircle-2 progressCircle2-2" />
                 <div className="progressLine-2 progressLine2-2" />
@@ -276,12 +285,16 @@ export default function CartCheckout2() {
         </div>
         <div className="container d-block d-lg-none">
           <div className="progressTitle-2">
-            <div className="progressText1-2">確認訂單</div>
+            <div className="progressText1-2">確認訂單(回上一頁)</div>
             <div className="progressText2-2">填寫訂單詳情</div>
             <div className="progressText3-2">完成訂單</div>
           </div>
           <div className="progressBar-2">
-            <div className="progressCircle-2 progressCircle1-2" />
+            <div
+              className="progressCircle-2 progressCircle1-2"
+              onClick={goTo1}
+              style={{ cursor: "pointer" }}
+            />
             <div className="progressLine-2 progressLine1-2" />
             <div className="progressCircle-2 progressCircle2-2" />
             <div className="progressLine-2 progressLine2-2" />
@@ -359,10 +372,17 @@ export default function CartCheckout2() {
             />
             <label htmlFor="blackcatM">黑貓宅急便</label>
           </div>
-          {selectedTransport === "transprot711" && <CartTransportM />}
-          {selectedTransport === "blackcat" && <CartTransportBlackCatM />}
+          {selectedTransport === "transprot711" && (
+            <CartTransport
+              handleTransportDataChange={handleTransportDataChange}
+            />
+          )}
+          {selectedTransport === "blackcat" && (
+            <CartTransportBlackCatM
+              onTransportBlackCatDataChange={handleTransportBlackCatDataChange}
+            />
+          )}
           <div className="checkBoxWpoint">
-            <img src="/images/cart/wPoint.png" alt="" />
             <input
               type="checkbox"
               id="wPointcheckM"
@@ -381,7 +401,19 @@ export default function CartCheckout2() {
             onPointsFetch={handlePointsFetch}
           />
           <div style={{ height: "180px" }}></div>
-          <CartMoneyM />
+          <CartMoneyM
+            userId={userId}
+            pointsUsed={pointsUsed}
+            originalPoints={originalPoints}
+            selectedPayment={selectedPayment}
+            selectedTransport={selectedTransport}
+            transportData={
+              selectedTransport === "transprot711" ? transportData : {}
+            }
+            transportBlackCatData={
+              selectedTransport === "blackcat" ? transportBlackCatData : {}
+            }
+          />
         </div>
       </main>
       <Footer showMobileFooter={false} />

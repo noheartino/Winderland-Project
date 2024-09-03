@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import css from "@/components/cart/cart1/cartCoupon.module.css";
 import CartCouponAll from "@/components/cart/cartObject/cartCouponAll"; // 引入彈跳視窗組件
 import CartCouponDetail from "../cartObject/cartCouponDetail"; // 引入優惠券細節組件
+import Swal from 'sweetalert2';
 
 export default function CartCoupon({ userId, onCouponChange, totalAmount }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,7 +47,12 @@ export default function CartCoupon({ userId, onCouponChange, totalAmount }) {
       toggleModal(); // 根據需求關閉彈窗
       onCouponChange(coupon); // 通知父組件更新優惠券
     } else {
-      alert(`購物車金額需達到 NT$${minSpend} 才能使用此優惠券。`);
+      Swal.fire({
+        title: '使用條件不滿足',
+        text: `購物車金額需達到 NT$${minSpend.toLocaleString()} 才能使用此優惠券。`,
+        icon: 'warning',
+        confirmButtonText: '確定'
+      });
     }
   };
 

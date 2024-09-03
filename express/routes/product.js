@@ -174,7 +174,7 @@ router.get('/', async (req, res) => {
     // 取得搜尋參數塞進搜尋商品的sql語法
     if (category) {
       conditions.push('category.id = ?')
-      params.push(category)
+      params.push(parseInt(category))
     }
 
     if (variet) {
@@ -197,9 +197,21 @@ router.get('/', async (req, res) => {
     if (conditions.length > 1) {
       query += ' WHERE ' + conditions.join(' AND ')
     }
+    console.log('最終 SQL 查詢:', query)
+    console.log('查詢參數:', params)
 
     // 獲取分頁後商品的基本訊息
     const [products] = await db.query(query, params)
+
+    if (products.length === 0) {
+      // 如果沒有找到商品，立即返回錯誤
+      return res.status(404).json({
+        error: 'fail',
+        message: '沒有找到商品',
+      })
+    }
+
+    // 取得所有分類
     const [categories] = await db.query(getCategories)
 
     // 獲取所有商品跟商品的詳細數據、所有分類+品種

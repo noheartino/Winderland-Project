@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/use-auth';
 import Link from 'next/link';
 import Swal from 'sweetalert2'
+import Head from "next/head";
 
 export default function ClassManIndex() {
 
@@ -494,6 +495,16 @@ export default function ClassManIndex() {
     <>
       <div className='course-manage-wrap'>
         <Nav />
+        <Head>
+          <title>新增課程</title>
+
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <link rel="icon" href="/logo.png" />
+      </Head>
         <TeacherManageHeader />
 
         <div className='CManageNav'>

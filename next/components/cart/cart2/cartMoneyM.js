@@ -1,41 +1,273 @@
-import React from 'react';
-import css from '@/components/cart/cart2/cartMoney.module.css';
+import React, { useEffect, useState } from "react";
+import css from "@/components/cart/cart2/cartMoney.module.css";
+import axios from "axios"; // 引入 axios 或其他 HTTP 請求庫
+import { useRouter } from "next/router"; // 引入 useRouter
+import Swal from "sweetalert2";
 
-export default function CartMoneyM() {
-    return (
-        <>
-            <div className={`container-fluid d-block d-lg-none ${css.cartTotalM2}`}>
-                <div className={`row ${css.cartTotalMROW2}`}>
-                    <div className={`col-7 ${css.cartTotalML2All}`}>
-                        <div className={css.cartTotalML1}>
-                            <div>付款方式</div>
-                            <div>信用卡付款(7-11)</div>
-                        </div>
-                        <div className={css.cartTotalML2}>
-                            <div>總金額</div>
-                            <div>NT$ 16,690</div>
-                        </div>
-                        <div className={css.cartTotalML3}>
-                            <div>
-                                <div>W Point折抵</div>
-                                <div className={css.cartTotalML3Detail}>
-                                    *W Point折抵新台幣1:1
-                                </div>
-                            </div>
-                            <div>- 1000P</div>
-                        </div>
-                    </div>
-                    <div className={`col-5 ${css.cartTotalMR2}`}>
-                        <div className={css.cartTotalMRTitle2}>實付金額</div>
-                        <div className={css.cartTotalMRMoney2}>
-                            <b>NT$ 15,690</b>
-                        </div>
-                        <div>
-                            <button className={css.cartTotalMRBTN2}>確認</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
+export default function CartPay({
+  userId,
+  pointsUsed,
+  originalPoints,
+  selectedPayment,
+  selectedTransport,
+  transportData,
+  transportBlackCatData,
+}) {
+  const [finalAmount, setFinalAmount] = useState(0);
+  const [productData, setProductData] = useState([]);
+  const [classData, setClassData] = useState([]);
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [orderNumber, setOrderNumber] = useState("");
+  const [discountAmounts, setDiscountAmounts] = useState(0); //優惠券折扣掉的金額
+  const router = useRouter(); // 使用 useRouter 來進行導航
+
+  useEffect(() => {
+    const storedFinalAmount = sessionStorage.getItem("finalAmount");
+    const storedProductData = sessionStorage.getItem("productData");
+    const storedClassData = sessionStorage.getItem("classData");
+    const storedCoupon = sessionStorage.getItem("selectedCoupon");
+    const storedDiscountAmounts = Math.floor(
+      parseFloat(sessionStorage.getItem("discountAmount")) || 0
     );
+
+    if (storedFinalAmount) setFinalAmount(parseFloat(storedFinalAmount));
+    if (storedProductData) setProductData(JSON.parse(storedProductData));
+    if (storedClassData) setClassData(JSON.parse(storedClassData));
+    if (storedCoupon) setSelectedCoupon(JSON.parse(storedCoupon));
+    if (storedDiscountAmounts)
+      setDiscountAmounts(JSON.parse(storedDiscountAmounts));
+  }, []);
+
+  const minLength = {
+    pickupPhone: 10,
+    blackCatPhoneNumber: 10,
+  };
+
+  const discountAmount = pointsUsed;
+  const finalTotalAmount = Math.floor(finalAmount + 60); // 假設運費為60元
+  const discountedAmount = Math.floor(finalTotalAmount - discountAmount);
+
+  const validateForm = () => {
+    let valid = true;
+    let errorMessages = [];
+
+    if (!selectedPayment || !selectedTransport) {
+      valid = false;
+      errorMessages.push("請選擇付款方式和運送方式");
+    } else {
+      if (selectedTransport === "transprot711") {
+        if (!transportData || Object.keys(transportData).length === 0) {
+          valid = false;
+          errorMessages.push("請填寫7-11資料");
+        } else {
+          const { storeName, storeAddress, pickupName, pickupPhone } =
+            transportData;
+          if (!storeName || !storeAddress || !pickupName) {
+            valid = false;
+            errorMessages.push("7-11資料不完整");
+          }
+          // 如果 pickupPhone 是 undefined 或空字串，設為空字串
+          const validPickupPhone = pickupPhone || "";
+          if (validPickupPhone.length < minLength.pickupPhone) {
+            valid = false;
+            errorMessages.push("7-11格式不正確");
+          }
+        }
+      }
+
+      if (selectedTransport === "blackcat") {
+        if (
+          !transportBlackCatData ||
+          Object.keys(transportBlackCatData).length === 0
+        ) {
+          valid = false;
+          errorMessages.push("請填寫黑貓宅急便資料");
+        } else {
+          const {
+            address: blackCatAddress,
+            name,
+            phone: blackCatPhoneNumber,
+          } = transportBlackCatData;
+          if (!blackCatAddress || !name) {
+            valid = false;
+            errorMessages.push("黑貓宅急便資料不完整");
+          }
+          // 如果 blackCatPhoneNumber 是 undefined 或空字串，設為空字串
+          const validBlackCatPhoneNumber = blackCatPhoneNumber || "";
+          if (validBlackCatPhoneNumber.length < minLength.blackCatPhoneNumber) {
+            valid = false;
+            errorMessages.push("黑貓宅急便格式不正確");
+          }
+        }
+      }
+    }
+
+    setIsFormValid(valid);
+    setFormError(errorMessages.join(" / ").replace(/ \//g, " <br />"));
+    return valid;
+  };
+
+  useEffect(() => {
+    validateForm();
+  }, [
+    selectedPayment,
+    selectedTransport,
+    transportData,
+    transportBlackCatData,
+    pointsUsed,
+  ]);
+
+  const handleCheckout = async () => {
+    if (validateForm()) {
+      try {
+        let response;
+        sessionStorage.setItem("productData", JSON.stringify(productData));
+        sessionStorage.setItem("classData", JSON.stringify(classData));
+        sessionStorage.setItem("selectedPayment", selectedPayment);
+        sessionStorage.setItem("selectedTransport", selectedTransport);
+        sessionStorage.setItem("discountedAmount", discountedAmount);
+        sessionStorage.setItem("pointsUsed", pointsUsed);
+        sessionStorage.setItem("userId", userId);
+
+        if (selectedPayment === "productpay") {
+          // 貨到付款
+          response = await axios.post(
+            "http://localhost:3005/api/cart/cashOnDelivery",
+            {
+              userId,
+              pointsUsed,
+              originalPoints,
+              selectedPayment,
+              selectedTransport,
+              transportData,
+              transportBlackCatData,
+              couponData: selectedCoupon || null,
+              cartItems: [...productData, ...classData],
+              discountedAmount,
+              discountAmounts,
+            }
+          );
+
+          setOrderNumber(response.data.orderNumber);
+          // 清除 sessionStorage 中的優惠券資料
+          sessionStorage.removeItem("selectedCoupon");
+
+          // 導航到確認頁
+          router.push("/cart/cartCheckout3");
+        } else if (selectedPayment === "creditpay") {
+          const goECPayTestOnly = (discountedAmount) => {
+            Swal.fire({
+              title: "確認要導向至ECPay進行付款?",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "確定",
+              cancelButtonText: "取消",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.href = `http://localhost:3005/api/ecpay-test-only?amount=${discountedAmount}`;
+              }
+            });
+          };
+
+          // 信用卡付款
+          response = await axios.post(
+            "http://localhost:3005/api/cart/creditCardPayment",
+            {
+              userId,
+              pointsUsed,
+              originalPoints,
+              selectedPayment,
+              selectedTransport,
+              transportData,
+              transportBlackCatData,
+              couponData: selectedCoupon || null,
+              cartItems: [...productData, ...classData],
+              discountedAmount,
+              discountAmounts,
+            }
+          );
+
+          // 假設後端返回了訂單編號
+          setOrderNumber(response.data.orderNumber);
+
+          // 清除 sessionStorage 中的優惠券資料
+          sessionStorage.removeItem("selectedCoupon");
+
+          // 在處理完成後，可能需要導航至某個頁面
+          goECPayTestOnly(discountedAmount);
+        }
+
+        console.log("Order created successfully:", response.data);
+      } catch (error) {
+        console.error("Error creating order:", error);
+        Swal.fire({
+          icon: "error",
+          title: "訂單建立失敗",
+          text: "請稍後再試",
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: "warning",
+        title: "表單驗證錯誤",
+        html: formError, // 使用 HTML 格式顯示錯誤消息
+      });
+    }
+  };
+
+  return (
+    <>
+      <div className={`container-fluid d-block d-lg-none ${css.cartTotalM2}`}>
+        <div className={`row ${css.cartTotalMROW2}`}>
+          <div className={`col-7 ${css.cartTotalML2All}`}>
+            <div className={css.cartTotalML1}>
+              <div>付款方式</div>
+              <div>
+                {selectedPayment
+                  ? selectedPayment === "creditpay"
+                    ? "信用卡"
+                    : "貨到付款"
+                  : "請選擇付款方式"}
+                {selectedTransport && selectedTransport === "transprot711"
+                  ? "(7-11)"
+                  : selectedTransport === "blackcat"
+                  ? "(黑貓宅急便)"
+                  : ""}
+              </div>
+            </div>
+            <div className={css.cartTotalML2}>
+              <div>總金額</div>
+              <div>NT$ {finalTotalAmount.toLocaleString()}</div>
+            </div>
+            <div className={css.cartTotalML3}>
+              <div>
+                <div>W Point 折抵</div>
+                <div className={css.cartTotalML3Detail}>
+                  *W Point折抵新台幣1:1
+                </div>
+              </div>
+              <div>-NT$ {discountAmount.toLocaleString()}</div>
+            </div>
+          </div>
+          <div className={`col-5 ${css.cartTotalMR2}`}>
+            <div className={css.cartTotalML5}>
+              <div>實付金額</div>
+              <div className={css.discountedAmount}>NT$ {discountedAmount.toLocaleString()}</div>
+            </div>
+            <div className={css.cartTotalML6} onClick={handleCheckout}>
+              送出訂單
+            </div>
+          </div>
+        </div>
+      </div>
+      {formError && (
+        <div
+          className={css.errorMessage}
+          dangerouslySetInnerHTML={{ __html: formError }}
+        ></div>
+      )}
+    </>
+  );
 }

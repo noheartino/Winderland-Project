@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import css from "@/components/cart/cart1/cartClass.module.css";
+import Swal from 'sweetalert2';
 
 export default function CartClass({ classItems, onRemove }) {
   useEffect(() => {
@@ -9,7 +10,12 @@ export default function CartClass({ classItems, onRemove }) {
         item.student_limits > 0 && 
         item.assigned >= item.student_limits 
       ) {
-        alert(`課程 ${item.class_name} 已達報名人數上限，將從購物車中移除。`);
+        Swal.fire({
+          title: '課程已滿',
+          text: `課程 ${item.class_name} 已達報名人數上限，將從購物車中移除。`,
+          icon: 'warning',
+          confirmButtonText: '確定'
+        });
         onRemove(item.cart_item_id); 
       }
     });
@@ -25,7 +31,7 @@ export default function CartClass({ classItems, onRemove }) {
             <div key={item.cart_item_id} className={`d-flex ${css.cartClassBox}`}>
               <div className={css.cartClassImg}>
                 <img
-                  src={`/images/cart/cartClass/upload_class/${item.class_image}`}
+                  src={`/images/course_and_tarot/${item.class_image}`}
                   alt="Class Image"
                 />
               </div>
@@ -50,11 +56,11 @@ export default function CartClass({ classItems, onRemove }) {
                 <div></div>
                   <div>
                     <div className={css.cartMoney}>
-                      NT$ {item.class_sale_price > 0 ? item.class_sale_price : item.class_price}
+                      NT$ {item.class_sale_price > 0 ? item.class_sale_price.toLocaleString() : item.class_price.toLocaleString()}
                     </div>
                     {item.class_sale_price > 0 && (
                       <div className={css.cartMoneySafe}>
-                        <s>NT$ {item.class_price}</s>
+                        <s>NT$ {item.class_price.toLocaleString()}</s>
                       </div>
                     )}
                   </div>

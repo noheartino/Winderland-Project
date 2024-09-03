@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import css from '@/components/cart/cart2/cartTransport.module.css';
 import { useShip711StoreOpener } from '@/hooks/use-ship-711-store';
 
-export default function CartTransport({ addressLabel = "門市選擇", hideSelectButton = false, handleTransportDataChange }) {
+export default function CartTransport({ addressLabel = "*門市選擇", hideSelectButton = false, handleTransportDataChange }) {
     const { store711, openWindow } = useShip711StoreOpener(
         'http://localhost:3005/api/shipment/711',
         { autoCloseMins: 3 }
@@ -99,7 +99,7 @@ export default function CartTransport({ addressLabel = "門市選擇", hideSelec
             </div>
             <div className={css.transportContent1}>
                 <div className={css.transportContent2}>
-                    <div>取貨姓名</div>
+                    <div>*取貨姓名</div>
                     <div>
                         <input
                             type="text"
@@ -112,12 +112,12 @@ export default function CartTransport({ addressLabel = "門市選擇", hideSelec
                     </div>
                 </div>
                 <div>
-                    <div>取貨手機號碼</div>
+                    <div>*取貨手機號碼</div>
                     <div>
                         <input
                             type="text"
                             className={css.transportphone}
-                            placeholder="請輸入手機號碼"
+                            placeholder="手機號碼"
                             value={pickupPhone}
                             maxLength="10"
                             minLength="10"

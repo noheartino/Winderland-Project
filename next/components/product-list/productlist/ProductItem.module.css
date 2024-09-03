@@ -51,6 +51,14 @@
     .shop-card-price {
         color: var(--orange);
     }
+
+    .shop-card-year{
+        margin-right: 5%;
+        background-color: var(--light);
+        border-radius: 5px;
+        padding-inline: 5%;
+        color: brown;
+    }
 }
 
 @media screen and (max-width: 992px) {}

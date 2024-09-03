@@ -51,7 +51,8 @@ export default function DashboardCoupon() {
     if (!loading) {
       if (!userId | !freeCoupon | !memberLevelId) {
         // 如果 userId 不存在，則進行重定向
-        router.push("/member/login");
+        // 會影響google登入，先備註起來！不用驗證了！
+        //router.push("/member/login");
       }
     }
   }, [userId, loading, router]);
@@ -215,3 +216,5 @@ export default function DashboardCoupon() {
     </>
   );
 }
+
+DashboardCoupon.requireAuth = true;
