@@ -1,5 +1,5 @@
 import React from 'react'
-import Nav from '@/components/Header/Header';
+import HomeNav from '@/components/Header/HomeHeader';
 import Footer from "@/components/footer/footer";
 import Homepage from '@/components/home/home';
 
@@ -7,7 +7,7 @@ import Homepage from '@/components/home/home';
 export default function Home() {
   return (
     <>
-    <Nav />
+    <HomeNav />
     <Homepage />
     <Footer />
     </>
