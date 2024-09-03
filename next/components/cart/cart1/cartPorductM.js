@@ -108,7 +108,13 @@ export default function CartProductM({ cartItems, onRemove, onUpdateQuantity }) 
                   <div>{item.years}年</div>
                 </div>
               </div>
-              <div className={css.cartProductDel}>
+              <div
+                className={`${css.cartProductDel} ${
+                  item.product_sale_price > 0
+                    ? css["has-discount"]
+                    : css["no-discount"]
+                }`}
+              >
                 <button onClick={() => onRemove(item.cart_item_id)}>✕</button>
               </div>
             </div>
