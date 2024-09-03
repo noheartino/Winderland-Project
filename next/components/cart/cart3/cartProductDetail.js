@@ -21,7 +21,7 @@ export default function CartProductDetail() {
           <div className={css.cartProductDetailImg}>
             {item.product_image ? (
               <img
-                src={`/images/cart/cartProduct/images/${item.product_image}`}
+                src={`/images/product/${item.product_image}`}
                 alt={item.product_name}
               />
             ) : null}

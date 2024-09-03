@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import css from "@/components/cart/cart1/cartProduct.module.css";
+import Swal from 'sweetalert2';
 
 export default function CartProductM({ cartItems, onRemove, onUpdateQuantity }) {
   if (cartItems.length === 0) return null;
+
+  // 檢查所有商品的數量是否超過庫存並調整
+  useEffect(() => {
+    cartItems.forEach((item) => {
+      if (item.product_quantity > item.product_amount) {
+        // 更新數量為最大庫存數量
+        onUpdateQuantity(item.cart_item_id, item.product_amount);
+
+        // 顯示提示訊息
+        Swal.fire({
+          title: '數量調整',
+          text: `"${item.product_name}" 已超過庫存量，數量已調整為最大可用庫存 ${item.product_amount}。`,
+          icon: 'warning',
+          confirmButtonText: '確定'
+        });
+      }
+    });
+  }, [cartItems, onUpdateQuantity]);
 
   const handleDecrease = async (itemId, currentQuantity) => {
     if (currentQuantity > 1) {
@@ -13,9 +32,18 @@ export default function CartProductM({ cartItems, onRemove, onUpdateQuantity }) 
     }
   };
 
-  const handleIncrease = async (itemId, currentQuantity) => {
-    const newQuantity = currentQuantity + 1;
-    await onUpdateQuantity(itemId, newQuantity);
+  const handleIncrease = async (itemId, currentQuantity, maxQuantity) => {
+    if (currentQuantity < maxQuantity) {
+      const newQuantity = currentQuantity + 1;
+      await onUpdateQuantity(itemId, newQuantity);
+    } else {
+      Swal.fire({
+        title: '數量超過限制',
+        text: '商品數量已經達到最大庫存量。',
+        icon: 'error',
+        confirmButtonText: '確定'
+      });
+    }
   };
 
   return (
@@ -27,7 +55,7 @@ export default function CartProductM({ cartItems, onRemove, onUpdateQuantity }) 
               <div className={css.cartProductImg}>
                 {item.product_image ? (
                   <img
-                    src={`/images/cart/cartProduct/images/${item.product_image}`}
+                    src={`/images/product/${item.product_image}`}
                     alt="Product"
                   />
                 ) : null}
@@ -52,7 +80,11 @@ export default function CartProductM({ cartItems, onRemove, onUpdateQuantity }) 
                     <button
                       className={css.cartNumberAddButton}
                       onClick={() =>
-                        handleIncrease(item.cart_item_id, item.product_quantity)
+                        handleIncrease(
+                          item.cart_item_id,
+                          item.product_quantity,
+                          item.product_amount
+                        ) // 傳入最大數量
                       }
                     >
                       +

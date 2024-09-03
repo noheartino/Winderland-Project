@@ -14,22 +14,32 @@ export default function ProductItem({ product }) {
   return (
     <>
       <div className={`col-lg-3 col-md-3 col-6  ${styles["shop-card"]}`}>
-        <Link className={`${styles['detail-link']}`} href={`/product/${product.id}`}>
+        <Link
+          className={`${styles["detail-link"]}`}
+          href={`/product/${product.id}`}
+        >
           <div className={`${styles["shop-card-photo"]}`}>
-            <img className={`${styles["photo"]}`} src={`/images/product/${product.images[1].path}`} alt="" />
+            <img
+              className={`${styles["photo"]}`}
+              src={`/images/product/${product.images[1].path}`}
+              alt=""
+            />
           </div>
         </Link>
-        <Link className={`${styles['detail-link']}`} href={`/product/${product.id}`}>
+        <Link
+          className={`${styles["detail-link"]}`}
+          href={`/product/${product.id}`}
+        >
           <div className={`${styles["shop-card-name"]}`}>{product.name}</div>
         </Link>
         <div className={`${styles["shop-card-country"]}`}>
-          {product.details[0].capacity}ml&nbsp;/&nbsp;{product.country_name}
+          {product.details[0]?.capacity}ml&nbsp;/&nbsp;{product.country_name}
         </div>
         <div className={`${styles["shop-card-money"]}`}>
+          <div className={`${styles["shop-card-year"]}`}>{product.details[0]?.years}年</div>
           <div className={`${styles["shop-card-price"]}`}>
-            NT ${formatCurrency(product.details[0].price)}
+            NT ${formatCurrency(product.details[0]?.price)}
           </div>
-          <div className={`${styles["shop-card-price-sale"]}`}></div>
         </div>
       </div>
     </>
