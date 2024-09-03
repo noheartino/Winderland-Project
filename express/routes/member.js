@@ -19,6 +19,7 @@ import transporter from '#configs/mail.js'
 // @ 檢查登入狀態用
 router.get('/auth-status', authenticate, async (req, res) => {
   try {
+    console.log('Auth status check for user:', req.user)
     const [users] = await connection.query(
       `
        SELECT id, user_name, email, account, gender, birthday, member_level_id, phone, address,total_spending
@@ -29,12 +30,14 @@ router.get('/auth-status', authenticate, async (req, res) => {
     )
 
     if (!users.length) {
+      console.log('User not found for id:', req.user.id);
       return res.status(404).json({ status: 'fail', message: 'User not found' })
     }
     const user = users[0]
 
     // 不回傳密碼值
     // delete user.password
+    console.log('User found:', user)
     return res.json({
       status: 'success',
       data: {

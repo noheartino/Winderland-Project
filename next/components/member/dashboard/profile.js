@@ -13,11 +13,11 @@ import ProfileUpdatePwdRWD from './profile/ProfileUpdatePwdRWD'
 
 export default function DashboardProfile() {
   // 驗證登入
-  const { auth, updateUserInfo } = useAuth();
+  const { auth, updateUserInfo, isLoading } = useAuth();
   const router = useRouter();
 
   const [avatarUrl, setAvatarUrl] = useState('');
-  const [uploadStatus, setUploadStatus] = useState('');
+  // const [uploadStatus, setUploadStatus] = useState('');
   const [key, setKey] = useState(0);
 
   const [formData, setFormData] = useState({
@@ -39,8 +39,11 @@ export default function DashboardProfile() {
   }, [auth.userData]);
 
   useEffect(() => {
-    if (!auth.isAuth) {
+    if (!isLoading) {
+      if (!auth.isAuth) {
+        
       router.push('/member/login');
+      }
     } else if (auth.userData) {
       console.log('auth.userData:', auth.userData);
       setFormData({
@@ -54,9 +57,11 @@ export default function DashboardProfile() {
       });
       updateAvatarUrl();
     }
-  }, [auth, router, updateAvatarUrl]);
+  }, [isLoading, auth.isAuth , router, updateAvatarUrl]);
 
-  if (!auth.isAuth || !auth.userData) {
+  if (isLoading) return <div>Loading...</div>
+
+  if (!auth.isAuth) {
     return null;
   }
 
