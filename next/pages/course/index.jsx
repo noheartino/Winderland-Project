@@ -14,20 +14,20 @@ import Head from "next/head";
 
 export default function CourseIndex() {
   const router = useRouter();
-  // const { auth } = useAuth();
-  const [userId, setUserId] = useState(1);
-  // useEffect(() => {
-  //   if (auth.isAuth) {
-  //     setUserId(auth.userData?.id);
-  //     console.log("userId 是否已設定: " + auth?.isAuth);
+  const { auth } = useAuth();
+  const [userId, setUserId] = useState(null);
+  useEffect(() => {
+    if (auth.isAuth) {
+      setUserId(auth.userData?.id);
+      console.log("userId 是否已設定: " + auth?.isAuth);
 
-  //     console.log("以下是auth內容");
-  //     console.log(auth);
-  //     console.log("======auth結束======");
-  //     return;
-  //   }
-  //   console.log("userId 未設定成功");
-  // }, [auth]);
+      console.log("以下是auth內容");
+      console.log(auth);
+      console.log("======auth結束======");
+      return;
+    }
+    console.log("userId 未設定成功");
+  }, [auth]);
 
   let pageLimit = 8;
   const { search, view } = router.query;

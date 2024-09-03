@@ -42,7 +42,7 @@ export default function ClassManIndex() {
 
 
   // 選擇上傳圖片
-  const [Cimage, setCImage] = useState('/images/course_and_tarot/classImgDefault.png');
+  const [Cimage, setCImage] = useState('http://localhost:3005/uploads/course_and_tarot/classImgDefault.png');
   const handleImageUpload = (event) => {
     const file = event.target.files[0]; // 獲取選中的文件
     if (file) {
@@ -204,7 +204,7 @@ export default function ClassManIndex() {
 
   const handleOnlineClickClear = ()=>{
     setOnOrUnderline(1)
-    console.log(onOrUnderline);
+    console.log("onOrUnderline設置為1");
     // 清除實體課程才有的欄位
     const onlyShowWhenUnderline = ['studentLimit', 'classStartDate', 'classEndDate', 'assignStartDate', 'assignEndDate', 'dailyStartTime', 'dailyEndTime', 'classCity', 'classCityDetail']
     onlyShowWhenUnderline.forEach((elm)=>{
@@ -215,6 +215,7 @@ export default function ClassManIndex() {
 
   const handleUnderlineClickClear = ()=>{
     setOnOrUnderline(0)
+    console.log("onOrUnderline設置為0");
     // 清除線上課程才有的欄位
     const onlyShowWhenOnline = ['classVdio']
     onlyShowWhenOnline.forEach((elm)=>{
@@ -222,26 +223,22 @@ export default function ClassManIndex() {
       currentElm.value=''
     })
   }
+  console.log("onOrUnderline: "+onOrUnderline);
   useEffect(() => {
-    if(onOrUnderline){
+    if(onOrUnderline===0 || onOrUnderline===1){
       console.log('現在的onOrUnderline是'+onOrUnderline);
       const onlineRadio = document.getElementById('onLine');
       const underlineRadio = document.getElementById('underLine');
 
       if (onOrUnderline === 1) {
         onlineRadio.checked = true;
+        console.log("將online radio打勾")
       } else if (onOrUnderline === 0) {
         underlineRadio.checked = true;
+        console.log("將underline radio打勾")
       }
     }
   }, [onOrUnderline]);
-
-  
-// *欄位檢查:
-
-// 開始日期不可晚於結束日期
-
-// 開始時間不可晚於結束時間
 
 // 檔案格式檢查(圖片、影片)
 
@@ -309,6 +306,23 @@ export default function ClassManIndex() {
     });
   }
   // 處理送出表單
+  if (!isAdmin){
+    return (
+      <>
+        <div className="container-fluid">
+          <div>請登入有權限的帳號</div>
+          <Link href="/">
+            <div
+              type="button"
+              className="btn-warning btn my-2" style={{textDecoration: 'none'}}>
+              回首頁<i className="fa-solid fa-chevron-right ms-2"></i>
+            </div>
+          </Link>
+        </div>
+      </>
+    )
+  } 
+
   const handleSubmit = async (event) => {
     event.preventDefault(); // 防止默認的表單提交
     // if(){
@@ -389,8 +403,8 @@ export default function ClassManIndex() {
       }
     }
 
-    const firstEmptyErrMsg = (Object.values(newMustBeValuedArr).filter(value => value !== ''))[0]
-    console.log(Object.values(newMustBeValuedArr).filter(value => value !== ''));
+    const firstEmptyErrMsg = (Object.values(newMustBeValuedArr).filter(value => value.trim().length>0))[0]
+    console.log(Object.values(newMustBeValuedArr).filter(value => value.trim().length>0));
     console.log('應該要有錯誤訊息: '+firstEmptyErrMsg);
 
     setMustBeValued(newMustBeValuedArr)
@@ -477,6 +491,7 @@ export default function ClassManIndex() {
           timer: 1500
         });
         router.push({pathname: '/course/teacher/management'})
+        setIsAdmin(true)
       }
       
     }catch (error) {
@@ -507,7 +522,7 @@ export default function ClassManIndex() {
 
         <div className='CManageNav'>
           <div className='container'>
-            <div className='CManageNavT'>新增課程</div>
+            <div className='CManageNavT'>新增課程{errorMsgBox['studentLimit'] && errorMsgBox['studentLimit'].trim().length>0?errorMsgBox['studentLimit']:''}</div>
             <div className='CManageNavList'>
               <Link href='/course/teacher/management' className='CArmallc'><div className='CNavListLi'>課程管理</div></Link>
               <Link href='/course/teacher/management/create' className='CArmall'><div className='CNavListLi CNowUnderLI'>新增課程</div></Link>
@@ -522,7 +537,7 @@ export default function ClassManIndex() {
                 <div className='col-12 col-lg-8 d-flex flex-column gap-3'>
                   <div className='row gx-2 gx-lg-4 row-gap-3'>
                     
-                    <div className={`col-12 flex-column gap-1 text-danger spac-1 ${Object.values(mustBeValued).some(value => value !== '') ? 'd-flex' : 'd-none'}`}>* 請檢查必填欄位 !!</div>
+                    <div className={`col-12 flex-column gap-1 text-danger spac-1 ${Object.values(mustBeValued).some(value => value.trim().length>0) ? 'd-flex' : 'd-none'}`}>* 請檢查必填欄位 !!</div>
                     <div className='col-12 d-flex flex-column gap-1'>
 
                       {/* 用來寫入不顯示的資料 */}
@@ -737,7 +752,7 @@ export default function ClassManIndex() {
                   <label htmlFor='classPic' className='form-label CmanageCreateTag'>
                     課程縮圖
                   </label>
-                  <img src={Cimage} alt='' className='Cprevpic' />
+                  <img src={Cimage.trim().length>0?Cimage:'/images/course_and_tarot/classImgDefault.png'} alt='' className='Cprevpic' />
                   {/* <input
                     className='form-control vidAndImg-input'
                     type='file'

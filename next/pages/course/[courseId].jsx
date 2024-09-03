@@ -13,7 +13,7 @@ export default function CourseIndex() {
   const [classSum, setClassSum] = useState([]);
 
   const { auth } = useAuth();
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(null);
   useEffect(() => {
     if (auth.isAuth) {
       setUserId(auth.userData?.id);
@@ -36,7 +36,6 @@ export default function CourseIndex() {
 
   // 到/api/獲取課程總數，避免網址輸入不存在的課程導致顯示錯誤
   useEffect(() => {
-    if (userId) {
       fetch(`http://localhost:3005/api/course?userId=${userId}`)
         .then((response) => {
           if (!response.ok) {
@@ -53,7 +52,6 @@ export default function CourseIndex() {
         .catch((error) => {
           console.log(error);
         });
-    }
   }, [userId, courseId]);
 
   const seriesDefaultBtn = useRef(null);
@@ -287,7 +285,7 @@ export default function CourseIndex() {
         <Nav />
 
         {/* page three course-detail start */}
-        <div className="container-fluid px-0 m-0">
+        <div className="container-fluid m-0 px-0">
           <div className="container-fluid px-0">
             <div className="container-sm px-0">
               <div className="row px-10px m-0 justify-content-center justify-content-md-start px-10px my-4">
@@ -627,8 +625,8 @@ export default function CourseIndex() {
               </div>
               {/* course-detail md 寬度時顯示 end */}
               {/* course-detail 手機時顯示 start */}
-              <div className="row small-screen-show d-flex d-md-none">
-                <div className="col-12 d-flex flex-column align-items-center px-0">
+              <div className="row small-screen-show d-flex d-md-none px-0 mx-0">
+                <div className="col-12 d-flex flex-column align-items-center px-0 mx-0">
                   <div
                     className="course-video-video position-relative mb-3"
                     href=""
@@ -645,7 +643,7 @@ export default function CourseIndex() {
                     </div>
                   </div>
                 </div>
-                <div className="course-body-2 col px-10px h-100">
+                <div className="course-body-2 col px-10px h-100 mx-0">
                   <h1 className="spac-2 lh-15 text-prim-text-prim">
                     <strong>{course?.class_name}</strong>
                   </h1>
@@ -797,7 +795,7 @@ export default function CourseIndex() {
                     </div>
                   </div>
 
-                  <div className="row teacher-sm-introduce my-5">
+                  <div className="row teacher-sm-introduce my-5 mx-0 px-0">
                     <a className="teacher-head col-auto px-0" href="/">
                       <img
                         src="/images/course_and_tarot/Ellipse 8.png"
@@ -1179,6 +1177,7 @@ export default function CourseIndex() {
         <div className="container-fluid py-3 my-5">
           <div className="container-sm px-0">
             <div className="row justify-content-between px-0 mx-0">
+            
               <Link className="col-auto px-0 mx-0" href="/course/teacher">
                 <div
                   type="button"
