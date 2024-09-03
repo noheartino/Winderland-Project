@@ -30,6 +30,8 @@ export default function Nav() {
 
 
 
+
+
   useEffect(() => {
     if (userId) {
       fetch(`http://localhost:3005/api/header/${userId}`)
@@ -66,6 +68,18 @@ export default function Nav() {
 
   const GoCart = () => {
     router.push("/cart/cartCheckout1"); // 使用 router.push 直接導航到首頁
+  };
+
+  const redwine = () => {
+    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=1"); 
+  };
+
+  const whitewine = () => {
+    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=2"); 
+  };
+
+  const otherwine = () => {
+    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=3"); 
   };
 
   const goHome = () => {
@@ -355,7 +369,7 @@ export default function Nav() {
       <div className="navShop">
         <div className="container">
           <div className="row h-100 nav_row align-items-center">
-            <div className="col-4 ">
+            <div className="col-4" onClick={redwine}>
               <div className="navShopBox">
                 <div className="img img1" />
                 <div className="navShopBox_b d-flex align-items-center">
@@ -384,7 +398,7 @@ export default function Nav() {
                 </div>
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-4" onClick={whitewine}>
               <div className="navShopBox">
                 <div className="img img2" />
                 <div className="navShopBox_b d-flex align-items-center">
@@ -408,7 +422,7 @@ export default function Nav() {
                 </div>
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-4" onClick={otherwine}>
               <div className="navShopBox">
                 <div className="img img3" />
                 <div className="navShopBox_b d-flex align-items-center">
