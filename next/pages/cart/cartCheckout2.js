@@ -111,6 +111,10 @@ export default function CartCheckout2() {
     sessionStorage.setItem("transportBlackCatData", JSON.stringify(data)); // 存儲到 sessionStorage
   };
 
+  const goTo1 = () => {
+    router.push("http://localhost:3000/cart/cartCheckout1");
+  };
+
   return (
     <>
       <Head>
@@ -140,12 +144,16 @@ export default function CartCheckout2() {
           <div className="row">
             <div className="col-8">
               <div className="progressTitle-2">
-                <div className="progressText1-2">確認訂單</div>
+                <div className="progressText1-2">確認訂單(回上一頁)</div>
                 <div className="progressText2-2">填寫訂單詳情</div>
                 <div className="progressText3-2">完成訂單</div>
               </div>
               <div className="progressBar-2">
-                <div className="progressCircle-2 progressCircle1-2" />
+                <div
+                  className="progressCircle-2 progressCircle1-2"
+                  onClick={goTo1}
+                  style={{ cursor: "pointer" }}
+                />
                 <div className="progressLine-2 progressLine1-2" />
                 <div className="progressCircle-2 progressCircle2-2" />
                 <div className="progressLine-2 progressLine2-2" />
@@ -275,12 +283,16 @@ export default function CartCheckout2() {
         </div>
         <div className="container d-block d-lg-none">
           <div className="progressTitle-2">
-            <div className="progressText1-2">確認訂單</div>
+            <div className="progressText1-2">確認訂單(回上一頁)</div>
             <div className="progressText2-2">填寫訂單詳情</div>
             <div className="progressText3-2">完成訂單</div>
           </div>
           <div className="progressBar-2">
-            <div className="progressCircle-2 progressCircle1-2" />
+            <div
+              className="progressCircle-2 progressCircle1-2"
+              onClick={goTo1}
+              style={{ cursor: "pointer" }}
+            />
             <div className="progressLine-2 progressLine1-2" />
             <div className="progressCircle-2 progressCircle2-2" />
             <div className="progressLine-2 progressLine2-2" />
