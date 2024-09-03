@@ -326,7 +326,6 @@ router.delete('/articles/:id', authenticate, async (req, res) => {
 })
 
 // # 搜尋
-
 router.get('/search', authenticate, async (req, res) => {
   try {
     const userId = req.user.id

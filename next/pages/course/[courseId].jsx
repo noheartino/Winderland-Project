@@ -267,8 +267,82 @@ export default function CourseIndex() {
     return timeVar.split(":").slice(0, 2).join(":");
   }
 
-  function handleCourseAddToFav() {}
-  function handleCourseRmFromFav() {}
+  function handleCourseAddToFav() { }
+  function handleCourseRmFromFav() { }
+
+  // 新增收藏
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  useEffect(() => {
+    // 檢查課程是否已被收藏
+    const checkBookmarkStatus = async () => {
+      if (userId && courseId) {
+        try {
+          const response = await fetch(`http://localhost:3005/api/favorites/courses`, {
+            method: 'GET',
+            credentials: 'include',
+          });
+          const data = await response.json();
+          if (data.status === 'success') {
+            setIsBookmarked(data.data.some(bookmark => bookmark.class_id === parseInt(courseId)));
+          }
+        } catch (error) {
+          console.error('Error checking bookmark status:', error);
+        }
+      }
+    };
+
+    checkBookmarkStatus();
+  }, [userId, courseId]);
+
+  const toggleBookmark = async () => {
+    if (!userId || !courseId) {
+      Swal.fire({
+        title: '請先登入',
+        text: '您需要登入才能收藏課程',
+        icon: 'warning',
+        confirmButtonText: '確定'
+      });
+      return;
+    }
+
+    try {
+      const url = `http://localhost:3005/api/favorites/courses/${courseId}`;
+      const method = isBookmarked ? 'DELETE' : 'POST';
+
+      const response = await fetch(url, {
+        method: method,
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+      if (data.status === 'success') {
+        setIsBookmarked(!isBookmarked);
+
+        Swal.fire({
+          icon: 'success',
+          title: isBookmarked ? '已取消收藏' : '收藏成功',
+          text: isBookmarked ? '課程已從您的收藏中移除' : '課程已添加到您的收藏',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      console.error('Error toggling bookmark:', error);
+
+      Swal.fire({
+        icon: 'error',
+        title: '操作失敗',
+        text: '無法更改收藏狀態，請稍後再試',
+        timer: 1500,
+        showConfirmButton: false
+      });
+    }
+  };
 
   return (
     <>
@@ -301,9 +375,8 @@ export default function CourseIndex() {
               <div className="row px-0 mx-0 pt-3 mb-4 d-none d-md-flex">
                 <div className="col px-10px">
                   <span
-                    className={`me-4 py-2 px-3 h6 ${
-                      course?.online === 1 ? "online-tag" : "underline-tag"
-                    }`}
+                    className={`me-4 py-2 px-3 h6 ${course?.online === 1 ? "online-tag" : "underline-tag"
+                      }`}
                   >
                     {course?.online === 1 ? "線上" : "實體"}
                   </span>
@@ -335,9 +408,8 @@ export default function CourseIndex() {
                             alt=""
                           />
                           <div
-                            className={`absolute-t0-l0 w-100 h-100 d-flex justify-content-center align-items-center ${
-                              course?.online === 0 ? "d-none" : "d-flex"
-                            }`}
+                            className={`absolute-t0-l0 w-100 h-100 d-flex justify-content-center align-items-center ${course?.online === 0 ? "d-none" : "d-flex"
+                              }`}
                           >
                             <a href="">
                               <i className="fa-solid fa-circle-play text-white opacity-50 course-detail-player" />
@@ -345,9 +417,8 @@ export default function CourseIndex() {
                           </div>
                         </div>
                         <div
-                          className={`progress-bar-area ${
-                            course?.online === 1 ? "d-none" : "d-block"
-                          }`}
+                          className={`progress-bar-area ${course?.online === 1 ? "d-none" : "d-block"
+                            }`}
                         >
                           <div className="course-process-header d-flex justify-content-between mt-4">
                             <span className="h6 text-sec-dark-blue spac-1">
@@ -357,9 +428,9 @@ export default function CourseIndex() {
                               已報名-
                               {course?.assigned > 0
                                 ? (
-                                    (course?.assigned / course?.student_limit) *
-                                    100
-                                  ).toFixed(0)
+                                  (course?.assigned / course?.student_limit) *
+                                  100
+                                ).toFixed(0)
                                 : "0"}
                               %
                             </span>
@@ -376,15 +447,14 @@ export default function CourseIndex() {
                             <div
                               className="progress-bar bg-sec-blue-dark"
                               style={{
-                                width: `${
-                                  course?.assigned > 0
-                                    ? (
-                                        (course?.assigned /
-                                          course?.student_limit) *
-                                        100
-                                      ).toFixed(0)
-                                    : "0"
-                                }%`,
+                                width: `${course?.assigned > 0
+                                  ? (
+                                    (course?.assigned /
+                                      course?.student_limit) *
+                                    100
+                                  ).toFixed(0)
+                                  : "0"
+                                  }%`,
                               }}
                             />
                           </div>
@@ -403,53 +473,46 @@ export default function CourseIndex() {
                       </h5>
                       <div className="col-auto stars d-flex align-items-center px-0">
                         <i
-                          className={`fa-solid fa-star ${
-                            averageRating > 0.5
-                              ? "star-with-score"
-                              : "star-without-score"
-                          }`}
+                          className={`fa-solid fa-star ${averageRating > 0.5
+                            ? "star-with-score"
+                            : "star-without-score"
+                            }`}
                         />
                         <i
-                          className={`fa-solid fa-star ${
-                            averageRating > 1.5
-                              ? "star-with-score"
-                              : "star-without-score"
-                          }`}
+                          className={`fa-solid fa-star ${averageRating > 1.5
+                            ? "star-with-score"
+                            : "star-without-score"
+                            }`}
                         />
                         <i
-                          className={`fa-solid fa-star ${
-                            averageRating > 2.5
-                              ? "star-with-score"
-                              : "star-without-score"
-                          }`}
+                          className={`fa-solid fa-star ${averageRating > 2.5
+                            ? "star-with-score"
+                            : "star-without-score"
+                            }`}
                         />
                         <i
-                          className={`fa-solid fa-star ${
-                            averageRating > 3.5
-                              ? "star-with-score"
-                              : "star-without-score"
-                          }`}
+                          className={`fa-solid fa-star ${averageRating > 3.5
+                            ? "star-with-score"
+                            : "star-without-score"
+                            }`}
                         />
                         <i
-                          className={`fa-solid fa-star ${
-                            averageRating > 4.5
-                              ? "star-with-score"
-                              : "star-without-score"
-                          }`}
+                          className={`fa-solid fa-star ${averageRating > 4.5
+                            ? "star-with-score"
+                            : "star-without-score"
+                            }`}
                         />
                         <span
-                          className={`ms-2 spac-1 text-sec-dark-blue emmit1 ${
-                            averageRating > 0 ? "d-inline-block" : "d-none"
-                          }`}
+                          className={`ms-2 spac-1 text-sec-dark-blue emmit1 ${averageRating > 0 ? "d-inline-block" : "d-none"
+                            }`}
                         >
                           {averageRating}
                         </span>
                       </div>
                     </div>
                     <div
-                      className={`row mx-0 text-sec-dark-blue spac-1 mt-4 ${
-                        course?.online === 1 ? "d-none" : "d-flex"
-                      }`}
+                      className={`row mx-0 text-sec-dark-blue spac-1 mt-4 ${course?.online === 1 ? "d-none" : "d-flex"
+                        }`}
                     >
                       <div className="col-12 p-0">
                         <p className="text-sec-dark-blue emmit1">
@@ -460,9 +523,8 @@ export default function CourseIndex() {
                       </div>
                     </div>
                     <div
-                      className={`row mx-0 text-sec-dark-blue spac-1 mt-2 ${
-                        course?.online === 1 ? "d-none" : "d-flex"
-                      }`}
+                      className={`row mx-0 text-sec-dark-blue spac-1 mt-2 ${course?.online === 1 ? "d-none" : "d-flex"
+                        }`}
                     >
                       <div className="col-12 p-0">
                         <p className="text-sec-dark-blue emmit1">
@@ -476,9 +538,8 @@ export default function CourseIndex() {
                       </div>
                     </div>
                     <div
-                      className={`row mx-0 spac-1 mt-2 ${
-                        course?.online === 1 ? "d-none" : "d-flex"
-                      }`}
+                      className={`row mx-0 spac-1 mt-2 ${course?.online === 1 ? "d-none" : "d-flex"
+                        }`}
                     >
                       <div className="col-12 p-0">
                         <p className="text-sec-dark-blue emmit1">
@@ -499,14 +560,13 @@ export default function CourseIndex() {
                             {course.price && course.sale_price === 0
                               ? course.price.toLocaleString()
                               : course.sale_price && course.sale_price > 0
-                              ? course.sale_price.toLocaleString()
-                              : 0}
+                                ? course.sale_price.toLocaleString()
+                                : 0}
                           </strong>
                         </div>
                         <p
-                          className={`text-gray-light h5 spac-2 mt-3 ${
-                            course.sale_price === 0 ? "d-none" : "d-block"
-                          }`}
+                          className={`text-gray-light h5 spac-2 mt-3 ${course.sale_price === 0 ? "d-none" : "d-block"
+                            }`}
                         >
                           <del>
                             NT$
@@ -516,12 +576,24 @@ export default function CourseIndex() {
                           </del>
                         </p>
                       </div>
-                      <a
+                      {/* <a
                         href="/"
                         className="col-auto d-flex align-items-center mt-1"
+                      > */}
+                      <a
+                        href="#"
+                        className="col-auto d-flex align-items-center mt-1"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleBookmark();
+                        }}
                       >
                         <h5 className="text-prim-text-prim spac-2">收藏</h5>
-                        {existing.length > 0 ? (
+                        <i
+                          className={`ms-2 fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark text-prim-text-prim`}
+                          style={{ fontSize: "1.7rem" }}
+                        ></i>
+                        {/* {existing.length > 0 ? (
                           <i
                             className="ms-2 fa-solid fa-bookmark text-prim-text-prim"
                             style={{ fontSize: "1.7rem" }}
@@ -533,7 +605,7 @@ export default function CourseIndex() {
                             style={{ fontSize: "1.7rem" }}
                             onClick={handleCourseRmFromFav}
                           />
-                        )}
+                        )} */}
                       </a>
                     </div>
                     <div className="row h-100">
@@ -651,9 +723,8 @@ export default function CourseIndex() {
                   </h1>
 
                   <div
-                    className={`row mx-0 text-sec-dark-blue spac-1 mt-4 ${
-                      course?.online === 1 ? "d-none" : "d-flex"
-                    }`}
+                    className={`row mx-0 text-sec-dark-blue spac-1 mt-4 ${course?.online === 1 ? "d-none" : "d-flex"
+                      }`}
                   >
                     <div className="col-12 p-0">
                       <p className="text-sec-dark-blue">
@@ -664,9 +735,8 @@ export default function CourseIndex() {
                     </div>
                   </div>
                   <div
-                    className={`row mx-0 text-sec-dark-blue spac-1 mt-2 ${
-                      course?.online === 1 ? "d-none" : "d-flex"
-                    }`}
+                    className={`row mx-0 text-sec-dark-blue spac-1 mt-2 ${course?.online === 1 ? "d-none" : "d-flex"
+                      }`}
                   >
                     <div className="col-12 p-0">
                       <p className="text-sec-dark-blue">
@@ -680,9 +750,8 @@ export default function CourseIndex() {
                     </div>
                   </div>
                   <div
-                    className={`row mx-0 spac-1 mt-2 ${
-                      course?.online === 1 ? "d-none" : "d-flex"
-                    }`}
+                    className={`row mx-0 spac-1 mt-2 ${course?.online === 1 ? "d-none" : "d-flex"
+                      }`}
                   >
                     <div className="col-12 p-0">
                       <p className="text-sec-dark-blue">
@@ -712,18 +781,16 @@ export default function CourseIndex() {
                   </div>
                   <div className="row justify-content-between align-items-center mt-4 mx-0">
                     <span
-                      className={`col-auto online-tag me-4 h6 ${
-                        course?.online === 1 ? "online-tag" : "underline-tag"
-                      }`}
+                      className={`col-auto online-tag me-4 h6 ${course?.online === 1 ? "online-tag" : "underline-tag"
+                        }`}
                     >
                       {course?.online === 1 ? "線上" : "實體"}
                     </span>
 
                     <span className="col-auto h6">
                       <span
-                        className={`text-gray-light h5 spac-2 mt-3 me-4 ${
-                          course.sale_price === 0 ? "d-none" : "d-inline-block"
-                        }`}
+                        className={`text-gray-light h5 spac-2 mt-3 me-4 ${course.sale_price === 0 ? "d-none" : "d-inline-block"
+                          }`}
                       >
                         <del>
                           NT$
@@ -738,17 +805,16 @@ export default function CourseIndex() {
                           {course.price && course.sale_price === 0
                             ? course.price.toLocaleString()
                             : course.sale_price > 0
-                            ? course.sale_price.toLocaleString()
-                            : 0}
+                              ? course.sale_price.toLocaleString()
+                              : 0}
                         </strong>
                       </span>
                     </span>
                   </div>
 
                   <div
-                    className={`progress-bar-area mb-5 ${
-                      course?.online === 1 ? "d-none" : "d-block"
-                    }`}
+                    className={`progress-bar-area mb-5 ${course?.online === 1 ? "d-none" : "d-block"
+                      }`}
                   >
                     <div className="course-process-header d-flex justify-content-between mt-4">
                       <span className="h6 text-sec-dark-blue spac-1">
@@ -765,9 +831,9 @@ export default function CourseIndex() {
                                 : "0"} */}
                         {course?.assigned > 0
                           ? (
-                              (course?.assigned / course?.student_limit) *
-                              100
-                            ).toFixed(0)
+                            (course?.assigned / course?.student_limit) *
+                            100
+                          ).toFixed(0)
                           : "0"}
                         %
                       </span>
@@ -784,14 +850,13 @@ export default function CourseIndex() {
                       <div
                         className="progress-bar bg-sec-blue-dark"
                         style={{
-                          width: `${
-                            course?.assigned > 0
-                              ? (
-                                  (course?.assigned / course?.student_limit) *
-                                  100
-                                ).toFixed(0)
-                              : "0"
-                          }%`,
+                          width: `${course?.assigned > 0
+                            ? (
+                              (course?.assigned / course?.student_limit) *
+                              100
+                            ).toFixed(0)
+                            : "0"
+                            }%`,
                         }}
                       />
                     </div>
@@ -821,9 +886,15 @@ export default function CourseIndex() {
                     </div>
                   </div>
                   <div className="row justify-content-between align-items-center my-3">
-                    <a href="/" className="col-auto p-2">
+                    <a
+                      href="#"
+                      className="col-auto p-2"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        toggleBookmark();
+                      }}>
                       <i
-                        className="fa-regular fa-bookmark text-prim-text-prim"
+                        className={` fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark text-prim-text-prim`}
                         style={{ fontSize: "2rem" }}
                       />
                     </a>
@@ -842,9 +913,8 @@ export default function CourseIndex() {
             <div className="container-sm px-0 d-flex flex-column align-items-center">
               <div className="course-detail-content-text-widthControl">
                 <div
-                  className={`justify-content-center justify-content-md-start align-items-center ${
-                    course.class_summary ? "d-flex" : "d-none"
-                  }`}
+                  className={`justify-content-center justify-content-md-start align-items-center ${course.class_summary ? "d-flex" : "d-none"
+                    }`}
                 >
                   <i className="fa-solid fa-square me-3 d-inline-block d-md-none" />
                   <span className="h4 text-prim-dark lh-15 spac-2">
@@ -867,9 +937,8 @@ export default function CourseIndex() {
                 <br />
                 <br />
                 <div
-                  className={`justify-content-center justify-content-md-start align-items-center ${
-                    course.class_description ? "d-flex" : "d-none"
-                  }`}
+                  className={`justify-content-center justify-content-md-start align-items-center ${course.class_description ? "d-flex" : "d-none"
+                    }`}
                 >
                   <i className="fa-solid fa-square me-3 d-inline-block d-md-none" />
                   <span className="h4 text-prim-dark lh-15 spac-2">
@@ -900,9 +969,8 @@ export default function CourseIndex() {
                   學員回饋&nbsp;|&nbsp;Comment
                 </h4>
                 <div
-                  className={`btn-group course-comment-filter ${
-                    comments && comments.length === 0 ? "d-none" : "d-block"
-                  }`}
+                  className={`btn-group course-comment-filter ${comments && comments.length === 0 ? "d-none" : "d-block"
+                    }`}
                 >
                   <button
                     type="button"
@@ -950,11 +1018,10 @@ export default function CourseIndex() {
                 </div>
               </div>
               <div
-                className={`course-comment-scorebars-box mb-5 mx-0 px-0 row ${
-                  comments && comments.length === 0
-                    ? "d-none"
-                    : "d-flex d-md-none"
-                }`}
+                className={`course-comment-scorebars-box mb-5 mx-0 px-0 row ${comments && comments.length === 0
+                  ? "d-none"
+                  : "d-flex d-md-none"
+                  }`}
               >
                 <div className="col-auto d-flex flex-column align-items-center justify-content-center">
                   <h1 className="spac-2 text-prim-text-prim ms-2">
@@ -989,11 +1056,10 @@ export default function CourseIndex() {
                         <div
                           className="progress-bar bg-sec-yellow"
                           style={{
-                            width: `${
-                              (comments.filter((v) => v.rating === 5).length /
-                                comments?.length) *
+                            width: `${(comments.filter((v) => v.rating === 5).length /
+                              comments?.length) *
                               100
-                            }%`,
+                              }%`,
                           }}
                         ></div>
                       </div>
@@ -1020,11 +1086,10 @@ export default function CourseIndex() {
                         <div
                           className="progress-bar bg-sec-yellow"
                           style={{
-                            width: `${
-                              (comments.filter((v) => v.rating === 4).length /
-                                comments?.length) *
+                            width: `${(comments.filter((v) => v.rating === 4).length /
+                              comments?.length) *
                               100
-                            }%`,
+                              }%`,
                           }}
                         ></div>
                       </div>
@@ -1051,11 +1116,10 @@ export default function CourseIndex() {
                         <div
                           className="progress-bar bg-sec-yellow"
                           style={{
-                            width: `${
-                              (comments.filter((v) => v.rating === 3).length /
-                                comments?.length) *
+                            width: `${(comments.filter((v) => v.rating === 3).length /
+                              comments?.length) *
                               100
-                            }%`,
+                              }%`,
                           }}
                         ></div>
                       </div>
@@ -1082,11 +1146,10 @@ export default function CourseIndex() {
                         <div
                           className="progress-bar bg-sec-yellow"
                           style={{
-                            width: `${
-                              (comments.filter((v) => v.rating === 2).length /
-                                comments?.length) *
+                            width: `${(comments.filter((v) => v.rating === 2).length /
+                              comments?.length) *
                               100
-                            }%`,
+                              }%`,
                           }}
                         ></div>
                       </div>
@@ -1113,11 +1176,10 @@ export default function CourseIndex() {
                         <div
                           className="progress-bar bg-sec-yellow"
                           style={{
-                            width: `${
-                              (comments.filter((v) => v.rating === 1).length /
-                                comments?.length) *
+                            width: `${(comments.filter((v) => v.rating === 1).length /
+                              comments?.length) *
                               100
-                            }%`,
+                              }%`,
                           }}
                         ></div>
                       </div>
