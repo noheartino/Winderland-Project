@@ -1,6 +1,8 @@
 import React from 'react'
 import Nav from '@/components/Header/Header'
 import Footer from '@/components/footer/footer'
+import Head from "next/head";
+
 
 import Lv1Card from '@/components/member/level/Lv1Card'
 import Lv2Card from '@/components/member/level/Lv2Card'
@@ -10,6 +12,16 @@ import Lv4Card from '@/components/member/level/Lv4Card'
 export default function Level() {
   return (
     <>
+    <Head>
+        <title>醺迷仙園｜會員等級</title>
+
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <link rel="icon" href="/logo.png" />
+      </Head>
     <Nav />
    
     <div className="member_levelPage_intro container">

@@ -37,7 +37,7 @@ export default function CartPayDividend({ userId }) {
         <div className={css.payDividendContent}>
           <div className={css.dividendContent}>
             <div>W Point</div>
-            <div className={css.dividendWpoint}>{earnedPoints} P</div> {/* 顯示 earnedPoints */}
+            <div className={css.dividendWpoint}>{earnedPoints.toLocaleString()} P</div> {/* 顯示 earnedPoints */}
           </div>
           <div className={css.dividendDetail}>總回饋W Point比率 3.5%</div>
         </div>

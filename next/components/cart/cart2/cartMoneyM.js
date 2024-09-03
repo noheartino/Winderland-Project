@@ -239,7 +239,7 @@ export default function CartPay({
             </div>
             <div className={css.cartTotalML2}>
               <div>總金額</div>
-              <div>NT$ {finalTotalAmount}</div>
+              <div>NT$ {finalTotalAmount.toLocaleString()}</div>
             </div>
             <div className={css.cartTotalML3}>
               <div>
@@ -248,13 +248,13 @@ export default function CartPay({
                   *W Point折抵新台幣1:1
                 </div>
               </div>
-              <div>-NT$ {discountAmount}</div>
+              <div>-NT$ {discountAmount.toLocaleString()}</div>
             </div>
           </div>
           <div className={`col-5 ${css.cartTotalMR2}`}>
             <div className={css.cartTotalML5}>
               <div>實付金額</div>
-              <div className={css.discountedAmount}>NT$ {discountedAmount}</div>
+              <div className={css.discountedAmount}>NT$ {discountedAmount.toLocaleString()}</div>
             </div>
             <div className={css.cartTotalML6} onClick={handleCheckout}>
               送出訂單

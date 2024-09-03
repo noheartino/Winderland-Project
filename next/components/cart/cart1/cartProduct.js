@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import css from "@/components/cart/cart1/cartProduct.module.css";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 export default function CartProduct({ cartItems, onRemove, onUpdateQuantity }) {
   if (cartItems.length === 0) return null;
@@ -14,10 +14,10 @@ export default function CartProduct({ cartItems, onRemove, onUpdateQuantity }) {
 
         // 顯示提示訊息
         Swal.fire({
-          title: '數量調整',
+          title: "數量調整",
           text: `"${item.product_name}" 已超過庫存量，數量已調整為最大可用庫存 ${item.product_amount}。`,
-          icon: 'warning',
-          confirmButtonText: '確定'
+          icon: "warning",
+          confirmButtonText: "確定",
         });
       }
     });
@@ -39,10 +39,10 @@ export default function CartProduct({ cartItems, onRemove, onUpdateQuantity }) {
       await onUpdateQuantity(itemId, newQuantity);
     } else {
       Swal.fire({
-        title: '數量超過限制',
-        text: '商品數量已經達到最大庫存量。',
-        icon: 'error',
-        confirmButtonText: '確定'
+        title: "數量超過限制",
+        text: "商品數量已經達到最大庫存量。",
+        icon: "error",
+        confirmButtonText: "確定",
       });
     }
   };
@@ -83,12 +83,13 @@ export default function CartProduct({ cartItems, onRemove, onUpdateQuantity }) {
                     </div>
                     <button
                       className={css.cartNumberAddButton}
-                      onClick={() =>
-                        handleIncrease(
-                          item.cart_item_id,
-                          item.product_quantity,
-                          item.product_amount
-                        ) // 傳入最大數量
+                      onClick={
+                        () =>
+                          handleIncrease(
+                            item.cart_item_id,
+                            item.product_quantity,
+                            item.product_amount
+                          ) // 傳入最大數量
                       }
                     >
                       +
@@ -98,12 +99,12 @@ export default function CartProduct({ cartItems, onRemove, onUpdateQuantity }) {
                     <div className={css.cartMoney}>
                       NT${" "}
                       {item.product_sale_price > 0
-                        ? item.product_sale_price
-                        : item.product_price}
+                        ? item.product_sale_price.toLocaleString()
+                        : item.product_price.toLocaleString()}
                     </div>
                     {item.product_sale_price > 0 && (
                       <div className={css.cartMoneySafe}>
-                        <s>NT$ {item.product_price}</s>
+                        <s>NT$ {item.product_price.toLocaleString()}</s>
                       </div>
                     )}
                   </div>
@@ -115,7 +116,13 @@ export default function CartProduct({ cartItems, onRemove, onUpdateQuantity }) {
                   <div>{item.years}年</div>
                 </div>
               </div>
-              <div className={css.cartProductDel}>
+              <div
+                className={`${css.cartProductDel} ${
+                  item.product_sale_price > 0
+                    ? css["has-discount"]
+                    : css["no-discount"]
+                }`}
+              >
                 <button onClick={() => onRemove(item.cart_item_id)}>✕</button>
               </div>
             </div>

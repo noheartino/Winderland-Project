@@ -6,6 +6,7 @@ import AddCart from "./AddCart";
 import { useAuth } from "@/hooks/use-auth";
 import { useProduct } from "@/context/ProductContext";
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 export default function PcFrom() {
   const [currentDetail, setCurrentDetail] = useState(0);
@@ -37,7 +38,10 @@ export default function PcFrom() {
   const addToCart = async () => {
     try {
       if (currentAmount === 0 || currentAmount === "0") {
-        alert("請選擇數量");
+        Swal.fire({
+          icon: 'warning',
+          title: '請選擇數量',
+        });
         return;
       }
 
@@ -50,13 +54,18 @@ export default function PcFrom() {
         }
       );
       if (response.data.success) {
-        alert("成功加入購物車!");
+        Swal.fire({
+          icon: 'success',
+          title: '成功加入購物車!',
+        });
       }
     } catch (error) {
       console.error("加入購物車失敗", error.response?.data || error.message);
-      alert(
-        "加入購物車失敗: " + (error.response?.data?.message || error.message)
-      );
+      Swal.fire({
+        icon: 'error',
+        title: '加入購物車失敗',
+        text: '請先登入會員',
+      });
     }
   };
 

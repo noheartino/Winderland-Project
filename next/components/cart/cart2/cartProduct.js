@@ -60,7 +60,7 @@ export default function CartProduct() {
               {orderData.name}
             </div>
             <div className={`${css.orderNumber} ${css.orderNumber2}`}>共{orderData.quantity}件</div>
-            <div className={`${css.orderTotal} ${css.orderTotal2}`}>NT$ {Math.floor(orderData.totalAmount)}</div>
+            <div className={`${css.orderTotal} ${css.orderTotal2}`}>NT$ {Math.floor(orderData.totalAmount).toLocaleString()}</div>
           </div>
         </div>
       </div>
