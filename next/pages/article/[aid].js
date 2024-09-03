@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { FaCircleChevronUp } from "react-icons/fa6";
 import Head from "next/head";
+import { FaCaretRight } from "react-icons/fa";
+import Link from "next/link";
 
 export default function ArticleDetail() {
   const router = useRouter();
@@ -16,7 +18,14 @@ export default function ArticleDetail() {
 
   useEffect(() => {
     const { aid } = router.query; // 取得路由中的 id 參數
-
+    const categoryMapping = {
+      葡萄酒小知識: "知識",
+      產區特色: "產區",
+      葡萄品種介紹: "品種",
+      搭配餐點推薦: "配餐",
+      調酒知識: "調酒",
+      // 添加其他需要轉換的 category
+    };
     if (router.isReady) {
       fetch(`http://localhost:3005/api/article/${aid}`)
         .then((response) => {
@@ -30,6 +39,7 @@ export default function ArticleDetail() {
           const processedArticle = {
             ...data,
             images: data.images ? data.images.split(",") : [],
+            category: categoryMapping[data.category] || data.category,
           };
           setArticle(processedArticle);
         })
@@ -40,7 +50,6 @@ export default function ArticleDetail() {
   }, [router.isReady]);
 
   // 捲動的按鈕
-  // const [isIntersecting, setIsIntersecting] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [scrollTimeout, setScrollTimeout] = useState(null);
   useEffect(() => {
@@ -86,6 +95,7 @@ export default function ArticleDetail() {
       behavior: "smooth",
     });
   };
+  // console.log(article);
 
   return (
     <>
@@ -102,7 +112,21 @@ export default function ArticleDetail() {
       {/* Header */}
       <Nav />
       <div className="container pb-5">
-        {/* 文章主題 */}
+        {/* 文章返回 */}
+        <div
+          className={`mt-4 row align-items-center`}
+          style={{ fontSize: "14px", color: "var(--text_primary)" }}
+        >
+          <Link
+            className="col-auto text-decoration-none"
+            style={{ color: "var(--text_primary)" }}
+            href={`/article`}
+          >
+            文章首頁
+          </Link>
+          <FaCaretRight className="col-auto p-0" />
+          <p className="col-auto m-0">{article.title}</p>
+        </div>
         {/* 最上面桌機header */}
         <ArticleListHeader article={article} />
         {/* 文章內容 */}

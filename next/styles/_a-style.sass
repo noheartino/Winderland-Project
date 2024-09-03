@@ -148,6 +148,8 @@
           margin: 0
           color: var(--text_primary)
           // padding-left: 12px
+      .active
+        background-color: var(--light)
 
     .a-btn-select
       background-color: var(--light)
@@ -215,12 +217,16 @@
     .a-collection
       height: 350px
       background: url(/images/article/collectionMark.jpeg) center center no-repeat
-      background-color: rgba(67, 1, 1, 0.5)
+      background-color: rgba(52, 0, 0, 0.5)
       background-blend-mode: darken
       display: flex
       flex-direction: column
       justify-content: center
       align-items: center
+      transition: all 0.5s ease
+      &:hover
+        background-color: rgba(24, 0, 0, 0.5)
+
 
       h3
         color: var(--light)
@@ -232,7 +238,8 @@
     .a-box
       display: flex
       height: 200px
-      border: 1px solid var(--purple_light)
+      border: 2px solid var(--wine_light)
+
       .a-box-img
         width: 40%
         // height: 200px

@@ -46,7 +46,6 @@ export default function Index() {
         setLoading(false);
       });
   }, []);
-
   const router = useRouter();
   const handleLink = () => {
     router.push(`/article`);

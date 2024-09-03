@@ -1,18 +1,11 @@
 import React, { useState } from "react";
 import ArticleCReplymore from "./article-c-replymore";
-// import { useAuth } from "@/hooks/use-auth";
 
-export default function ArticleComment({ comment, index, userId }) {
-  console.log(userId);
+export default function ArticleComment({ comment, index, userId, avatarUrl, onCommentChange }) {
   const [commentText, setCommentText] = useState(comment.comment_text);
   const [isEditing, setIsEditing] = useState(false);
   // 設定textarea的行數
   const [rows, setRows] = useState(2);
-  // 設定回覆icon字元
-  // const firstTwoChars = comment.account.slice(0, 2).toUpperCase();
-
-  // 這邊是使用hooks的useAuth測試
-  // const { auth } = useAuth(); // 取得認證資訊
 
   const commentUser = comment.user_id; // 替換為實際的使用者 ID
   const commentId = comment.id; // 替換為實際的文章 ID
@@ -20,7 +13,6 @@ export default function ArticleComment({ comment, index, userId }) {
 
   // 判定是否有權限編輯
   const handleEdit = async () => {
-    // const userId = auth.userData.id; // 取得使用者 ID
     if (!userId) {
       alert("請登入來編輯評論");
       return;
@@ -70,7 +62,10 @@ export default function ArticleComment({ comment, index, userId }) {
         alert("評論修改成功");
         setCommentText("");
         setIsEditing(false);
-        window.location.reload();
+        
+        if (onCommentChange) {
+          onCommentChange();
+        }
       }
     } catch (error) {
       console.error("Error submitting comment:", error);
@@ -110,14 +105,17 @@ export default function ArticleComment({ comment, index, userId }) {
         alert("刪除評論失敗：" + errorData.error);
       } else {
         alert("評論已刪除");
-        window.location.reload();
+        // 呼叫父層元件的 callback 函數來更新評論列表
+        if (onCommentChange) {
+          onCommentChange();
+        }
       }
     } catch (error) {
       console.error("Error deleting comment:", error);
       alert("發生錯誤，請聯繫管理員");
     }
   };
-
+console.log(avatarUrl)
   return (
     <>
       <div className="col-12 my-4">
@@ -126,11 +124,11 @@ export default function ArticleComment({ comment, index, userId }) {
           <div className="col-auto">
             {/* 桌機icon */}
             <div className="au-icon d-none d-lg-flex">
-              <p className="m-0">{comment.user_id}</p>
+              <img className="m-0" src={avatarUrl} />
             </div>
             {/* 手機icon */}
             <div className="au-icon-sm d-lg-none">
-              <p className="m-0">{comment.user_id}</p>
+            <img className="m-0" src={avatarUrl} />
             </div>
           </div>
           <div className="aucomment-section col">
@@ -152,16 +150,16 @@ export default function ArticleComment({ comment, index, userId }) {
                         className="fa-regular fa-thumbs-up me-1"
                         style={{ color: "var(--wine)" }}
                       />
-                      <p className="d-none d-lg-inline">有幫助</p> (???)
+                      <p className="d-none d-lg-inline">有幫助</p>
                     </a>
                   </li>
                   {/* 回覆 */}
-                  <li className="col-auto ps-3 border-0">
+                  {/* <li className="col-auto ps-3 border-0">
                     <a href="">
                       <i className="fa-solid fa-reply me-1" />
                       <p className="d-none d-lg-inline">回覆</p>
                     </a>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
               {/* 回覆區的more */}
