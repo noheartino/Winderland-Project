@@ -3,6 +3,9 @@ import { useRouter } from 'next/router';
 
 export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage }) {
     const router = useRouter();
+    if(!myBox){
+        myBox=null;
+    }
     const {search} = router.query
     const assigns = classAssigns?.filter((assign) => {
         return assign.class_id === myBox?.id;
@@ -31,6 +34,8 @@ export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage
             pathname: `/course/${myBox?.class_id}`
         })
     }
+    console.log("mybox?????????");
+    console.log(myBox);
     return (
         <>
             <div className={`course-leftcontent col-12 col-md-8 h-100 px-0 cursor-pointer ${myBox ? 'd-flex' : 'd-none'} flex-column justify-content-between`} onClick={handleHref} title={`${myBox?.name}`}>
@@ -38,7 +43,7 @@ export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage
                     <div className='col-12 course-video-video overflow-hidden position-relative px-0 mx-0'>
                         <img
                             className="course-img21"
-                            src={`/images/course_and_tarot/${myBox?.class_path}`}
+                            src={`http://localhost:3005/uploads/course_and_tarot/${myBox?.class_path}`}
                             alt=""
                         />
                         <div className="d-flex d-md-none justify-content-center align-items-center w-100 h-100 absolute-t0-l0">
@@ -97,7 +102,7 @@ export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage
             <div className={`course-no-content col h-100 flex-column flex-md-row px-0 m-0 row-gap-3 justify-content-center align-items-center ${myBox ? 'd-none' : 'd-flex'}`} style={{minHeight: '278px'}}>
                 <i className="fa-regular fa-face-meh me-2 text-prim-dark h5" />
                 <div className="spac-2 text-prim-dark h6">
-                    尚無課程內容
+                    尚無可顯示的課程內容
                 </div>
             </div>
         </>

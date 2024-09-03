@@ -57,7 +57,7 @@ export default function ClassManIndex() {
 
 
   // 選擇上傳圖片
-  const [Cimage, setCImage] = useState('/images/course_and_tarot/classImgDefault.png');
+  const [Cimage, setCImage] = useState('http://localhost:3005/uploads/course_and_tarot/classImgDefault.png');
   const handleImageUpload = (event) => {
     const file = event.target.files[0]; // 獲取選中的文件
     if (file) {
@@ -281,7 +281,7 @@ export default function ClassManIndex() {
   function handleReset(){
     clearIsEmpty();
     setOnOrUnderline('')
-    setCImage('/images/course_and_tarot/classImgDefault.png')
+    setCImage('http://localhost:3005/uploads/course_and_tarot/classImgDefault.png')
     setCvideo('')
     setRemindMsgBox({})
     setErrorMsgBox({})
@@ -765,7 +765,7 @@ export default function ClassManIndex() {
                   <label htmlFor='classPic' className='form-label CmanageCreateTag'>
                     課程縮圖
                   </label>
-                  <img src={Cimage?Cimage:'/images/course_and_tarot/classImgDefault.png'} alt='' className='Cprevpic' />
+                  <img src={Cimage?Cimage:'http://localhost:3005/uploads/course_and_tarot/classImgDefault.png'} alt='' className='Cprevpic' />
                   {/* <input
                     className='form-control vidAndImg-input'
                     type='file'

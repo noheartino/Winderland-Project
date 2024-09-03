@@ -238,6 +238,7 @@ router.get('/', async (req, res) => {
                 ORDER BY 
                     class.id ASC;`
     querySQLParams = [`%${search}%`, `%${search}%`]
+    console.log("---!! querySQL=2");
   }
   console.log('送出的查詢詞語是: ' + search)
   let querySQLComments = `SELECT comments.* FROM comments`
@@ -263,7 +264,7 @@ router.get('/', async (req, res) => {
   let courseBtnSQLwords = ``
   if (!view || view === '全部') {
     courseBtnSQLwords = `AND order_details.class_id > 0`
-    console.log(courseBtnSQLwords + '點擊:' + view)
+    console.log(courseBtnSQLwords + '點擊:全部，或是 view 未定' )
   } else if (view === '實體') {
     courseBtnSQLwords = `AND order_details.class_id > 0 AND class.online = 0`
     console.log(courseBtnSQLwords + '點擊:' + view)
@@ -299,9 +300,9 @@ router.get('/', async (req, res) => {
   // if(search){
   //   console.log("search-----> "+search);
   // }
-  console.log('測試:' + req.originalUrl)
+  console.log('測試11!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' + req.originalUrl)
   try {
-    console.log('測試:' + req.originalUrl)
+    console.log('測試22!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' + req.originalUrl)
 
     const [courses] = search
       ? await connection.execute(querySQL, querySQLParams)
@@ -309,10 +310,13 @@ router.get('/', async (req, res) => {
     const [classSum] = await connection.execute(classSumSQL)
     const [comments] = await connection.execute(querySQLComments)
     const [classAssigns] = await connection.execute(querySQLClassAsign)
-    const [myFavoriteCourse] = await connection.execute(
-      querySQLMyFavoriteCourse
-    )
-    const [myCourse] = await connection.execute(querySQLMyCourse)
+
+      const [myFavoriteCourse] = userId ? await connection.execute(
+        querySQLMyFavoriteCourse
+      ): [null]
+      const [myCourse] = userId ? await connection.execute(querySQLMyCourse): [null]
+    
+
     const [teachers] = await connection.execute(teachersSQL)
     res.json({
       status: 'success',

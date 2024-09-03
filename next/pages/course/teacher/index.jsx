@@ -158,7 +158,7 @@ useEffect(()=>{
                           })
                           : <div className="row justify-content-center my-3">
                               <div className="col-auto" style={{ maxWidth: '370px', maxHeight: '350px', width: '100%' }}>
-                              <Image src={`/images/course_and_tarot/teacher-no-result.png`} alt="teacher list no result" layout="responsive" width={370} height={350} style={{ width: '100%', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}/>
+                              <Image src={`http://localhost:3005/uploads/course_and_tarot/teacher-no-result.png`} alt="teacher list no result" layout="responsive" width={370} height={350} style={{ width: '100%', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}/>
                             </div>
                           </div> }
                           {/* teacher-list-card end */}

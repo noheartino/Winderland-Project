@@ -329,7 +329,7 @@ export default function CourseIndex() {
                         >
                           <img
                             className="course-img21"
-                            src="/images/course_and_tarot/rectangle128.png"
+                            src={`http://localhost:3005/uploads/course_and_tarot/${course?.class_path}`}
                             alt=""
                           />
                           <div
@@ -557,39 +557,32 @@ export default function CourseIndex() {
                     <div className="container-fluid bg-light-gray rounded-5 w-100 shadow">
                       <div className="container-sm px-0 teacher-intro-card">
                         <div className="row p-2 p-md-4 mx-2 align-items-center justify-content-center">
-                          <a
-                            className="teacher-head col-auto me-3 px-0"
-                            href="/"
-                          >
+                          <div className="teacher-head col-auto me-3 px-0">
                             <img
                               className="course-img21"
-                              src="/images/course_and_tarot/Ellipse 8.png"
+                              src={`http://localhost:3005/uploads/course_and_tarot/${course?.teacher_path}`}
                               alt=""
                             />
-                          </a>
+                          </div>
                           <div className="teacher-text-box col col-md-4 col-lg-7 ms-3">
-                            <div className="row align-items-center">
+                          <Link className="row align-items-center justify-content-between d-flex flex-row" href={`/course/teacher/${course?.teacher_id}`}>
                               <div className="teacher-card-name col">
-                                <a href="">
+
                                   <h2 className="spac-2 text-prim-dark lh-15">
                                     {course?.name}
                                   </h2>
-                                </a>
-                                <a href="">
                                   <h5 className="spac-2 text-prim-dark lh-15">
                                     {course?.name_en}
                                   </h5>
-                                </a>
                               </div>
-                              <a className="col-auto" href="/">
-                                <div className="teacher-more d-flex align-items-center">
+                              
+                              <div className="col-auto teacher-more d-flex align-items-center">
                                   <h5 className="spac-2 text-prim-dark lh-15 me-2">
                                     講師詳情
                                   </h5>
                                   <i className="fa-solid fa-chevron-right text-prim-dark mt-1" />
-                                </div>
-                              </a>
-                            </div>
+                              </div>
+                            </Link>
                             <hr className="my-4" />
                             <h5 className="spac-2 text-prim-dark lh-15 text-justify teacher-intro-card-text">
                               {course?.description}
@@ -633,7 +626,7 @@ export default function CourseIndex() {
                   >
                     <img
                       className="course-img21"
-                      src="/images/course_and_tarot/rectangle128.png"
+                      src={`http://localhost:3005/uploads/course_and_tarot/${course?.class_path}`}
                       alt=""
                     />
                     <div className="absolute-t0-l0 w-100 h-100 d-flex justify-content-center align-items-center">
@@ -796,12 +789,12 @@ export default function CourseIndex() {
                   </div>
 
                   <div className="row teacher-sm-introduce my-5 mx-0 px-0">
-                    <a className="teacher-head col-auto px-0" href="/">
+                    <div className="teacher-head col-auto px-0">
                       <img
-                        src="/images/course_and_tarot/Ellipse 8.png"
+                        src={`http://localhost:3005/uploads/course_and_tarot/${course?.teacher_path}`}
                         alt=""
                       />
-                    </a>
+                    </div>
                     <div className="teacher-text-box col px-4">
                       <div>
                         <span className="h3 spac-2 text-prim-dark lh-15">
@@ -1152,7 +1145,7 @@ export default function CourseIndex() {
                     }}
                   >
                     <Image
-                      src={`/images/course_and_tarot/comments-no-result.png`}
+                      src={`http://localhost:3005/uploads/course_and_tarot/comments-no-result.png`}
                       alt="course list no result"
                       layout="responsive"
                       width={370}

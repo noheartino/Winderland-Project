@@ -266,7 +266,7 @@ export default function ClassManIndex() {
   function handleReset(){
     clearIsEmpty();
     setOnOrUnderline('')
-    setCImage('/images/course_and_tarot/classImgDefault.png')
+    setCImage('http://localhost:3005/uploads/course_and_tarot/classImgDefault.png')
     setCvideo('')
     setRemindMsgBox({})
     setErrorMsgBox({})
@@ -752,7 +752,7 @@ export default function ClassManIndex() {
                   <label htmlFor='classPic' className='form-label CmanageCreateTag'>
                     課程縮圖
                   </label>
-                  <img src={Cimage.trim().length>0?Cimage:'/images/course_and_tarot/classImgDefault.png'} alt='' className='Cprevpic' />
+                  <img src={Cimage.trim().length>0?Cimage:'http://localhost:3005/uploads/course_and_tarot/classImgDefault.png'} alt='' className='Cprevpic' />
                   {/* <input
                     className='form-control vidAndImg-input'
                     type='file'
