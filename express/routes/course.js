@@ -54,7 +54,12 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // cb(null, ${Date.now()}-${file.originalname})
-    cb(null, `${Date.now()}-${Math.floor(Math.random() * 1000000).toString().padStart(6, '0')}`)
+    cb(
+      null,
+      `${Date.now()}-${Math.floor(Math.random() * 1000000)
+        .toString()
+        .padStart(6, '0')}`
+    )
   },
 })
 
@@ -261,7 +266,7 @@ router.get('/', async (req, res) => {
     courseBtnSQLwords = `AND order_details.class_id > 0 AND class.online = '1'`
     console.log(courseBtnSQLwords + '點擊:' + view)
   }
-  let todayDateOnly = new Date().toISOString().split('T')[0]
+  // let todayDateOnly = new Date().toISOString().split('T')[0]
   // let querySQLMyCourse = `select class.* from class`
   let querySQLMyCourse = `SELECT order_details.order_uuid, order_details.class_id, orders.user_id, orders.order_uuid, class.*, class.id AS class_id, images_class.class_id, images_class.path AS class_path, class.name AS class_name, teacher.id AS teacher_id, teacher.name AS teacher_name
                             FROM
@@ -442,10 +447,10 @@ router.post(
   '/teacher/management/create',
   upload.fields([
     { name: 'classPic', maxCount: 1 },
-    { name: 'classVdio', maxCount: 1 }
+    { name: 'classVdio', maxCount: 1 },
   ]),
   async (req, res) => {
-    console.log('觀察有沒有抓到圖片和影片', req.files);
+    console.log('觀察有沒有抓到圖片和影片', req.files)
     const {
       class_name,
       teacher_id,
@@ -493,8 +498,8 @@ router.post(
       0,
     ]
 
-  //   let insertImgAndVdioSQL = `INSERT INTO images_class
-  // (path, video_path) VALUES (?, ?);`
+    //   let insertImgAndVdioSQL = `INSERT INTO images_class
+    // (path, video_path) VALUES (?, ?);`
     let insertImgAndVdioSQL = `INSERT INTO images_class
     (class_id, path, video_path) VALUES (?, ?, ?);`
     try {
@@ -502,24 +507,24 @@ router.post(
         createCourseSQL,
         createCourseParams
       )
-      
-      const classId = createCourse.insertId;
-      
-      const classImgFile = req.files['classPic'] ? req.files['classPic'][0].filename : null;
-      const classVdioFile = req.files['classVdio'] ? req.files['classVdio'][0].filename : null;
-      
-      let insertImgAndVdioSQLParams = [
-        classId,
-        classImgFile,
-        classVdioFile
-      ]
-      
+
+      const classId = createCourse.insertId
+
+      const classImgFile = req.files['classPic']
+        ? req.files['classPic'][0].filename
+        : null
+      const classVdioFile = req.files['classVdio']
+        ? req.files['classVdio'][0].filename
+        : null
+
+      let insertImgAndVdioSQLParams = [classId, classImgFile, classVdioFile]
+
       const [insertImgAndVdio] = await connection.execute(
         insertImgAndVdioSQL,
         insertImgAndVdioSQLParams
       )
-      
-      console.log('測試POST:', req.originalUrl);
+
+      console.log('測試POST:', req.originalUrl)
       res.json({
         status: 'success',
         message: '增加課程成功',
