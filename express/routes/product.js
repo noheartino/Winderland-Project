@@ -202,6 +202,16 @@ router.get('/', async (req, res) => {
 
     // 獲取分頁後商品的基本訊息
     const [products] = await db.query(query, params)
+
+    if (products.length === 0) {
+      // 如果沒有找到商品，立即返回錯誤
+      return res.status(404).json({
+        error: 'fail',
+        message: '沒有找到商品',
+      })
+    }
+
+    // 取得所有分類
     const [categories] = await db.query(getCategories)
 
     // 獲取所有商品跟商品的詳細數據、所有分類+品種
