@@ -77,7 +77,7 @@ export default function ArticleIndexList({ Article }) {
   const [isHovered, setIsHovered] = useState(false);
   const backgroundImage =
     Article?.images.length > 0
-      ? `url(/images/article/${Article.images[0]})`
+      ? `url(http://localhost:3005/uploads/article/${Article.images[0]})`
       : `url(/images/article/titlePic.jpeg)`;
   // 導向某篇文章
   const handleLink = () => {
