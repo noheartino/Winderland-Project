@@ -9,8 +9,8 @@ export default function SortSearch({
   changeSearch,
   totalItems,
   onOpenMobileFilter,
+  noProducts,
 }) {
-
   const [localSearch, setLocalSearch] = useState(search);
   const [getSearch, setGetSearch] = useState(false);
 
@@ -18,30 +18,32 @@ export default function SortSearch({
     if (search !== "") {
       setGetSearch(true);
     }
-    if(search === ""){
-      setGetSearch(false)
+    if (search === "") {
+      setGetSearch(false);
     }
   }, [search]);
-
-  console.log(getSearch);
 
   return (
     <>
       {/* top的排序+搜尋欄 */}
       <div className={`row ${styles["shop-fliterSearch"]}`}>
         <div className={`col`}></div>
-        <div
-          className={`col-4 ${getSearch ? "d-flex" : "d-none"} ${styles["search-total"]}`}
-        >
-          <span className={`${styles["search-span"]}`}>
-            &nbsp;{search}&nbsp;
-          </span>{" "}
-          的搜尋結果，共{" "}
-          <span className={`${styles["search-span"]}`}>
-            &nbsp;{totalItems}&nbsp;
-          </span>{" "}
-          筆
-        </div>
+        {getSearch && totalItems > 0 && (
+          <div
+            className={`col-4 d-flex ${
+              styles["search-total"]
+            }`}
+          >
+            <span className={`${styles["search-span"]}`}>
+              &nbsp;{search}&nbsp;
+            </span>{" "}
+            的搜尋結果，共{" "}
+            <span className={`${styles["search-span"]}`}>
+              &nbsp;{noProducts ? 0 : totalItems}&nbsp;
+            </span>{" "}
+            筆
+          </div>
+        )}
         {/* top的排序欄 */}
         <div className={`col-2 ${styles["shop-fliter"]}`}>
           <select
@@ -64,7 +66,7 @@ export default function SortSearch({
             value={localSearch}
             onChange={(e) => setLocalSearch(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
+              if (e.key === "Enter" && localSearch !== "") {
                 changeSearch(localSearch);
               }
             }}
@@ -73,10 +75,23 @@ export default function SortSearch({
           <button
             type="button"
             onClick={() => {
-              changeSearch(localSearch);
+              if (localSearch !== "") {
+                changeSearch(localSearch);
+              }
             }}
+            className={`${getSearch ? "d-none" : "d-flex"}`}
           >
             <i className="fa-solid fa-magnifying-glass" />
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              changeSearch("");
+              setLocalSearch("");
+            }}
+            className={`${getSearch ? "d-flex" : "d-none"}`}
+          >
+            <i className="fa-solid fa-xmark"></i>
           </button>
         </div>
       </div>
@@ -93,7 +108,10 @@ export default function SortSearch({
         <div
           className={`col-md-1 col-2 ${styles["shop-fliter-m"]} ${styles["aside-open-button"]}`}
         >
-          <button className={`${styles["fliter-icon"]}`} onClick={onOpenMobileFilter}>
+          <button
+            className={`${styles["fliter-icon"]}`}
+            onClick={onOpenMobileFilter}
+          >
             <img src="/shop_images/fliter-icon.svg" alt="" />
           </button>
         </div>

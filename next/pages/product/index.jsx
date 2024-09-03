@@ -9,6 +9,7 @@ import ProductGroup from "@/components/product-list/productlist/ProductList";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 import ListPageNation from "@/components/product-list/productlist/ListPageNation";
+import Arrtotop from "@/components/Header/arr";
 
 export default function ProductIndex() {
   const [products, setProducts] = useState([]);
@@ -242,11 +243,13 @@ export default function ProductIndex() {
         newFilters.variet = "";
         newFilters.origin = "";
         newFilters.country = "";
+        setSearch("");
       } else if (filterType === "variet") {
         newFilters.origin = "";
         newFilters.country = "";
       } else if (filterType === "country") {
         newFilters.origin = "";
+        setSearch("");
       }
 
       return newFilters;
@@ -291,6 +294,7 @@ export default function ProductIndex() {
             search={search}
             changeSearch={changeSearch}
             totalItems={totalItems}
+            noProducts={noProducts}
             onOpenMobileFilter={() => setIsMobileFilterOpen(true)}
           />
           {/* 手機&平板版的開關aside */}
@@ -302,7 +306,7 @@ export default function ProductIndex() {
             onClose={() => setIsMobileFilterOpen(false)}
             resetFilters={resetFilters}
             fetchProducts={fetchProducts}
-            fetchFilters={fetchFilters} // 添加這一行
+            fetchFilters={fetchFilters} 
           />
           {/* 主要內容 */}
           <div className="row main-content">
@@ -337,6 +341,7 @@ export default function ProductIndex() {
             )}
           </div>
         </div>
+        <Arrtotop/>
         <Footer />
       </>
     </>
