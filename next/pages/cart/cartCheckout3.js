@@ -43,13 +43,15 @@ export default function CartCheckout3() {
   return (
     <>
       <Head>
-        <title>Cart4</title>
+          <title>購物車</title>
+
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <link rel="icon" href="/logo.png" />
       </Head>
-      <meta charSet="utf-8" />
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no"
-      />
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         rel="stylesheet"

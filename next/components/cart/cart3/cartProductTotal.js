@@ -94,7 +94,7 @@ export default function CartProductTotal() {
                 {orderData.transportText}
               </div>
               <div className={`${css.orderStatus3} ${css.orderStatus2}`}>出貨準備中</div>
-              <div className={`${css.orderTotal3} ${css.orderTotal2}`}>NT$ {Math.floor(orderData.totalAmount)}</div>
+              <div className={`${css.orderTotal3} ${css.orderTotal2}`}>NT$ {Math.floor(orderData.totalAmount).toLocaleString()}</div>
             </div>
           </div>
         </div>

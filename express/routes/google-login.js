@@ -9,7 +9,6 @@ import 'dotenv/config.js'
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET
 
 router.post('/', async function (req, res) {
-  // providerData =  req.body
   console.log(JSON.stringify(req.body))
 
   // 檢查從react來的資料
@@ -28,39 +27,64 @@ router.post('/', async function (req, res) {
     )
     const total = rows[0].count
 
-    let returnUser = {
-      id: 0,
-      username: '',
-      google_uid: '',
-      line_uid: '',
-    }
+    let returnUser
 
+    // let returnUser = {
+    //   id: 0,
+    //   username: '',
+    //   google_uid: '',
+    //   line_uid: '',
+    // }
+
+    // if (total > 0) {
+    //   // 用戶已存在，獲取用戶資料
+    //   const [users] = await connection.execute(
+    //     'SELECT id, user_name, google_uid, line_uid FROM users WHERE google_uid = ?',
+    //     [google_uid]
+    //   )
+    //   const dbUser = users[0]
+    //   returnUser = {
+    //     id: dbUser.id,
+    //     username: dbUser.username,
+    //     google_uid: dbUser.google_uid,
+    //     line_uid: dbUser.line_uid,
+    //   }
+    // } else {
+    //   // 創建新用戶
+    //   const [result] = await connection.execute(
+    //     'INSERT INTO users (user_name, email, google_uid, photo_url) VALUES (?, ?, ?, ?)',
+    //     [displayName, email, google_uid, photoURL]
+    //   )
+    //   returnUser = {
+    //     id: result.insertId,
+    //     username: '',
+    //     google_uid: google_uid,
+    //     line_uid: null,
+    //   }
+    // }
     if (total > 0) {
-      // 用戶已存在，獲取用戶資料
       const [users] = await connection.execute(
-        'SELECT id, user_name, google_uid, line_uid FROM users WHERE google_uid = ?',
+        'SELECT id, user_name, email, google_uid, line_uid, photo_url, gender, birthday, member_level_id, phone, address FROM users WHERE google_uid = ?',
         [google_uid]
       )
-      const dbUser = users[0]
-      returnUser = {
-        id: dbUser.id,
-        username: dbUser.username,
-        google_uid: dbUser.google_uid,
-        line_uid: dbUser.line_uid,
-      }
+      returnUser = users[0]
     } else {
-      // 創建新用戶
       const [result] = await connection.execute(
-        'INSERT INTO users (user_name, email, google_uid, photo_url) VALUES (?, ?, ?, ?)',
-        [displayName, email, google_uid, photoURL]
+        'INSERT INTO users (user_name, email, google_uid, photo_url, member_level_id) VALUES (?, ?, ?, ?, ?)',
+        [displayName, email, google_uid, photoURL, 1]
       )
-      returnUser = {
-        id: result.insertId,
-        username: '',
-        google_uid: google_uid,
-        line_uid: null,
-      }
+      const [newUsers] = await connection.execute(
+        'SELECT id, user_name, email, google_uid, line_uid, photo_url, gender, birthday, member_level_id, phone, address FROM users WHERE id = ?',
+        [result.insertId]
+      )
+      returnUser = newUsers[0]
     }
+
+    // const tokenPayload = {
+    //   id: returnUser.id,
+    //   user_name: returnUser.user_name,
+    //   email: returnUser.email,
+    // }
 
     // 產生存取令牌(access token)
     const accessToken = jsonwebtoken.sign(returnUser, accessTokenSecret, {
@@ -68,11 +92,11 @@ router.post('/', async function (req, res) {
     })
 
     // 使用httpOnly cookie來讓瀏覽器端儲存access token
-    // res.cookie('accessToken', accessToken, { httpOnly: true })
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      // sameSite: 'strict',
+      sameSite: 'lax', // 改為 'lax' 以允許跨站點請求
       maxAge: 3 * 24 * 60 * 60 * 1000, // 3 天
     })
 
@@ -93,7 +117,15 @@ router.post('/', async function (req, res) {
           username: returnUser.username,
           email: returnUser.email,
           photoURL: returnUser.photo_url,
+          user_name: returnUser.user_name,
+          // avatar_url: returnUser.photo_url,
+          gender: returnUser.gender || '',
+          birthday: returnUser.birthday || '',
+          member_level_id: returnUser.member_level_id || 1,
+          phone: returnUser.phone || '',
+          address: returnUser.address || '',
         },
+        // token: 'accessToken', // 添加這行
       },
     })
   } catch (error) {

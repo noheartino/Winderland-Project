@@ -49,7 +49,7 @@ export default function CartCoupon({ userId, onCouponChange, totalAmount }) {
     } else {
       Swal.fire({
         title: '使用條件不滿足',
-        text: `購物車金額需達到 NT$${minSpend} 才能使用此優惠券。`,
+        text: `購物車金額需達到 NT$${minSpend.toLocaleString()} 才能使用此優惠券。`,
         icon: 'warning',
         confirmButtonText: '確定'
       });

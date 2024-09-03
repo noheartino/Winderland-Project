@@ -50,7 +50,7 @@ export default function CartWpointM({ userId, isChecked, onPointsChange, onPoint
             <b>目前持有 W Point</b>
           </div>
           <div className={css.wPointContentHave}>
-            <b>{points}P</b>
+            <b>{points.toLocaleString()}P</b>
           </div>
         </div>
       </div>

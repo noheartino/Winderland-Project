@@ -882,6 +882,9 @@
     }
     .CM-check-input{
       background-color: #ffffff;
+      &.isEmpty{
+        background-color: #ffe1da;
+      }
       
       &:checked{
         background-color: var(--primary);
@@ -898,6 +901,9 @@
         font-size: 16px;
         &::placeholder{
           color: var(--text_gray_light)
+        }
+        &.isEmpty{
+          background-color: #ffe1da;
         }
 
         @media screen and (max-width: 992px){
@@ -929,6 +935,22 @@
         &::placeholder{
           color: var(--text_gray_light)
         }
+        &.isEmpty{
+          background-color: #ffe1da;
+        }
+    }
+    .vidAndImg-input{
+      background-color: #FBF9F7;
+        width: 100%;
+        padding-block: 7px;
+        padding-left: 10px;
+        color: var(--text_primary);
+        letter-spacing: 2px;
+        border: 1px solid #dbdbdb;
+        font-size: 16px;
+      &.isEmpty{
+        background-color: #ffe1da;
+      }
     }
     #classSummary{
       width: 100%;

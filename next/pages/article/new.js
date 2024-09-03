@@ -6,6 +6,7 @@ import { MdAddPhotoAlternate } from "react-icons/md";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
+import Head from "next/head";
 
 export default function New() {
   const { auth } = useAuth();
@@ -206,8 +207,17 @@ export default function New() {
   return (
     <>
       {/* Header */}
+      <Head>
+        <title>新增文章</title>
+
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <link rel="icon" href="/logo.png" />
+      </Head>
       <Nav />
-      <title>新增文章</title>
       <div className={`container-fuild ${style.ACbg} row`}>
         <div className={`container ${style.AcreatePage} col-lg-7 col-11 py-5`}>
           <div className={`${style.ACnav} col row ps-5 mb-3`}>

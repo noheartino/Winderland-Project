@@ -1,26 +1,40 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./MobileFliterAside.module.css";
-import Link from "next/link";
 
-export default function MobileFliterAside({ isOpen, onClose }) {
-  // 雙滑塊js start//
-  const minLimit = 500;
-  const maxLimit = 100000;
+export default function MobileFliterAside({
+  isOpen,
+  onClose,
+  filters,
+  selectFilters,
+  changeFilter,
+  resetFilters,
+  fetchProducts,
+  fetchFilters
+}) {
+  const [localFilters, setLocalFilters] = useState(selectFilters);
+  const [minValue, setMinValue] = useState(selectFilters.minPrice || 0);
+  const [maxValue, setMaxValue] = useState(selectFilters.maxPrice || 150000);
+
+  useEffect(() => {
+    setLocalFilters(selectFilters);
+    setMinValue(selectFilters.minPrice || 0);
+    setMaxValue(selectFilters.maxPrice || 150000);
+  }, [selectFilters]);
+
+  const minLimit = 0;
+  const maxLimit = 150000;
   const step = 500;
-
-  const [minValue, setMinValue] = useState(minLimit);
-  const [maxValue, setMaxValue] = useState(maxLimit);
 
   const getStep = (value) => {
     return Math.round(value / step) * step;
   };
 
-  // 小滑塊跟大滑塊的變更
   const minChange = (e) => {
     const rawValue = Number(e.target.value);
     const steppedValue = getStep(rawValue);
     const newMinValue = Math.min(steppedValue, maxValue - 4 * step);
     setMinValue(newMinValue);
+    setLocalFilters(prev => ({ ...prev, minPrice: newMinValue }));
   };
 
   const maxChange = (e) => {
@@ -28,16 +42,58 @@ export default function MobileFliterAside({ isOpen, onClose }) {
     const steppedValue = getStep(rawValue);
     const newMaxValue = Math.max(steppedValue, minValue + 4 * step);
     setMaxValue(newMaxValue);
+    setLocalFilters(prev => ({ ...prev, maxPrice: newMaxValue }));
   };
 
-  const getPercent = (value) =>
-    ((value - minLimit) / (maxLimit - minLimit)) * 100;
+  const handleFilterChange = async (filterType, value) => {
+    let newFilters = { ...localFilters, [filterType]: value };
+    
+    if (filterType === 'category') {
+      newFilters = { ...newFilters, variet: '', origin: '', country: '' };
+    } else if (filterType === 'country') {
+      newFilters = { ...newFilters, origin: '' };
+    }
+    
+    setLocalFilters(newFilters);
+    
+    // 立即更新 selectFilters 並重新獲取篩選器
+    Object.entries(newFilters).forEach(([key, val]) => {
+      changeFilter(key, val);
+    });
+    
+    await fetchFilters();
+  };
 
-  // 雙滑塊js end//
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetchProducts(localFilters);
+    onClose();
+  };
+
+  const handleReset = async () => {
+    const resetFiltersState = {
+      category: "",
+      variet: "",
+      origin: "",
+      country: "",
+      minPrice: 0,
+      maxPrice: 150000
+    };
+    setLocalFilters(resetFiltersState);
+    setMinValue(0);
+    setMaxValue(150000);
+    
+    // 重置 selectFilters 並重新獲取篩選器
+    Object.entries(resetFiltersState).forEach(([key, value]) => {
+      changeFilter(key, value);
+    });
+    
+    await fetchFilters();
+    resetFilters();
+  };
 
   return (
     <>
-      {/* 手機&平板版的開關aside */}
       <div
         className={`${styles["shop-aside-overlay-m"]} ${
           isOpen ? styles.open : ""
@@ -54,38 +110,108 @@ export default function MobileFliterAside({ isOpen, onClose }) {
             <i className="fa-solid fa-xmark" />
           </button>
         </div>
-        <form action="">
+        <form onSubmit={handleSubmit}>
+          {/* 類型篩選 */}
           <div className={`${styles["shop-category-fliter-m"]}`}>
             <div className={`${styles["shop-category-title"]}`}>類型</div>
-            <select name="" id="">
-              <option value={0}>Red 紅酒</option>
-              <option value={1}>Port Wine 波特酒</option>
-              <option value={2}>Cult Wine 美國膜拜酒</option>
-              <option value={3}>GCC 波爾多級數酒</option>
+            <select 
+              value={localFilters.category} 
+              onChange={(e) => handleFilterChange('category', e.target.value)}
+            >
+              <option value="">全部商品&nbsp;&nbsp;All Wine</option>
+              {filters.categories &&
+                filters.categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}&nbsp;&nbsp;{category.name_en}
+                  </option>
+                ))}
             </select>
             <div className={`${styles["shop-category-tags"]}`}>
-              <div className={`${styles["category-tag"]}`}>Red 紅酒</div>
-              <div className={`${styles["category-tag"]}`}>
-                Port Wine 波特酒
-              </div>
-              <div className={`${styles["category-tag"]}`}>Sherry 雪莉酒</div>
-              <div className={`${styles["category-tag"]}`}>Rose 粉紅酒</div>
-              <div className={`${styles["category-tag"]}`}>
-                Noble-Wine 貴腐甜酒
-              </div>
-              <div className={`${styles["category-tag"]}`}>...</div>
+              {filters.categories &&
+                filters.categories.map((category) => (
+                  <button
+                    key={category.id}
+                    type="button"
+                    value={category.id}
+                    className={`${styles["category-tag"]}`}
+                    onClick={() => handleFilterChange('category', category.id)}
+                  >
+                    {category.name_en.replace(/\s*Wine\s*/, "")}&nbsp;
+                    {category.name}
+                  </button>
+                ))}
             </div>
           </div>
+          {/* 品種篩選 */}
+          <div className={`${styles["shop-variet-fliter-m"]}`}>
+            <div className={`${styles["shop-variet-title"]}`}>品種</div>
+            <select 
+              value={localFilters.variet} 
+              onChange={(e) => handleFilterChange('variet', e.target.value)}
+            >
+              <option value="">全部品種</option>
+              {filters.varieties &&
+                filters.varieties.map((variet) => (
+                  <option key={variet.id} value={variet.id}>
+                    {variet.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          {/* 國家篩選 */}
+          <div className={`${styles["shop-country-fliter-m"]}`}>
+            <div className={`${styles["shop-country-title"]}`}>國家</div>
+            <select 
+              value={localFilters.country} 
+              onChange={(e) => handleFilterChange('country', e.target.value)}
+            >
+              <option value="">全部國家</option>
+              {filters.countries &&
+                filters.countries.map((country) => (
+                  <option key={country.id} value={country.id}>
+                    {country.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          {/* 產區篩選 */}
+          <div className={`${styles["shop-origin-fliter-m"]}`}>
+            <div className={`${styles["shop-origin-title"]}`}>產地</div>
+            <select 
+              value={localFilters.origin} 
+              onChange={(e) => handleFilterChange('origin', e.target.value)}
+            >
+              <option value="">全部產地</option>
+              {filters.origins &&
+                filters.origins.map((origin) => (
+                  <option key={origin.id} value={origin.id}>
+                    {origin.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          {/* 價格篩選 */}
           <div className={`${styles["shop-price-fliter-m"]}`}>
             <div className={`${styles["shop-price-title"]}`}>價格</div>
-            <select name="" id="">
-              <option value={0}>全部價錢</option>
-              <option value={1}>～＄1,000</option>
-              <option value={2}>＄1,001~$3,000</option>
-              <option value={3}>＄3,001~$5,000</option>
-              <option value={4}>＄5,001~$10,000</option>
-              <option value={5}>＄10,001~$30,000</option>
-              <option value={5}>＄30,001~</option>
+            <select
+              value={`${minValue}-${maxValue}`}
+              onChange={(e) => {
+                const [min, max] = e.target.value.split('-');
+                setMinValue(Number(min));
+                setMaxValue(Number(max));
+                setLocalFilters(prev => ({ ...prev, minPrice: Number(min), maxPrice: Number(max) }));
+              }}
+            >
+              <option value="0-150000">全部價錢</option>
+              <option value="0-1000">～＄1,000</option>
+              <option value="1001-3000">＄1,001~$3,000</option>
+              <option value="3001-5000">＄3,001~$5,000</option>
+              <option value="5001-10000">＄5,001~$10,000</option>
+              <option value="10001-30000">＄10,001~$30,000</option>
+              <option value="30001-150000">＄30,001~</option>
             </select>
           </div>
           {/* 顯示金額的地方 */}
@@ -130,14 +256,18 @@ export default function MobileFliterAside({ isOpen, onClose }) {
             />
           </div>
           <div className={`row ${styles["slider-minmax"]}`}>
-            <div className={`col-8 ${styles["money-min"]}`}>$500</div>
-            <div className={`col-3 ${styles["money-max"]}`}>$100,000</div>
+            <div className={`col-8 ${styles["money-min"]}`}>$0</div>
+            <div className={`col-3 ${styles["money-max"]}`}>$150,000</div>
           </div>
           <div className={`${styles["shop-fliter-buttons"]}`}>
-            <button className={`btn ${styles["reset-button"]}`}>
+            <button 
+              type="button" 
+              className={`btn ${styles["reset-button"]}`}
+              onClick={handleReset}
+            >
               重新設定
             </button>
-            <button className={`btn ${styles["submit-button"]}`}>
+            <button type="submit" className={`btn ${styles["submit-button"]}`}>
               送出篩選
             </button>
           </div>
