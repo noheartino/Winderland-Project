@@ -68,7 +68,7 @@ export default function FavoriteC() {
                   alt={course.class_name}
                   width={265}
                   height={165}
-                  className="favorite-c-img-rwd"
+                  // className="favorite-c-img-rwd"
                 />
                 <svg
                   className="svg-bookmark"

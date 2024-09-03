@@ -210,3 +210,6 @@ export default function DashboardOrder() {
     </>
   )
 }
+
+
+DashboardOrder.requireAuth = true;
