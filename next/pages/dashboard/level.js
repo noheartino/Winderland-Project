@@ -4,6 +4,10 @@ import Footer from '@/components/footer/footer'
 import Head from "next/head";
 
 
+import Lv1Card from '@/components/member/level/Lv1Card'
+import Lv2Card from '@/components/member/level/Lv2Card'
+import Lv3Card from '@/components/member/level/Lv3Card'
+import Lv4Card from '@/components/member/level/Lv4Card'
 
 export default function Level() {
   return (
@@ -29,13 +33,16 @@ export default function Level() {
         <div className="levelPageTitle">獲取條件</div>
         </div>
         <div className="col-12 col-md-6 col-xl-4 mb-4">
-        <div className="levelPageBox Lv1">
-            <div className="PageBoxT">一般會員優惠</div>
+{/* 銅瓶 */}
+<Lv1Card />
+        {/* <div className="levelPageBox Lv1">
+            <div className="PageBoxT">銅瓶會員優惠</div>
             <div className="PageBoxC">
             <p>▪ W Point 購物0.3%回饋</p>
             <p>▪ 生日禮 W Point 100點</p>
             </div>
-        </div>
+        </div> */}
+
         </div>
         <div className="col-12 col-md-6 col-xl-8">
         <div className="levelPageBoxText d-none d-md-block">註冊本站會員</div>
@@ -45,14 +52,17 @@ export default function Level() {
         </div>
         </div>
         <div className="col-12 col-md-6 col-xl-4 mb-4">
-        <div className="levelPageBox Lv2">
-            <div className="PageBoxT">白銀會員優惠</div>
+        {/* 銀瓶 */}
+        <Lv2Card />
+        {/* <div className="levelPageBox Lv2">
+            <div className="PageBoxT">銀瓶會員優惠</div>
             <div className="PageBoxC">
             <p>▪ W Point 購物1%回饋</p>
             <p>▪ 每月1張自選優惠券</p>
             <p>▪ 生日禮 W Point 600點</p>
             </div>
-        </div>
+        </div> */}
+
         </div>
         <div className="col-12 col-md-6 col-xl-8">
         <div className="levelPageBoxText d-none d-md-block">
@@ -64,14 +74,17 @@ export default function Level() {
         </div>
         </div>
         <div className="col-12 col-md-6 col-xl-4 mb-4">
-        <div className="levelPageBox Lv3">
-            <div className="PageBoxT">黃金會員優惠</div>
+        {/* 黃金瓶 */}
+        <Lv3Card />
+        {/* <div className="levelPageBox Lv3">
+            <div className="PageBoxT">黃金瓶會員優惠</div>
             <div className="PageBoxC">
             <p>▪ W Point 購物2%回饋</p>
             <p>▪ 每月3張自選優惠券</p>
             <p>▪ 生日禮 W Point 1200點</p>
             </div>
-        </div>
+        </div> */}
+        
         </div>
         <div className="col-12 col-md-6 col-xl-8">
         <div className="levelPageBoxText d-none d-md-block">
@@ -83,14 +96,17 @@ export default function Level() {
         </div>
         </div>
         <div className="col-12 col-md-6 col-xl-4 mb-4">
-        <div className="levelPageBox Lv4">
-            <div className="PageBoxT">白金會員優惠</div>
+        {/* 白金瓶 */}
+        <Lv4Card />
+        {/* <div className="levelPageBox Lv4">
+            <div className="PageBoxT">白金瓶會員優惠</div>
             <div className="PageBoxC">
             <p>▪ W Point 購物3.5%回饋</p>
             <p>▪ 每月5張自選優惠券</p>
             <p>▪ 生日禮 W Point 2000點 </p>
             </div>
-        </div>
+        </div> */}
+
         </div>
         <div className="col-12 col-md-6 col-xl-8">
         <div className="levelPageBoxText d-none d-md-block">
