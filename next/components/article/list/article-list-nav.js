@@ -25,7 +25,7 @@ export default function ArticleListNav({ article }) {
         {/* <img src="/images/article/AA.png" alt="" />
          */}
         <Image
-          src={`/images/article/${article.images[0]}`} // 必須是public資料夾裡的相對路徑
+          src={`http://localhost:3005/uploads/article/${article.images[0]}`} // 必須是public資料夾裡的相對路徑
           alt="Description of image"
           width={100} // 圖像寬度（必需）
           height={100} // 圖像高度（必需）
