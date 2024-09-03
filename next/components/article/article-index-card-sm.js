@@ -17,7 +17,7 @@ export default function ArticleIndexCardSm({ article }) {
           <div className="a-box-img">
             {article.images.length > 0 ? (
               <img
-                src={`../images/article/${article.images[0]}`}
+                src={`http://localhost:3005/uploads/article/${article.images[0]}`}
                 alt="Article Image"
               />
             ) : (
