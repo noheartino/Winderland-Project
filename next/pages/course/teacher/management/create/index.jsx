@@ -12,7 +12,7 @@ export default function ClassManIndex() {
 
   const router = useRouter();
   const districts = [{dId: 1, districtStr: '台北市'}, {dId: 2, districtStr: '新北市'}, {dId: 3, districtStr: '桃園市'}, {dId: 4, districtStr: '台中市'}, {dId: 5, districtStr: '台南市'}, {dId: 6, districtStr: '高雄市'}, {dId: 7, districtStr: '新竹縣'}, {dId: 8, districtStr: '苗栗縣'}, {dId: 9, districtStr: '彰化縣'}, {dId: 10, districtStr: '南投縣'}, {dId: 11, districtStr: '雲林縣'}, {dId: 12, districtStr: '嘉義縣'}, {dId: 13, districtStr: '屏東縣'}, {dId: 14, districtStr: '宜蘭縣'}, {dId: 15, districtStr: '花蓮縣'}, {dId: 16, districtStr: '台東縣'}, {dId: 17, districtStr: '澎湖縣'}, {dId: 18, districtStr: '金門縣'}, {dId: 19, districtStr: '連江縣'}, {dId: 20, districtStr: '基隆市'}, {dId: 21, districtStr: '新竹市'}, {dId: 22, districtStr: '嘉義市'}]
-  const [onOrUnderline, setOnOrUnderline] = useState('')
+  const [onOrUnderline, setOnOrUnderline] = useState(null)
 
   // 抓取 user 資料
   const authData = useAuth().auth.userData
@@ -164,9 +164,6 @@ export default function ClassManIndex() {
     
     if (startId === 'classStartDate') {
       startColumnName = '開始上課日期';
-      if(referId === 'assignEndDate'){
-        endColumnName = '報名截止日期'
-      };
       if(referId === 'classEndDate'){
         endColumnName = '課程結束日期'
       };
@@ -191,8 +188,9 @@ export default function ClassManIndex() {
     }
     setErrorMsgBox(prev => ({...prev, [startId]: ``}))
     console.log("將 "+startId+" 的錯誤內容設定為空");
-    if (!endElem.value || startElm.value && startElm.value > endElem.value) {
+    if (endElem.value.trim().length>0 && startElm.value && startElm.value > endElem.value) {
       console.log("將 "+startId+" 的錯誤內容設定為 "+startColumnName+" 不可晚於 "+endColumnName);
+      console.log("開始:"+startElm.value+"結束:"+endElem.value);
         setErrorMsgBox(prev => ({...prev, [startId]: `${startColumnName}不可晚於${endColumnName}`}))
         return;
       }
@@ -225,7 +223,7 @@ export default function ClassManIndex() {
     })
   }
   useEffect(() => {
-    if(onOrUnderline != null){
+    if(onOrUnderline){
       console.log('現在的onOrUnderline是'+onOrUnderline);
       const onlineRadio = document.getElementById('onLine');
       const underlineRadio = document.getElementById('underLine');
@@ -528,7 +526,7 @@ export default function ClassManIndex() {
                     <div className='col-12 d-flex flex-column gap-1'>
 
                       {/* 用來寫入不顯示的資料 */}
-                      <input type='hidden' name='onlineValue' value={onOrUnderline}/>
+                      <input type='hidden' name='onlineValue' value={onOrUnderline?onOrUnderline:''}/>
 
                       <label htmlFor='className' className='CmanageCreateTag'>
                         課程名稱 (<span id='classNameWordNum'>0</span>/25)
@@ -758,7 +756,7 @@ export default function ClassManIndex() {
                   {/* 只能上傳圖片格式(jpg,jpeg,png,gif,webp,svg,) */}
                   <div className={`${onOrUnderline === 0 ? 'd-none' : 'd-block'}`}>
                     <label htmlFor='classVdio' className='form-label CmanageCreateTag mt-2'>
-                      課程影片{console.log(typeof onOrUnderline)}
+                      課程影片
                     </label>
                     {/* <input
                       className='form-control vidAndImg-input'

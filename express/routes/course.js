@@ -54,11 +54,12 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // cb(null, ${Date.now()}-${file.originalname})
+    const ext = path.extname(file.originalname)
     cb(
       null,
       `${Date.now()}-${Math.floor(Math.random() * 1000000)
         .toString()
-        .padStart(6, '0')}`
+        .padStart(6, '0')}${ext}`
     )
   },
 })

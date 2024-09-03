@@ -21,7 +21,14 @@ export default function Applyevent() {
       setIsAdmin(true);
       console.log("----> set UserId = " + authData.id);
     }
-  }, [authData]);
+  }, []);
+  // useEffect(() => {
+  //   if (authData && authData.id > 0) {
+  //     setUserId(authData.id);
+  //     setIsAdmin(true);
+  //     console.log("----> set UserId = " + authData.id);
+  //   }
+  // }, [authData]);
   // 驗證登入者有權限
 
   // 確定登入者有權限後，送出GET fetch: /api/course/teacher/management
