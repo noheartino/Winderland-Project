@@ -12,6 +12,8 @@ import ListPageNation from "@/components/product-list/productlist/ListPageNation
 
 export default function ProductIndex() {
   const [products, setProducts] = useState([]);
+  const [noProducts, setNoProducts] = useState(false);
+  const [serverError, setServerError] = useState(false);
   const [categories, setCategoryies] = useState([]);
   const [filters, setFilters] = useState({
     categories: [],
@@ -35,22 +37,23 @@ export default function ProductIndex() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true); // 新增的狀態
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const router = useRouter();
 
-  const resetFilters = () => {
-    setFilters({
-      category: '',
-      variet: '',
-      origin: '',
-      country: '',
+  const resetFilters = useCallback(() => {
+    setSelectFilters((prev) => ({
+      ...prev,
+      variet: "",
+      origin: "",
+      country: "",
       minPrice: 0,
-      maxPrice: 0,
-    });
-  };
+      maxPrice: 150000,
+    }));
+  }, []);
 
-  const restSearch = () => {
+  const resetSearch = useCallback(() => {
     setSearch("");
-  }
+  }, []);
 
   const urlParams = useMemo(() => {
     if (!router.isReady) return null;
@@ -97,10 +100,17 @@ export default function ProductIndex() {
         setTotalPages(response.data.pagination.totalPages);
         setTotalItems(response.data.pagination.totalItems);
         setLoading(false);
+        setError(null);
       } catch (err) {
-        resetFilters();
-        restSearch();
+        if (err.response && err.response.status === 500) {
+          setServerError(true);
+          setError("伺服器錯誤，請稍後再試。");
+        }
         console.error("加載商品時出錯:", err);
+        setError(err.message); // 只設置錯誤信息,而不是整個錯誤對象
+        setProducts([]);
+        setNoProducts(true);
+      } finally {
         setLoading(false);
       }
     },
@@ -136,6 +146,20 @@ export default function ProductIndex() {
       setIsInitialLoad(false); // 初始加載完成
     }
   }, [router.isReady]);
+
+  // 新增 useEffect 來控制 body 的滾動
+  useEffect(() => {
+    if (isMobileFilterOpen) {
+      document.body.classList.add("body-no-scroll");
+    } else {
+      document.body.classList.remove("body-no-scroll");
+    }
+
+    // 清理函數
+    return () => {
+      document.body.classList.remove("body-no-scroll");
+    };
+  }, [isMobileFilterOpen]);
 
   const updateURL = useCallback(() => {
     if (isInitialLoad) return; // 初始加載時不更新URL
@@ -239,12 +263,15 @@ export default function ProductIndex() {
             search={search}
             changeSearch={changeSearch}
             totalItems={totalItems}
+            onOpenMobileFilter={() => setIsMobileFilterOpen(true)}
           />
           {/* 手機&平板版的開關aside */}
           <MobileFliterAside
             filters={filters}
             selectFilters={selectFilters}
             changeFilter={changeFilter}
+            isOpen={isMobileFilterOpen}
+            onClose={() => setIsMobileFilterOpen(false)}
           />
           {/* 主要內容 */}
           <div className="row main-content">
@@ -255,8 +282,14 @@ export default function ProductIndex() {
               changeFilter={changeFilter}
             />
             {/* 商品list */}
-            {loading && <p>加载中...</p>}
-            {!loading && <ProductGroup products={products} error={error} />}
+            <ProductGroup products={products} noProducts={noProducts} />
+            {!noProducts && totalPages > 1 && (
+              <ListPageNation
+                currentPage={currentPage}
+                totalPages={totalPages}
+                changePage={changePage}
+              />
+            )}
             {/* 分頁 */}
             <ListPageNation
               currentPage={currentPage}

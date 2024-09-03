@@ -8,8 +8,9 @@ export default function SortSearch({
   search,
   changeSearch,
   totalItems,
+  onOpenMobileFilter,
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+
   const [localSearch, setLocalSearch] = useState(search);
   const [getSearch, setGetSearch] = useState(false);
 
@@ -23,9 +24,6 @@ export default function SortSearch({
   }, [search]);
 
   console.log(getSearch);
-
-  const handleOpen = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
 
   return (
     <>
@@ -95,7 +93,7 @@ export default function SortSearch({
         <div
           className={`col-md-1 col-2 ${styles["shop-fliter-m"]} ${styles["aside-open-button"]}`}
         >
-          <button className={`${styles["fliter-icon"]}`} onClick={handleOpen}>
+          <button className={`${styles["fliter-icon"]}`} onClick={onOpenMobileFilter}>
             <img src="/shop_images/fliter-icon.svg" alt="" />
           </button>
         </div>
@@ -110,7 +108,6 @@ export default function SortSearch({
         <div className={`${styles["port-hr"]}`}>|</div>
         <div className={`${styles["port-price"]}`}>價格</div>
       </div>
-      <MobileFliterAside isOpen={isOpen} onClose={handleClose} />
     </>
   );
 }
