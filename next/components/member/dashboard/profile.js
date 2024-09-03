@@ -4,12 +4,18 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { useAuth } from '@/hooks/use-auth'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
+import Link from 'next/link'
 
 import ProfileUpdateUser from './profile/ProfileUpdateUser'
 import ProfileUpdatePwd from './profile/ProfileUpdatePwd'
 import ProfileMembership from './profile/ProfileMembership'
 import ProfileUpdateUserRWD from './profile/ProfileUpdateUserRWD'
 import ProfileUpdatePwdRWD from './profile/ProfileUpdatePwdRWD'
+
+import Lv1Card from '@/components/member/level/Lv1Card'
+import Lv2Card from '@/components/member/level/Lv2Card'
+import Lv3Card from '@/components/member/level/Lv3Card'
+import Lv4Card from '@/components/member/level/Lv4Card'
 
 export default function DashboardProfile() {
   // 驗證登入
