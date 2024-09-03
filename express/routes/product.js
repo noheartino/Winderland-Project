@@ -47,9 +47,6 @@ LEFT JOIN
 	country ON origin.country_id = country.id
 WHERE product.id=?`
 
-// 取得商品的總數
-// const getProductsTotal = `SELECT COUNT(*) as total FROM product`
-
 // 取得detail
 const getProductsDetails = `SELECT * FROM product_detail WHERE valid = 1 && product_id IN (?)`
 
@@ -194,9 +191,10 @@ router.get('/', async (req, res) => {
       params.push(`%${search}%`)
     }
 
-    if (conditions.length > 1) {
+    if (conditions.length > 0) {
       query += ' WHERE ' + conditions.join(' AND ')
     }
+
     console.log('最終 SQL 查詢:', query)
     console.log('查詢參數:', params)
 
