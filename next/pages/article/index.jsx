@@ -8,6 +8,7 @@ import ArticleRwdSidebar from "@/components/article/article-rwd-sidebar";
 import ArticleIndexList from "@/components/article/ArticleIndexList";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
+import Head from "next/head";
 
 export default function Index() {
   const [articles, setArticles] = useState([]);
@@ -57,6 +58,16 @@ export default function Index() {
   }
   return (
     <>
+      <Head>
+        <title>相關文章</title>
+
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <link rel="icon" href="/logo-3.png" />
+      </Head>
       {/* Header */}
       <Nav />
       <title>相關文章</title>
@@ -82,7 +93,6 @@ export default function Index() {
           <div className="row a-contentmain">
             <ArticleIndexList Article={articleHead} />
           </div>
-          
         </div>
       </div>
       {/* Footer */}

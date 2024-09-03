@@ -214,13 +214,15 @@ export default function CartCheckout1() {
   return (
     <>
       <Head>
-        <title>Cart2</title>
+          <title>購物車</title>
+
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <link rel="icon" href="/logo-3.png" />
       </Head>
-      <meta charSet="utf-8" />
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no"
-      />
       <Nav />
       {productData.length === 0 && classData.length === 0 ? (
         <CartZero />
