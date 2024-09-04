@@ -10,10 +10,12 @@
 
         & label {
             font-size: 23px;
+            text-wrap: nowrap;
         }
 
         & .product-amount-input {
             align-items: center;
+            display: flex;
             width: 50%;
         }
     }
@@ -25,11 +27,12 @@
         display: flex;
         align-items: center;
         font-size: 23px;
+        text-wrap: nowrap;
     }
 
     /* 庫存 */
     & .product-reserve {
-        margin-left: 35%;
+        margin-left: 38%;
         margin-top: 2%;
 
     }
@@ -41,6 +44,26 @@
         display: flex;
         align-items: center;
         text-wrap: nowrap;
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    & .product-amount {
+        padding-left: var(--detail-left-padding);
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        position: relative;
+
+        & label {
+            font-size: 20px;
+            text-wrap: nowrap;
+        }
+
+        & .product-amount-input {
+            align-items: center;
+            width: 50%;
+        }
     }
 }
 

@@ -17,6 +17,12 @@ export default function PcFrom() {
   const { isFav, isCheckingFav, toggleFavorite, checkFavoriteStatus } =
     useFavorite(product?.[0]?.id);
 
+  const productDetail = product?.[0]?.details.find(
+    (d) => d.id === currentDetail?.id
+  );
+
+  const productDetailAmount = productDetail?.amount;
+
   useEffect(() => {
     if (product && product[0] && product[0].details) {
       const foundDetail =
@@ -99,7 +105,7 @@ export default function PcFrom() {
           <div className={`${styles["product-amount"]}`}>
             <div className={`${styles["product-amount-input"]}`}>
               <label htmlFor="">數量</label>
-              <Amount value={currentAmount} changeAmount={changeAmount} />
+              <Amount value={currentAmount} changeAmount={changeAmount} currentDetail={currentDetail}  />
             </div>
             <div className={`col-6 ${styles["product-year"]}`}>
               <label htmlFor="">年份</label>
@@ -107,7 +113,7 @@ export default function PcFrom() {
             </div>
           </div>
           <div className={`${styles["product-reserve"]}`}>
-            庫存 &lt; {currentDetail.stock || 56}件
+            庫存  {productDetail.amount}件
           </div>
         </div>
         <div className={`${styles["product-fav-cart"]}`}>

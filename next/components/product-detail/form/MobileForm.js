@@ -16,6 +16,7 @@ export default function MobileForm() {
   const { auth } = useAuth();
   const { isFav, isCheckingFav, toggleFavorite, checkFavoriteStatus } =
     useFavorite(product?.[0]?.id);
+    
 
   useEffect(() => {
     if (product && product[0] && product[0].details) {
@@ -25,6 +26,10 @@ export default function MobileForm() {
       setCurrentDetail(foundDetail);
     }
   }, [product, detail]);
+
+  const productDetail = product?.[0]?.details.find(
+    (d) => d.id === currentDetail?.id
+  );
 
   useEffect(() => {
     if (product?.[0]?.id && auth.userData) {
@@ -96,12 +101,12 @@ export default function MobileForm() {
       <form className={`${styles["product-sm-form"]}`} action="">
         <div className={`${styles["product-labels"]}`}>
           <div className={`${styles["product-amount-label"]}`}>數量</div>
-          <div className={`${styles["product-reserve"]}`}>庫存 &lt; 56件</div>
+          <div className={`${styles["product-reserve"]}`}>庫存 {productDetail.amount} 件</div>
           <div className={`${styles["product-year-label"]}`}>年份</div>
         </div>
         <div className={`${styles["product-sm-input"]}`}>
           <div className={`${styles["product-sm-amount-input"]}`}>
-            <Amount value={currentAmount} changeAmount={changeAmount} />
+            <Amount value={currentAmount} changeAmount={changeAmount} currentDetail={currentDetail} />
           </div>
           <div className={`${styles["product-sm-select"]}`}>
             <Years />
