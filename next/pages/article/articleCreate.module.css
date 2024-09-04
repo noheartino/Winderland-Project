@@ -10,7 +10,9 @@
   .ACicon {
     height: 100%;
     width: 50px;
+    border: 1px solid #FBF9F7;
     border-radius: 50px;
+    overflow: hidden;
     background-color: var(--wine);
   }
 

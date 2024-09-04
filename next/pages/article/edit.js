@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
 import Head from "next/head";
+import Swal from "sweetalert2";
 import Link from "next/link";
 
 export default function New() {
@@ -191,15 +192,27 @@ export default function New() {
         );
       }
 
-      alert("文章和圖片成功上傳");
-      router.push(`/article/${articleId}`);
+      Swal.fire({
+        title: "成功",
+        text: "文章和圖片成功上傳",
+        icon: "success",
+        confirmButtonText: "確定",
+      });
+      router.push("/article");
     } catch (error) {
       console.error(error);
-      alert("上傳失敗");
+      Swal.fire({
+        title: "上傳失敗",
+        text: "請稍後再試",
+        icon: "error",
+        confirmButtonText: "確定",
+      });
     } finally {
       setLoading(false);
     }
   };
+
+  const date = new Date().toISOString().split('T')[0];
   // console.log(inlineImages);
   // console.log(category);
   // console.log(title);
@@ -208,7 +221,7 @@ export default function New() {
   return (
     <>
       <Head>
-        <title>新增文章</title>
+        <title>醺迷仙園｜新增文章</title>
 
         <meta charSet="utf-8" />
         <meta
@@ -228,13 +241,13 @@ export default function New() {
           <div className="ManageNavT">文章管理</div>
           <div className="ManageNavList">
             <Link href="/article/new" className="Armall">
-              <div className="NavListLi NowUnderLI">新增文章</div>
+              <div className="NavListLi">新增文章</div>
             </Link>
             <Link href="/article/myarticle" className="Armall">
               <div className="NavListLi">我的文章</div>
             </Link>
             <Link href="/article/edit" className="Armall">
-              <div className="NavListLi">編輯文章</div>
+              <div className="NavListLi NowUnderLI">編輯文章</div>
             </Link>
           </div>
         </div>
@@ -244,12 +257,22 @@ export default function New() {
       <div className={`container-fuild ${style.ACbg} row`}>
         <div className={`container ${style.AcreatePage} col-lg-7 col-11 py-5`}>
           <div className={`${style.ACnav} col row ps-5 mb-3`}>
-            <div className={`${style.ACicon} col-auto`}>
-              <p className="m-0"></p>
+            <div className={`${style.ACicon} col-auto p-0`}>
+              <img
+                src="/images/member/avatar/default-avatar.jpg"
+                className="m-0"
+                style={{
+                  objectFit: "cover",
+                  width: "100%",
+                  height: "100%",
+                }}
+              ></img>
             </div>
-            <div className={`${style.ACname} col`}>
-              <p className="m-0">{userAccount}</p>
-              <div className={`${style.ACtime}`}>發佈於 08/22</div>
+            <div className={`${style.ACname} col ms-3`}>
+              <p className="m-0">Admin</p>
+              <div className={`${style.ACtime}`}>
+                發佈於 {date}
+              </div>
             </div>
           </div>
           <form className="row px-5" onSubmit={handleSubmit}>
@@ -299,7 +322,7 @@ export default function New() {
             />
             <p className={`${style.ACtitleLimit}`}>({title.length}/50)</p>
             <div
-              className={`${style.ACtextarea} col-12`}
+              className={`${style.ACtextarea} col-12 p-2`}
               ref={contentRef}
               contentEditable={true}
               onInput={handleInput}
