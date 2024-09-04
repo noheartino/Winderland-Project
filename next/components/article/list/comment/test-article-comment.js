@@ -1,42 +1,28 @@
 import React, { useState } from "react";
-import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from 'next/router';
 import Image from "next/image";
 import Swal from "sweetalert2";
 
-export default function TestArticleComment({ articleId, comments, userId, account }) {
+export default function TestArticleComment({ articleId, userId, account, avatarUrl, onCommentChange }) {
   const router = useRouter();
-  console.log(userId)
-  console.log(account)
+
   const [commentText, setCommentText] = useState("");
   const [rows, setRows] = useState(2);
-  // 這邊是使用hooks的useAuth測試
-  // const { auth } = useAuth();
 
-  // 如果 auth.userData 不存在，提前處理避免錯誤
-  if (userId == null) {
-    console.log("使用者尚未登入或用戶資料尚未載入");
+  if (!userId) {
 
     // 渲染登入提示和按鈕
     return (
       <div className="text-center mt-2 mb-5">
         <p className="mb-3" style={{letterSpacing:"1.4px", fontSize:"18px"}}>想分享點什麼嗎</p>
-        <button
-          onClick={() => {
-            router.push("/member/login");
-          }}
+        <Link href="/member/login"
           className="btn btn-primary aLoginButton"
         >
           點擊登入留言
-        </button>
+        </Link>
       </div>
     );
   }
-
-  // const userId = auth.userData.id; // 取得使用者 ID
-  // const account = auth.userData.account;
-
-  // const firstTwoChars = account.slice(0, 2).toUpperCase();
 
   // 新增
   const handleCreate = async () => {
@@ -91,8 +77,10 @@ export default function TestArticleComment({ articleId, comments, userId, accoun
         });
         // 清空輸入框或進行其他操作
         setCommentText("");
-        // 刷新頁面
-        window.location.reload();
+        // 呼叫父層元件的 callback 函數來更新評論列表
+        if (onCommentChange) {
+          onCommentChange();
+        }
       }
     } catch (error) {
       console.error("Error submitting comment:", error);
@@ -112,14 +100,14 @@ export default function TestArticleComment({ articleId, comments, userId, accoun
           <div className="col-auto">
             {/* 桌機icon */}
             <div className="au-icon d-none d-lg-flex">
-            {/* {console.log(auth.userData.id)} */}
-              {/* <p className="m-0">{firstTwoChars}</p> */}
-              <Image src={`/images/member/avatar/${userId}.png`} width={100} height={100} />
+
+              <img className="m-0" src={avatarUrl} />
             </div>
             {/* 手機icon */}
             <div className="au-icon-sm d-lg-none">
               {/* <p className="m-0">{firstTwoChars}</p> */}
-              <Image src={`/images/member/avatar/${userId}.png`} width={100} height={100} />
+              <img className="m-0" src={avatarUrl} />
+
             </div>
           </div>
           <div className="aucomment-section col">

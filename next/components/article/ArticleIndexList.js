@@ -44,8 +44,6 @@ export default function ArticleIndexList({ Article }) {
     apiUrl.searchParams.append("page", currentPage);
     apiUrl.searchParams.append("limit", 6); // 每頁顯示6筆
 
-    // 當組件掛載時執行 fetch 請求
-    // console.log(apiUrl.toString()); // 檢查 URL 是否正確
     fetch(apiUrl.toString())
       .then((response) => {
         if (!response.ok) {
@@ -54,10 +52,6 @@ export default function ArticleIndexList({ Article }) {
         return response.json();
       })
       .then((data) => {
-        // console.log(data);
-        // 處理 articles 資料，將 images 字段轉換為數組
-        // console.log(data.articles)
-        // console.log(data.totalPages)
         const processedArticles = data.articles.map((article) => ({
           ...article,
           images: article.images ? article.images.split(",") : [],
@@ -82,12 +76,13 @@ export default function ArticleIndexList({ Article }) {
   // 導向某篇文章
   const handleLink = () => {
     if (Article.id) {
-      router.push(`/article/${Article.id}`);
+      <Link href={`/article/${Article.id}`}></Link>
     }
   };
 
   // 類別
   const handleCategoryChange = (newCategory) => {
+    setCurrentPage(1)
     router.push({
       pathname: router.pathname,
       query: { ...router.query, category: newCategory },
@@ -96,6 +91,7 @@ export default function ArticleIndexList({ Article }) {
 
   // 日期radio篩選用
   const handleDateFilterChange = (e) => {
+    setCurrentPage(1)
     router.push({
       pathname: router.pathname,
       query: {},
@@ -105,20 +101,24 @@ export default function ArticleIndexList({ Article }) {
   };
 
   const handleFilterSubmit = (e) => {
+    setCurrentPage(1)
     setDateFilter(e.target.value);
   };
 
   // 輸入日期篩選用
   const handleStartDateChange = (value) => {
+    setCurrentPage(1)
     setStartDate(value);
   };
 
   const handleEndDateChange = (value) => {
+    setCurrentPage(1)
     setEndDate(value);
   };
 
   // 清空篩選用
   const handleResetFilters = () => {
+    setCurrentPage(1)
     router.push({
       pathname: router.pathname,
       query: {},
@@ -143,6 +143,7 @@ export default function ArticleIndexList({ Article }) {
           onEndDateChange={handleEndDateChange}
           selectedDate={selectedDate}
           onCategoryChange={handleCategoryChange}
+          selectedCategory={category}
         />
         {/* 篩選按鈕 */}
         <button className="btn a-btn-select mt-3" onClick={handleFilterSubmit}>

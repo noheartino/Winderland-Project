@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import axios from "axios";
 import ArticleComment from "@/components/article/list/comment/article-comment";
 // import ArticleCRreply from "@/components/article/list/comment/article-c-reply";
@@ -11,45 +11,46 @@ export default function ArticleCommentArea({ articleId }) {
   const router = useRouter();
   const { auth } = useAuth(); // 取得認證資訊
   // 檢查使用者是否已經登入，如果沒有登入則跳轉到登入頁面
-  const userId = auth.isAuth && auth.userData ? auth.userData.id : null;
-  const account = auth.isAuth && auth.userData ? auth.userData.account : "guest";
-
-  // if (!userId) {
-  //   // 如果沒有 userId，跳轉到登入頁面
-  //   router.push("/member/login");
-  // }
+  const userData = auth.userData;
+  const userId = userData && userData.id ? auth.userData.id : null;
+  const account =
+    userData && userData.account ? auth.userData.account : "guest";
+  const avatarUrl =
+    userData && userData.avatar_url
+      ? `http://localhost:3005${auth.userData.avatar_url}`
+      : "/nav-footer/default_user.jpg";
+  // console.log(userData)
   const [comments, setComments] = useState([]);
-
   // 用於獲取評論
-  useEffect(() => {
-    // 定義 fetchComments 函數
-    const fetchComments = async () => {
-      try {
-        if (articleId) {
-          const entityType = 'article';
-          const response = await axios.get(
-            `http://localhost:3005/api/a-comment/${articleId}`,
-            {
-              params: {
-                entity_type: entityType, // 查詢參數
-              },
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          setComments(response.data);
-        }
-      } catch (error) {
-        console.error("取得資料錯誤", error);
+  const fetchComments = async () => {
+    try {
+      if (articleId) {
+        const response = await axios.get(
+          `http://localhost:3005/api/a-comment/${articleId}`,
+          {
+            params: {
+              entity_type: "article",
+            },
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setComments(response.data);
       }
-    };
+    } catch (error) {
+      console.error("取得資料錯誤", error);
+    }
+  };
 
-    // 呼叫 fetchComments 函數
+  useEffect(() => {
     fetchComments();
   }, [articleId]);
 
-
+  // 新增評論後更新評論列表
+  const onCommentChange = async () => {
+    await fetchComments();
+  };
 
   return (
     <>
@@ -80,7 +81,14 @@ export default function ArticleCommentArea({ articleId }) {
           <div className="aid-reply-area row">
             {/* 新增回覆區 */}
             <div className="send-comment">
-              <TestArticleComment userId={userId} account={account} articleId={articleId} comments={comments} />
+              <TestArticleComment
+                userId={userId}
+                account={account}
+                articleId={articleId}
+                comments={comments}
+                avatarUrl={avatarUrl}
+                onCommentChange={onCommentChange}
+              />
             </div>
             {/* 所有人回覆區 */}
             {comments.length > 0 ? (
@@ -90,6 +98,8 @@ export default function ArticleCommentArea({ articleId }) {
                   comment={comment}
                   index={index}
                   userId={userId}
+                  avatarUrl={avatarUrl}
+                  onCommentChange={onCommentChange}
                 />
               ))
             ) : (
