@@ -36,8 +36,8 @@ export default function ClassManIndex() {
         .then(response => response.json())
         .then((data) => {
           const { originClassV, originClassImg } = data
-          setOriginClassV(originClassV)
-          setriginClassImg(originClassImg)
+          setOriginClassV(originClassV[0])
+          setriginClassImg(originClassImg[0])
         })
         .catch(error => console.error('Error:', error));
   }, [])
@@ -56,8 +56,8 @@ export default function ClassManIndex() {
   // 23 : {id: 24, name: '蘭居岳'}
 
 
-  // 選擇上傳圖片
-  const [Cimage, setCImage] = useState('http://localhost:3005/uploads/course_and_tarot/classImgDefault.png');
+  // 選擇上傳圖片(如果有上傳的文件就把 Cimage 狀態設置為上傳的文件)
+  const [Cimage, setCImage] = useState(originClassImg.imgPath?`http://localhost:3005/uploads/course_and_tarot/${originClassImg.imgPath}`:'http://localhost:3005/uploads/course_and_tarot/classImgDefault.png'); // 設定圖片預覽預設值
   const handleImageUpload = (event) => {
     const file = event.target.files[0]; // 獲取選中的文件
     if (file) {
@@ -70,8 +70,8 @@ export default function ClassManIndex() {
   };
   
 
-  // 選擇上傳影片
-  const [Cvideo, setCvideo] = useState(''); // 存儲圖片 URL
+  // 選擇上傳影片(如果有上傳的文件就把 Cvideo 狀態設置為上傳的文件)
+  const [Cvideo, setCvideo] = useState(originClassImg.vidoPath?`http://localhost:3005/uploads/course_and_tarot/${originClassImg.vidoPath}`:null); // 存儲影片 URL
   const handleVdioUpload = (event) => {
     const file = event.target.files[0]; // 獲取選中的文件
     if (file) {

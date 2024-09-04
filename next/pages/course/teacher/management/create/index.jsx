@@ -116,9 +116,19 @@ export default function ClassManIndex() {
   }
 
   // 限制數字只能是正整數
+  function detectType(inputStr) {
+    const number = parseInt(inputStr, 10);
+    if (!isNaN(number) && inputStr.trim() !== '' && number.toString() === inputStr.trim()) {
+      return 'number';
+    } else {
+      return 'string';
+    }
+  }
+
   const [errorMsgBox, setErrorMsgBox] = useState({})
   const handlePIntegerCheck = (e) => {
-  let currentNumInput = parseInt(e.target.value);
+  let currentNumInput = e.target.value;
+  e.target.value = e.target.value.trim()
   let columnName = '';
   if (e.target.id === 'studentLimit') {
     columnName = '人數上限';
@@ -129,22 +139,10 @@ export default function ClassManIndex() {
   if (e.target.id === 'classSalePrice') {
     columnName = '優惠金額';
   }
-
-      console.log('條件檢查1');
-      console.log(currentNumInput);
-      console.log(typeof currentNumInput !== 'number');
-      console.log(isNaN(currentNumInput));
-      console.log(!Number.isInteger(currentNumInput));
-      console.log(currentNumInput<0);
-
-  if (currentNumInput && typeof currentNumInput !== 'number' || isNaN(currentNumInput) || !Number.isInteger(currentNumInput) || currentNumInput<0) {
-    
-      console.log('條件檢查2');
-      console.log(currentNumInput);
-      console.log(typeof currentNumInput !== 'number');
-      console.log(isNaN(currentNumInput));
-      console.log(!Number.isInteger(currentNumInput));
-      console.log(currentNumInput<0);
+  if (currentNumInput && detectType(currentNumInput) === 'string' || isNaN(currentNumInput)) {
+    console.log(currentNumInput)
+    console.log(detectType(currentNumInput) === 'string')
+    console.log(isNaN(currentNumInput))
 
       const currentIdStr = e.target.id;
       setErrorMsgBox(prev => ({...prev, [currentIdStr]: `${columnName}欄位需填入正整數`}))
@@ -200,6 +198,7 @@ export default function ClassManIndex() {
     const handleDateTimeCheckDouble = ()=>{
       handleDateTimeCheck('classStartDate', 'classEndDate');
       handleDateTimeCheck('assignEndDate', 'classStartDate');
+      handleDateTimeCheck('assignStartDate', 'assignEndDate');
     }
 
   const handleOnlineClickClear = ()=>{
@@ -503,9 +502,11 @@ export default function ClassManIndex() {
       });
     }
   };
-
+  console.log("錯誤訊息box長這樣喔喔:")
+  console.log(errorMsgBox)
   return (
     <>
+    
       <div className='course-manage-wrap'>
         <Nav />
         <Head>
@@ -522,7 +523,7 @@ export default function ClassManIndex() {
 
         <div className='CManageNav'>
           <div className='container'>
-            <div className='CManageNavT'>新增課程{errorMsgBox['studentLimit'] && errorMsgBox['studentLimit'].trim().length>0?errorMsgBox['studentLimit']:''}</div>
+            <div className='CManageNavT'>新增課程</div>
             <div className='CManageNavList'>
               <Link href='/course/teacher/management' className='CArmallc'><div className='CNavListLi'>課程管理</div></Link>
               <Link href='/course/teacher/management/create' className='CArmall'><div className='CNavListLi CNowUnderLI'>新增課程</div></Link>
@@ -597,6 +598,8 @@ export default function ClassManIndex() {
                         className='CourseCreateInput'
                         onChange={handlePIntegerCheck}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`studentLimit`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`studentLimit`] ? errorMsgBox[`studentLimit`] : ''}</div>
+                      {console.log(document.getElementById('studentLimit').value)}
                       {/* 檢查數字必須是大於0的整數 */}
                     </div>
                   </div>
@@ -614,6 +617,7 @@ export default function ClassManIndex() {
                         className='CourseCreateInput'
                         onChange={handleDateTimeCheckDouble}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`classStartDate`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`classStartDate`] ? errorMsgBox[`classStartDate`] : ''}</div>
                     </div>
                     <div className='col-4 d-flex flex-column gap-1'>
                       <label htmlFor='courseEndDate' className='CmanageCreateTag'>
@@ -640,6 +644,7 @@ export default function ClassManIndex() {
                         className='CourseCreateInput'
                         onChange={()=>{handleDateTimeCheck('assignStartDate', 'assignEndDate')}}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`assignStartDate`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`assignStartDate`] ? errorMsgBox[`assignStartDate`] : ''}</div>
                     </div>
 
                     <div className='col-4 d-flex flex-column gap-1'>
@@ -653,6 +658,7 @@ export default function ClassManIndex() {
                         className='CourseCreateInput'
                         onChange={handleDateTimeCheckDouble}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`assignEndDate`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`assignEndDate`] ? errorMsgBox[`assignEndDate`] : ''}</div>
                     </div>
 
                     <div className='col-4 d-flex flex-column gap-1'>
@@ -667,6 +673,7 @@ export default function ClassManIndex() {
                         className='CourseCreateInput'
                         onChange={()=>{handleDateTimeCheck('dailyStartTime', 'dailyEndTime')}}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`dailyStartTime`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`dailyStartTime`] ? errorMsgBox[`dailyStartTime`] : ''}</div>
                     </div>
 
                     <div className='col-4 d-flex flex-column gap-1'>
@@ -728,6 +735,7 @@ export default function ClassManIndex() {
                         placeholder='--請輸入課程原價'
                         onChange={handlePIntegerCheck}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`classPrice`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`classPrice`] ? errorMsgBox[`classPrice`] : ''}</div>
                       {/* 需要是正整數 */}
                     </div>
 
@@ -743,6 +751,7 @@ export default function ClassManIndex() {
                         placeholder='--請選擇性輸入折扣後金額'
                         onChange={handlePIntegerCheck}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`classSalePrice`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`classSalePrice`] ? errorMsgBox[`classSalePrice`] : ''}</div>
                       {/* 不可大於課程原價，需要是正整數 */}
                     </div>
                   </div>

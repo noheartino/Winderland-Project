@@ -565,7 +565,7 @@ router.get('/teacher/management/getOriginV/:courseId', async (req, res) => {
       originClassV,
       originClassImg,
     })
-    console.log('測試GET Teacher:' + req.originalUrl)
+    console.log('測試GET Courses:' + req.originalUrl)
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
   }
