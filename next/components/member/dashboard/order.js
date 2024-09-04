@@ -127,6 +127,21 @@ export default function DashboardOrder() {
           <OrderAside onFilterChange={handleFilterChange} />
 
           <div className="order-list">
+            {/* 搜尋框 */}
+            <div className="searchPC">       
+              <div className="search ms-4 mt-2">
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                className="search_icon" />
+              <input
+                id="search"
+                type="search"
+                placeholder="搜 尋 訂單編號 ／ 日期 "
+                onChange={(e) => handleSearch(e.target.value)}
+              />
+            </div></div>
+
+
             {isLoading ? (
               <div>載入中...</div>
             ) : currentOrders.length === 0 ? (
@@ -191,11 +206,11 @@ export default function DashboardOrder() {
         <div className="d-flex align-items-center searchArea">
           <div className="search ms-4 mt-2">
             <FontAwesomeIcon icon={faMagnifyingGlass} className="search_icon" />
-            <input 
-            id="search" 
-            type="search" 
-            placeholder="搜 尋 訂單編號 ／ 日期 " 
-            onChange={(e) => handleSearch(e.target.value)}
+            <input
+              id="search"
+              type="search"
+              placeholder="搜 尋 訂單編號 ／ 日期 "
+              onChange={(e) => handleSearch(e.target.value)}
             />
           </div>
           {/* 篩選手風琴元件 */}
