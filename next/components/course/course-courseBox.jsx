@@ -36,6 +36,10 @@ export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage
     }
     console.log("mybox?????????");
     console.log(myBox);
+
+    const imagePath = myBox?.class_path ? 
+    `http://localhost:3005/uploads/course_and_tarot/${myBox.class_path}` :
+    `http://localhost:3005/uploads/course_and_tarot/classImgDefault.png`;
     return (
         <>
             <div className={`course-leftcontent col-12 col-md-8 h-100 px-0 cursor-pointer ${myBox ? 'd-flex' : 'd-none'} flex-column justify-content-between`} onClick={handleHref} title={`${myBox?.name}`}>
@@ -43,7 +47,7 @@ export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage
                     <div className='col-12 course-video-video overflow-hidden position-relative px-0 mx-0'>
                         <img
                             className="course-img21"
-                            src={`http://localhost:3005/uploads/course_and_tarot/${myBox?.class_path}`}
+                            src={imagePath}
                             alt=""
                         />
                         <div className="d-flex d-md-none justify-content-center align-items-center w-100 h-100 absolute-t0-l0">

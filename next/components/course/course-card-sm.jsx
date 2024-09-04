@@ -14,6 +14,10 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
     assigned,
   } = course;
   const isOnline = parseInt(online) === 0 ? false : true;
+
+  const imagePath = class_path ? 
+    `http://localhost:3005/uploads/course_and_tarot/${class_path}` :
+    `http://localhost:3005/uploads/course_and_tarot/classImgDefault.png`;
   return (
     <>
       <div className="d-flex flex-column align-items-center justify-content-between cursor-pointer">
@@ -22,7 +26,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
             <div className="course-video-video overflow-hidden">
               <img
                 className="course-img21"
-                src={`http://localhost:3005/uploads/course_and_tarot/${class_path}`}
+                src={imagePath}
                 alt={`${class_path}`}
                 title={`${class_path}`}
               />

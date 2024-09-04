@@ -59,7 +59,8 @@ export default function ClassManIndex() {
   const [classSalePrice, setClassSalePrice] = useState(null)
   const [classSummary, setClassSummary] = useState(null)
   const [classIntro, setClassIntro] = useState(null)
-  
+  const [Cimage, setCImage] = useState(`http://localhost:3005/uploads/course_and_tarot/classImgDefault.png`)
+  const [Cvideo, setCvideo] = useState(null)
 
   useEffect(()=>{
     // 初渲染設定初始值
@@ -76,6 +77,17 @@ export default function ClassManIndex() {
     setWholeClassCity(originClassV?.address)// id='classCity' & id='classCityDetail' 的來源: wholeClassCity 的初始值
     setClassPrice(originClassV?.price)// id='初始值classPrice' 初始值
     setClassSalePrice(originClassV?.sale_price)// id='classSalePrice' 初始值
+    setClassSummary(originClassV?.class_summary)// id='classSummary' 初始值
+    setClassIntro(originClassV?.description)// id='classIntro' 初始值
+    setCImage(!originClassImg.imgPath?`http://localhost:3005/uploads/course_and_tarot/classImgDefault.png`:`http://localhost:3005/uploads/course_and_tarot/${originClassImg?.imgPath}`) // 設定圖片預覽預設值
+    setCvideo(originClassImg?.vdioPath) // 設定影片預設值
+
+    // const file = document.getElementById('classPic').files[0]; // 获取第一个文件
+    // if (file) {
+    //   setFileName(file.name);
+    // } else {
+    //   setFileName('');
+    // }
   }, [originClassV, resetTrigger])
 
   console.log(originClassV?.address)
@@ -150,6 +162,14 @@ export default function ClassManIndex() {
     setClassSalePrice(e.target.value)
     handlePIntegerCheck(e)
   }
+  const handleClassSummaryChange=(e)=>{
+    setClassSummary(e.target.value)
+    handleWordsLimit(e, 500)
+  }
+  const handleClassIntroChange=(e)=>{
+    setClassIntro(e.target.value)
+    handleWordsLimit(e, 1500)
+  }
 
   const handleOnlineClick = ()=>{
     handleOnlineClickClear()
@@ -190,7 +210,6 @@ export default function ClassManIndex() {
 
 
   // 選擇上傳圖片(如果有上傳的文件就把 Cimage 狀態設置為上傳的文件)
-  const [Cimage, setCImage] = useState(originClassImg.imgPath?`http://localhost:3005/uploads/course_and_tarot/${originClassImg.imgPath}`:'http://localhost:3005/uploads/course_and_tarot/classImgDefault.png'); // 設定圖片預覽預設值
   const handleImageUpload = (event) => {
     const file = event.target.files[0]; // 獲取選中的文件
     if (file) {
@@ -202,10 +221,8 @@ export default function ClassManIndex() {
     }
   };
   
-
   // 選擇上傳影片(如果有上傳的文件就把 Cvideo 狀態設置為上傳的文件)
-  const [Cvideo, setCvideo] = useState(originClassImg.vidoPath?`http://localhost:3005/uploads/course_and_tarot/${originClassImg.vidoPath}`:null); // 設定影片預設值
-  const handleVdioUpload = (event) => {
+    const handleVdioUpload = (event) => {
     const file = event.target.files[0]; // 獲取選中的文件
     if (file) {
       const reader = new FileReader();
@@ -606,12 +623,12 @@ export default function ClassManIndex() {
           }
         }
       const result = await editCourse()
-      // 跳出新增成功or失敗
+      // 跳出修改成功or失敗
 
       if(result.status && result.status==='success'){
         await Swal.fire({
           icon: 'success',
-          title: '課程修改成功',
+          title: '課程更新成功',
           text: result.message,
           showConfirmButton: false,
           timer: 1500
@@ -884,8 +901,12 @@ export default function ClassManIndex() {
                 <div className='col-12 col-lg-4 d-flex flex-column gap-1'>
                   <label htmlFor='classPic' className='form-label CmanageCreateTag'>
                     課程縮圖
+                    <img src={Cimage} alt='' className='Cprevpic' />
+                    <div className="vidAndImg-input p-0 d-flex row mx-0 rounded-2">
+                        <div className='border-end border-1 m-0 col-auto px-2 py-1 fw-regular spac-0'>選擇檔案</div><div className='col px-2 py-1 fw-regular'>顯示檔案名稱</div>
+                    </div>
                   </label>
-                  <img src={Cimage.trim().length>0?Cimage:'http://localhost:3005/uploads/course_and_tarot/classImgDefault.png'} alt='' className='Cprevpic' />
+                  
                   {/* <input
                     className='form-control vidAndImg-input'
                     type='file'
@@ -894,7 +915,7 @@ export default function ClassManIndex() {
                     onChange={handleImageUpload}
                   /> */}
                   <input
-                    className='form-control vidAndImg-input'
+                    className='form-control vidAndImg-input d-none'
                     type='file'
                     id='classPic'
                     name='classPic'
@@ -903,8 +924,11 @@ export default function ClassManIndex() {
                   />
                   {/* 只能上傳圖片格式(jpg,jpeg,png,gif,webp,svg,) */}
                   <div className={`${onOrUnderline === 0 ? 'd-none' : 'd-block'}`}>
-                    <label htmlFor='classVdio' className='form-label CmanageCreateTag mt-2'>
+                    <label htmlFor='classVdio' className='form-label CmanageCreateTag d-block' style={{boxSizing: "border-box"}}>
                       課程影片
+                      <div className="vidAndImg-input p-0 d-flex row mx-0 rounded-2">
+                        <div className='border-end border-1 m-0 col-auto px-2 py-1 fw-regular spac-0'>選擇檔案</div><div className='col px-2 py-1 fw-regular'>{Cvideo}顯示檔案名稱</div>
+                      </div>
                     </label>
                     {/* <input
                       className='form-control vidAndImg-input'
@@ -914,7 +938,7 @@ export default function ClassManIndex() {
                       onChange={handleVdioUpload}
                     /> */}
                     <input
-                      className='form-control vidAndImg-input'
+                      className='form-control vidAndImg-input d-none'
                       type='file'
                       id='classVdio'
                       name='classVdio'
@@ -933,7 +957,7 @@ export default function ClassManIndex() {
                     name='classSummary'
                     id='classSummary'
                     placeholder='請輸入課程摘要'
-                    onChange={(e) => handleWordsLimit(e, 500)}
+                    onChange={handleClassSummaryChange} value={classSummary}
                   />
                 </div>
                 <div className='col-12 d-flex flex-column gap-1'>
@@ -946,7 +970,7 @@ export default function ClassManIndex() {
                     name='classIntro'
                     id='classIntro'
                     placeholder='請輸入課程內容'
-                    onChange={(e) => handleWordsLimit(e, 1500)}
+                    onChange={handleClassIntroChange} value={classIntro}
                   />
                 </div>
                 <div className='col-12 d-flex gap-1 justify-content-end mt-3'>
@@ -955,7 +979,7 @@ export default function ClassManIndex() {
                   </button>
 
                   <button type='submit' className='CeventCS d-block'>
-                    新增課程
+                    儲存變更
                   </button>
                 </div>
               </div>

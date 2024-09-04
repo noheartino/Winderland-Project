@@ -81,6 +81,9 @@
   & .w-35 {
     width: 35%;
   }
+  & .fw-regular {
+    font-weight: 400;
+  }
   & .fw-thin {
     font-weight: 300;
   }
@@ -89,6 +92,9 @@
   }
   & .text-justify {
     text-align: justify;
+  }
+  & .spac-0 {
+    letter-spacing: 0;
   }
   & .spac-1 {
     letter-spacing: 0.125rem;
@@ -886,7 +892,6 @@
         color: #916B51;
         letter-spacing: 2px;
         width: 100%;
-
         @media screen and (max-width: 992px){
             font-size: 14px;
         }
@@ -955,7 +960,7 @@
         }
     }
     .vidAndImg-input{
-      background-color: #FBF9F7;
+        background-color: #FBF9F7;
         width: 100%;
         padding-block: 7px;
         padding-left: 10px;
@@ -963,6 +968,10 @@
         letter-spacing: 2px;
         border: 1px solid #dbdbdb;
         font-size: 16px;
+        transition: .3s;
+      &:hover{
+        background-color: #efede8;
+      }
       &.isEmpty{
         background-color: #ffe1da;
       }
