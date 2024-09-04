@@ -292,12 +292,49 @@ export default function Applyevent() {
     }
   };
 
+  function TimeMessage() {
+    swal("調整錯誤!", "結束時間無法早於開始時間!", "error");
+  }
+
+  function DateMessage() {
+    swal("調整錯誤!", "截止日無法早於開始日!", "error");
+  }
+
+  function ApplyMessage() {
+    swal("調整錯誤!", "報名期間日無法晚於活動日期!", "error");
+  }
+
   const handleInputChange = (event) => {
+   
     const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
+
+    const updatedFormData = {
+      ...formData,
       [name]: value,
-    }));
+    };
+
+    if (updatedFormData.event_time_start && updatedFormData.event_time_end) {
+      const startTime = new Date(`1970-01-01T${updatedFormData.event_time_start}`);
+      const endTime = new Date(`1970-01-01T${updatedFormData.event_time_end}`);
+
+      if (startTime > endTime) {
+        TimeMessage()
+        updatedFormData.event_time_end = updatedFormData.event_time_start;
+      }
+    }
+
+    if (new Date(updatedFormData.apply_start) > new Date(updatedFormData.apply_end)) {
+      DateMessage()
+      updatedFormData.apply_end = updatedFormData.apply_start;
+    }
+
+    if (new Date(updatedFormData.event_date) < new Date(updatedFormData.apply_start) || new Date(updatedFormData.event_date) < new Date(updatedFormData.apply_end)) {
+      ApplyMessage()
+      updatedFormData.apply_start = updatedFormData.event_date
+      updatedFormData.apply_end = updatedFormData.event_date
+    }
+
+    setFormData(updatedFormData);
   };
 
   const clearhandleInput = () => {

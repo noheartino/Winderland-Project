@@ -293,8 +293,7 @@ export default function Nav() {
             <div className="HeaderCart">
               <button onClick={GoCart}>
                 <i className="fa-solid fa-cart-shopping" />
-                <div className="dot nonedot">沒有購物車內容</div>
-                <div className="dot">{cartQuantity}</div>
+                <div className={`dot ${cartQuantity === 0 ? 'nonedot' : ''}`}>{cartQuantity}</div>
               </button>
             </div>
             <div className="nav_user">
@@ -361,7 +360,7 @@ export default function Nav() {
           <div className="HeaderCart">
             <button onClick={GoCart}>
               <i className="fa-solid fa-cart-shopping" />
-              <div className="dot">{cartQuantity}</div>
+              <div className={`dot ${cartQuantity === 0 ? 'nonedot' : ''}`}>{cartQuantity}</div>
             </button>
           </div>
         </div>

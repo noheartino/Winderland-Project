@@ -5,6 +5,23 @@ export default function Homepage() {
 
   const router = useRouter();
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+      const handleScroll = () => {
+        if (window.scrollY > 400) {
+          setIsVisible(true);
+        } else {
+          setIsVisible(false);
+        }
+      };
+  
+      window.addEventListener('scroll', handleScroll);
+
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       const searchQuery = event.target.value;
@@ -222,7 +239,7 @@ export default function Homepage() {
       {/* desk */}
       <div className="container homeArea01 d-none d-lg-block" id="homeArea01">
         <div>
-          <div className="homeArea01_l"></div>
+          <div className={`homeArea01_l ${isVisible ? 'active' : ''}`}></div>
           <div className="homeArea01_r">
             <div className="homeArea01_r_t">
               <div className="homeArea01_r_t_box" />
