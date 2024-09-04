@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import CouponCardModal from "./CouponCardModal";
+import Swal from "sweetalert2";
 
 export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons }) {
   const [plusCoupons, setplusCoupons] = useState([]);
@@ -56,7 +57,12 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
       }
       // 否則保持原有的選擇列表
       else {
-        alert(`最多只能選擇 ${freeCoupon} 張優惠券`);
+        Swal.fire({
+          title: "選擇限制",
+          text: `最多只能選擇 ${freeCoupon} 張優惠券`,
+          icon: "warning",
+          confirmButtonText: "確定"
+        });
         return prevSelected;
       }
     });
@@ -64,7 +70,12 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
 
   const handleConfirm = async () => {
     if (selectedCoupons.length === 0) {
-      alert("請先選擇優惠券");
+      Swal.fire({
+        title: "選擇優惠券",
+        text: "請先選擇優惠券",
+        icon: "warning",
+        confirmButtonText: "確定"
+      });
       return;
     }
     // 更改日期格式
@@ -92,7 +103,12 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
 
       const result = await response.json();
       if (response.ok && result.status === "success") {
-        alert("優惠券領取成功");
+        Swal.fire({
+          title: "成功",
+          text: "優惠券領取成功",
+          icon: "success",
+          confirmButtonText: "確定"
+        });
 
         // 更新父層的 coupons 狀態
         setUserGetCoupons((prevCoupons) => [
@@ -132,7 +148,12 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
       }
     } catch (error) {
       console.error("領取優惠券時發生錯誤：", error);
-      alert("發生錯誤，請稍後再試");
+      Swal.fire({
+        title: "發生錯誤",
+        text: "請稍後再試",
+        icon: "error",
+        confirmButtonText: "確定"
+      });
     }
   };
 

@@ -53,7 +53,7 @@ export default function TeacherDetail() {
   return (
     <>
       <Head>
-        <title>講師: {teacher?.name}</title>
+        <title>醺迷仙園｜講師: {teacher?.name}</title>
 
         <meta charSet="utf-8" />
         <meta

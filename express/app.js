@@ -86,14 +86,15 @@ app.use(function (req, res, next) {
 
 // 錯誤處理函式
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
+  // Set locals, only providing error in development
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
 
-  // render the error page
-  res.status(err.status || 500)
-  // 更改為錯誤訊息預設為JSON格式
-  res.status(500).send({ error: err })
+  // 更改為錯誤訊息預設為JSON格式，並確保只發送一次回應
+  if (!res.headersSent) {
+    res.status(err.status || 500).json({ error: err.message })
+  }
 })
+
 
 export default app

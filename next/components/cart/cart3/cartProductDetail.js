@@ -47,7 +47,7 @@ export default function CartProductDetail() {
             <b>{item.product_quantity}</b>
           </div>
           <div className={css.cartSubtotal}>
-            NT$ {item.product_sale_price > 0 ? item.product_sale_price.toLocaleString() * item.product_quantity : item.product_price.toLocaleString() * item.product_quantity}
+            NT$ {item.product_sale_price > 0 ? (item.product_sale_price * item.product_quantity).toLocaleString() : (item.product_price * item.product_quantity).toLocaleString()}
           </div>
         </div>
       ))}

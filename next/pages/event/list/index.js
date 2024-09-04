@@ -69,7 +69,7 @@ export default function Applyevent() {
   return (
     <>
       <Head>
-        <title>活動管理列表</title>
+        <title>醺迷仙園｜活動管理列表</title>
 
         <meta charSet="utf-8" />
         <meta

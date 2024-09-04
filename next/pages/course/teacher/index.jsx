@@ -80,7 +80,7 @@ useEffect(()=>{
     
     <>
     <Head>
-          <title>講師列表</title>
+          <title>醺迷仙園｜講師列表</title>
 
           <meta charSet="utf-8" />
           <meta
