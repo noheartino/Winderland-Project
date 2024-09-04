@@ -21,25 +21,45 @@
 }
 
 .ACDropArea {
-  width: 50%;
-  height: 200px;
+  height: 350px;
   border: 2px dashed #ccc;
-  display: grid;
-  place-items: center;
+  /* display: grid; */
+  /* place-items: center; */
   color: #ccc;
   transition: border 0.3s ease;
   &:hover {
     border-color: var(--purple_light);
   }
 }
+.imagePreBlock{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+/* 首頁圖預覽 */
+.previewImage {
+  object-position: center;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+.ACCategory{
+  border: none;
+  border-radius: 10px;
+  color: var(--text_primary);
+  background-color: #eeeeee;
+  letter-spacing: 1.4px;
+}
 
 .ACtitle {
   outline: none;
   font-size: 24px;
   &::placeholder {
-    color: var(--wine_light);
-    letter-spacing: 2px;
-    font-size: 24px;
+    color: #e3e2e2;
+    /* letter-spacing: 1.4px; */
+    font-size: 28px;
   }
 }
 
@@ -48,11 +68,12 @@
 }
 
 .ACtextarea {
-  height: 500px;
+  height: 400px;
+  overflow: auto;
   outline: none;
   resize: none;
   font-size: 18px;
-  letter-spacing: 2px;
+  /* letter-spacing: 2px; */
   border: 0;
   &::placeholder {
     color: var(--wine_light);
@@ -106,18 +127,15 @@
     }
   }
 }
-.previewImage {
-    object-fit: contain;
-    width: 60%;
-    height: 100%;
-  }
+
+
 .inlineImagePreviews {
   width: 100%;
   height: 300px;
-  
 }
-
-.inlineImage{
-  height: 50px;
-  width: 100px;
+.inlineImage {
+  max-width: 60%;
+  height: auto;
+  display: block;
+  margin: 10px 0;
 }

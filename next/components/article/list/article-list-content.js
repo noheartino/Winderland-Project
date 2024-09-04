@@ -25,7 +25,7 @@ export default function ArticleListContent({ article }) {
         acc.push(
           <div className="aid-content-pic my-4" key={`image-${index}`}>
             <Image
-              src={`/images/article/${article.images[index + 1]}`} // 從第二張圖片開始插入
+              src={`http://localhost:3005/uploads/article/${article.images[index + 1]}`} // 從第二張圖片開始插入
               alt="Description of image"
               width={100}
               height={100}

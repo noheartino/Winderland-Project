@@ -76,17 +76,17 @@ export default function CartMoneyM({ totalAmount = 0, selectedCoupon, userId, pr
         <div className={`col-6 ${css.cartTotalML}`}>
           <div className={css.cartTotalML1}>
             <div>商品總計</div>
-            <div>NT$ {Math.floor(totalAmount)}</div>
+            <div>NT$ {Math.floor(totalAmount).toLocaleString()}</div>
           </div>
           <div className={css.cartTotalML2}>
             <div>優惠折扣</div>
-            <div>- NT$ {Math.floor(discountAmount)}</div>
+            <div>- NT$ {Math.floor(discountAmount).toLocaleString()}</div>
           </div>
         </div>
         <div className={`col-5 ${css.cartTotalMR}`}>
           <div className={css.cartTotalMRTitle}>總金額</div>
           <div className={css.cartTotalMRMoney}>
-            <b>NT$ {Math.floor(finalAmount)}</b>
+            <b>NT$ {Math.floor(finalAmount).toLocaleString()}</b>
           </div>
           <div>
             <button 

@@ -92,11 +92,11 @@ export default function CartProductM({ cartItems, onRemove, onUpdateQuantity }) 
                   </div>
                   <div>
                     <div className={css.cartMoney}>
-                      NT$ {item.product_sale_price > 0 ? item.product_sale_price : item.product_price}
+                      NT$ {item.product_sale_price > 0 ? item.product_sale_price.toLocaleString() : item.product_price.toLocaleString()}
                     </div>
                     {item.product_sale_price > 0 && (
                       <div className={css.cartMoneySafe}>
-                        <s>NT$ {item.product_price}</s>
+                        <s>NT$ {item.product_price.toLocaleString()}</s>
                       </div>
                     )}
                   </div>
@@ -108,7 +108,13 @@ export default function CartProductM({ cartItems, onRemove, onUpdateQuantity }) 
                   <div>{item.years}年</div>
                 </div>
               </div>
-              <div className={css.cartProductDel}>
+              <div
+                className={`${css.cartProductDel} ${
+                  item.product_sale_price > 0
+                    ? css["has-discount"]
+                    : css["no-discount"]
+                }`}
+              >
                 <button onClick={() => onRemove(item.cart_item_id)}>✕</button>
               </div>
             </div>

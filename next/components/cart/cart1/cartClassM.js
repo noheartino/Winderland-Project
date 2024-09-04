@@ -56,11 +56,11 @@ export default function CartClassM({ classItems, onRemove }) {
                   <div></div>
                   <div>
                     <div className={css.cartMoney}>
-                      NT$ {item.class_sale_price > 0 ? item.class_sale_price : item.class_price}
+                      NT$ {item.class_sale_price > 0 ? item.class_sale_price.toLocaleString() : item.class_price.toLocaleString()}
                     </div>
                     {item.class_sale_price > 0 && (
                       <div className={css.cartMoneySafe}>
-                        <s>NT$ {item.class_price}</s>
+                        <s>NT$ {item.class_price.toLocaleString()}</s>
                       </div>
                     )}
                   </div>

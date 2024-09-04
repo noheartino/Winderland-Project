@@ -65,6 +65,14 @@
     }
 }
 
+.HeaderCNav.scroll{
+    background-color: transparent;
+    .container #nav_ul a{
+        color: #353e49;
+        text-decoration: none;
+    }
+}
+
 a.Ano{
     text-decoration: none;
     color: var(--purple);
@@ -85,7 +93,7 @@ a.Ano{
     top: 90px;
     left: 0;
 
-    background-color: #fafafa;
+    background: #fafafa;
     height: 350px;
     width: 100%;
     
@@ -93,6 +101,10 @@ a.Ano{
         height: 100%;
         cursor: pointer;
     }
+}
+
+.navShop.scroll{
+    background: linear-gradient(180deg, transparent 0%, #f9f9f9 50% , #f9f9f9 100%);
 }
 
 .navShop_list{
@@ -143,29 +155,36 @@ a.Ano{
             position: relative;
             background-color: transparent;
             border: 1px solid transparent;
-            & i{
-                color: white;
-                font-size: 22px;
-            }
-            & .dot{
-                font-size: 10px;
-                
-                width: 22px;
-                height: 14px;
-                text-align: center;
-                line-height: 14px;
-                background-color: white;
-                border-radius: 10px;
-                box-shadow: 0px 0px 1px 1px rgb(255, 200, 200);
-                color: var(--primary);
-                position: absolute;
-                top: -3px;
-                left: 16px;
-            }
-            & .dot.nonedot{
-                display: none;
-            }
         }
+        
+        i{
+            color: white;
+            font-size: 22px;
+        }
+        
+        .dot{
+            font-size: 10px;
+            
+            width: 22px;
+            height: 14px;
+            text-align: center;
+            line-height: 14px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 1px 1px rgb(255, 200, 200);
+            color: var(--primary);
+            position: absolute;
+            top: -3px;
+            left: 16px;
+        }
+        .dot.scroll{
+            box-shadow: 0px 0px 1px 1px #d2d2d2;
+            color: #353e49;
+        }
+        .dot.nonedot{
+            display: none;
+        }
+        
 
 }
 .HeaderCNavR{
@@ -207,13 +226,15 @@ a.Ano{
             position: relative;
             background-color: transparent;
             border: 1px solid transparent;
-            & i{
+            i{
                 color: white;
                 font-size: 22px;
             }
-            & .dot{
+            i.scroll{
+                color: #353e49;
+            }
+            .dot{
                 font-size: 10px;
-                
                 width: 22px;
                 height: 14px;
                 text-align: center;
@@ -226,7 +247,13 @@ a.Ano{
                 top: -3px;
                 left: 14px;
             }
-            & .dot.nonedot{
+            .dot.scroll{
+                background-color: #353e49;
+                box-shadow: 0px 0px 1px 1px #353e49;
+                color: white;
+            }
+
+            .dot.nonedot{
                 display: none;
             }
         }
@@ -248,6 +275,10 @@ a.Ano{
         border-radius: 2px;
         background-color: white;
         transition: .5s;
+    }
+
+    .line.scroll{
+        background-color: #353e49;
     }
 
 }
@@ -597,6 +628,9 @@ a.Ano{
 
         img{
             width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
         }
     }
     

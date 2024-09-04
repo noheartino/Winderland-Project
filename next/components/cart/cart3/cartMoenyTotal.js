@@ -85,11 +85,11 @@ export default function CartMoneyTotal({ userId }) {
                 </div>
                 <div className={css.cartContent3}>
                     <div>總折抵</div>
-                    <div>- NT$ {distotal}</div>
+                    <div>- NT$ {distotal.toLocaleString()}</div>
                 </div>
                 <div className={`${css.cartContent3} ${css.cartContentTotal1}`}>
                     <div className={css.cartContentTotal1}>實付金額</div>
-                    <div className={css.cartContentTotal2}>NT$ {discountedAmount}</div>
+                    <div className={css.cartContentTotal2}>NT$ {discountedAmount.toLocaleString()}</div>
                 </div>
             </div>
         </div>

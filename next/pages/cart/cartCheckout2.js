@@ -111,16 +111,22 @@ export default function CartCheckout2() {
     sessionStorage.setItem("transportBlackCatData", JSON.stringify(data)); // 存儲到 sessionStorage
   };
 
+  const goTo1 = () => {
+    router.push("http://localhost:3000/cart/cartCheckout1");
+  };
+
   return (
     <>
       <Head>
-        <title>Cart3</title>
+          <title>醺迷仙園｜購物車</title>
+
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <link rel="icon" href="/logo.png" />
       </Head>
-      <meta charSet="utf-8" />
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no"
-      />
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -140,12 +146,16 @@ export default function CartCheckout2() {
           <div className="row">
             <div className="col-8">
               <div className="progressTitle-2">
-                <div className="progressText1-2">確認訂單</div>
+                <div className="progressText1-2">確認訂單(回上一頁)</div>
                 <div className="progressText2-2">填寫訂單詳情</div>
                 <div className="progressText3-2">完成訂單</div>
               </div>
               <div className="progressBar-2">
-                <div className="progressCircle-2 progressCircle1-2" />
+                <div
+                  className="progressCircle-2 progressCircle1-2"
+                  onClick={goTo1}
+                  style={{ cursor: "pointer" }}
+                />
                 <div className="progressLine-2 progressLine1-2" />
                 <div className="progressCircle-2 progressCircle2-2" />
                 <div className="progressLine-2 progressLine2-2" />
@@ -275,12 +285,16 @@ export default function CartCheckout2() {
         </div>
         <div className="container d-block d-lg-none">
           <div className="progressTitle-2">
-            <div className="progressText1-2">確認訂單</div>
+            <div className="progressText1-2">確認訂單(回上一頁)</div>
             <div className="progressText2-2">填寫訂單詳情</div>
             <div className="progressText3-2">完成訂單</div>
           </div>
           <div className="progressBar-2">
-            <div className="progressCircle-2 progressCircle1-2" />
+            <div
+              className="progressCircle-2 progressCircle1-2"
+              onClick={goTo1}
+              style={{ cursor: "pointer" }}
+            />
             <div className="progressLine-2 progressLine1-2" />
             <div className="progressCircle-2 progressCircle2-2" />
             <div className="progressLine-2 progressLine2-2" />

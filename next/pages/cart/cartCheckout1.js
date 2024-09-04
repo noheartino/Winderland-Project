@@ -214,13 +214,15 @@ export default function CartCheckout1() {
   return (
     <>
       <Head>
-        <title>Cart2</title>
+        <title>醺迷仙園｜購物車</title>
+
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <link rel="icon" href="/logo.png" />
       </Head>
-      <meta charSet="utf-8" />
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no"
-      />
       <Nav />
       {productData.length === 0 && classData.length === 0 ? (
         <CartZero />
@@ -383,13 +385,15 @@ export default function CartCheckout1() {
               classData={classChecked ? classData : []}
               userId={userId}
             />
-            <CartCoupon
-              userId={userId}
-              selectedCoupon={selectedCoupon}
-              totalAmount={totalAmount}
-              onCouponChange={handleCouponChange}
-            />
-            <div style={{ height: "150px" }}></div>
+            <div className="cart-coupon-container">
+              <CartCoupon
+                userId={userId}
+                selectedCoupon={selectedCoupon}
+                totalAmount={totalAmount}
+                onCouponChange={handleCouponChange}
+              />
+            </div>
+            <div style={{ height: "180px" }}></div>
           </div>
         </main>
       )}

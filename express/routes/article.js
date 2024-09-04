@@ -1,8 +1,27 @@
 import express from 'express'
 import 'dotenv/config.js'
 import connection from '##/configs/mysql.js'
+import multer from 'multer'
+import { v4 as uuidv4 } from 'uuid'
+import { fileURLToPath } from 'url'
+import path from 'path'
 
 const router = express.Router()
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+// multer的設定值 - START
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, path.join(__dirname, '..', 'public', 'uploads', 'article'))
+  },
+  filename: function (req, file, callback) {
+    const uniqueSuffix = uuidv4()
+    callback(null, uniqueSuffix + path.extname(file.originalname))
+  },
+})
+
+const upload = multer({ storage: storage })
+// multer的設定值 - END
 
 router.get('/', async (req, res) => {
   try {
@@ -311,33 +330,23 @@ router.get('/:id', async (req, res) => {
 // 新增文章
 router.post('/new', async (req, res) => {
   try {
-    const { title, content, author, update_time, valid, images } = req.body
-
+    const { title, category, content, poster, update_time, valid } = req.body
+    // 格式化 update_time
+    const formattedUpdateTime = update_time.replace('T', ' ').slice(0, 19)
     const query = `
-      INSERT INTO article (title, content, author, update_time, valid)
-      VALUES (?, ?, ?, ?, ?)
+      INSERT INTO article (title, category, content, poster, update_time, valid)
+      VALUES (?, ?, ?, ?, ?, ?)
     `
 
     // Execute the query to insert the article
     const [result] = await connection.execute(query, [
       title,
+      category,
       content,
-      author,
-      update_time,
+      poster,
+      formattedUpdateTime,
       valid,
     ])
-
-    if (images && images.length > 0) {
-      const articleId = result.insertId
-      const imageQuery = `
-        INSERT INTO images_article (article_id, path)
-        VALUES (?, ?)
-      `
-
-      for (const path of images) {
-        await connection.execute(imageQuery, [articleId, path])
-      }
-    }
 
     res
       .status(201)
@@ -347,5 +356,52 @@ router.post('/new', async (req, res) => {
     res.status(500).json({ error: '無法新增文章' })
   }
 })
+
+// 上傳首圖
+router.post(
+  '/upload-main-image/:articleId',
+  upload.single('image'),
+  async (req, res) => {
+    const { articleId } = req.params
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'No image uploaded' })
+    }
+
+    const imagePath = `${req.file.filename}`
+    try {
+      const query = `INSERT INTO images_article (article_id, path) VALUES (?, ?)`
+      await connection.execute(query, [articleId, imagePath])
+      res.status(200).json({ message: 'Image uploaded successfully' })
+    } catch (err) {
+      console.error(err)
+      res.status(500).json({ error: 'Failed to save image path' })
+    }
+  }
+)
+
+// 上傳內嵌圖片
+router.post(
+  '/upload-inline-image/:articleId',
+  upload.single('image'),
+  async (req, res) => {
+    const { articleId } = req.params
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'No image uploaded' })
+    }
+
+    const imagePath = `${req.file.filename}`
+
+    try {
+      const query = `INSERT INTO images_article (article_id, path) VALUES (?, ?)`
+      await connection.execute(query, [articleId, imagePath])
+      res.status(200).json({ message: 'Image uploaded successfully' })
+    } catch (err) {
+      console.error(err)
+      res.status(500).json({ error: 'Failed to save image path' })
+    }
+  }
+)
 
 export default router

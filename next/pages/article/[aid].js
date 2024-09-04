@@ -8,6 +8,7 @@ import Nav from "@/components/Header/Header";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { FaCircleChevronUp } from "react-icons/fa6";
+import Head from "next/head";
 
 export default function ArticleDetail() {
   const router = useRouter();
@@ -50,7 +51,8 @@ export default function ArticleDetail() {
       }
 
       // 檢查捲動位置，設定顯示狀態
-      if (window.scrollY > 100) { // 當捲動超過100px時顯示按鈕
+      if (window.scrollY > 100) {
+        // 當捲動超過100px時顯示按鈕
         setShowButton(true);
       } else {
         setShowButton(false);
@@ -87,9 +89,18 @@ export default function ArticleDetail() {
 
   return (
     <>
+      <Head>
+        <title>醺迷仙園｜{article.title}</title>
+
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <link rel="icon" href="/logo.png" />
+      </Head>
       {/* Header */}
       <Nav />
-      <title>{article.title}</title>
       <div className="container pb-5">
         {/* 文章主題 */}
         {/* 最上面桌機header */}
@@ -120,7 +131,7 @@ export default function ArticleDetail() {
           fontSize: "50px",
           backgroundColor: "#fff",
           color: "var(--primary)",
-          borderRadius: '50%',
+          borderRadius: "50%",
           border: "2px solid #fff",
           transition: "all 0.3s ease",
           cursor: "pointer",
@@ -139,7 +150,7 @@ export default function ArticleDetail() {
           fontSize: "40px",
           backgroundColor: "#fff",
           color: "var(--primary)",
-          borderRadius: '50%',
+          borderRadius: "50%",
           border: "2px solid #fff",
           transition: "all 0.3s ease",
           cursor: "pointer",

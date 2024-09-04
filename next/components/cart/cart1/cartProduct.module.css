@@ -4,8 +4,10 @@
 }
 
 .cartProductImg {
-  width: 200px; /* 可以根据需要自行调整 */
-  height: 200px; /* 锁定高度以确保显示效果 */
+  width: 200px;
+  /* 可以根据需要自行调整 */
+  height: 200px;
+  /* 锁定高度以确保显示效果 */
   border: 1px solid #d4c0c0;
   overflow: hidden;
   box-sizing: border-box;
@@ -14,8 +16,10 @@
 
 .cartProductImg img {
   height: 100%;
-  width: auto; /* 将宽度自动适应 */
-  object-fit: contain; /* 确保整个图像内容能显示出来 */
+  width: auto;
+  /* 将宽度自动适应 */
+  object-fit: contain;
+  /* 确保整个图像内容能显示出来 */
   object-position: center;
   display: block;
   position: absolute;
@@ -41,11 +45,22 @@
 .cartProductContentMoney {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  /* 确保价格部分与数量按钮垂直居中 */
 }
 
 .cartMoney {
   font-size: 24px;
   color: #ff4f4f;
+  display: flex;
+  align-items: center;
+  /* 垂直居中 */
+}
+
+.cartMoneySafe {
+  text-decoration: line-through;
+  color: #d4c0c0;
+  font-size: 16px;
 }
 
 .cartProductContentFormat {
@@ -60,8 +75,19 @@
   justify-content: center;
   align-items: center;
   margin-top: -15px;
-  padding-top: 30px;
+  padding-top: 10px; /* 默認的 padding-top */
 }
+
+/* 當有折扣價格時，增加 padding-top */
+.cartProductDel.has-discount {
+  padding-top: 10px; /* 可以根據需要調整 */
+}
+
+/* 當沒有折扣價格時，增加 padding-top */
+.cartProductDel.no-discount {
+  padding-top: 30px; /* 可以根據需要調整 */
+}
+
 
 .cartProductDel button {
   color: #9a5b69;
@@ -72,8 +98,11 @@
 }
 
 @media screen and (max-width: 1200px) {
-  .cartProductDel {
+  .cartProductDel.has-discount {
     padding-top: 30px;
+  }
+  .cartProductDel.no-discount {
+    padding-top: 65px;
   }
 }
 
@@ -82,28 +111,36 @@
     padding-bottom: 20px;
     width: 100%;
   }
+
   .cartProductImg {
     width: 180px;
     height: 180px;
   }
+
   .cartProductContent {
     max-width: 500px;
     width: 100%;
     padding-left: 30px;
     height: 180px;
   }
+
   .cartProductContentTitle {
     font-size: 18px;
   }
+
   .cartProductContentFormat {
     font-size: 12px;
     display: flex;
     justify-content: space-between;
   }
-  .cartProductDel {
-    width: 80px;
-    padding-top: 20px;
+
+  .cartProductDel.has-discount {
+    padding-top: 30px;
   }
+  .cartProductDel.no-discount {
+    padding-top: 50px;
+  }
+
   .cartMoney {
     font-size: 22px;
     color: #ff4f4f;
@@ -115,27 +152,37 @@
     margin-bottom: 10px;
     width: 100%;
   }
+
   .cartProductImg {
     width: 150px;
     height: 150px;
   }
+
   .cartProductContent {
     width: 100%;
     padding-left: 10px;
     height: 150px;
   }
+
   .cartProductContentTitle {
     font-size: 16px;
   }
+
   .cartProductContentFormat {
     font-size: 12px;
     display: flex;
     justify-content: space-between;
   }
-  .cartProductDel {
+
+  .cartProductDel.has-discount {
+    padding-top: 30px;
     width: 80px;
-    padding-top: 40px;
   }
+  .cartProductDel.no-discount {
+    padding-top: 45px;
+    width: 80px;
+  }
+
   .cartMoney {
     font-size: 20px;
     color: #ff4f4f;
@@ -143,54 +190,67 @@
 }
 
 @media screen and (max-width: 450px) {
-  .cartProductDel {
-    width: 80px;
-    padding-top: 40px;
+  .cartProductDel.has-discount {
+    padding-top: 50px;
+  }
+  .cartProductDel.no-discount {
+    padding-top: 70px;
   }
 }
 
 .cartNumber {
-    display: flex;
-    justify-content: space-between;
-    width: 130px;
-    border: 1px solid #a66e7b;
-  }
-  
-  .cartNumberDetail {
-    color: #a66e7b; /* 数字颜色 */
-    display: flex;
-    align-items: center; /* 垂直居中 */
-   
-    
-  }
-  
-  .cartNumberReduceButton,
-  .cartNumberAddButton {
-    width: 40px;
-    height: 100%;
-    background-color: #d4c0c0;
-    border: none;
-    cursor: pointer;
-    color: #a66e7b;
-    font-size: 20px;
-  }
-  
-  @media screen and (max-width: 991px) {
-    .cartNumber {
-      width: 80px;
-    }
-    .cartNumberDetail {
-      font-size: 16px; /* 在宽度小于 991px 时缩小字体 */
-    }
-    .cartNumberReduceButton,
-    .cartNumberAddButton {
-      width: 25px;
-      height: 100%px;
-      font-size: 16px;
-    }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* 垂直居中 */
+  width: 130px;
+  border: 1px solid #a66e7b;
+}
+
+.cartNumberDetail {
+  color: #a66e7b;
+  /* 数字颜色 */
+  display: flex;
+  align-items: center;
+  /* 垂直居中 */
+  justify-content: center;
+  width: 50px;
+}
+
+.cartNumberReduceButton,
+.cartNumberAddButton {
+  width: 40px;
+  height: 40px;
+  /* 使按钮高度和宽度相等 */
+  background-color: #d4c0c0;
+  border: none;
+  cursor: pointer;
+  color: #a66e7b;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* 垂直居中 */
+}
+
+@media screen and (max-width: 991px) {
+  .cartNumber {
+    width: 100px;
   }
 
-  .cartMoneySafe {
-    text-decoration: line-through;
-    color:  #D4C0C0;
+  .cartNumberDetail {
+    font-size: 16px;
+    /* 在宽度小于 991px 时缩小字体 */
   }
+
+  .cartNumberReduceButton,
+  .cartNumberAddButton {
+    font-size: 16px;
+  }
+}
+
+
+.cartMoneySafe {
+  text-decoration: line-through;
+  color: #D4C0C0;
+}

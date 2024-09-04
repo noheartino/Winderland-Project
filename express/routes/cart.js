@@ -273,7 +273,7 @@ router.post('/cashOnDelivery', async (req, res) => {
     // 插入訂單資料
     const insertOrderQuery = `
       INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, coupon_amount, earned_points, pointUsed, pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, totalMoney, created_at, updated_at)
-      VALUES (?, ?, 'pending', '貨到付款', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
+      VALUES (?, ?, '尚未付款', '貨到付款', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
     `
     const [orderResult] = await conn.query(insertOrderQuery, [
       orderNumber,
@@ -386,12 +386,14 @@ router.post('/cashOnDelivery', async (req, res) => {
       ])
     }
 
+    console.log('已刪除購物車內的已購買商品或課程')
+
     // 更新庫存數量並檢查庫存是否為零
     const updateStockQuery = `
-        UPDATE product_detail 
-        SET amount = amount - ?, valid = CASE WHEN amount - ? <= 0 THEN 0 ELSE valid END
-        WHERE id = ?;
-      `
+UPDATE product_detail 
+SET amount = amount - ?, valid = CASE WHEN amount - ? <= 0 THEN 0 ELSE valid END
+WHERE id = ?;
+`
     for (const item of cartItems) {
       if (item.product_detail_id) {
         await conn.query(updateStockQuery, [
@@ -401,7 +403,48 @@ router.post('/cashOnDelivery', async (req, res) => {
         ])
       }
     }
-    console.log('已刪除購物車內的已購買商品或課程')
+
+    // 如果有 product_detail_id，檢查 product 的 valid 狀態
+    if (cartItems.some((item) => item.product_detail_id)) {
+      // 獲取 product_id
+      const checkProductValidityQuery = `
+  SELECT product_id
+  FROM product_detail
+  WHERE id = ?;
+`
+      const [productDetailResult] = await conn.query(
+        checkProductValidityQuery,
+        [cartItems[0].product_detail_id]
+      )
+
+      if (productDetailResult.length > 0) {
+        const productId = productDetailResult[0].product_id
+
+        // 檢查該 product_id 下所有的 product_detail 的 valid 狀態
+        const checkAllDetailsInvalidQuery = `
+    SELECT COUNT(*) AS count
+    FROM product_detail
+    WHERE product_id = ? AND valid = 1;
+  `
+        const [allDetailsResult] = await conn.query(
+          checkAllDetailsInvalidQuery,
+          [productId]
+        )
+        const allDetailsValidCount = allDetailsResult[0].count
+
+        // 如果所有的 product_detail 都無效，則將 product 表格的 valid 更新為 0
+        if (allDetailsValidCount === 0) {
+          const updateProductValidityQuery = `
+      UPDATE product 
+      SET valid = 0 
+      WHERE id = ?;
+    `
+          await conn.query(updateProductValidityQuery, [productId])
+        }
+      }
+    }
+
+    console.log('已更新庫存和產品有效性')
 
     // 返回成功訊息
     console.log('訂單已成功建立，準備發送回應')
@@ -487,7 +530,7 @@ router.post('/creditCardPayment', async (req, res) => {
     // 插入訂單資料
     const insertOrderQuery = `
       INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, coupon_amount, earned_points, pointUsed,pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, totalMoney, created_at, updated_at)
-      VALUES (?, ?, 'pending', '信用卡', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
+      VALUES (?, ?, '出貨準備中', '信用卡', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
     `
     const [orderResult] = await conn.query(insertOrderQuery, [
       orderNumber,
@@ -521,7 +564,7 @@ router.post('/creditCardPayment', async (req, res) => {
       VALUES (?, ?, ?, ?, ?, NOW());
     `
     for (const item of cartItems) {
-      console.log('Inserting item:', item);
+      console.log('Inserting item:', item)
       await conn.query(insertOrderItemsQuery, [
         orderNumber,
         item.product_id || null,
@@ -604,10 +647,10 @@ router.post('/creditCardPayment', async (req, res) => {
 
     // 更新庫存數量並檢查庫存是否為零
     const updateStockQuery = `
-        UPDATE product_detail 
-        SET amount = amount - ?, valid = CASE WHEN amount - ? <= 0 THEN 0 ELSE valid END
-        WHERE id = ?;
-      `
+  UPDATE product_detail 
+  SET amount = amount - ?, valid = CASE WHEN amount - ? <= 0 THEN 0 ELSE valid END
+  WHERE id = ?;
+`
     for (const item of cartItems) {
       if (item.product_detail_id) {
         await conn.query(updateStockQuery, [
@@ -617,6 +660,48 @@ router.post('/creditCardPayment', async (req, res) => {
         ])
       }
     }
+
+    // 如果有 product_detail_id，檢查 product 的 valid 狀態
+    if (cartItems.some((item) => item.product_detail_id)) {
+      // 獲取 product_id
+      const checkProductValidityQuery = `
+    SELECT product_id
+    FROM product_detail
+    WHERE id = ?;
+  `
+      const [productDetailResult] = await conn.query(
+        checkProductValidityQuery,
+        [cartItems[0].product_detail_id]
+      )
+
+      if (productDetailResult.length > 0) {
+        const productId = productDetailResult[0].product_id
+
+        // 檢查該 product_id 下所有的 product_detail 的 valid 狀態
+        const checkAllDetailsInvalidQuery = `
+      SELECT COUNT(*) AS count
+      FROM product_detail
+      WHERE product_id = ? AND valid = 1;
+    `
+        const [allDetailsResult] = await conn.query(
+          checkAllDetailsInvalidQuery,
+          [productId]
+        )
+        const allDetailsValidCount = allDetailsResult[0].count
+
+        // 如果所有的 product_detail 都無效，則將 product 表格的 valid 更新為 0
+        if (allDetailsValidCount === 0) {
+          const updateProductValidityQuery = `
+        UPDATE product 
+        SET valid = 0 
+        WHERE id = ?;
+      `
+          await conn.query(updateProductValidityQuery, [productId])
+        }
+      }
+    }
+
+    console.log('已更新庫存和產品有效性')
 
     // 返回成功訊息
     console.log('訂單已成功建立，準備發送回應')
