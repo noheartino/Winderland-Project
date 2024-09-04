@@ -74,6 +74,19 @@ export default function HomeNav() {
     router.push("/");
   }
 
+  
+  const redwine = () => {
+    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=1"); 
+  };
+
+  const whitewine = () => {
+    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=2"); 
+  };
+
+  const otherwine = () => {
+    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=3"); 
+  };
+
   const hamburgerHook = () => {
     setisOpen((prevState) => !prevState);
 
@@ -370,7 +383,7 @@ export default function HomeNav() {
       <div className={`navShop ${scrolled ? '' : 'scroll'}`}>
         <div className="container">
           <div className="row h-100 nav_row align-items-center">
-            <div className="col-4 ">
+            <div className="col-4" onClick={redwine}>
               <div className="navShopBox">
                 <div className="img img1" />
                 <div className="navShopBox_b d-flex align-items-center">
@@ -399,7 +412,7 @@ export default function HomeNav() {
                 </div>
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-4" onClick={whitewine}>
               <div className="navShopBox">
                 <div className="img img2" />
                 <div className="navShopBox_b d-flex align-items-center">
@@ -423,7 +436,7 @@ export default function HomeNav() {
                 </div>
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-4" onClick={otherwine}>
               <div className="navShopBox">
                 <div className="img img3" />
                 <div className="navShopBox_b d-flex align-items-center">
