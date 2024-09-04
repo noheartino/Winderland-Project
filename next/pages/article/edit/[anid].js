@@ -1,7 +1,7 @@
 import Footer from "@/components/footer/footer";
 import Nav from "@/components/Header/Header";
 import React, { useState, useRef, useEffect } from "react";
-import style from "./articleCreate.module.css";
+import style from "../articleCreate.module.css";
 import { MdAddPhotoAlternate } from "react-icons/md";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -40,9 +40,85 @@ export default function New() {
   const [inlineImages, setInlineImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [mainImagePreview, setMainImagePreview] = useState(null);
-  // const [inlineImagePreviews, setInlineImagePreviews] = useState([]);
-
   const contentRef = useRef(null);
+
+  // 呼叫當前id文章資料
+  const [article, setArticle] = useState([]);
+
+  useEffect(() => {
+    const { anid } = router.query; // 取得路由中的 id 參數
+    if (router.isReady) {
+      fetch(`http://localhost:3005/api/article/${anid}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // 處理 articles 資料，將 images 字段轉換為數組
+          const processedArticle = {
+            ...data,
+            images: data.images ? data.images.split(",") : [],
+          };
+          setArticle(processedArticle);
+          setTitle(processedArticle.title);
+          setCategory(processedArticle.category);
+          setMainImagePreview(
+            `http://localhost:3005/uploads/article/${processedArticle.images[0]}`
+          );
+          setMainImage(processedArticle.images[0]);
+          // setContent(processedArticle.content);
+          setInlineImages(processedArticle.images);
+          console.log(article);
+          // 處理文章內容，將 <!--IMAGE_HERE--> 佔位符替換為圖片
+          if (contentRef.current) {
+            const content = processedArticle.content || "";
+            const images = Array.isArray(processedArticle.images)
+              ? processedArticle.images
+              : [];
+            const imagePlaceholder = /<!--IMAGE_HERE-->/g;
+
+            const contentWithImages = content
+              .split(imagePlaceholder)
+              .reduce((acc, part, index) => {
+                acc.push(part);
+
+                if (index < images.length - 1) {
+                  const imageHTML = `
+                    <div>
+                      <img src="http://localhost:3005/uploads/article/${
+                        images[index + 1]
+                      }" 
+                           class="editInlineImage"
+                           alt="${images[index + 1]}"/>
+                    </div>`;
+
+                  acc.push(imageHTML);
+                }
+
+                return acc;
+              }, [])
+              .join(""); // 將陣列轉回字串
+
+            // 移除不必要的空白字元和多餘的空行
+            const cleanedContent = contentWithImages
+              // 替換連續的空行（兩行以上）為單行空行
+              .replace(/(\n\s*){2,}/g, "\n")
+              .trim();
+
+            contentRef.current.innerHTML = cleanedContent;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [router.isReady]);
+
+  console.log(article.images);
+  // console.log(contentRef.current.innerHTML);
+  // console.log(contentRef.current.innerHTML);
 
   const handleFileChange = (e) => {
     if (e.target.files.length > 0) {
@@ -63,11 +139,13 @@ export default function New() {
     const imgElements = contentRef.current.getElementsByTagName("img");
     const currentAltAttributes = Array.from(imgElements).map((img) => img.alt);
 
+    console.log("Current alt attributes:", currentAltAttributes);
+
     // Step 2: 過濾 inlineImages，保留 alt 屬性中已存在的文件
     const updatedInlineImages = inlineImages.filter((file) =>
       currentAltAttributes.includes(file.name)
     );
-
+    console.log("Updated inlineImages:", updatedInlineImages);
     // Step 3: 更新 inlineImages 狀態
     setInlineImages(updatedInlineImages);
 
@@ -149,56 +227,67 @@ export default function New() {
     return processedContent.trim();
   };
 
+// 提取现有的图片 alt 属性，作为现有内嵌图片路径
+// const imgElements = contentRef.current.getElementsByTagName("img");
+// const existingInlineImages = Array.from(imgElements).map((img) => img.alt);
+// console.log(existingInlineImages)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    // 處理內容中的圖片佔位符
+    // Step 1: 处理内容中的图片占位符并提取相关数据
     const processedContent = processContent(contentRef.current.innerHTML);
+
+    // 提取现有的图片 alt 属性，作为现有内嵌图片路径
+    const imgElements = contentRef.current.getElementsByTagName("img");
+    const existingInlineImages = Array.from(imgElements).map((img) => img.alt);
+    console.log(existingInlineImages)
     try {
-      // 步驟 1: 提交文章基本資料
-      const response = await axios.post(
-        "http://localhost:3005/api/article/new",
+      // 使用 FormData 来处理复杂的多部分请求
+      const formData = new FormData();
+
+      // 添加基本文章数据
+      formData.append("title", title);
+      formData.append("category", category);
+      formData.append("content", processedContent);
+      formData.append("update_time", new Date().toISOString());
+      formData.append("valid", "1");
+
+      // 添加现有内嵌图片路径
+      formData.append(
+        "existingInlineImages",
+        JSON.stringify(existingInlineImages)
+      );
+
+      // 添加首图（如果存在）
+      if (mainImage) {
+        formData.append("mainImage", mainImage);
+      }
+
+      // 添加新的内嵌图片
+      inlineImages.forEach((image) => {
+        formData.append("inlineImages", image);
+      });
+
+      // 发送更新请求到后端
+      const response = await axios.put(
+        `http://localhost:3005/api/article/update/${article.id}`,
+        formData,
         {
-          title,
-          category,
-          content: processedContent,
-          poster: "Admin", // 替換為實際作者
-          update_time: new Date().toISOString(),
-          valid: "1", // 初始不需要圖片資料
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
 
-      const articleId = response.data.articleId;
-
-      // 步驟 2: 上傳首圖
-      if (mainImage) {
-        const formData = new FormData();
-        formData.append("image", mainImage);
-        await axios.post(
-          `http://localhost:3005/api/article/upload-main-image/${articleId}`,
-          formData
-        );
-      }
-
-      // 步驟 3: 上傳內嵌圖片
-      for (const image of inlineImages) {
-        const formData = new FormData();
-        formData.append("image", image);
-        console.log(formData);
-        await axios.post(
-          `http://localhost:3005/api/article/upload-inline-image/${articleId}`,
-          formData
-        );
-      }
-
       Swal.fire({
         title: "成功",
-        text: "文章和圖片成功上傳",
+        text: "文章圖片成功更新",
         icon: "success",
         confirmButtonText: "確定",
       });
-      router.push("/article");
+      router.push(`/article`);
     } catch (error) {
       console.error(error);
       Swal.fire({
@@ -212,11 +301,11 @@ export default function New() {
     }
   };
 
-  const date = new Date().toISOString().split('T')[0];
-  // console.log(inlineImages);
-  // console.log(category);
-  // console.log(title);
-  // console.log(mainImage);
+  const date = new Date().toISOString().split("T")[0];
+  console.log("行內圖：" + inlineImages);
+  console.log("類別：" + category);
+  console.log("標題：" + title);
+  console.log("首圖：" + mainImage);
   // console.log(contentRef.current.innerHTML);
   return (
     <>
@@ -269,9 +358,9 @@ export default function New() {
               ></img>
             </div>
             <div className={`${style.ACname} col ms-3`}>
-              <p className="m-0">Admin</p>
+              <p className="m-0">{article.poster}</p>
               <div className={`${style.ACtime}`}>
-                發佈於 {date}
+                發佈於 {article.update_date}
               </div>
             </div>
           </div>
@@ -316,13 +405,14 @@ export default function New() {
 
             <input
               className={`${style.ACtitle} py-1 mt-2 col-12`}
-              placeholder="文章標題"
+              placeholder={`${article.title}`}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
             <p className={`${style.ACtitleLimit}`}>({title.length}/50)</p>
             <div
               className={`${style.ACtextarea} col-12 p-2`}
+              style={{ whiteSpace: "pre-wrap" }}
               ref={contentRef}
               contentEditable={true}
               onInput={handleInput}

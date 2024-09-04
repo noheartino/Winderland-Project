@@ -93,7 +93,7 @@ export default function FavoriteA() {
                   ⬩{article.category}
                 </div>
 
-                <Link href={`/article/${article.id}`} className={styles.articleTitleLink}>
+                <Link href={`/article/detail/${article.id}`} className={styles.articleTitleLink}>
                   <div className={`${styles.articleTitle} ms-2`}>
                     {article.title}
                   </div>

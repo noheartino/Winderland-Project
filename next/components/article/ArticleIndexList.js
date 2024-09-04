@@ -76,7 +76,7 @@ export default function ArticleIndexList({ Article }) {
   // 導向某篇文章
   const handleLink = () => {
     if (Article.id) {
-      <Link href={`/article/${Article.id}`}></Link>
+      <Link href={`/article/detail/${Article.id}`}></Link>
     }
   };
 

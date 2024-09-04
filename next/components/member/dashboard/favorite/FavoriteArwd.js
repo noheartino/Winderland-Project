@@ -89,7 +89,7 @@ export default function FavoriteArwd({ searchResults, searchTerm }) {
                     />
                   </svg>
                 </div>
-                <Link href={`/article/${article.id}`} className={styles.articleTitleLink}>
+                <Link href={`/article/detail/${article.id}`} className={styles.articleTitleLink}>
                   <div className={styles.articleTitle}>
                     {article.title || article.name}
                   </div>
