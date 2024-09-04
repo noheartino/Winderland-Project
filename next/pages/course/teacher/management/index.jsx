@@ -12,16 +12,35 @@ export default function Applyevent() {
   const [courses, setCourses] = useState([]);
 
   // 抓取 user 資料
-  const authData = useAuth().auth.userData;
-  const [userId, setUserId] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const authData = useAuth().auth.userData
+  const [userId, setUserId] = useState('')
+  const [isAdmin, setIsAdmin] = useState(false)
+
   useEffect(() => {
     if (authData && authData.id > 0) {
-      setUserId(authData.id);
-      setIsAdmin(true);
-      console.log("----> set UserId = " + authData.id);
+      setUserId(authData.id)
+      setIsAdmin(true)
     }
-  }, [authData]);
+  }, [useAuth()])
+    if(useAuth()){
+      console.log("1. useAuth() = ");
+      console.log(useAuth());
+      console.log('2. ----> set UserId = ' + authData);
+      console.log('3. =------> isadmin = '+isAdmin);
+    }
+
+  // useEffect(() => {
+  //   if (auth.isAuth) {
+  //     setUserId(auth.userData?.id);
+  //     console.log("userId 是否已設定: " + auth?.isAuth);
+
+  //     console.log("以下是auth內容");
+  //     console.log(auth);
+  //     console.log("======auth結束======");
+  //     return;
+  //   }
+  //   console.log("userId 未設定成功");
+  // }, [auth]);
   // 驗證登入者有權限
 
   // 確定登入者有權限後，送出GET fetch: /api/course/teacher/management
@@ -52,8 +71,26 @@ export default function Applyevent() {
     }, 100);
   };
 
-  if (!courses) return <div>Loading...</div>;
-  if (!isAdmin) return <div>請登入有權限的帳號!!</div>;
+  if (!courses){
+    return <div>Loading...</div>;
+  }
+   
+  if (!isAdmin){
+    return (
+      <>
+        <div className="container-fluid">
+          <div>請登入有權限的帳號</div>
+          <Link href="/">
+            <div
+              type="button"
+              className="btn-warning btn my-2" style={{textDecoration: 'none'}}>
+              回首頁<i className="fa-solid fa-chevron-right ms-2"></i>
+            </div>
+          </Link>
+        </div>
+      </>
+    )
+  } 
 
   return (
     <>
@@ -144,10 +181,11 @@ export default function Applyevent() {
                   <div className={`CMDetailistBox d-flex`}>
                     <div className="CMDetailistBoxPic">
                       <img
-                        src={`/images/course_and_tarot/${course?.class_path}`}
+                        src={`http://localhost:3005/uploads/course_and_tarot/${!course.class_path ? 'classImgDefault.png' : course?.class_path}`}
                         alt=""
                         className=""
                       />
+                      
                     </div>
                     <div className="CMDetailistBoxT d-flex flex-column gap-3">
                       <div className="CMDetailistBoxTitle row flex-wrap row-gap-3 gap-2 px-3">
@@ -227,7 +265,7 @@ export default function Applyevent() {
                       <div className="col-2">
                         <div className="CMEditIcon">
                           <Link
-                            href={`/course/teacher/management/manage/12`}
+                            href={`/course/teacher/management/manage/${course?.class_id}`}
                             className="CArmallc d-flex align-items-center"
                           >
                             <div className="CMEditIconT d-none d-lg-block">

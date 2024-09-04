@@ -45,8 +45,12 @@ router.use(async (req, res, next) => {
 //   }),
 // })
 const storage = multer.diskStorage({
+  // http://localhost:3005/uploads/course_and_tarot
   destination: (req, file, cb) => {
-    const uploadDir = path.join(process.cwd(), 'public/uploads')
+    const uploadDir = path.join(
+      process.cwd(),
+      'public/uploads/course_and_tarot'
+    )
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true })
     }
@@ -54,11 +58,12 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // cb(null, ${Date.now()}-${file.originalname})
+    const ext = path.extname(file.originalname)
     cb(
       null,
       `${Date.now()}-${Math.floor(Math.random() * 1000000)
         .toString()
-        .padStart(6, '0')}`
+        .padStart(6, '0')}${ext}`
     )
   },
 })
@@ -233,6 +238,7 @@ router.get('/', async (req, res) => {
                 ORDER BY 
                     class.id ASC;`
     querySQLParams = [`%${search}%`, `%${search}%`]
+    console.log("---!! querySQL=2");
   }
   console.log('送出的查詢詞語是: ' + search)
   let querySQLComments = `SELECT comments.* FROM comments`
@@ -258,7 +264,7 @@ router.get('/', async (req, res) => {
   let courseBtnSQLwords = ``
   if (!view || view === '全部') {
     courseBtnSQLwords = `AND order_details.class_id > 0`
-    console.log(courseBtnSQLwords + '點擊:' + view)
+    console.log(courseBtnSQLwords + '點擊:全部，或是 view 未定' )
   } else if (view === '實體') {
     courseBtnSQLwords = `AND order_details.class_id > 0 AND class.online = 0`
     console.log(courseBtnSQLwords + '點擊:' + view)
@@ -294,9 +300,9 @@ router.get('/', async (req, res) => {
   // if(search){
   //   console.log("search-----> "+search);
   // }
-  console.log('測試:' + req.originalUrl)
+  console.log('測試11!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' + req.originalUrl)
   try {
-    console.log('測試:' + req.originalUrl)
+    console.log('測試22!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' + req.originalUrl)
 
     const [courses] = search
       ? await connection.execute(querySQL, querySQLParams)
@@ -304,10 +310,13 @@ router.get('/', async (req, res) => {
     const [classSum] = await connection.execute(classSumSQL)
     const [comments] = await connection.execute(querySQLComments)
     const [classAssigns] = await connection.execute(querySQLClassAsign)
-    const [myFavoriteCourse] = await connection.execute(
-      querySQLMyFavoriteCourse
-    )
-    const [myCourse] = await connection.execute(querySQLMyCourse)
+
+      const [myFavoriteCourse] = userId ? await connection.execute(
+        querySQLMyFavoriteCourse
+      ): [null]
+      const [myCourse] = userId ? await connection.execute(querySQLMyCourse): [null]
+    
+
     const [teachers] = await connection.execute(teachersSQL)
     res.json({
       status: 'success',
@@ -485,7 +494,7 @@ router.post(
       teacher_id || null,
       class_price || null,
       class_sale_price || null,
-      onlineValue || null,
+      onlineValue,
       address || null,
       assign_start_date || null,
       assign_end_date || null,
@@ -518,6 +527,7 @@ router.post(
         : null
 
       let insertImgAndVdioSQLParams = [classId, classImgFile, classVdioFile]
+      console.log(classImgFile + '~1111111111111111111111111')
 
       const [insertImgAndVdio] = await connection.execute(
         insertImgAndVdioSQL,
@@ -530,6 +540,159 @@ router.post(
         message: '增加課程成功',
         createCourse,
         insertImgAndVdio,
+      })
+    } catch (err) {
+      res.status(500).json({ error: 'error' + err.message })
+    }
+  }
+)
+
+// !! edit 取得課程原本資料
+router.get('/teacher/management/getOriginV/:courseId', async (req, res) => {
+  const courseId = req.params.courseId
+  console.log('courseId= ' + courseId)
+
+  // 抓取原本的欄位值
+  let originClassVSQL = `SELECT class.* FROM class WHERE class.id = ${courseId}`
+  let originClassImgSQL = `SELECT images_class.path AS imgPath, images_class.video_path AS vdioPath FROM images_class WHERE class_id = ${courseId}`
+
+  try {
+    const [originClassV] = await connection.execute(originClassVSQL)
+    const [originClassImg] = await connection.execute(originClassImgSQL)
+    res.json({
+      status: 'success',
+      message: '管理頁成功獲取所有教師資料',
+      originClassV,
+      originClassImg,
+    })
+    console.log('測試GET Courses:' + req.originalUrl)
+  } catch (err) {
+    res.status(500).json({ error: 'error' + err.message })
+  }
+})
+
+// !! 課程管理 edit
+router.put(
+  '/teacher/management/:courseId',
+  upload.fields([
+    { name: 'classPic', maxCount: 1 },
+    { name: 'classVdio', maxCount: 1 },
+  ]),
+  async (req, res) => {
+    console.log('觀察有沒有抓到圖片和影片', req.files)
+
+    const {
+      class_name,
+      teacher_id,
+      onlineValue,
+      student_limit,
+      class_start_date,
+      class_end_date,
+      assign_start_date,
+      assign_end_date,
+      daily_start_time,
+      daily_end_time,
+      class_city,
+      class_city_detail,
+      classSummary,
+      classIntro,
+      class_price,
+      class_sale_price,
+    } = req.body
+
+    const courseId = req.params.courseId
+    console.log('courseId= ' + courseId)
+
+    // 抓取原本的欄位值
+    let originClassVSQL = `SELECT class.* FROM class WHERE class.id = ${courseId}`
+    let originClassImgSQL = `SELECT images_class.path AS imgPath, images_class.video_path AS vdioPath FROM images_class WHERE class_id = ${courseId}`
+
+    const city = (class_city || '').trim()
+    const cityDetail = (class_city_detail || '').trim()
+    const address = `${city}${cityDetail}`.trim()
+
+    // 更新课程信息的 SQL 语句
+    let updateCourseSQL = `UPDATE class SET
+                        name = ?,
+                        student_limit = ?,
+                        teacher_id = ?,
+                        price = ?,
+                        sale_price = ?,
+                        online = ?,
+                        address = ?,
+                        appointment_start = ?,
+                        appointment_end = ?,
+                        course_start = ?,
+                        course_end = ?,
+                        daily_start_time = ?,
+                        daily_end_time = ?,
+                        class_summary = ?,
+                        description = ?,
+                        status = ?
+                        WHERE id = ?;`
+
+    let updateCourseParams = [
+      class_name || null,
+      student_limit || null,
+      teacher_id || null,
+      class_price || null,
+      class_sale_price || null,
+      onlineValue,
+      address || null,
+      assign_start_date || null,
+      assign_end_date || null,
+      class_start_date || null,
+      class_end_date || null,
+      daily_start_time || null,
+      daily_end_time || null,
+      classSummary || null,
+      classIntro || null,
+      0,
+      courseId, // 更新课程的 ID
+    ]
+
+    // 更新图片和视频路径的 SQL 语句
+    let updateImgAndVdioSQL = `UPDATE images_class SET
+    path = ?,
+    video_path = ?
+    WHERE class_id = ?;`
+
+    try {
+      // 更新课程信息
+      const [updateCourse] = await connection.execute(
+        updateCourseSQL,
+        updateCourseParams
+      )
+
+      // 获取上传的文件名
+      const classImgFile = req.files['classPic']
+        ? req.files['classPic'][0].filename
+        : null
+      const classVdioFile = req.files['classVdio']
+        ? req.files['classVdio'][0].filename
+        : null
+
+      // 更新图片和视频路径
+      let updateImgAndVdioParams = [classImgFile, classVdioFile, courseId]
+
+      const [updateImgAndVdio] = await connection.execute(
+        updateImgAndVdioSQL,
+        updateImgAndVdioParams
+      )
+
+      // 抓取課程原本的資料
+
+      const [originClassV] = await connection.execute(originClassVSQL)
+      const [originClassImg] = await connection.execute(originClassImgSQL)
+
+      console.log('測試PUT:', req.originalUrl)
+      res.json({
+        status: 'success',
+        message: '課程更新成功',
+        updateCourse,
+        updateImgAndVdio,
+        originClassV,
+        originClassImg,
       })
     } catch (err) {
       res.status(500).json({ error: 'error' + err.message })
