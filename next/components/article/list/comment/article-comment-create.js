@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 export default function ArticleCommentCreate({ articleId }) {
   // console.log(articleId);
@@ -32,14 +33,24 @@ export default function ArticleCommentCreate({ articleId }) {
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error:", errorData.error);
-        alert("提交評論失敗：" + errorData.error);
+        Swal.fire({
+          title: "提交評論失敗",
+          text: errorData.error,
+          icon: "error",
+          confirmButtonText: "確定"
+        });
       } else {
         const responseData = await response.json();
         console.log(
           "Comment submitted successfully with ID:",
           responseData.commentId
         );
-        alert("評論提交成功");
+        Swal.fire({
+          title: "成功",
+          text: "評論提交成功",
+          icon: "success",
+          confirmButtonText: "確定"
+        });
         // 清空輸入框或進行其他操作
         setCommentText("");
         // 刷新頁面
@@ -47,7 +58,12 @@ export default function ArticleCommentCreate({ articleId }) {
       }
     } catch (error) {
       console.error("Error submitting comment:", error);
-      alert("發生錯誤，請聯繫管理員");
+      Swal.fire({
+        title: "發生錯誤",
+        text: "請聯繫管理員",
+        icon: "error",
+        confirmButtonText: "確定"
+      });
     }
   };
   return (

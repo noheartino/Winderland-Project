@@ -21,7 +21,7 @@ export default function CartProductDetail() {
           <div className={css.cartProductDetailImg}>
             {item.product_image ? (
               <img
-                src={`/images/cart/cartProduct/images/${item.product_image}`}
+                src={`/images/product/${item.product_image}`}
                 alt={item.product_name}
               />
             ) : null}
@@ -39,7 +39,7 @@ export default function CartProductDetail() {
                 <div className={css.formatYear}>{item.years}年</div>
               </div>
               <div className={css.cartDetailMoney}>
-                NT$ {item.product_sale_price > 0 ? item.product_sale_price : item.product_price}
+                NT$ {item.product_sale_price > 0 ? item.product_sale_price.toLocaleString() : item.product_price.toLocaleString()}
               </div>
             </div>
           </div>
@@ -47,7 +47,7 @@ export default function CartProductDetail() {
             <b>{item.product_quantity}</b>
           </div>
           <div className={css.cartSubtotal}>
-            NT$ {item.product_sale_price > 0 ? item.product_sale_price * item.product_quantity : item.product_price * item.product_quantity}
+            NT$ {item.product_sale_price > 0 ? (item.product_sale_price * item.product_quantity).toLocaleString() : (item.product_price * item.product_quantity).toLocaleString()}
           </div>
         </div>
       ))}

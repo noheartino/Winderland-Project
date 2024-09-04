@@ -11,6 +11,9 @@
     color: var(--text_primary, #60464C);
     ;
 }
+.offcanvasCustomWidth {
+    width: 50% !important;
+  }
 
 .offcanvasHeader {
     width: 100%;
@@ -117,4 +120,52 @@ letter-spacing: 1.2px;
         }
 
     }
+}
+
+@media (max-width: 767px) {
+    .offcanvasCustomWidth {
+      width: 50% !important;
+    }
+
+    .offcanvasBody {
+      padding: 10px;
+    }
+  
+    .select, .input {
+      width: 100%;
+    }
+  
+    .buttonEnd .button {
+      width: auto;
+      padding: 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .offcanvasCustomWidth {
+      width: 75% !important;
+    }
+  }
+
+
+.button {
+  margin-right: 20px;
+  margin-bottom: 13px;
+  border-radius: 7px;
+  border: none;
+  white-space: nowrap;
+  background: var(--light, #F4EBEB);
+  width: 90px;
+  height: 35px;
+  color: var(--text_primary, #60464C);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 1.2px;
+  transition: all 0.3s ease; /* 添加過渡效果 */
+}
+
+.activeButton {
+  background-color: var(--wine) !important; /* 使用您的主色調 */
+  color: #FFF !important;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* 添加陰影效果 */
 }

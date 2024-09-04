@@ -25,12 +25,13 @@ export default function OrderCardDetailItem({ item, type }) {
     const imagePath = item?.image_path
         ? (isProduct
             ? `/images/product/${item.image_path}`
-            : `/images/course_and_tarot/${item.image_path}`)
+            : `http://localhost:3005/uploads/course_and_tarot/${item.image_path}`)
         : '/images/default-order-image.png' // 請確保您有一個默認圖片
 
     return (
         <>
-            <div className={`${styles.orderCard} card mt-3`}>
+            {/* desk */}
+            <div className={`${styles.orderCard} card mt-3 d-none d-lg-block`}>
                 <div className={`${styles.cardBody} d-flex`}>
                     <div className={styles.orderImg}>
                         <Image
@@ -84,6 +85,53 @@ export default function OrderCardDetailItem({ item, type }) {
 
             </div>
 
+            {/* rwd */}
+            <div className="d-block d-lg-none">
+            <div className={`${styles.cardBody} d-flex`}>
+                 
+                    <div className={`${styles.orderDetail} d-flex justify-content-between align-items-center`}>
+
+                        <div className={styles.orderDetailP}>
+                            <div className={styles.orderDetailProductName}>
+                                {isProduct ? item.product_name : item.class_name}
+                            </div>
+
+                            <div className={`${styles.pDetail}  d-flex justify-content-between align-items-center`}>
+                                <div className={styles.pCategory}>
+
+                                    {isProduct ? (
+                                        <>
+                                            <p className="p-capacity mt-2">
+                                                {item.capacity}ml / {item.country_name}
+                                            </p>
+                                            <p className="p-year">{item.years}年</p>
+                                        </>
+                                    ) : (
+                                        <p className="p-teacher">講師 -  {item.teacher_name}</p>
+                                    )}
+
+                                </div>
+                                {/* 價格 */}
+                                {/* <div className={styles.pPprice}>
+                                    NT$&nbsp; {isProduct ? item.price : item.class_price}
+                                </div> */}
+                            </div>
+                        </div>
+
+                        {/* 數量 */}
+                        <div className={styles.orderDetailNumber}>
+                            {item.product_quantity}
+                        </div>
+                        {/* 小計 */}
+                        <div className={styles.orderDetailTotal}>
+                            <p>
+                                {totalPrice}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </>
     )
 }

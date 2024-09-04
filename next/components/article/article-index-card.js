@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { PiDiamondFill } from "react-icons/pi";
 
 export default function ArticleIndexCard({ article }) {
   const router = useRouter();
@@ -16,7 +17,7 @@ export default function ArticleIndexCard({ article }) {
           <div className="a-box-img">
             {article.images.length > 0 ? (
               <img
-                src={`../images/article/${article.images[0]}`}
+                src={`http://localhost:3005/uploads/article/${article.images[0]}`}
                 alt="Article Image"
               />
             ) : (
@@ -27,8 +28,9 @@ export default function ArticleIndexCard({ article }) {
             )}
           </div>
           <div className="a-box-content">
-            <p>{article.category}</p>
-            <h4>{article.title}</h4>
+            <p><PiDiamondFill className="me-1" style={{fontSize:"6px"}} />{article.category}</p>
+            <h3 className="d-none d-lg-block">{article.title}</h3>
+            <h4 className="d-lg-none">{article.title}</h4>
             <h5>
               by {article.poster} l {article.update_date}
             </h5>

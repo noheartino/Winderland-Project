@@ -447,6 +447,19 @@ html{
     }
 }
 
+@keyframes homeArea01_l {
+    0%{
+        width: 730px;
+        translate: -150px;
+    }
+    30%{
+        width: 0px;
+    }
+    100%{
+        width: 730px;
+        translate: 0px;
+    }
+}
     
 
 #homeArea01{
@@ -468,6 +481,10 @@ html{
             width: 550px;
             height: 450px;
         }
+    }
+
+    .homeArea01_l.active{
+        animation: homeArea01_l .5s ease-in forwards;
     }
 
     .homeArea01_r{
@@ -1070,7 +1087,7 @@ margin-bottom: 40px;
         height: 225px;
         /* border: 2px solid lightcoral; */
         display: inline-block;
-        margin-left: -5px;
+       
         
 
         .teacher_area.active .teacher_area_inner {

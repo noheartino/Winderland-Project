@@ -8,15 +8,16 @@
   align-items: center
   color: var(--light)
   font-weight: 500
-  margin-bottom: 45px
+  // margin-bottom: 45px
   cursor: pointer
   h2
     font-size: 32px
     letter-spacing: 14.4px
-
+    text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.4)
   h3
     font-size: 20px
     letter-spacing: 6px
+    text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.4)
 
 /* 最上面那一列 */
 .a-function
@@ -34,7 +35,7 @@
       width: 80%
       background-color: transparent
       color: var(--purple_light)
-      font-size: 12px
+      font-size: 14px
       margin: 0
       display: flex
       justify-content: space-between
@@ -46,35 +47,31 @@
       border: 1px solid var(--purple_light)
 
       a
-        font-size: 12px
+        font-size: 14px
         color: var(--purple_light)
         text-align: center
 
   /* 搜尋 */
   .a-search-block
     position: relative
+    ::placeholder
+      font-size: 15px
+      color: var(--purple_light)
+      letter-spacing: 1.5px
     .a-search
       width: 100%
       border: 1px solid var(--purple_light)
       border-radius: 44px
       color: var(--purple_light)
-
-    i
       font-size: 14px
-      position: absolute
-      right: 23px
-      top: 10px
 
   /* 搜尋列小 */
   .a-search-sm-block
     position: relative
-    i
-      font-size: 14px
-      position: absolute
-      left: 23px
-      top: 10px
-      color: #7c7c7c
-
+    ::placeholder
+      font-size: 15px
+      color: #9A9A9A
+      letter-spacing: 1.5px
     .a-search-sm
       width: 100%
       background-color: #f1f1f1
@@ -123,6 +120,17 @@
         background-color: var(--light)
         color: var(--purple_light)
         width: 100%
+
+  // 管理文章按鈕
+  .aManBtn
+    background-color: var(--purple_light)
+    border-radius: 44px
+    a
+      padding: 10px
+      text-decoration: none
+      color: var(--light)
+
+// 主要文章電腦側邊
 .a-contentmain
   justify-content: space-between
   .a-sidebar
@@ -131,33 +139,63 @@
     ul
       padding: 0
       color: var(--primary)
-      font-size: 12px
+      font-size: 18px
       font-weight: 700
       letter-spacing: 1.2px
       line-height: 30px
       border-top: 1px solid #e1e1e1
-      li
+      .aCategoryLi
+        padding-left: 10px
+        margin-top: 8px
         font-weight: 400
         list-style-type: none
         border-radius: 3px
+        cursor: pointer
+        transition: all 0.3s ease
         &:hover
           background-color: var(--light)
-
-        a
-          text-decoration: none
+        p
+          margin: 0
           color: var(--text_primary)
-          padding-left: 5px
+          // padding-left: 12px
+      .active
+        background-color: var(--light)
 
     .a-btn-select
-      background-color: var(--primary)
-      color: #fff
+      background-color: var(--light)
+      color: var(--text_primary)
       width: 100%
-      height: 70px
+      height: 50px
+      font-size: 14px
+      letter-spacing: 1.4px
+      transition: all 0.3s ease
+      &:hover
+        background-color: darken(#F4EBEB, 5%)
+        color: darken(#60464C, 10%)
+      &:active
+        border: 0
+        transform: scale(0.98)
+
+    .a-btn-clear
+      // background-color: var(--light)
+      border: 1px solid var(--light)
+      color: var(--text_primary)
+      width: 100%
+      height: 50px
+      font-size: 14px
+      letter-spacing: 1.4px
+      transition: all 0.3s ease
+      &:hover
+        background-color: var(--light)
+        color: darken(#60464C, 10%)
+      &:active
+        transform: scale(0.98)
 
   /* 文章一格格 */
   .a-content
     margin: 0
     /* 文章頭條 */
+    .aTitleBlock
     .a-title
       height: 350px
       background: url(/images/article/titlePic.jpeg) center center no-repeat
@@ -168,6 +206,7 @@
       display: flex
       align-items: flex-end
       cursor: pointer
+
 
       h3
         color: var(--light)
@@ -183,15 +222,21 @@
         white-space: normal
 
     /* 收藏 */
+    .aLink
+      text-decoration: none
     .a-collection
       height: 350px
       background: url(/images/article/collectionMark.jpeg) center center no-repeat
-      background-color: rgba(67, 1, 1, 0.5)
+      background-color: rgba(52, 0, 0, 0.5)
       background-blend-mode: darken
       display: flex
       flex-direction: column
       justify-content: center
       align-items: center
+      transition: all 0.5s ease
+      &:hover
+        background-color: rgba(24, 0, 0, 0.5)
+
 
       h3
         color: var(--light)
@@ -203,7 +248,8 @@
     .a-box
       display: flex
       height: 200px
-      border: 1px solid var(--purple_light)
+      border: 2px solid var(--wine_light)
+
       .a-box-img
         width: 40%
         // height: 200px
@@ -217,10 +263,23 @@
         padding: 25px
         p
           color: var(--purple_light)
-          font-size: 12px
+          font-size: 14px
           font-weight: 400
           letter-spacing: 1.2px
+        h3
+          height: 2.6rem
+          color: var(--text_dark)
+          font-size: 18px
+          font-weight: 400
+          letter-spacing: 1.6px
+          overflow: hidden
+          text-overflow: ellipsis
+          display: -webkit-box
+          -webkit-line-clamp: 2
+          -webkit-box-orient: vertical
+          white-space: normal
         h4
+          height: 3.2rem
           color: var(--text_dark)
           font-size: 16px
           font-weight: 400
@@ -233,7 +292,7 @@
           white-space: normal
         h5
           color: var(--text_dark)
-          font-size: 12px
+          font-size: 14px
           font-weight: 400
           letter-spacing: 1.2px
 
@@ -243,9 +302,16 @@
       .a-btn-content
         background-color: var(--text_primary)
         color: #fff
+        padding: 10px
+        padding-left: 15px
+        padding-right: 15px
+        letter-spacing: 1.4px
+        transition: all 0.3s ease
         &:hover
           background-color: var(--purple_light)
           color: #fff
+        &:active
+          transform: scale(0.98)
 
 /* 日期 */
 .a-date
@@ -266,9 +332,29 @@
 .a-pagination
   border-radius: 0
   display: flex
-  gap: 6px
+  gap: 8px
   li
+    list-style: none
+    background-color: #F4EBEB
+    // border: 1px solid var(--wine_light)
+    color: #A66E7B
+    :hover
+      background-color: darken(#F4EBEB, 5%)
+      // border: 1px solid var(--wine_light)
+      color: darken(#A66E7B, 5%) 
+    :focus
+      background-color: var(--wine_light)
+    :active
+      background-color: #F4EBEB
+      // border: 1px solid var(--wine_light)
+      color: #A66E7B
+
     a
-      border: 1px solid var(--wine_light)
+      text-decoration: none
+      padding: 10px
+      padding-right: 12px
+      padding-left: 12px
+      border: 2px solid var(--wine_light)
       background-color: var(--light)
+      transition: all 0.5s ease
       color: var(--purple_light)

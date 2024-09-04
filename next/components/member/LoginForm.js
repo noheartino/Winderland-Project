@@ -1,25 +1,59 @@
 // @ 導入
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import styles from '@/components/member/member.module.css'
-import Image from 'next/image'
 import Link from 'next/link'
 import GoogleLogo from '@/components/icons/google-logo'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useAuth } from '@/hooks/use-auth'
+import Swal from 'sweetalert2'
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useFirebase } from '@/hooks/useFirebase';
+
+
+// 漂浮標籤
+const FloatingLabelInput = React.memo(({ label, type, name, value, onChange, error, isPassword, togglePasswordVisibility, showPassword }) => {
+  const [isFocused, setIsFocused] = useState(false);
+
+  return (
+    <div className={`${styles.floatingLabelInput} position-relative mb-3`}>
+      <input
+        type={isPassword ? (showPassword ? 'text' : 'password') : type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        className={`${styles.loginInput} ${error ? styles.inputError : ''} ${isFocused || value ? styles.hasContent : ''}`}
+        placeholder=" "
+      />
+      <label className={styles.floatingLabel}>{label}</label>
+      {isPassword && (
+        <button
+          type="button"
+          className={styles.passwordToggle}
+          onClick={togglePasswordVisibility}
+        >
+          {showPassword ? <FaEyeSlash /> : <FaEye />}
+        </button>
+      )}
+      {error && <span className={`${styles.error} ${styles.show}`}>{error}</span>}
+    </div>
+  );
+});
+
 
 // @ 預設導出
 export default function LoginForm() {
-  const { login } = useAuth();
-
-  // 路由
+  const { firebaseInitialized } = useFirebase();
+  const { login, googleLogin, isLoading } = useAuth();
   const router = useRouter()
+
   // 狀態設置
   const [user, setUser] = useState({
     account: '',
     password: '',
   })
-
   // 記錄欄位錯誤訊息用
   const [errors, setErrors] = useState({
     account: '',
@@ -27,14 +61,18 @@ export default function LoginForm() {
   })
   // 顯示密碼用
   const [showPassword, setShowPassword] = useState(false)
-
   // 添加 rememberMe 狀態
   const [rememberMe, setRememberMe] = useState(false);
 
   // 多欄位共用事件處理函式
-  const handleFieldChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value })
-  }
+  const handleFieldChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setUser(prevUser => ({
+      ...prevUser,
+      [name]: value
+    }));
+  }, []);
+
 
   // 表單送出事件處理函式
   const handleSubmit = async (e) => {
@@ -69,71 +107,118 @@ export default function LoginForm() {
     }
     // ! 表單檢查--- END ---
 
-    // 檢查都沒問題才會到這裡執行
-    // try {
-    //   const url = 'http://localhost:3005/api/member/login'
-    //   const res = await fetch(url, {
-    //     credentials: 'include', // 設定cookie或是存取隱私資料時要加這個參數
-    //     method: 'POST',
-    //     headers: {
-    //       Accept: 'application/json',
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       // 記住登入
-    //       account: user.account,
-    //       password: user.password,
-    //       rememberMe: rememberMe
-    //     }),
-    //   })
 
-    //   const resData = await res.json()
-
-    //   if (res.ok) {
-    //     if (resData.status === 'success') {
-    //       const { accessToken } = resData.data;
-
-    //       if (accessToken) {
-    //         localStorage.setItem('authToken', accessToken);
-    //       }
-
-    //       alert('登入成功')
-    //       router.push('/dashboard')
-    //     } else {
-    //       alert('登入失敗：' + resData.message)
-    //     }
-    //   } else {
-    //     switch (res.status) {
-    //       case 400:
-    //         alert('登入失敗：缺少必要資料')
-    //         break
-    //       case 401:
-    //         alert('登入失敗：帳號或密碼錯誤')
-    //         break
-    //       case 404:
-    //         alert('登入失敗：使用者不存在')
-    //         break
-    //       default:
-    //         alert('登入失敗：' + (resData.message || '未知錯誤'))
-    //     }
-    //   }
-    // } catch (e) {
-    //   console.error(e)
-    //   alert('登入過程中發生錯誤')
-    // }
     try {
       const loginResult = await login(user.account, user.password, rememberMe);
       if (loginResult && loginResult.success) {
-        alert(loginResult.message);
-        router.push('/dashboard');
+        // alert(loginResult.message);
+        // 使用 SweetAlert2 替代 alert
+        await Swal.fire({
+          icon: 'success',
+          title: '登入成功',
+          text: '歡迎來到醺迷仙園',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        router.push('/');
       } else {
-        alert('登入失敗：' + (loginResult ? loginResult.message : '未知錯誤'));
+        // 使用 SweetAlert2 替代 alert
+        await Swal.fire({
+          icon: 'error',
+          title: '登入失敗',
+          text: loginResult ? loginResult.message : '未知錯誤',
+        });
       }
     } catch (error) {
       console.error('登入過程中發生錯誤:', error);
-      alert('登入過程中發生錯誤');
+      // 使用 SweetAlert2 替代 alert
+      await Swal.fire({
+        icon: 'error',
+        title: '錯誤',
+        text: '登入過程中發生錯誤',
+      });
     }
   }
+
+  // * Google 登入
+  // const handleGoogleLogin = async () => {
+  //   if (!firebaseInitialized) {
+  //     Swal.fire({
+  //       title: '請稍候',
+  //       text: '正在初始化登入服務...',
+  //       icon: 'info',
+  //       showConfirmButton: false,
+  //       timer: 1500
+  //     });
+  //     return;
+  //   }
+
+  //   try {
+  //     const result = await googleLogin();
+  //     if (result.success) {
+  //       await Swal.fire({
+  //         icon: 'success',
+  //         title: '登入成功',
+  //         text: 'Google 登入成功！',
+  //         showConfirmButton: false,
+  //         timer: 1500
+  //       });
+  //       router.push('/dashboard');
+  //     } else {
+  //       await Swal.fire({
+  //         icon: 'error',
+  //         title: '登入失敗',
+  //         text: result.message || 'Google 登入失敗',
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Google 登入過程中發生錯誤:', error);
+  //     await Swal.fire({
+  //       icon: 'error',
+  //       title: '錯誤',
+  //       text: 'Google 登入過程中發生錯誤',
+  //     });
+  //   }
+  // };
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     const result = await googleLogin();
+  //     if (result.success) {
+  //       await Swal.fire({
+  //         icon: 'success',
+  //         title: '登入成功',
+  //         text: 'Google 登入成功！',
+  //         showConfirmButton: false,
+  //         timer: 1500
+  //       });
+  //       router.push('/');// 重定向到首頁
+  //     } else {
+  //       await Swal.fire({
+  //         icon: 'error',
+  //         title: '登入失敗',
+  //         text: result.message || 'Google 登入失敗',
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Google 登入過程中發生錯誤:', error);
+  //     await Swal.fire({
+  //       icon: 'error',
+  //       title: '錯誤',
+  //       text: 'Google 登入過程中發生錯誤',
+  //     });
+  //   }
+  // };
+
+
+
+  const togglePasswordVisibility = useCallback(() => {
+    setShowPassword(prev => !prev);
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // 或者其他加載指示器
+  }
+
 
   // @ 渲染
   return (
@@ -141,107 +226,63 @@ export default function LoginForm() {
       {/* desk */}
       <div className={` d-none d-lg-block`}>
         <div>
-          <div className={`${styles.tabContent} ms-5`}>
-            {/* 01-login */}
+          <div className={`${styles.tabContent} ms-5 mt-5 `}>
+
             <form onSubmit={handleSubmit} >
               <div
-                className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent}`}
+                className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent} `}
                 id="login"
                 role="tabpanel"
                 aria-labelledby="login-tab"
               >
-                <label className={styles.label} htmlFor="login-account">
-                  會員帳號
-                </label>{' '}
-                <br />
-                <input
+                <FloatingLabelInput
+                  label="帳號"
                   type="text"
                   name="account"
                   value={user.account}
-                  className={styles.loginInput}
                   onChange={handleFieldChange}
+                  error={errors.account}
                 />
                 <br />
-                {/* 錯誤訊息 */}
-                {errors.account && <span className={`${styles.error} ${styles.show} ${styles.errorAccount}`}>{errors.account}</span>}
-                <br />
-                <div
-                  className={`d-flex justify-content-between align-items-center ${styles.pwdNotice}`}
-                >
-                  <label className={styles.label} htmlFor="login-pwd">
-                    會員密碼
-                  </label>{' '}
-                  <br />
-                  {/* 顯示密碼checkbox */}
-                  <div
-                    className={`${styles.formCheck} align-items-center d-flex`}
-                  >
-                    <input
-                      className={`${styles.formCheckInput} me-2`}
-                      type="checkbox"
-                      checked={showPassword}
-                      onChange={() => {
-                        setShowPassword(!showPassword)
-                      }}
-                      defaultValue=""
-                    />
-                    {/* <input
-                    
-                      type="radio"
-                      name="showPassword"
-                      checked={showPassword}
-                      onChange={() => {
-                        setShowPassword(!showPassword)
-                      }}
-                      className={`${styles.formCheckInput} styled-checkbox me-2`}
-                    /> */}
-                    <label
-                      className={styles.formCheckLabel}
-                      htmlFor="showPassword"
-                    >
-                      顯示密碼
-                    </label>
-                  </div>
-                </div>
-                {/* 密碼輸入欄 */}
-                <input
-                  type={showPassword ? 'text' : 'password'}
+                <FloatingLabelInput
+                  label="密碼"
+                  type="password"
                   name="password"
-                  className={styles.loginInput}
                   value={user.password}
                   onChange={handleFieldChange}
+                  error={errors.password}
+                  isPassword={true}
+                  togglePasswordVisibility={togglePasswordVisibility}
+                  showPassword={showPassword}
                 />
-                {/* <span className={`${styles.span} d-none`}>
-                          請輸入密碼。{errors.password}
-                        </span> */}
-                {errors.password && <span className={`${styles.error} ${styles.show} ${styles.errorPwd}`}>{errors.password}</span>}
+
                 <div
                   className={`d-flex justify-content-between align-items-center ${styles.forgetPwd}`}
                 >
-                  <div
-                    className={`${styles.formCheck} align-items-center d-flex`}
-                  >
+
+                  {/* 記住我的登入 */}
+                  <div className={`${styles.formCheck} align-items-center d-flex`}>
                     <input
-                      className={`${styles.formCheckInput} me-2`}
+                      id="rememberMe"
+                      className={styles.formCheckInput}
                       type="checkbox"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
                     />
-                    <label
-                      className={styles.formCheckLabel}
-                      htmlFor="rememberMe"
-                    >
-                      {' '}
+                    <label className={styles.formCheckLabel} htmlFor="rememberMe">
                       記住我的登入
                     </label>
                   </div>
+
+                  {/* 忘記密碼 */}
                   <Link
                     href="/member/forget-password"
-                    className={styles.red}
+                    className={styles.outlineButton}
                   >
                     忘記密碼？
                   </Link>
                 </div>
+
                 {/* 登入按鈕 */}
                 <button
                   type="submit"
@@ -261,7 +302,7 @@ export default function LoginForm() {
                 >
                   <p>目前還沒有帳號嗎？</p>{' '}
                   <Link href="/member/register"
-                    className={styles.red}>加入我們</Link>
+                    className={styles.blue}>立即註冊新帳號</Link>
                 </div>
                 {/* 第三方登入 */}
                 <div className={styles.fastLogin}>
@@ -269,11 +310,14 @@ export default function LoginForm() {
                   <div className={styles.buttonGruop}>
                     <button
                       className={`${styles.googleLogin} d-flex justify-content-center align-items-center`}
+                      onClick={googleLogin}
+                      // onClick={handleGoogleLogin}
+                      type="button"  
                     >
                       <GoogleLogo className="mx-3" />
                       使用GOOGLE登入
                     </button>
-                    <button
+                    {/* <button
                       className={`${styles.lineLogin} d-flex justify-content-center align-items-center`}
                     >
                       <Image
@@ -284,7 +328,7 @@ export default function LoginForm() {
                         className={`${styles.img} mx-2`}
                       />
                       使用LINE登入
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>
@@ -295,98 +339,75 @@ export default function LoginForm() {
       {/* RWD */}
       <div className="d-block d-lg-none">
         <div>
-          <div className={`${styles.tabContent} ms-5`}>
-            {/* login */}
+          <div className={`${styles.tabContent} ms-5 mb-5 mt-5`}>
+
             <form onSubmit={handleSubmit}>
               <div
                 className={`tab-pane fade show active ${styles.loginContent}`}
                 role="tabpanel"
                 aria-labelledby="login-tab-rwd"
               >
-                <label htmlFor="login-account">會員帳號</label> <br />
-                <input
+                <FloatingLabelInput
+                  label="帳號"
                   type="text"
                   name="account"
                   value={user.account}
-                  className={styles.loginInput}
                   onChange={handleFieldChange}
+                  error={errors.account}
                 />
+
                 <br />
-                {/* 錯誤訊息 */}
-                {errors.account && <span className={`${styles.error} ${styles.show} ${styles.errorAccount}`}>{errors.account}</span>}
-                <br />
-                <div
-                  className={`d-flex justify-content-between align-items-center ${styles.pwdNotice}`}
-                >
-                  <label htmlFor="login-pwd">會員密碼</label> <br />
-                  <div
-                    className={`form-check align-items-center d-flex ${styles.formCheck}`}
-                  >
-                    <input
-                      className={`${styles.formCheckInput} me-2`}
-                      type="checkbox"
-                      checked={showPassword}
-                      onChange={() => {
-                        setShowPassword(!showPassword)
-                      }}
-                      defaultValue=""
-                    />
-                    <label
-                      className={`form-check-label ${styles.formCheckLabel}`}
-                      htmlFor="showPassword"
-                    >
-                      {' '}
-                      顯示密碼
-                    </label>
-                  </div>
-                </div>
-                <input
-                  type={showPassword ? 'text' : 'password'}
+                <FloatingLabelInput
+                  label="密碼"
+                  type="password"
                   name="password"
-                  className={styles.loginInput}
                   value={user.password}
                   onChange={handleFieldChange}
+                  error={errors.password}
+                  isPassword={true}
+                  togglePasswordVisibility={togglePasswordVisibility}
+                  showPassword={showPassword}
                 />
-                {errors.password && <span className={`${styles.error} ${styles.show} ${styles.errorPwd}`}>{errors.password}</span>}
+
                 <div
                   className={`d-flex justify-content-between align-items-center ${styles.forgetPwd}`}
                 >
                   {/* 記住登入 */}
-                  <div
-                    className={`form-check align-items-center d-flex ${styles.formCheck}`}
-                  >
+                  <div className={`${styles.formCheck} align-items-center d-flex`}>
                     <input
-                      className={`${styles.formCheckInput} me-2`}
+                      id="rememberMe"
+                      className={styles.formCheckInput}
                       type="checkbox"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
                     />
-                    <label
-                      className={`form-check-label ${styles.formCheckLabel}`}
-                      htmlFor="rememberMe"
-                    >
-                      {' '}
+                    <label className={styles.formCheckLabel} htmlFor="rememberMe">
                       記住我的登入
                     </label>
                   </div>
 
+                  {/* 忘記密碼 */}
                   <Link
                     href="/member/forget-password"
-                    className={styles.red}
+                    className={styles.outlineButton}
                   >
                     忘記密碼？
                   </Link>
                 </div>
+
+                {/* 登入按鈕 */}
                 <button className={styles.loginButton}>登入</button>
                 <div
                   className={`d-flex justify-content-center ${styles.noAccount}`}
                 >
                   <p>目前還沒有帳號嗎？</p>
                   <Link href="/member/register"
-                    className={styles.red}>加入我們</Link>
+                    className={`${styles.blue} mb-5`}>立即註冊新帳號</Link>
 
                 </div>
-                <div className={styles.fastLogin}>
+
+                {/* 第三方登入 */}
+                {/* <div className={styles.fastLogin}>
                   <hr />
                   <div className={styles.buttonGroup}>
                     <button
@@ -408,7 +429,7 @@ export default function LoginForm() {
                       使用LINE登入
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
             </form>
           </div>

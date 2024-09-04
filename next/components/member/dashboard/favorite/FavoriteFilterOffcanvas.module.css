@@ -12,7 +12,10 @@
     ;
 
 }
-
+.offcanvasCustomWidth {
+    width: 50% !important;
+  }
+ 
 .offcanvasHeader {
     width: 100%;
     height: 60px;
@@ -105,3 +108,28 @@ letter-spacing: 3px;
 
     }
 }
+
+@media (max-width: 767px) {
+    .offcanvasCustomWidth {
+      width: 50% !important;
+    }
+
+    .offcanvasBody {
+      padding: 10px;
+    }
+  
+    .select, .input {
+      width: 100%;
+    }
+  
+    .buttonEnd .button {
+      width: auto;
+      padding: 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .offcanvasCustomWidth {
+      width: 75% !important;
+    }
+  }

@@ -1,0 +1,143 @@
+.ACbg {
+  /* background-color: var(--light); */
+}
+.AcreatePage {
+  background-color: #fff;
+  /* padding-top: 50px; */
+}
+.ACnav {
+  height: 50px;
+  .ACicon {
+    height: 100%;
+    width: 50px;
+    border-radius: 50px;
+    background-color: var(--wine);
+  }
+
+  .ACname {
+    color: var(--text_primary);
+    letter-spacing: 1.4px;
+  }
+}
+
+.ACDropArea {
+  height: 350px;
+  border: 2px dashed #ccc;
+  background-color: #FBF9F7;
+  /* display: grid; */
+  /* place-items: center; */
+  color: #ccc;
+  transition: border 0.3s ease;
+  &:hover {
+    border-color: var(--purple_light);
+  }
+}
+.imagePreBlock{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+/* 首頁圖預覽 */
+.previewImage {
+  object-position: center;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+.ACCategory{
+  background-color: #FBF9F7;
+  border: 1px solid #dbdbdb;
+  color: var(--text_primary);
+  letter-spacing: 1.4px;
+}
+
+.ACtitle {
+  outline: none;
+  font-size: 24px;
+  background-color: #FBF9F7;
+  border: 1px solid #dbdbdb;
+  &::placeholder {
+    color: #e3e2e2;
+    /* letter-spacing: 1.4px; */
+    font-size: 28px;
+  }
+}
+
+.ACtitleLimit {
+  color: var(--purple_light);
+}
+
+.ACtextarea {
+  height: 400px;
+  overflow: auto;
+  outline: none;
+  resize: none;
+  font-size: 18px;
+  background-color: #FBF9F7;
+  border: 1px solid #dbdbdb;
+  &::placeholder {
+    color: var(--wine_light);
+    letter-spacing: 2px;
+    font-size: 18px;
+  }
+}
+
+.ACaddPhoto {
+  font-size: 28px;
+  color: var(--purple_light);
+  cursor: pointer;
+  transition: 0.5s all ease;
+  &:hover {
+    color: var(--wine);
+  }
+  &:active {
+    transform: scale(0.7);
+  }
+}
+
+.AcreateBtn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .ACcloseBtn {
+    background-color: #fff;
+    color: var(--purple_light);
+    transition: 0.5s all ease;
+    border: 1px solid #fff;
+
+    &:hover {
+      color: var(--wine);
+      background-color: var(--light);
+      border: 1px solid var(--light);
+    }
+    &:active {
+      transform: scale(0.7);
+    }
+  }
+  .ACplusBtn {
+    background-color: var(--primary);
+    color: var(--light);
+    transition: 0.5s all ease;
+    &:hover {
+      background-color: #9b4457;
+    }
+    &:active {
+      transform: scale(0.7);
+    }
+  }
+}
+
+
+.inlineImagePreviews {
+  width: 100%;
+  height: 300px;
+}
+.inlineImage {
+  max-width: 60%;
+  height: auto;
+  display: block;
+  margin: 10px 0;
+}

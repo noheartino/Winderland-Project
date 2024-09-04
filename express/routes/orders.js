@@ -8,28 +8,23 @@ const router = express.Router()
 router.get('/history', authenticate, async (req, res) => {
   try {
     const userId = req.user.id
-    const { status, startDate, endDate } = req.query
+    const { status, startDate, endDate, sortOrder, searchTerm } = req.query
 
     let query = `
+   SELECT 
+    o.order_uuid,
+    o.status,
+    o.payment_method,
+    o.transport,
+    o.created_at,
+    o.totalMoney,
+    (
       SELECT 
-        o.order_uuid,
-        o.status,
-        o.payment_method,
-        o.transport,
-        o.created_at,
-        o.totalMoney,
-        (
-          SELECT 
-            COALESCE(SUM(
-              CASE 
-                WHEN od.product_id IS NOT NULL THEN od.product_quantity
-                ELSE 0
-              END
-            ), 0) +
-            COALESCE(COUNT(DISTINCT CASE WHEN od.class_id IS NOT NULL THEN od.class_id END), 0)
-          FROM order_details od
-          WHERE od.order_uuid = o.order_uuid
-        ) AS total_items,
+        COALESCE(SUM(CASE WHEN od.product_id IS NOT NULL THEN od.product_quantity ELSE 0 END), 0) +
+        COALESCE(COUNT(DISTINCT CASE WHEN od.class_id IS NOT NULL AND od.class_id != 0 THEN od.class_id END), 0)
+      FROM order_details od
+      WHERE od.order_uuid = o.order_uuid
+    ) AS total_items,
         (
           SELECT 
             CASE
@@ -75,7 +70,20 @@ router.get('/history', authenticate, async (req, res) => {
       queryParams.push(startDate, endDate)
     }
 
-    query += ` ORDER BY o.created_at DESC`
+    //搜尋條件
+    if (searchTerm) {
+      query += ` AND (o.order_uuid LIKE ? OR DATE(o.created_at) = ?)`
+      queryParams.push(`%${searchTerm}%`, searchTerm)
+    }
+
+    // 排序邏輯
+    if (sortOrder === 'asc') {
+      query += ` ORDER BY o.created_at ASC`
+    } else {
+      query += ` ORDER BY o.created_at DESC`
+    }
+
+    // query += ` ORDER BY o.created_at DESC`
 
     const [rows] = await connection.query(query, queryParams)
 
@@ -190,58 +198,54 @@ router.get('/commentable-items/:orderUuid', authenticate, async (req, res) => {
 
     // 獲取可評論的商品和課程，並檢查是否已評論
     const [items] = await connection.query(
-      `SELECT 
-      od.id as order_detail_id,
-      CASE 
-        WHEN od.product_id IS NOT NULL THEN od.product_id
-        ELSE od.class_id
-      END as item_id,
-      CASE 
-        WHEN od.product_id IS NOT NULL THEN p.name
-        ELSE c.name
-      END as item_name,
-      CASE 
-        WHEN od.product_id IS NOT NULL THEN 'product'
-        ELSE 'class'
-      END as item_type,
-      CASE
-        WHEN od.product_id IS NOT NULL THEN pd.capacity
-        ELSE NULL
-      END as capacity,
-      CASE
-        WHEN od.product_id IS NOT NULL THEN pd.years
-        ELSE NULL
-      END as years,
-      CASE
-        WHEN od.product_id IS NOT NULL THEN co.name
-        ELSE NULL
-      END as country_name,
-      CASE
-        WHEN od.class_id IS NOT NULL THEN t.name
-        ELSE NULL
-      END as teacher_name,
-      CASE
-        WHEN comments.id IS NOT NULL THEN 1
-        ELSE 0
-      END as is_commented,
-      comments.rating as existing_rating,
-      comments.comment_text as existing_comment
-     FROM order_details od
-     LEFT JOIN product p ON od.product_id = p.id
-     LEFT JOIN product_detail pd ON od.product_detail_id = pd.id
-     LEFT JOIN product pr ON pd.product_id = pr.id
-     LEFT JOIN origin o ON pr.origin_id = o.id
-     LEFT JOIN country co ON o.country_id = co.id
-     LEFT JOIN class c ON od.class_id = c.id
-     LEFT JOIN teacher t ON c.teacher_id = t.id
-     LEFT JOIN comments ON (
-       (od.product_id IS NOT NULL AND comments.entity_type = 'product' AND comments.entity_id = od.product_id) OR
-       (od.class_id IS NOT NULL AND comments.entity_type = 'class' AND comments.entity_id = od.class_id)
-     ) AND comments.user_id = ?
-     WHERE od.order_uuid = ?
-     ORDER BY od.id`,
-      [userId, orderUuid]
+      `(SELECT 
+        od.id as order_detail_id,
+        p.id as item_id,
+        p.name as item_name,
+        'product' as item_type,
+        pd.capacity,
+        pd.years,
+        co.name as country_name,
+        NULL as teacher_name,
+        CASE WHEN comments.id IS NOT NULL THEN 1 ELSE 0 END as is_commented,
+        comments.rating as existing_rating,
+        comments.comment_text as existing_comment,
+        0 as sort_order  -- 商品的排序順序為 0
+      FROM order_details od
+      JOIN product p ON od.product_id = p.id
+      JOIN product_detail pd ON od.product_detail_id = pd.id
+      JOIN product pr ON pd.product_id = pr.id
+      JOIN origin o ON pr.origin_id = o.id
+      JOIN country co ON o.country_id = co.id
+      LEFT JOIN comments ON comments.entity_type = 'product' AND comments.entity_id = p.id AND comments.user_id = ?
+      WHERE od.order_uuid = ? AND od.product_id IS NOT NULL)
+      
+      UNION ALL
+      
+      (SELECT 
+        od.id as order_detail_id,
+        c.id as item_id,
+        c.name as item_name,
+        'class' as item_type,
+        NULL as capacity,
+        NULL as years,
+        NULL as country_name,
+        t.name as teacher_name,
+        CASE WHEN comments.id IS NOT NULL THEN 1 ELSE 0 END as is_commented,
+        comments.rating as existing_rating,
+        comments.comment_text as existing_comment,
+        1 as sort_order  -- 課程的排序順序為 1
+      FROM order_details od
+      JOIN class c ON od.class_id = c.id
+      JOIN teacher t ON c.teacher_id = t.id
+      LEFT JOIN comments ON comments.entity_type = 'class' AND comments.entity_id = c.id AND comments.user_id = ?
+      WHERE od.order_uuid = ? AND od.class_id IS NOT NULL)
+      
+      ORDER BY sort_order, order_detail_id`,
+      [userId, orderUuid, userId, orderUuid]
     )
+
+    console.log('Fetched items:', items)
 
     res.json({ status: 'success', data: items })
   } catch (error) {

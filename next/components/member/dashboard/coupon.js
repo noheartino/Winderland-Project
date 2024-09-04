@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import CouponCard from "./coupon/CouponCard";
 import WPointShow from "./coupon/wPointShow";
@@ -8,16 +8,25 @@ import CouponStorage from "./coupon/CouponStorage";
 import WPointRecord from "./coupon/WPointRecord";
 
 import { useAuth } from "@/hooks/use-auth";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
+import CouponPlusSm from "./coupon/CouponPlusSm";
 
 export default function DashboardCoupon() {
   const router = useRouter();
   const { auth } = useAuth();
   const [userId, setUserId] = useState(null);
+  const [memberLevelId, setMemberLevelId] = useState(null);
   const [freeCoupon, setfreeCoupon] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const [coupons, setCoupons] = useState([]);
+  const [userCoupons, setUserCoupons] = useState([]);
+  const [userGetCoupons, setUserGetCoupons] = useState([]);
+  const [userUsedCoupons, setUserUsedCoupons] = useState([]);
+  const [userExpiredCoupons, setUserExpiredCoupons] = useState([]);
+
+  const [userPoints, setUserPoints] = useState([]);
+  const [memberLevelName, setMemberLevelName] = useState("");
 
   // 等待獲取userId
   useEffect(() => {
@@ -26,9 +35,10 @@ export default function DashboardCoupon() {
       setTimeout(() => {
         const id = auth.userData?.id; // 從 auth 取得 userId
         setUserId(id);
-        setfreeCoupon(auth.userData?.free_coupon)
-        setLoading(false); // 完成加載
-      }, 1000); // 延遲 1 秒
+        setMemberLevelId(auth.userData?.member_level_id);
+        setfreeCoupon(auth.userData?.free_coupon);
+        setLoading(false);
+      }, 1000);
     };
 
     fetchUserId();
@@ -39,15 +49,15 @@ export default function DashboardCoupon() {
 
   useEffect(() => {
     if (!loading) {
-      if (!userId) {
+      if (!userId | !freeCoupon | !memberLevelId) {
         // 如果 userId 不存在，則進行重定向
-        router.push('/login');
+        // 會影響google登入，先備註起來！不用驗證了！
+        //router.push("/member/login");
       }
     }
   }, [userId, loading, router]);
 
-  
-
+  // 獲取全部優惠券(領取優惠券使用)
   useEffect(() => {
     // 使用 fetch 從後端 API 獲取資料
     fetch("http://localhost:3005/api/coupon")
@@ -58,60 +68,119 @@ export default function DashboardCoupon() {
       .catch((error) => {
         console.error("Error fetching coupons:", error);
       });
-  }, []); 
+  }, []);
+
+  // 會員擁有的資料取用
+  useEffect(() => {
+    fetch(`http://localhost:3005/api/coupon/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        // 全部
+        const userAllCoupon = data.userCoupons;
+        const userGetCouponData = userAllCoupon.filter(
+          (coupon) => coupon.status === "get"
+        );
+        const userUsedCouponData = userAllCoupon.filter(
+          (coupon) => coupon.status === "used"
+        );
+        const userExpiredCouponData = userAllCoupon.filter(
+          (coupon) => coupon.status === "expired"
+        );
+
+        // 設定 userPoints，如果為空則設置預設值
+        const defaultUserPoints = {
+          id: null,
+          user_id: userId,
+          points_balance: 0,
+          last_updated: null,
+        };
+        const processedUserPoints = data.userPoints.length
+          ? data.userPoints[0]
+          : defaultUserPoints;
+
+        setUserCoupons(userAllCoupon);
+        setUserGetCoupons(userGetCouponData);
+        setUserUsedCoupons(userUsedCouponData);
+        setUserExpiredCoupons(userExpiredCouponData);
+
+        setUserPoints(processedUserPoints);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, [userId]);
+
+  // console.log(memberLevelId);
+  // 會員等級
+  useEffect(() => {
+    const fetchMemberLevel = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3005/api/coupon/member-level",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ member_level_id: memberLevelId }),
+          }
+        );
+
+        const result = await response.json();
+
+        if (response.ok && result.status === "success") {
+          if (result.data.length > 0) {
+            // 假設只有一筆資料，因為 member_level_id 是唯一的
+            setMemberLevelName(result.data[0].name);
+          } else {
+            console.error("No data found for the given member_level_id");
+          }
+        } else {
+          throw new Error(result.message || "Failed to fetch member level");
+        }
+      } catch (error) {
+        console.error("Error fetching member level:", error);
+      }
+    };
+
+    if (memberLevelId) {
+      fetchMemberLevel();
+    }
+  }, [memberLevelId]);
+
+  // 如果正在加載，顯示 loading 畫面
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <div className={`container ${style["coupon-content"]} m-0 mx-auto`}>
         {/* 優惠券倉庫 */}
-        {console.log(freeCoupon)}
-        <CouponStorage userId={userId} freeCoupon={freeCoupon} />
+        <CouponStorage
+          userId={userId}
+          freeCoupon={freeCoupon}
+          memberLevelName={memberLevelName}
+          userGetCoupons={userGetCoupons}
+          setUserGetCoupons={setUserGetCoupons}
+        />
 
         {/* 手機的領券的標題 */}
-        <div className={`${style.couponNav} col-12 d-lg-none mt-5 mb-4`}>
-          <span
-            type="button"
-            className={`${style.CTitle} ${style.CTitleSm} row`}
-            data-bs-toggle="modal"
-            data-bs-target="#couponPlusModal"
-          >
-            <i className="fa-solid fa-ticket col-auto" />
-            領取本月會員優惠券
-            <i className={`fa-solid fa-angle-down ${style.pointDown} col`} />
-          </span>
-        </div>
-        
-        
-
-        {/* 手機領券區塊 */}
-        <div
-          className={`${style.couponZoneSm} row m-0 d-lg-none py-4 mx-3 mt-3 mb-5`}
-        >
-          <div className={`${style.couponNav} col-12 col-lg-7 px-4`}>
-            <span className={`${style.CTitle} ${style.CTitleSm} row`}>
-              <i className="fa-solid fa-ticket col-auto" />
-              9月會員優惠券
-            </span>
-            <div className="row mt-2">
-              <p
-                className={`${style.couponLimit} ${style.couponLimitSm} col-auto`}
-              >
-                本用戶等級最多可本月領取5張優惠券
-              </p>
-            </div>
-          </div>
-          {coupons.map((coupon) => (
-          <CouponCard key={coupon.id} coupon={coupon}/>
-        ))}
-
-        </div>
+        <CouponPlusSm
+          userId={userId}
+          freeCoupon={freeCoupon}
+          setUserGetCoupons={setUserGetCoupons}
+        />
 
         <div className="row">
           {/* 優惠券使用紀錄 */}
-          <CouponRecord userId={userId} />
+          <CouponRecord userId={userId} userUsedCoupons={userUsedCoupons} />
 
           {/* 優惠券過期紀錄 */}
-          <CouponExpired userId={userId} />
+          <CouponExpired
+            userId={userId}
+            userExpiredCoupons={userExpiredCoupons}
+          />
         </div>
         <hr
           className="d-none d-lg-block"
@@ -125,7 +194,8 @@ export default function DashboardCoupon() {
         {/* wpoints */}
         {/* wpoints 2 nav */}
         <div className="wpoint-navbar mt-5 mx-3 row">
-          <WPointShow userId={userId} />
+          {/* {console.log(userPoints)} */}
+          <WPointShow userId={userId} userPoints={userPoints} />
 
           {/* 會員說明的區塊 */}
           <div
@@ -133,7 +203,7 @@ export default function DashboardCoupon() {
           >
             <a className={`${style.couponPlus}`}>白金會員回饋比率 3.5%</a>
             <div className={`${style.membership} mt-2`}>
-              <p className={`${style.memberP} p-2`}>白金會員</p>
+              <p className={`${style.memberP} p-2`}>{memberLevelName}會員</p>
             </div>
           </div>
         </div>
@@ -146,3 +216,5 @@ export default function DashboardCoupon() {
     </>
   );
 }
+
+DashboardCoupon.requireAuth = true;

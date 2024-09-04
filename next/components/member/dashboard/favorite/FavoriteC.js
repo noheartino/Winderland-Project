@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
 import { useAuth } from '@/hooks/use-auth'
+import Link from 'next/link';
 
 // 格式化價格輔助函數
 const formatPrice = (price) => {
@@ -53,7 +54,7 @@ export default function FavoriteC() {
     <>
       <span>課程收藏</span>
       <hr />
-       {/* 空收藏庫邏輯 */}
+      {/* 空收藏庫邏輯 */}
       {favoriteCourses.length === 0 ? (
         <div className="no-favorites">目前還沒有任何收藏喔 .ᐟ.ᐟ.ᐟ </div>
       ) : (
@@ -63,11 +64,11 @@ export default function FavoriteC() {
 
               <div className="favorite-c-img">
                 <Image
-                  src={course.image_path ? `/images/course_and_tarot/${course.image_path}` : "/images/member/fav-c1.jpg"}
+                  src={course.image_path ? `http://localhost:3005/uploads/course_and_tarot/${course.image_path}` : "/images/member/fav-c1.jpg"}
                   alt={course.class_name}
                   width={265}
                   height={165}
-                  className="favorite-c-img-rwd"
+                  // className="favorite-c-img-rwd"
                 />
                 <svg
                   className="svg-bookmark"
@@ -91,9 +92,16 @@ export default function FavoriteC() {
                 <div className="favorite-c-title d-flex">
                   <div className="online">{course.online ? "線上" : "實體"}</div>
                   <span>
-                    <span>{course.class_name}</span>
+
+                    <Link href={`/course/${course.class_id}`} className='classTitleLink' >
+                      <span className='classTitleLink'>
+                        {course.class_name}
+                      </span>
+                    </Link>
+
                   </span>
                 </div>
+                <div className="d-flex justify-content-between align-items-center">
                 <p className="byTeacher">by {course.teacher_name}</p>
                 <div className="stars">
                   <i className="fa-solid fa-star" />
@@ -103,8 +111,10 @@ export default function FavoriteC() {
                   <i className="fa-solid fa-star" />
                   4.8
                 </div>
+                </div>
+                
                 {/* 進度條 */}
-                <div className="progress-detail d-flex justify-content-between ">
+                {/* <div className="progress-detail d-flex justify-content-between ">
                   <p>課程時長-5小時</p>
                   <p>已完成90%</p>
                 </div>
@@ -117,8 +127,9 @@ export default function FavoriteC() {
                     aria-valuemin={0}
                     aria-valuemax={100}
                   />
-                </div>
-                <div className="price d-flex">
+                </div> */}
+
+                <div className="price d-flex justify-content-end">
                   {course.sale_price && course.sale_price < course.price ? (
                     <>
                       <p className="nowPrice">NT${formatPrice(course.sale_price)}</p>

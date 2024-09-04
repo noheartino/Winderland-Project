@@ -11,6 +11,7 @@ router.get('/:user_id', async (request, response) => {
   SELECT 
       cart_items.id AS cart_item_id,
       cart_items.product_detail_id,
+      product.id AS product_id,
       cart_items.class_id,
       cart_items.product_quantity,
       product.name AS product_name,
@@ -27,7 +28,9 @@ router.get('/:user_id', async (request, response) => {
       images_class.path AS class_image,
       country.name AS product_country,
       class.online AS class_online,
-      teacher.name AS teacher_name
+      teacher.name AS teacher_name,
+      class.student_limit AS student_limits,
+      class.assigned AS assigned
   FROM 
       cart_items 
   JOIN users ON cart_items.user_id = users.id
@@ -53,7 +56,8 @@ router.get('/:user_id', async (request, response) => {
       coupon.name AS coupon_name,
       coupon.discount AS coupon_discount,
       coupon.category AS coupon_category,
-      coupon.min_spend AS min_spend
+      coupon.min_spend AS min_spend,
+      user_coupon.status AS coupon_status
   FROM 
       users
   LEFT JOIN user_points ON users.id = user_points.user_id
@@ -198,9 +202,7 @@ router.delete('/:id', async (request, response) => {
 
 // 新增訂單 (Cash On Delivery)
 router.post('/cashOnDelivery', async (req, res) => {
-  console.log('Request Body:', req.body)
   const couponId = req.body.couponData ? req.body.couponData.id : null
-  console.log('Coupon ID:', couponId)
   const {
     userId, // 使用從前端傳來的 userId
     pointsUsed,
@@ -267,12 +269,11 @@ router.post('/cashOnDelivery', async (req, res) => {
                 ? 0.035
                 : 0)
     )
-    console.log('Earned Points:', earnedPoints)
 
     // 插入訂單資料
     const insertOrderQuery = `
       INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, coupon_amount, earned_points, pointUsed, pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, totalMoney, created_at, updated_at)
-      VALUES (?, ?, 'pending', '貨到付款', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
+      VALUES (?, ?, '尚未付款', '貨到付款', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
     `
     const [orderResult] = await conn.query(insertOrderQuery, [
       orderNumber,
@@ -295,15 +296,14 @@ router.post('/cashOnDelivery', async (req, res) => {
         : selectedTransport === 'transprot711'
           ? '7-11'
           : null,
-      discountedAmount
+      discountedAmount,
     ])
-    console.log('Order Insert Result:', orderResult)
 
     const orderId = orderResult.insertId
 
     // 插入商品和課程
     const insertOrderItemsQuery = `
-      INSERT INTO order_detailss (order_uuid, product_id, product_detail_id, class_id, product_quantity, created_at)
+      INSERT INTO order_details (order_uuid, product_id, product_detail_id, class_id, product_quantity, created_at)
       VALUES (?, ?, ?, ?, ?, NOW());
     `
     for (const item of cartItems) {
@@ -314,16 +314,41 @@ router.post('/cashOnDelivery', async (req, res) => {
         item.class_id || null,
         item.product_quantity,
       ])
+
+      // 如果 class_id 存在且有報名人數上限，則更新已報名人數
+      if (item.class_id && item.student_limits > 0) {
+        const updateAssignedQuery = `
+          UPDATE class 
+          SET assigned = COALESCE(assigned, 0) + 1
+          WHERE id = ? AND COALESCE(assigned, 0) < student_limit;
+        `
+        await conn.query(updateAssignedQuery, [item.class_id])
+      }
+
+      // 更新商品銷售數量
+      if (item.product_detail_id) {
+        const updateSalesQuery = `
+                UPDATE product_detail 
+                SET sales = sales + ?
+                WHERE id = ?;
+              `
+        await conn.query(updateSalesQuery, [
+          item.product_quantity,
+          item.product_detail_id,
+        ])
+      }
     }
 
-    // 刪除已使用的優惠券
+    // 更新已使用的優惠券狀態
     if (couponData?.coupon_id) {
-      const deleteCouponQuery = `
-        DELETE FROM user_coupon WHERE user_id = ? AND coupon_id = ?;
-      `
-      await conn.query(deleteCouponQuery, [userId, couponData.coupon_id])
+      const updateCouponStatusQuery = `
+    UPDATE user_coupon 
+    SET status = 'used' 
+    WHERE user_id = ? AND coupon_id = ?;
+  `
+      await conn.query(updateCouponStatusQuery, [userId, couponData.coupon_id])
       console.log(
-        'Deleting coupon for user:',
+        'Updated coupon status to used for user:',
         userId,
         'with coupon id:',
         couponData.coupon_id
@@ -340,7 +365,6 @@ router.post('/cashOnDelivery', async (req, res) => {
       originalPoints - pointsUsed + earnedPoints
     )
     await conn.query(userPointsQuery, [userId, newPointsBalance])
-    console.log('New Points Balance:', newPointsBalance)
 
     // 記錄點數變化
     const pointChange = earnedPoints - pointsUsed
@@ -362,12 +386,14 @@ router.post('/cashOnDelivery', async (req, res) => {
       ])
     }
 
+    console.log('已刪除購物車內的已購買商品或課程')
+
     // 更新庫存數量並檢查庫存是否為零
     const updateStockQuery = `
-        UPDATE product_detail 
-        SET amount = amount - ?, valid = CASE WHEN amount - ? <= 0 THEN 0 ELSE valid END
-        WHERE id = ?;
-      `
+UPDATE product_detail 
+SET amount = amount - ?, valid = CASE WHEN amount - ? <= 0 THEN 0 ELSE valid END
+WHERE id = ?;
+`
     for (const item of cartItems) {
       if (item.product_detail_id) {
         await conn.query(updateStockQuery, [
@@ -377,7 +403,48 @@ router.post('/cashOnDelivery', async (req, res) => {
         ])
       }
     }
-    console.log('已刪除購物車內的已購買商品或課程')
+
+    // 如果有 product_detail_id，檢查 product 的 valid 狀態
+    if (cartItems.some((item) => item.product_detail_id)) {
+      // 獲取 product_id
+      const checkProductValidityQuery = `
+  SELECT product_id
+  FROM product_detail
+  WHERE id = ?;
+`
+      const [productDetailResult] = await conn.query(
+        checkProductValidityQuery,
+        [cartItems[0].product_detail_id]
+      )
+
+      if (productDetailResult.length > 0) {
+        const productId = productDetailResult[0].product_id
+
+        // 檢查該 product_id 下所有的 product_detail 的 valid 狀態
+        const checkAllDetailsInvalidQuery = `
+    SELECT COUNT(*) AS count
+    FROM product_detail
+    WHERE product_id = ? AND valid = 1;
+  `
+        const [allDetailsResult] = await conn.query(
+          checkAllDetailsInvalidQuery,
+          [productId]
+        )
+        const allDetailsValidCount = allDetailsResult[0].count
+
+        // 如果所有的 product_detail 都無效，則將 product 表格的 valid 更新為 0
+        if (allDetailsValidCount === 0) {
+          const updateProductValidityQuery = `
+      UPDATE product 
+      SET valid = 0 
+      WHERE id = ?;
+    `
+          await conn.query(updateProductValidityQuery, [productId])
+        }
+      }
+    }
+
+    console.log('已更新庫存和產品有效性')
 
     // 返回成功訊息
     console.log('訂單已成功建立，準備發送回應')
@@ -392,9 +459,7 @@ router.post('/cashOnDelivery', async (req, res) => {
 
 // 新增訂單 (CreditCard Payment)
 router.post('/creditCardPayment', async (req, res) => {
-  console.log('Request Body:', req.body)
   const couponId = req.body.couponData ? req.body.couponData.id : null
-  console.log('Coupon ID:', couponId)
   const {
     userId,
     pointsUsed,
@@ -422,7 +487,6 @@ router.post('/creditCardPayment', async (req, res) => {
     }
 
     const orderNumber = generateOrderNumber()
-    console.log('Generated Order Number:', orderNumber)
 
     // 計算總金額並無條件捨去
     const totalAmount = Math.floor(
@@ -462,12 +526,11 @@ router.post('/creditCardPayment', async (req, res) => {
                 ? 0.035
                 : 0)
     )
-    console.log('Earned Points:', earnedPoints)
 
     // 插入訂單資料
     const insertOrderQuery = `
       INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, coupon_amount, earned_points, pointUsed,pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, totalMoney, created_at, updated_at)
-      VALUES (?, ?, 'pending', '信用卡', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
+      VALUES (?, ?, '出貨準備中', '信用卡', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
     `
     const [orderResult] = await conn.query(insertOrderQuery, [
       orderNumber,
@@ -490,18 +553,18 @@ router.post('/creditCardPayment', async (req, res) => {
         : selectedTransport === 'transprot711'
           ? '7-11'
           : null,
-      discountedAmount
+      discountedAmount,
     ])
-    console.log('Order Insert Result:', orderResult)
 
     const orderId = orderResult.insertId
 
     // 插入商品和課程
     const insertOrderItemsQuery = `
-      INSERT INTO order_detailss (order_uuid, product_id, product_detail_id, class_id, product_quantity, created_at)
+      INSERT INTO order_details (order_uuid, product_id, product_detail_id, class_id, product_quantity, created_at)
       VALUES (?, ?, ?, ?, ?, NOW());
     `
     for (const item of cartItems) {
+      console.log('Inserting item:', item)
       await conn.query(insertOrderItemsQuery, [
         orderNumber,
         item.product_id || null,
@@ -509,16 +572,41 @@ router.post('/creditCardPayment', async (req, res) => {
         item.class_id || null,
         item.product_quantity,
       ])
+
+      // 如果 class_id 存在且有報名人數上限，則更新已報名人數
+      if (item.class_id && item.student_limits > 0) {
+        const updateAssignedQuery = `
+          UPDATE class 
+          SET assigned = COALESCE(assigned, 0) + 1
+          WHERE id = ? AND COALESCE(assigned, 0) < student_limit;
+        `
+        await conn.query(updateAssignedQuery, [item.class_id])
+      }
+
+      // 更新商品銷售數量
+      if (item.product_detail_id) {
+        const updateSalesQuery = `
+                UPDATE product_detail 
+                SET sales = sales + ?
+                WHERE id = ?;
+              `
+        await conn.query(updateSalesQuery, [
+          item.product_quantity,
+          item.product_detail_id,
+        ])
+      }
     }
 
-    // 刪除已使用的優惠券
+    // 更新已使用的優惠券狀態
     if (couponData?.coupon_id) {
-      const deleteCouponQuery = `
-        DELETE FROM user_coupon WHERE user_id = ? AND coupon_id = ?;
-      `
-      await conn.query(deleteCouponQuery, [userId, couponData.coupon_id])
+      const updateCouponStatusQuery = `
+    UPDATE user_coupon 
+    SET status = 'used' 
+    WHERE user_id = ? AND coupon_id = ?;
+  `
+      await conn.query(updateCouponStatusQuery, [userId, couponData.coupon_id])
       console.log(
-        'Deleting coupon for user:',
+        'Updated coupon status to used for user:',
         userId,
         'with coupon id:',
         couponData.coupon_id
@@ -535,7 +623,6 @@ router.post('/creditCardPayment', async (req, res) => {
       originalPoints - pointsUsed + earnedPoints
     )
     await conn.query(userPointsQuery, [userId, newPointsBalance])
-    console.log('New Points Balance:', newPointsBalance)
 
     // 記錄點數變化
     const pointChange = earnedPoints - pointsUsed
@@ -560,10 +647,10 @@ router.post('/creditCardPayment', async (req, res) => {
 
     // 更新庫存數量並檢查庫存是否為零
     const updateStockQuery = `
-        UPDATE product_detail 
-        SET amount = amount - ?, valid = CASE WHEN amount - ? <= 0 THEN 0 ELSE valid END
-        WHERE id = ?;
-      `
+  UPDATE product_detail 
+  SET amount = amount - ?, valid = CASE WHEN amount - ? <= 0 THEN 0 ELSE valid END
+  WHERE id = ?;
+`
     for (const item of cartItems) {
       if (item.product_detail_id) {
         await conn.query(updateStockQuery, [
@@ -573,6 +660,48 @@ router.post('/creditCardPayment', async (req, res) => {
         ])
       }
     }
+
+    // 如果有 product_detail_id，檢查 product 的 valid 狀態
+    if (cartItems.some((item) => item.product_detail_id)) {
+      // 獲取 product_id
+      const checkProductValidityQuery = `
+    SELECT product_id
+    FROM product_detail
+    WHERE id = ?;
+  `
+      const [productDetailResult] = await conn.query(
+        checkProductValidityQuery,
+        [cartItems[0].product_detail_id]
+      )
+
+      if (productDetailResult.length > 0) {
+        const productId = productDetailResult[0].product_id
+
+        // 檢查該 product_id 下所有的 product_detail 的 valid 狀態
+        const checkAllDetailsInvalidQuery = `
+      SELECT COUNT(*) AS count
+      FROM product_detail
+      WHERE product_id = ? AND valid = 1;
+    `
+        const [allDetailsResult] = await conn.query(
+          checkAllDetailsInvalidQuery,
+          [productId]
+        )
+        const allDetailsValidCount = allDetailsResult[0].count
+
+        // 如果所有的 product_detail 都無效，則將 product 表格的 valid 更新為 0
+        if (allDetailsValidCount === 0) {
+          const updateProductValidityQuery = `
+        UPDATE product 
+        SET valid = 0 
+        WHERE id = ?;
+      `
+          await conn.query(updateProductValidityQuery, [productId])
+        }
+      }
+    }
+
+    console.log('已更新庫存和產品有效性')
 
     // 返回成功訊息
     console.log('訂單已成功建立，準備發送回應')

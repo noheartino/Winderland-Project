@@ -17,7 +17,8 @@ export const CartProvider = ({ children }) => {
       return response.json();
     },
     enabled: !!auth.userData,
-    refetchInterval: 1000,
+    // 暫時調整
+    refetchInterval: 5000,
   });
 
   return (

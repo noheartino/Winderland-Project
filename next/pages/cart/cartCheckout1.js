@@ -7,7 +7,6 @@ import CartCoupon from "@/components/cart/cart1/cartCoupon";
 import CartProductM from "@/components/cart/cart1/cartPorductM";
 import CartClassM from "@/components/cart/cart1/cartClassM";
 import CartMoneyM from "@/components/cart/cart1/cartMoneyM";
-import CartCouponM from "@/components/cart/cart1/cartCouponM";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 import CartZero from "@/components/cart/cartObject/cartZero";
@@ -28,8 +27,6 @@ export default function CartCheckout1() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [coupons, setCoupons] = useState([]);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
-
-  console.log("User ID:", userId);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,7 +113,6 @@ export default function CartCheckout1() {
   };
 
   const handleCouponChange = (coupon) => {
-    console.log("Coupon changed:", coupon);
     setSelectedCoupon(coupon);
   };
 
@@ -218,13 +214,15 @@ export default function CartCheckout1() {
   return (
     <>
       <Head>
-        <title>Cart2</title>
+        <title>醺迷仙園｜購物車</title>
+
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <link rel="icon" href="/logo.png" />
       </Head>
-      <meta charSet="utf-8" />
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no"
-      />
       <Nav />
       {productData.length === 0 && classData.length === 0 ? (
         <CartZero />
@@ -379,8 +377,6 @@ export default function CartCheckout1() {
               </div>
             )}
 
-            <div style={{ height: "150px" }}></div>
-
             {/* 仅在商品或课程勾选时传递数据 */}
             <CartMoneyM
               totalAmount={totalAmount}
@@ -389,14 +385,15 @@ export default function CartCheckout1() {
               classData={classChecked ? classData : []}
               userId={userId}
             />
-            <CartCouponM
-              userId={userId}
-              selectedCoupon={selectedCoupon}
-              totalAmount={totalAmount}
-              onCouponChange={handleCouponChange}
-            />
-            <div style={{ height: "150px" }}>
+            <div className="cart-coupon-container">
+              <CartCoupon
+                userId={userId}
+                selectedCoupon={selectedCoupon}
+                totalAmount={totalAmount}
+                onCouponChange={handleCouponChange}
+              />
             </div>
+            <div style={{ height: "180px" }}></div>
           </div>
         </main>
       )}

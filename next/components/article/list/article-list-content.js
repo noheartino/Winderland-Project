@@ -25,7 +25,7 @@ export default function ArticleListContent({ article }) {
         acc.push(
           <div className="aid-content-pic my-4" key={`image-${index}`}>
             <Image
-              src={`/images/article/${article.images[index + 1]}`} // 從第二張圖片開始插入
+              src={`http://localhost:3005/uploads/article/${article.images[index + 1]}`} // 從第二張圖片開始插入
               alt="Description of image"
               width={100}
               height={100}
@@ -41,12 +41,12 @@ export default function ArticleListContent({ article }) {
   return (
     <>
       <div className="aid-content-word">
-        {/* rwd */}
+        {/* 桌機 */}
         <div className="aid-content-p d-none d-lg-block" style={{ whiteSpace: "pre-wrap" }}>
           {contentWithImages}
         </div>
-        {/* 桌機 */}
-        <div className="aid-content-p-sm d-lg-none" style={{ whiteSpace: "pre-wrap" }}>
+        {/* rwd */}
+        <div className="aid-content-p-sm d-lg-none px-4" style={{ whiteSpace: "pre-wrap" }}>
           {contentWithImages}
         </div>
       </div>

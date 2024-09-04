@@ -33,7 +33,7 @@ export default function CartClassDetailM() {
             <b>1</b>
           </div>
           <div className={`col-3 ${css.cartProductDetailTotalM}`}>
-            <b>NT$ {item.class_sale_price > 0 ? item.class_sale_price : item.class_price}</b>
+            <b>NT$ {item.class_sale_price > 0 ? item.class_sale_price.toLocaleString() : item.class_price.toLocaleString()}</b>
           </div>
         </div>
       ))}

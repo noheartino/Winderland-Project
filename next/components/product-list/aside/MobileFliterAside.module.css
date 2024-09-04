@@ -33,36 +33,55 @@
         z-index: 999;
         background: #ffffff;
         color: var(--text_primary);
-        height: 100%;
+        min-height: 100vh;
+        /* 使用視窗高度 */
         width: 70%;
         position: fixed;
         top: 0;
         right: -800px;
         bottom: 0;
         transition: 0.8s;
+        overflow-x: hidden;
+        overflow-y: auto;
+        /* 添加垂直滾動 */
+        display: flex;
+        /* 使用 flex 佈局 */
+        flex-direction: column;
+        /* 垂直排列子元素 */
 
         &.open {
             right: 0;
             transition: 1s;
         }
 
+        & .shop-category-tags {
+            margin-left: 7%;
+        }
+
         & .shop-aside-m-top {
             position: relative;
             display: flex;
-            height: 90px;
+            height: 110px;
             background: var(--primary);
             color: #ffffff;
             font-size: 18px;
             letter-spacing: 3px;
+            z-index: 999;
+            flex-shrink: 0;
+            margin-right: 0;
+            width: 100%;
 
             & img {
+                position: absolute;
+                top: 68%;
+                left: 4%;
                 width: 20px;
-                margin-left: 5%;
             }
 
             & p {
-                padding-top: 32px;
-                margin-left: 2%;
+                position: absolute;
+                top: 65%;
+                left: 10%;
             }
 
             & button {
@@ -73,17 +92,19 @@
                 color: #ffffff;
                 font-size: 30px;
                 position: absolute;
-                top: 25%;
+                top: 55%;
                 right: 5%;
             }
         }
 
         & .shop-category-title,
-        .shop-price-title {
+        .shop-variet-title,
+        .shop-price-title,
+        .shop-country-title,
+        .shop-origin-title {
             font-size: 16px;
-            margin-block: 20px;
-            margin-left: 6%;
-
+            margin-block: 5%;
+            padding-left: 8%;
         }
 
         & select:focus {
@@ -92,6 +113,9 @@
 
 
         & select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
             margin-left: 8%;
             margin-bottom: 25px;
             /* 取消瀏覽器默認箭頭 */
@@ -108,12 +132,29 @@
             border-radius: 44px;
             padding-left: 18px;
             position: relative;
+            background-color: white;
+
+            & option:hover,
+            & option:focus {
+                background-color: #f0f0f0;
+                /* 淺灰色背景 */
+                color: #333;
+                /* 深灰色文字 */
+            }
+
+            &  option:checked {
+                background-color: #a83e51;
+                /* 您的主題色 */
+                color: white;
+            }
         }
+
+
 
         & .shop-category-tags {
             display: flex;
             flex-wrap: wrap;
-            margin-left: 8%;
+            padding-left: 1%;
 
             & .category-tag {
                 border: 1px solid var(--light);
@@ -125,9 +166,12 @@
                 margin-inline: 9px;
                 margin-block: 5px;
                 background: var(--light);
+                font-size: 13px;
+                color: var(--text_primary);
             }
         }
     }
+
     /* 雙滑軌 */
 
     .minmaxprice {
@@ -137,7 +181,7 @@
 
     .dash {
         margin-inline: 5px;
-        padding-top: 6px;
+        padding-top: 3%;
     }
 
     .aside-price {
@@ -158,8 +202,8 @@
     .price-slider {
         position: relative;
         width: 80%;
-        height: 20px;
-        background-image: url(/shop_images/line.png);
+        height: 14px;
+        background-image: url(/shop_images/line.svg);
         background-size: cover;
         background-position: 50% 90%;
         margin-left: 8%;
@@ -180,8 +224,8 @@
     .price-slider input[type="range"]::-webkit-slider-thumb {
         -webkit-appearance: none;
         appearance: none;
-        height: 18px;
-        width: 18px;
+        height: 20px;
+        width: 20px;
         background-color: #F0F0F0;
         border: 2px solid #E1E1E1;
         border-radius: 50%;
@@ -189,16 +233,18 @@
     }
 
     .slider-minmax {
-        margin-left: 3%;
+        padding-left: 5%;
+        margin-top: 10px;
         margin-bottom: 40px;
 
         & .money-max {
-            margin-left: 8%;
+            padding-left:10%;
         }
     }
 
     .shop-fliter-buttons {
         margin-left: 10%;
+        margin-bottom: 10%;
 
         & button {
             color: var(--text_primary);
@@ -207,27 +253,29 @@
             padding-inline: 13%;
             padding-block: 5%;
             background: var(--light);
-            box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
+            box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.25);
 
-            &:hover{
+            &:hover {
                 background-color: var(--light);
             }
         }
-        
+
 
         & .submit-button {
             margin-left: 5%;
         }
     }
-    
+
 }
 
 @media screen and (max-width: 767px) {
     .shop-aside-m {
         width: 77%;
+        min-height: 100vh;
 
         & .shop-aside-m-top {
-            height: 60px;
+            height: 110px;
+            width: 100%;
 
             & img {
                 width: 18px;
@@ -235,13 +283,12 @@
 
             & p {
                 font-size: 15px;
-                padding-top: 19px;
                 margin-left: 3%;
             }
 
             & button {
                 font-size: 25px;
-                top: 16%;
+                top: 60%;
             }
         }
 
@@ -250,7 +297,7 @@
         }
 
         & .category-tag {
-            font-size: 14px;
+            font-size: 12px;
         }
 
         & .price-slider {

@@ -1,16 +1,24 @@
 import { useRouter } from 'next/router'
-// import { useAuth } from '@/hooks/use-auth'
+import { useAuth } from '@/hooks/use-auth'
+import { useEffect } from 'react'
 
 export default function Logout() {
   const router = useRouter()
-  // const { logout } = useAuth();
+  const { logout } = useAuth();
 
-  if (typeof window !== 'undefined') {
-    // 登出導向首頁
-    router.push('/')
-  }
+  useEffect(() => {
+    const performLogout = async () => {
+      const logoutSuccess = await logout();
+      if (logoutSuccess) {
+        router.push('/');
+      }
+    }
 
-  return <></>
+    performLogout();
+  }, [logout, router]);
+
+  // 返回 null 或一個加載指示器，因為這個組件不需要渲染任何內容
+  return null;
 }
 
 

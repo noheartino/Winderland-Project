@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import css from "@/components/cart/cart2/cartWpoint.module.css";
 
-export default function CartWpoint({ userId, isChecked, onPointsChange, onPointsFetch }) {
+export default function CartWpointM({ userId, isChecked, onPointsChange, onPointsFetch }) {
   const [points, setPoints] = useState(0); // 儲存用戶點數
   const [inputPoints, setInputPoints] = useState(""); // 儲存用戶輸入的點數
   const [error, setError] = useState(""); // 儲存錯誤信息
@@ -19,7 +19,7 @@ export default function CartWpoint({ userId, isChecked, onPointsChange, onPoints
           console.error("獲取點數失敗:", error);
         });
     }
-  }, [userId]);
+  }, [userId, onPointsFetch]);
 
   // 處理點數輸入變化
   const handleInputChange = (event) => {
@@ -50,7 +50,7 @@ export default function CartWpoint({ userId, isChecked, onPointsChange, onPoints
             <b>目前持有 W Point</b>
           </div>
           <div className={css.wPointContentHave}>
-            <b>{points}P</b>
+            <b>{points.toLocaleString()}P</b>
           </div>
         </div>
       </div>

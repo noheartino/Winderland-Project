@@ -1,15 +1,54 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from "next/router";
 import Link from "next/link";
 
 
-export default function EventHomeList({ events, userlv }) {
+export default function EventHomeList({ events, userlv, onSortChange, currentSort, onpage, currentpage }) {
 
     const applyon = events.applyon || [];
     const applyoff = events.applyoff || [];
+    const router = useRouter();
+    const [newPage, setnewp] = useState(1)
+
+    const alldatais = applyon.length;
+
+    const toggleSort = () => {
+        const newSort = currentSort === 'asc' ? 'desc' : 'asc';
+        onSortChange(newSort);
+    }
+
+    // const clickpage = (e) => {
+    //     currentpage = setnewp(e.target.value);
+        
+    //     onpage(newPage);
+    //     console.log(newPage);
+        
+    // }
+
+    const clickpage = (e) => {
+        const selectedPage = parseInt(e.target.value, 10);
+        setnewp(selectedPage);
+        onpage(selectedPage);
+        console.log(selectedPage);
+    }
+
+    const clickarrprev = () => {
+        const previousPage = newPage>1 ? newPage - 1 : 1;
+        console.log(previousPage)
+        setnewp(previousPage);
+        onpage(previousPage);
+    }
+
+    const clickarrnext = () => {
+        const nextiousPage = newPage + 1 ;
+        console.log(nextiousPage)
+        setnewp(nextiousPage);
+        onpage(nextiousPage);
+    }
 
     return (
         <>
+        {/* {alldatais ? <pre>{JSON.stringify(alldatais, null, 2)}</pre> : 'Loading...'} */}
             <div className="eventHomeBoxArea">
                 <div className="container">
                     <div className="eventHomeBoxAreaTitle d-none d-lg-flex">
@@ -19,6 +58,13 @@ export default function EventHomeList({ events, userlv }) {
                             <br />
                             就像英文的potluck，一人帶一道菜去聚會，一支會就是一人帶一支酒來聚會，您可以帶來您珍藏的好酒與酒友們一同分享喜悅。
                         </div>
+
+                        <div className='AreaTitleRArea'>
+
+                        <button className='ascto' onClick={toggleSort}>
+                            {currentSort === 'asc' ? '最早▴' : '最新▾'}
+                        </button>
+
                         {userlv < 3 ? <button
                             type="button"
                             className="eventHomeBoxAreaTitleB"
@@ -32,6 +78,8 @@ export default function EventHomeList({ events, userlv }) {
                         >
                             開團管理
                         </button></Link>}
+
+                        </div>
                        
                         <div
                             className="modal fade"
@@ -86,7 +134,7 @@ export default function EventHomeList({ events, userlv }) {
                                 <div className="col-12 col-lg-4 mb-4" key={i}>
                                     <div className="eventHomeBox_able">
                                         <div className="apply_able">報名期間內</div>
-                                        <img src={`/event/${t.event_cover_image}`} alt="" className="eventHomeBoxImg" />
+                                        <img src={`http://localhost:3005/uploads/${t.event_cover_image}`} alt="" className="eventHomeBoxImg" />
                                         <div className="eventHomeBox_text">
                                             <div className="title">{t.event_name}</div>
                                             <div className="info">
@@ -114,7 +162,7 @@ export default function EventHomeList({ events, userlv }) {
                         }
                         {
                             [...applyoff].map((t, i) => (
-                                <div className="col-12 col-lg-4 mb-4" key={i}>
+                                <div className={`col-12 col-lg-4 mb-4 ${alldatais >= 6 ? 'd-none' : ''}`} key={i}>
                                     <div className="eventHomeBox_disable">
                                         <div className="apply_disable">報名已截止</div>
                                         <img src={`/event/${t.event_cover_image}`} alt="" className="eventHomeBoxImg" />
@@ -144,8 +192,34 @@ export default function EventHomeList({ events, userlv }) {
 
 
                     </div>
+
+                
+                    <div className="eventPagearea">
+
+                        <button className='EventPage-toarr' onClick={clickarrprev}>
+                            <i className="fa-solid fa-chevron-left px-1 emmit1-pageNav"></i>
+                        </button>
+
+                        <button className='EventPage-to' value={1} onClick={clickpage}>
+                            1
+                        </button>
+
+                        <button className='EventPage-to' value={2} onClick={clickpage}>
+                            2
+                        </button>
+                
+                        <button className='EventPage-toarr'  onClick={clickarrnext} disabled={alldatais < 6}>
+                            <i className="fa-solid fa-chevron-right px-1 emmit1-pageNav"></i>
+                        </button>
+
+                    </div>
+            
+
+
                 </div>
             </div>
+
+            
 
         </>
     )

@@ -2,37 +2,35 @@
 
 // ! 導入模組
 import express from 'express'
-
-// 存取`.env`設定檔案使用
 import 'dotenv/config.js'
-// 資料庫使用
 import connection from '##/configs/mysql.js'
-// 中介軟體，存取隱私會員資料用
 import authenticate from '#middlewares/authenticate.js'
-// 檢查空物件, 轉換req.params為數字
 import { getIdParam } from '#db-helpers/db-tool.js'
-// 驗証加密密碼字串用
 import { compareHash } from '#db-helpers/password-hash.js'
-// 上傳檔案用使用multer
 import path from 'path'
+import { fileURLToPath } from 'url'
 import multer from 'multer'
-// 加密
 import bcrypt from 'bcrypt'
+import { v4 as uuidv4 } from 'uuid'
 
 const router = express.Router()
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 // multer的設定值 - START
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
-    // 存放目錄
-    callback(null, 'public/avatar/')
+    callback(
+      null,
+      path.join(__dirname, '..', 'public', 'images', 'member', 'avatar')
+    )
   },
   filename: function (req, file, callback) {
-    // 經授權後，req.user帶有會員的id
-    const newFilename = req.user.id
-    // 新檔名由表單傳來的req.body.newFilename決定
-    callback(null, newFilename + path.extname(file.originalname))
+    const uniqueSuffix = uuidv4()
+    callback(null, uniqueSuffix + path.extname(file.originalname))
   },
 })
+
 const upload = multer({ storage: storage })
 // multer的設定值 - END
 
@@ -49,7 +47,7 @@ const upload = multer({ storage: storage })
 //   }
 // })
 
-// @ GET - 得到單筆資料(注意，有動態參數時要寫在GET區段最後面)
+// @ GET - 獲取會員資料
 router.get('/profile', authenticate, async function (req, res) {
   // 轉為數字
   const id = req.user.id // 從已驗證的用戶資訊中獲取 ID
@@ -59,18 +57,20 @@ router.get('/profile', authenticate, async function (req, res) {
   if (req.user.id !== id) {
     return res.json({ status: 'error', message: '存取會員資料失敗' })
   }
-  // SELECT u.*, iu.img AS avatar_img
-  // FROM users u
-  // LEFT JOIN images_user iu ON u.id = iu.user_id
-  // WHERE u.id = ?
+
   try {
     const [rows] = await connection.query(
       `
-      SELECT u.*, iu.img AS avatar_img, l.free_coupon
-      FROM users u
-      LEFT JOIN images_user iu ON u.id = iu.user_id
-      LEFT JOIN levels l ON u.member_level_id = l.member_level_id
-      WHERE u.id = ?
+       SELECT u.*, iu.img AS avatar_img, l.free_coupon, u.total_spending,
+         l.entry_cumulative AS current_entry_cumulative,
+         CASE 
+           WHEN u.member_level_id < 4 THEN (SELECT entry_cumulative FROM levels WHERE member_level_id = u.member_level_id + 1)
+           ELSE NULL
+         END AS next_level_entry_cumulative
+          FROM users u
+          LEFT JOIN images_user iu ON u.id = iu.user_id
+          LEFT JOIN levels l ON u.member_level_id = l.member_level_id
+          WHERE u.id = ?
     `,
       [id]
     )
@@ -80,14 +80,13 @@ router.get('/profile', authenticate, async function (req, res) {
     }
 
     const user = rows[0]
-    // 不回傳密碼
-    delete user.password
+    delete user.password // 不回傳密碼
 
     // 處理頭像路徑
     if (user.avatar_img) {
       user.avatar_url = `/images/member/avatar/${user.avatar_img}`
     } else {
-      user.avatar_url = '/images/member/avatar/default-avatar.jpg' // 設置默認頭像
+      user.avatar_url = '/images/member/avatar/default-avatar.jpg'
     }
 
     return res.json({ status: 'success', data: { user } })
@@ -99,46 +98,75 @@ router.get('/profile', authenticate, async function (req, res) {
   }
 })
 
-// @ POST - 可同時上傳與更新會員檔案用，使用multer(設定值在此檔案最上面)
-// router.post(
-//   '/upload-avatar',
-//   authenticate,
-//   upload.single('avatar'), // 上傳來的檔案(這是單個檔案，表單欄位名稱為avatar)
-//   async function (req, res) {
-//     // req.file 即上傳來的檔案(avatar這個檔案)
-//     // req.body 其它的文字欄位資料…
-//     // console.log(req.file, req.body)
+// @ POST - 上傳頭像
+router.post(
+  '/profile/upload-avatar',
+  authenticate,
+  upload.single('avatar'), // 上傳來的檔案(這是單個檔案，表單欄位名稱為avatar)
+  async function (req, res) {
+    console.log('Received avatar upload request')
 
-//     if (req.file) {
-//       const id = req.user.id
-//       const data = { avatar: req.file.filename }
+    if (!req.file) {
+      console.log('No file uploaded')
+      return res.status(400).json({ status: 'error', message: '沒有上傳文件' })
+    }
 
-//       try {
-//         const [result] = await connection.query(
-//           'UPDATE users SET avatar = ? WHERE id = ?',
-//           [avatar, id]
-//         )
-//         if (result.affectedRows === 0) {
-//           return res.json({
-//             status: 'error',
-//             message: '更新失敗或沒有資料被更新',
-//           })
-//         }
-//         return res.json({
-//           status: 'success',
-//           data: { avatar: avatar },
-//         })
-//       } catch (error) {
-//         console.error('Error updating avatar:', error)
-//         return res
-//           .status(500)
-//           .json({ status: 'error', message: '更新頭像失敗' })
-//       }
-//     } else {
-//       return res.json({ status: 'fail', data: null })
-//     }
-//   }
-// )
+    const userId = req.user.id
+    const avatarFilename = req.file.filename
+
+    console.log(
+      `Processing avatar upload for user ${userId}, filename: ${avatarFilename}`
+    )
+    console.log('File saved at:', req.file.path)
+
+    try {
+      // 檢查用戶是否已有頭像記錄
+      const [existingAvatar] = await connection.execute(
+        'SELECT * FROM images_user WHERE user_id = ?',
+        [userId]
+      )
+
+      let query
+      let params
+
+      if (existingAvatar.length > 0) {
+        console.log('Updating existing avatar record')
+        query = 'UPDATE images_user SET img = ? WHERE user_id = ?'
+        params = [avatarFilename, userId]
+      } else {
+        console.log('Inserting new avatar record')
+        query = 'INSERT INTO images_user (user_id, img) VALUES (?, ?)'
+        params = [userId, avatarFilename]
+      }
+
+      const [result] = await connection.execute(query, params)
+
+      if (result.affectedRows === 0) {
+        console.log('Database update failed')
+        return res
+          .status(500)
+          .json({ status: 'error', message: '更新頭像失敗' })
+      }
+
+      console.log('Avatar update successful')
+
+      // 構建完整的頭像URL
+      const avatarUrl = `/images/member/avatar/${avatarFilename}`
+      res.json({
+        status: 'success',
+        message: '頭像上傳成功',
+        data: { avatar_url: avatarUrl },
+      })
+    } catch (error) {
+      console.error('Error in avatar upload:', error)
+      res.status(500).json({
+        status: 'error',
+        message: '頭像上傳失敗',
+        error: error.message,
+      })
+    }
+  }
+)
 
 // @ PUT - 更新會員資料(密碼更新用)
 router.put('/profile/password', authenticate, async function (req, res) {

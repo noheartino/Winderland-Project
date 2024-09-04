@@ -1,6 +1,7 @@
 import React from "react";
 import ArticleSortdropdown from "@/components/article/article-sortdropdown";
 import ArticleDateSearch from "./article-date-search";
+import { FaFilter } from "react-icons/fa";
 
 export default function ArticleRwdSidebar() {
   return (
@@ -12,7 +13,7 @@ export default function ArticleRwdSidebar() {
           data-bs-target="#offcanvasResponsive"
           aria-controls="offcanvasResponsive"
         >
-          <i className="fa-solid fa-filter" style={{ color: "#60464c" }} />
+        <FaFilter className="my-1" style={{ color: "#60464c", fontSize:"18px" }} />
         </button>
         <div
           className="a-offcanvas offcanvas offcanvas-end"
