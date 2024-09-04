@@ -3,11 +3,14 @@ import CommentTitle from "./CommentTitle";
 import Message from "./Message";
 import styles from "./PcComment.module.css";
 import { useProduct } from "@/context/ProductContext";
+import CommentPageNation from "./CommentPageNation";
 
 export default function PcComment() {
-  const { product, loading, error } = useProduct(); 
+  const { product, loading, error } = useProduct();
   const [sortOption, setSortOption] = useState("created_asc");
+  const [currentPage, setCurrentPage] = useState(1);
   const [sortedComments, setSortedComments] = useState([]);
+  const commentsPerPage = 5;
 
   useEffect(() => {
     if (product && product[0].comments && product[0].comments.length > 0) {
@@ -32,6 +35,19 @@ export default function PcComment() {
       }
     });
     setSortedComments(sorted);
+    setSortOption(sortType);
+    setCurrentPage(1);
+  };
+
+  const totalPages = Math.ceil(sortedComments.length / commentsPerPage);
+
+  const currentComments = sortedComments.slice(
+    (currentPage - 1) * commentsPerPage,
+    currentPage * commentsPerPage
+  );
+
+  const changePage = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   if (loading) return <div>加載中...</div>;
@@ -43,7 +59,14 @@ export default function PcComment() {
       <div className={`container ${styles["product-comment-content"]}`}>
         <CommentTitle handleSortChange={handleSortChange} />
         <div className={`${styles["product-comment-message"]}`}>
-          <Message sortedComments={sortedComments} />
+          <Message sortedComments={currentComments} />
+          {totalPages > 1 && (
+            <CommentPageNation
+              currentPage={currentPage}
+              totalPages={totalPages}
+              changePage={changePage}
+            />
+          )}
         </div>
       </div>
     </>

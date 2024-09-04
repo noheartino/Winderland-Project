@@ -109,7 +109,7 @@ export default function SortSearch({
                 changeSearch(localSearch);
               }
             }}
-            className={`${getSearch ? "d-none" : "d-flex"}`}
+            className={`${getSearch ? "d-none" : "d-flex"}` }
           >
             <i className="fa-solid fa-magnifying-glass" />
           </button>
