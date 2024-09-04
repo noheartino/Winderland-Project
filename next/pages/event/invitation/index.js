@@ -51,7 +51,7 @@ export default function Applyevent() {
           <div className="eventCardOuter">
             <img
               className="eventCardPic"
-              src={`http://localhost:3005/uploads/${allinvitation.event_cover_image}`}
+              src={`http://localhost:3005/uploads/event/${allinvitation.event_cover_image}`}
               alt=""
             ></img>
             <div className="eventCardInfo">

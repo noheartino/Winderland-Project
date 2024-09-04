@@ -48,7 +48,7 @@ export default function Applyevent() {
 
   const [file, setFile] = useState(null);
   const [image, setImage] = useState(
-    `http://localhost:3005/uploads/${myevent.event_cover_image}`
+    `http://localhost:3005/uploads/event/${myevent.event_cover_image}`
   );
   const [formData, setFormData] = useState({
     event_name: "",
@@ -66,7 +66,7 @@ export default function Applyevent() {
 
   useEffect(() => {
     if (infodata) {
-      setImage(`http://localhost:3005/uploads/${myevent.event_cover_image}`);
+      setImage(`http://localhost:3005/uploads/event/${myevent.event_cover_image}`);
       setFormData({
         event_name: myevent.event_name || "",
         event_date: myevent.event_date || "",

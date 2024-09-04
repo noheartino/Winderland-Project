@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from "next/router";
+import Link from 'next/link';
 
 export default function Homepage() {
 
@@ -195,7 +196,7 @@ export default function Homepage() {
         <div className="homebar_lf" />
         <div className="homebar_wine" />
         <div className="homebar_wine_text">
-          <h2>賈其皮耶酒莊 梧玖頂級紅酒 2020</h2>
+          <h2>強堤·帕西雍酒莊．「香貝丹」特級園紅酒 2016</h2>
           <p>
             布根地的馬賽克地形，導致每塊葡萄園都有著千變萬化的土壤性質；隨著山坡的起伏形成許多微氣候區，使得即便位於同一塊葡萄園中，也有些微的差異性；而鑒於每位釀酒人的風格不一，令此區釀出的酒款變化多端、類型多元。布根地葡萄酒也因此被公認為全世界最難懂的葡萄酒。
           </p>
@@ -240,10 +241,11 @@ export default function Homepage() {
       <div className="container homeArea01 d-none d-lg-block" id="homeArea01">
         <div>
           <div className={`homeArea01_l ${isVisible ? 'active' : ''}`}></div>
-          <div className="homeArea01_r">
+          <Link className='A-rmpre' href={'/product/75'}>
+          <div className={`homeArea01_r ${isVisible ? 'active' : ''}`}>
             <div className="homeArea01_r_t">
               <div className="homeArea01_r_t_box" />
-              <p>賈其皮耶酒莊 梧玖頂級紅酒 2020</p>
+              <p>強堤·帕西雍酒莊．「香貝丹」特級園紅酒</p>
             </div>
             <div className="homeArea01_r_m">
               色澤：漂亮且深邃的紅寶石色澤。
@@ -258,6 +260,7 @@ export default function Homepage() {
               商品頁面
             </div>
           </div>
+          </Link>
         </div>
         <div className="row Homenews">
           <div className="col-3 pt-5">
@@ -276,10 +279,12 @@ export default function Homepage() {
                   VINDEX中山主辦的一支會，有泰德利代理品牌全品項品飲，也有以產區、品種的盲飲一支會
                   更歡迎各路好友包場，自行帶一支酒來大亂鬥大。享。受。
                 </p>
+                <Link className='rmall' href={'/event'}>
                 <div className="news_btn">
                   <p>2024.09.08</p>
                   <img src="/images/home/Frame 8.png" alt="" />
                 </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -290,33 +295,33 @@ export default function Homepage() {
         <img src="/images/home/Frame 56.png" alt="" className="homeArea02_title" />
         <div className="row homeArea02_type">
           <div className="col-4">
-            <a href="">
+            <Link href={'/product?page=1&sort=id_asc&category=1&minPrice=0&maxPrice=150000'}>
               <div className="homeArea02_type_text">
                 <p>紅酒 (Red Wine)</p>
               </div>
               <img src="/images/home/nav_wine.png" alt="" />
-            </a>
+            </Link>
           </div>
           <div className="col-4">
-            <a href="">
+            <Link href={'/product?page=1&sort=id_asc&category=2&minPrice=0&maxPrice=150000'}>
               <div className="homeArea02_type_text">
                 <p>白酒 (White Wine)</p>
               </div>
               <img src="/images/home/nav_white.png" alt="" />
-            </a>
+            </Link>
           </div>
           <div className="col-4">
-            <a href="">
+            <Link href={'/product?page=1&sort=id_asc&minPrice=0&maxPrice=150000'}>
               <div className="homeArea02_type_text">
-                <p>開瓶器 (Wine-Opener)</p>
+                <p>其他類別 (Other Types)</p>
               </div>
               <img src="/images/home/nav_tool.png" alt="" />
-            </a>
+            </Link>
           </div>
         </div>
         <div className="homeArea02_product">
           <div className="homeArea02_product_list">
-            <div className="product_item">
+            <div className="product_item" onClick={() => {router.push('/product/6')}}>
               <div className="product_item_pic">
                 <img src="/images/home/WI00008903_btl.jpg" alt="" />
                 <div className="product_item_price">
@@ -326,7 +331,7 @@ export default function Homepage() {
               </div>
               <div className="product_item_name">洛禾酒莊．「吹笛人」紅酒</div>
             </div>
-            <div className="product_item">
+            <div className="product_item" onClick={() => {router.push('/product/10')}}>
               <div className="product_item_pic">
                 <img src="/images/home/WI00098201_btl.jpg" alt="" />
                 <div className="product_item_price">
@@ -338,7 +343,7 @@ export default function Homepage() {
                 皮耶．烏塞力歐父子酒莊 ．教皇新堡紅酒
               </div>
             </div>
-            <div className="product_item">
+            <div className="product_item" onClick={() => {router.push('/product/4')}}>
               <div className="product_item_pic">
                 <img src="/images/home/WI00107408_btl.jpg" alt="" />
                 <div className="product_item_price">
@@ -353,12 +358,12 @@ export default function Homepage() {
           </div>
           <div className="all_product">
             <img src="/images/home/Frame 60.png" alt="" />
-            <a href="">
+            <Link href={'/product?page=1&sort=id_asc'}>
               <div className="all_circlebtn">
                 <div className="btn_arrow_line" />
                 <div className="btn_arrow_head" />
               </div>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -369,31 +374,31 @@ export default function Homepage() {
             <div className="homeArea03_article_title">
               一分鐘認識橡木桶：增添葡萄酒香氣的幕後功臣
             </div>
-            <a href="">
+            <Link href={'/article/1'}>
               <div className="homeArea03_article_lg"></div>
-            </a>
+            </Link>
           </div>
           <div className="col-5">
             <div className="homeArea03_article_title">學習形容葡萄酒的風味</div>
-            <a href="">
+            <Link href={'/article/2'}>
               <div className="homeArea03_article_sm sm1"></div>
-            </a>
+            </Link>
           </div>
           <div className="col-5">
             <div className="homeArea03_article_title">
               喝不完的葡萄酒該怎麼保存？
             </div>
-            <a href="">
+            <Link href={'/article/3'}>
               <div className="homeArea03_article_sm sm2"></div>
-            </a>
+            </Link>
           </div>
           <div className="col-2 article_circlebtn">
-            <a href="">
+            <Link href={'/article'}>
               <div className="all_circlebtn_red">
                 <div className="btn_arrow_line_red" />
                 <div className="btn_arrow_head_red" />
               </div>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -407,49 +412,49 @@ export default function Homepage() {
           <div className="teacher_outer">
             <div className="teacher_area">
               <div className="teacher_area_inner">
-                <div className="teacherbox">
+                <div className="teacherbox" onClick={() => {router.push('/course/teacher/1')}}>
 
                   <img src="/images/home/id_01.jpg" alt="" />
                   <h5>蔡孝倫</h5>
 
                 </div>
-                <div className="teacherbox">
+                <div className="teacherbox" onClick={() => {router.push('/course/teacher/19')}}>
 
                   <img src="/images/home/id_19.jpg" alt="" />
                   <h5>屈享平</h5>
 
                 </div>
-                <div className="teacherbox">
+                <div className="teacherbox" onClick={() => {router.push('/course/teacher/21')}}>
 
                   <img src="/images/home/id_21.jpg" alt="" />
                   <h5>王依亭</h5>
 
                 </div>
-                <div className="teacherbox">
+                <div className="teacherbox" onClick={() => {router.push('/course/teacher/4')}}>
 
                   <img src="/images/home/id_04.jpg" alt="" />
                   <h5>Mark Pygott MW</h5>
 
                 </div>
-                <div className="teacherbox">
+                <div className="teacherbox" onClick={() => {router.push('/course/teacher/20')}}>
 
                   <img src="/images/home/id_20.webp" alt="" />
                   <h5>王琪</h5>
 
                 </div>
-                <div className="teacherbox">
+                <div className="teacherbox" onClick={() => {router.push('/course/teacher/22')}}>
 
                   <img src="/images/home/id_22.jpg" alt="" />
                   <h5>蕭豐盛</h5>
 
                 </div>
-                <div className="teacherbox">
+                <div className="teacherbox" onClick={() => {router.push('/course/teacher/18')}}>
 
-                  <img src="/images/home/id_22.jpg" alt="" />
-                  <h5>蕭豐盛</h5>
+                  <img src="/images/home/id_18.jpg" alt="" />
+                  <h5>侍酒夏娃</h5>
 
                 </div>
-                <div className="teacherbox">
+                <div className="teacherbox" onClick={() => {router.push('/course/teacher')}}>
 
                   <img src="/images/home/default_user.jpg" alt="" />
                   <h5>查看更多</h5>
@@ -462,31 +467,31 @@ export default function Homepage() {
         <div className="row">
           <div className="col-10">
             <div className="row CourseList">
-              <div className="col-4 d-flex flex-column">
-                <img src="/images/home/course1.png" alt="" className="CourseListPic" />
+              <div className="col-4 d-flex flex-column" onClick={() => {router.push('/course/37')}}>
+                <img src="http://localhost:3005/uploads/course_and_tarot/class_id37.jpeg" alt="" className="CourseListPic" />
                 <div className="CourseListText">
                   <div className="Courseon">線上</div>
                   迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
                 </div>
                 <div className="d-flex justify-content-between mt-2">
-                  <div className="CourseListTeacher">by 蔡孝倫</div>
-                  <div className="CourseListPrice">NT$ 3,500</div>
+                  <div className="CourseListTeacher">by 萊特</div>
+                  <div className="CourseListPrice">NT$ 2,980</div>
                 </div>
               </div>
-              <div className="col-4 d-flex flex-column">
-                <img src="/images/home/course1.png" alt="" className="CourseListPic" />
+              <div className="col-4 d-flex flex-column" onClick={() => {router.push('/course/31')}}>
+                <img src="http://localhost:3005/uploads/course_and_tarot/class_id31.jpg" alt="" className="CourseListPic" />
                 <div className="CourseListText">
                   <div className="Courseon">線上</div>
-                  迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
+                  我的第一堂品酒課：侍酒師的老師帶你輕鬆進入葡萄酒世界
                 </div>
                 <div className="d-flex justify-content-between mt-2">
                   <div className="CourseListTeacher">by 蔡孝倫</div>
-                  <div className="CourseListPrice">NT$ 3,500</div>
+                  <div className="CourseListPrice">NT$ 1,299</div>
                 </div>
               </div>
-              <div className="col-4 d-flex flex-column">
+              <div className="col-4 d-flex flex-column" onClick={() => {router.push('/course/26')}}>
                 <img
-                  src="/images/home/1581994036190.jpg"
+                  src="http://localhost:3005/uploads/course_and_tarot/class_id26.jpg"
                   alt=""
                   className="CourseListPic"
                 />
@@ -495,8 +500,8 @@ export default function Homepage() {
                   SFM南法產區大師級認證課程
                 </div>
                 <div className="d-flex justify-content-between mt-2">
-                  <div className="CourseListTeacher">by 林澧竣</div>
-                  <div className="CourseListPrice">NT$ 18,500</div>
+                  <div className="CourseListTeacher">by Sofia Salvador</div>
+                  <div className="CourseListPrice">NT$ 18,800</div>
                 </div>
               </div>
             </div>
@@ -516,14 +521,14 @@ export default function Homepage() {
         <div className="homeArea01_rwd_type">
           <div className="homeArea01_rwd_title">選您所要的商品類型</div>
           <div className="rwd_type_p">
-            <div className="rwd_type_pic me-1">
+            <div className="rwd_type_pic me-1" onClick={() => {router.push('/product?page=1&sort=id_asc&category=1&minPrice=0&maxPrice=150000')}}>
               <h6 className="d-none d-md-block d-lg-none mt-3">紅酒 (Red Wine)</h6>
               <h6 className="d-block d-md-none">紅酒</h6>
-              <a href="">
-                <img src="/images/home/nav_wine.png" alt="" />
-              </a>
+             
+              <img src="/images/home/nav_wine.png" alt="" />
+              
             </div>
-            <div className="rwd_type_pic ms-1">
+            <div className="rwd_type_pic ms-1" onClick={() => {router.push('/product?page=1&sort=id_asc&category=2&minPrice=0&maxPrice=150000')}}>
               <h6 className="d-none d-md-block d-lg-none mt-3">
                 白酒 (White Wine)
               </h6>
@@ -532,16 +537,16 @@ export default function Homepage() {
                 <img src="/images/home/nav_white.png" alt="" />
               </a>
             </div>
-            <div className="rwd_type_pic me-1">
+            <div className="rwd_type_pic me-1"  onClick={() => {router.push('/product?page=1&sort=id_asc&category=3&minPrice=0&maxPrice=150000')}}>
               <h6 className="d-none d-md-block d-lg-none mt-3">
-                開瓶器 (Wine-Opener)
+                粉紅酒 (Rose Wine)
               </h6>
-              <h6 className="d-block d-md-none">開瓶器</h6>
+              <h6 className="d-block d-md-none">粉紅酒</h6>
               <a href="">
                 <img src="/images/home/nav_tool.png" alt="" />
               </a>
             </div>
-            <div className="rwd_type_pic ms-1 pink">
+            <div className="rwd_type_pic ms-1 pink" onClick={() => {router.push('/product?page=1&sort=id_asc')}}>
               <h6 className="d-none d-md-block d-lg-none mt-3">
                 查看更多 (see more)
               </h6>
@@ -551,7 +556,7 @@ export default function Homepage() {
           <div className="wine_adtitle" />
           <div className="wine_ad">
             <div className="adtext">
-              <h2>賈其皮耶酒莊 梧玖頂級紅酒 2020</h2>
+              <h2>強堤·帕西雍酒莊．「香貝丹」特級園紅酒</h2>
               <p>
                 色澤：漂亮且深邃的紅寶石色澤。
                 <br />
@@ -560,23 +565,23 @@ export default function Homepage() {
             </div>
           </div>
           <div className="wine_ad_link">
-            <div className="link_box">
-              <img src="/images/home/Domaine Jacques.jpg" alt="" width={180} />
+            <div className="link_box" onClick={() => {router.push('/product/75')}}>
+              <img src="/images/product/75-2.jpg" alt="" width={180} />
               <div className="link_box_text">
-                <h4>賈其皮耶酒莊 梧玖頂級紅酒 2020</h4>
+                <h4>強堤·帕西雍酒莊．「香貝丹」特級園紅酒 2016</h4>
                 <div className="link_box_text_price">
                   <p>750ml | 法國</p>
-                  <p>$7,350</p>
+                  <p>$19,800</p>
                 </div>
               </div>
             </div>
-            <div className="link_box">
-              <img src="/images/home/Domaine Jacques.jpg" alt="" width={180} />
+            <div className="link_box" onClick={() => {router.push('/product/75')}}>
+              <img src="/images/product/75-2.jpg" alt="" width={180} />
               <div className="link_box_text">
-                <h4>賈其皮耶酒莊 梧玖頂級紅酒 2022</h4>
+                <h4>強堤·帕西雍酒莊．「香貝丹」特級園紅酒 2018</h4>
                 <div className="link_box_text_price">
                   <p>750ml | 法國</p>
-                  <p>$6,850</p>
+                  <p>$22,100</p>
                 </div>
               </div>
             </div>
@@ -590,7 +595,7 @@ export default function Homepage() {
           <div className="actimg">
             <img src="/images/home/what-is-a-dry-white.webp" alt="" />
           </div>
-          <div className="newsText">
+          <div className="newsText" onClick={() => {router.push('/event')}}>
             <p>
               什麼是一支會？
               就像英文的potluck，一人帶一道菜去聚會，一支會就是一人帶一支酒來聚會。
@@ -607,24 +612,24 @@ export default function Homepage() {
       <div className="d-block d-lg-none" id="homeArea03_rwd">
         <div className="homeArea03_rwd_title">相關文章</div>
         <div className="article_out">
-          <a href="">
+          <Link href={'/article/1'}>
             <div className="article_box">
               <img src="/images/home/Rectangle 39b.jpg" alt="" />
               <h5>一分鐘認識橡木桶：增添葡萄酒香氣的幕後功臣</h5>
             </div>
-          </a>
-          <a href="">
+          </Link>
+          <Link href={'/article/2'}>
             <div className="article_box">
               <img src="/images/home/Rectangle 64.png" alt="" />
               <h5>學習形容葡萄酒的風味</h5>
             </div>
-          </a>
-          <a href="">
+          </Link>
+          <Link href={'/article/3'}>
             <div className="article_box">
               <img src="/images/home/Rectangle 65.png" alt="" />
               <h5>喝不完的葡萄酒該怎麼保存？</h5>
             </div>
-          </a>
+          </Link>
         </div>
       </div>
       <div className="d-block d-lg-none" id="homeArea04_rwd">
@@ -676,49 +681,49 @@ export default function Homepage() {
           </div>
         </div>
         <div className="course_area_rwd">
-            <div className="coursebox_rwd">
-              <img src="/images/home/course1.png" alt="" />
+            <div className="coursebox_rwd" onClick={() => {router.push('/course/37')}}>
+              <img src="http://localhost:3005/uploads/course_and_tarot/class_id37.jpeg" alt="" />
               <div className="coursebox_rwd_text">
                 <h5>迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解</h5>
                 <div className="coursebox_rwd_type">
                   <div>線上</div>
-                  <p>by 蔡孝倫</p>
+                  <p>by 萊特</p>
                 </div>
                 <div className="coursebox_rwd_text_price">
-                  <h4>NT$ 3,500</h4>
+                  <h4>NT$ 2,980</h4>
                   <del>NT$ 5,500</del>
                 </div>
               </div>
             </div>
           
           
-            <div className="coursebox_rwd">
-              <img src="/images/home/course1.png" alt="" />
+            <div className="coursebox_rwd" onClick={() => {router.push('/course/31')}}>
+              <img src="http://localhost:3005/uploads/course_and_tarot/class_id31.jpg" alt="" />
               <div className="coursebox_rwd_text">
-                <h5>迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解</h5>
+                <h5>我的第一堂品酒課：侍酒師的老師帶你輕鬆進入葡萄酒世界</h5>
                 <div className="coursebox_rwd_type">
                   <div>線上</div>
                   <p>by 蔡孝倫</p>
                 </div>
                 <div className="coursebox_rwd_text_price">
-                  <h4>NT$ 3,500</h4>
-                  <del>NT$ 5,500</del>
+                  <h4>NT$ 1,299</h4>
+                  <del>NT$ 2,999</del>
                 </div>
               </div>
             </div>
  
      
-            <div className="coursebox_rwd">
-              <img src="/images/home/course1.png" alt="" />
+            <div className="coursebox_rwd" onClick={() => {router.push('/course/26')}}>
+              <img src="http://localhost:3005/uploads/course_and_tarot/class_id26.jpg" alt="" />
               <div className="coursebox_rwd_text">
-                <h5>迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解</h5>
+                <h5>SFM南法產區大師級認證課程</h5>
                 <div className="coursebox_rwd_type">
-                  <div>線上</div>
-                  <p>by 蔡孝倫</p>
+                  <div>線下</div>
+                  <p>by Sofia Salvador</p>
                 </div>
                 <div className="coursebox_rwd_text_price">
-                  <h4>NT$ 3,500</h4>
-                  <del>NT$ 5,500</del>
+                  <h4>NT$ 18,800</h4>
+                  <del>NT$ 20,800</del>
                 </div>
               </div>
             </div>

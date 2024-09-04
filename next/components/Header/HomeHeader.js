@@ -25,7 +25,7 @@ export default function HomeNav() {
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       const searchQuery = event.target.value;
-      router.push(`/product?page=1&sort=id_asc&search=${encodeURIComponent(searchQuery)}`);
+      router.push(`/product/?page=1&sort=id_asc&minPrice=0&maxPrice=150000&search=${encodeURIComponent(searchQuery)}`);
     }
   };
 
