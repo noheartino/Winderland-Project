@@ -47,9 +47,6 @@ LEFT JOIN
 	country ON origin.country_id = country.id
 WHERE product.id=?`
 
-// 取得商品的總數
-// const getProductsTotal = `SELECT COUNT(*) as total FROM product`
-
 // 取得detail
 const getProductsDetails = `SELECT * FROM product_detail WHERE valid = 1 && product_id IN (?)`
 
@@ -71,6 +68,33 @@ const tidyProducts = async (products) => {
     // 獲取所有商品ID
     const productIds = products.map((p) => p.id)
 
+    // 獲取評分信息
+    const [ratings] = await db.query(
+      `
+      SELECT 
+        entity_id AS product_id, 
+        AVG(rating) AS avg_rating, 
+        COUNT(*) AS rating_count
+      FROM comments 
+      WHERE entity_type = 'product' AND entity_id IN (?)
+      GROUP BY entity_id
+    `,
+      [productIds]
+    )
+
+    // 獲取銷量信息
+    const [sales] = await db.query(
+      `
+      SELECT 
+        product_id, 
+        SUM(sales) AS total_sales
+      FROM product_detail
+      WHERE product_id IN (?)
+      GROUP BY product_id
+    `,
+      [productIds]
+    )
+
     // 獲取所有商品詳細信息
     const [details] = await db.query(getProductsDetails, [productIds])
     const [images] = await db.query(getImages, [productIds])
@@ -82,6 +106,13 @@ const tidyProducts = async (products) => {
       images: images.filter((i) => i.product_id === product.id),
       descriptions: descriptions.filter((d) => d.product_id === product.id),
       details: details.filter((d) => d.product_id === product.id),
+      ratings: ratings.find((r) => r.product_id === product.id) || {
+        avg_rating: 0,
+        rating_count: 0,
+      },
+      sales: sales.find((s) => s.product_id === product.id) || {
+        total_sales: 0,
+      },
     }))
   } catch (error) {
     console.error('Error in tidyProducts:', error)
@@ -194,9 +225,10 @@ router.get('/', async (req, res) => {
       params.push(`%${search}%`)
     }
 
-    if (conditions.length > 1) {
+    if (conditions.length > 0) {
       query += ' WHERE ' + conditions.join(' AND ')
     }
+
     console.log('最終 SQL 查詢:', query)
     console.log('查詢參數:', params)
 
@@ -233,14 +265,22 @@ router.get('/', async (req, res) => {
     // 取得了product + detail後再排序
     productWithDetails.sort((a, b) => {
       switch (sort) {
-        case 'name_asc':
-          return a.name.localeCompare(b.name)
-        case 'name_desc':
-          return b.name.localeCompare(a.name)
+        case 'rating_desc':
+          return b.ratings.avg_rating - a.ratings.avg_rating
+        case 'rating_asc':
+          return a.ratings.avg_rating - b.ratings.avg_rating
+        case 'sales_desc':
+          return b.sales.total_sales - a.sales.total_sales
+        case 'sales_asc':
+          return a.sales.total_sales - b.sales.total_sales
         case 'price_asc':
           return a.details[0].price - b.details[0].price
         case 'price_desc':
           return b.details[0].price - a.details[0].price
+        case 'year_asc':
+          return a.details[0].years - b.details[0].years
+        case 'year_desc':
+          return b.details[0].years - a.details[0].years
         default:
           return a.id - b.id
       }
@@ -368,11 +408,6 @@ router.get('/filters', async (req, res) => {
       available: filteredProducts.some((p) => p.category_id === c.id),
     }))
 
-    const availableVarieties = varieties.map((v) => ({
-      ...v,
-      available: filteredProducts.some((p) => p.variet_id === v.id),
-    }))
-
     const origins = allOrigins.map((o) => ({
       ...o,
       available: filteredProducts.some((p) => p.origin_id === o.id),
@@ -433,8 +468,6 @@ router.post('/addCart', async (req, res) => {
       .replace(/\//g, '-')
       .replace(/24:/, '00:')
 
-    console.log(currentFormattedDate)
-
     const result = await db.query(
       'INSERT INTO cart_items(user_id, product_detail_id, product_quantity, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
       [
@@ -452,7 +485,7 @@ router.post('/addCart', async (req, res) => {
       result: result,
     })
   } catch (error) {
-    res.status(500).json({ success: false })
+    res.status(500).json({ success: false, message: error.message })
   }
 })
 
