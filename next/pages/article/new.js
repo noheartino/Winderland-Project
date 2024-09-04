@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
 import Head from "next/head";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 export default function New() {
   const { auth } = useAuth();
