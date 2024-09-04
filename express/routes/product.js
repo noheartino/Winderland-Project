@@ -121,7 +121,7 @@ const tidyProducts = async (products) => {
 }
 
 // 整理商品資訊的函式(單個)
-const tidyProduct = async (product) => {
+const tidyProduct = async (product, sortOption = 'created_asc') => {
   try {
     const pid = product[0].id
 
@@ -138,11 +138,33 @@ const tidyProduct = async (product) => {
       'SELECT * FROM description WHERE product_id = ?',
       [pid]
     )
+
+    // 評論排序
+    let orderByClause = ''
+    switch (sortOption) {
+      case 'created_desc':
+        orderByClause = 'ORDER BY comments.created_at DESC'
+        break
+      case 'created_asc':
+        orderByClause = 'ORDER BY comments.created_at ASC'
+        break
+      case 'rating_desc':
+        orderByClause =
+          'ORDER BY comments.rating DESC, comments.created_at DESC'
+        break
+      case 'rating_asc':
+        orderByClause = 'ORDER BY comments.rating ASC, comments.created_at DESC'
+        break
+      default:
+        orderByClause = 'ORDER BY comments.created_at DESC'
+    }
+
     const [comments] = await db.query(
       `SELECT 
     comments.* ,
     users.account AS account,
-    users.gender AS user_gender
+    users.gender AS user_gender,
+    images_user.img AS user_img
     FROM 
         comments 
     LEFT JOIN
@@ -150,9 +172,16 @@ const tidyProduct = async (product) => {
     LEFT JOIN
         images_user ON comments.user_id = images_user.user_id
     WHERE
-        entity_type = "product" && entity_id = ?`,
+        entity_type = "product" && entity_id = ? 
+    ${orderByClause}`,
       [pid]
     )
+
+    // 將評論的index固定
+    const commentsWithIndex = comments.map((comment, index) => ({
+      ...comment,
+      fixedIndex: index + 1,
+    }))
 
     //將詳細資料加到相對應的id
     return product.map((product) => ({
@@ -160,7 +189,7 @@ const tidyProduct = async (product) => {
       images: images,
       descriptions: descriptions,
       details: details,
-      comments: comments,
+      comments: commentsWithIndex,
     }))
   } catch (error) {
     console.error('Error in tidyProducts:', error)

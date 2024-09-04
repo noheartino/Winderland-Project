@@ -2,22 +2,21 @@ import React, { useEffect, useState } from "react";
 import styles from "./MessageItem.module.css";
 import { useProduct } from "@/context/ProductContext";
 
-export default function MessageItem() {
+export default function MessageItem({sortedComments}) {
   const { product, loading, error } = useProduct();
 
-  if (loading) return <div>加載中...</div>;
   if (error) return <div>{error}</div>;
   if (!product) return <div>查無此商品</div>;
 
   return (
     <>
-      {product[0].comments.map((comment, index) => (
+      {sortedComments.map((comment, index) => (
         <div key={comment.id} className={`mb-5 ${styles["message-item"]}`} >
           <div className={`${styles["message-user"]}`}>
             <div className={`${styles["user-photo"]}`}>
               <img
                 className={`${styles["photo"]}`}
-                src={`/product_images/${comment.user_gender}.jpg`}
+                src={`/images/member/avatar/${comment.user_img}`}
                 alt=""
               />
             </div>
@@ -27,7 +26,7 @@ export default function MessageItem() {
                   {comment.account}
                 </div>
                 <div className={`${styles["floor-good"]}`}>
-                  <span>B{index + 1}</span>
+                  <span>B{comment.fixedIndex}</span>
                   <span className={`${styles["divider"]}`}> | </span>
                   <button className={`${styles["good-button"]}`} type="button">
                     <i
