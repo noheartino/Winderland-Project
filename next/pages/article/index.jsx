@@ -59,7 +59,7 @@ export default function Index() {
   return (
     <>
       <Head>
-        <title>相關文章</title>
+        <title>醺迷仙園｜相關文章</title>
 
         <meta charSet="utf-8" />
         <meta

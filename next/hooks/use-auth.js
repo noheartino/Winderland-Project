@@ -18,7 +18,9 @@ const AuthContext = createContext(null)
 // * 2.建立AuthProvider元件
 // props.children屬性，代表包裹在Providers中的所有
 export function AuthProvider({ children }) {
+  // 建立路由器
   const router = useRouter()
+  // goole登入
   const { loginGoogle } = useFirebase()
 
   // 會員使用的認証&授權狀態
@@ -39,53 +41,44 @@ export function AuthProvider({ children }) {
   //   }
   // }, [auth.isAuth, router]);
 
-
   // @ 檢查狀態
   const checkAuth = async () => {
     setIsLoading(true)
     try {
-      console.log('Checking auth status...')
       const response = await fetch('http://localhost:3005/api/member/auth-status', {
         method: 'GET',
-        credentials: 'include',
+        credentials: 'include', 
       })
-      const data = await response.json();
-      
       if (response.ok) {
         const { status, data } = await response.json();
-        console.log('Auth status response:', data);
-        if (status === 'success' && data.isAuth) {
-          console.log('Setting auth state to true with user data:', data.user)
-
+        // console.log('Auth status response:', data);
+        if (status === 'success') {
           setAuth({
-            // isAuth: data.isAuth,
-            isAuth: true,
+            isAuth: data.isAuth,
             userData: {
               ...data.user,
               gender: data.user.gender || '',
               birthday: data.user.birthday || '',
               member_level_id: data.user.member_level_id || '',
-              phone: data.user.phone || '',
-              address: data.user.address || '',
+              phone: data.user.phone || '',  
+              address: data.user.address || '',  
             },
           })
         } else {
-          console.log('Setting auth state to false')
           setAuth({
             isAuth: false,
             userData: null,
           })
         }
       } else {
-        // throw new Error('Auth check failed');
-        // console.error('Auth check failed:', await response.json())
+        // console.error('Auth check failed:', errorData)
         setAuth({
           isAuth: false,
           userData: null,
         });
       }
     } catch (error) {
-      console.error('驗證身份時發生錯誤：', error)
+      // console.error('驗證身份時發生錯誤：', error)
       setAuth({
         isAuth: false,
         userData: null,
@@ -94,10 +87,6 @@ export function AuthProvider({ children }) {
       setIsLoading(false)
     }
   }
-
-  // useEffect(() => {
-  //   checkAuth()
-  // }, [checkAuth])
 
   // @ 登入
   const login = async (account, password, rememberMe) => {
@@ -231,7 +220,6 @@ export function AuthProvider({ children }) {
   const cbGoogleLogin = async (providerData) => {
 
     try {
-      console.log('Google login callback triggered')
       const user = providerData
 
       // 向後端發送 Google 用戶資訊
@@ -241,7 +229,7 @@ export function AuthProvider({ children }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          providerId: "google.com",
+          providerId:"google.com",
           displayName: user.displayName,
           email: user.email,
           uid: user.uid,
@@ -251,32 +239,9 @@ export function AuthProvider({ children }) {
       });
 
       const data = await response.json();
-      console.log('Google login response:', data)
 
-      if (data.status === 'success' && data.data && data.data.user) {
-        console.log('Setting auth state after Google login')
-
-        // 確保我們使用從後端返回的用戶數據
-        const userData = {
-          id: data.data.user.id,
-          user_name: data.data.user.user_name || user.displayName,
-          email: data.data.user.email || user.email,
-          // avatar_url: data.data.user.avatar_url || user.photoURL,
-          // 添加其他可能的字段，如果後端提供的話
-          gender: data.data.user.gender || '',
-          birthday: data.data.user.birthday || '',
-          member_level_id: data.data.user.member_level_id || '',
-          phone: data.data.user.phone || '',
-          address: data.data.user.address || '',
-        };
-
-        // 設置認證 cookie 或 token
-  // document.cookie = `auth_token=${data.data.token}; path=/; max-age=86400;`;
-
-  setAuth({
-    isAuth: true,
-    userData: userData
-  });
+      if (data.status === 'success') {
+        await checkAuth(); // 重新檢查驗證狀態
 
         await Swal.fire({
           icon: 'success',
@@ -285,13 +250,10 @@ export function AuthProvider({ children }) {
           showConfirmButton: false,
           timer: 1500
         });
-        console.log('Updated auth state:', { isAuth: true, userData });
-        console.log('Redirecting to home page')
         router.push('/');
         return { success: true, message: 'Google 登入成功！' };
-
+    
       } else {
-        console.error('Google login failed:', data.message)
         await Swal.fire({
           icon: 'error',
           title: '登入失敗',
@@ -311,8 +273,8 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ auth, login, logout, checkAuth, updateUserInfo, googleLogin: () => loginGoogle(cbGoogleLogin), isLoading }}>
+    <AuthContext.Provider 
+    value={{ auth, login, logout, checkAuth, updateUserInfo, googleLogin: () => loginGoogle(cbGoogleLogin), isLoading }}>
       {children}
     </AuthContext.Provider>
   )

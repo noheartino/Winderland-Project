@@ -33,7 +33,7 @@ export default function Applyevent() {
   return (
     <>
       <Head>
-        <title>活動邀請函</title>
+        <title>醺迷仙園｜活動邀請函</title>
 
         <meta charSet="utf-8" />
         <meta
@@ -51,7 +51,7 @@ export default function Applyevent() {
           <div className="eventCardOuter">
             <img
               className="eventCardPic"
-              src={`/event/${allinvitation.event_cover_image}`}
+              src={`http://localhost:3005/uploads/${allinvitation.event_cover_image}`}
               alt=""
             ></img>
             <div className="eventCardInfo">

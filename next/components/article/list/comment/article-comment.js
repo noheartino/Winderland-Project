@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import ArticleCReplymore from "./article-c-replymore";
+import Swal from "sweetalert2";
+// import { useAuth } from "@/hooks/use-auth";
 
 export default function ArticleComment({ comment, index, userId, avatarUrl, onCommentChange }) {
   const [commentText, setCommentText] = useState(comment.comment_text);
@@ -14,11 +16,21 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
   // 判定是否有權限編輯
   const handleEdit = async () => {
     if (!userId) {
-      alert("請登入來編輯評論");
+      Swal.fire({
+        title: "請登入",
+        text: "來編輯評論",
+        icon: "warning",
+        confirmButtonText: "確定"
+      });
       return;
     }
     if (commentUser !== userId) {
-      alert("您沒有權限編輯此評論");
+      Swal.fire({
+        title: "權限不足",
+        text: "您沒有權限編輯此評論",
+        icon: "error",
+        confirmButtonText: "確定"
+      });
       return;
     }
     setIsEditing(true); // 如果有權限，切換到編輯模式
@@ -27,7 +39,12 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
   const handleUpdate = async () => {
     // 檢查用戶是否有權更新評論
     if (commentUser !== userId) {
-      alert("您沒有權限修改此評論");
+      Swal.fire({
+        title: "權限不足",
+        text: "您沒有權限修改此評論",
+        icon: "error",
+        confirmButtonText: "確定"
+      });
       return;
     }
 
@@ -52,14 +69,24 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error:", errorData.error);
-        alert("提交評論失敗：" + errorData.error);
+        Swal.fire({
+          title: "提交評論失敗",
+          text: "錯誤信息：" + errorData.error,
+          icon: "error",
+          confirmButtonText: "確定"
+        });
       } else {
         const responseData = await response.json();
         console.log(
           "Comment submitted successfully with ID:",
           responseData.commentId
         );
-        alert("評論修改成功");
+        Swal.fire({
+          title: "成功",
+          text: "評論修改成功",
+          icon: "success",
+          confirmButtonText: "確定"
+        });
         setCommentText("");
         setIsEditing(false);
         
@@ -69,7 +96,12 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
       }
     } catch (error) {
       console.error("Error submitting comment:", error);
-      alert("發生錯誤，請聯繫管理員");
+      Swal.fire({
+        title: "發生錯誤",
+        text: "請聯繫管理員",
+        icon: "error",
+        confirmButtonText: "確定"
+      });
     }
   };
 
@@ -85,7 +117,12 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
     }
 
     if (commentUser !== userId) {
-      alert("您沒有權限刪除此評論");
+      Swal.fire({
+        title: "權限不足",
+        text: "您沒有權限刪除此評論",
+        icon: "error",
+        confirmButtonText: "確定"
+      });
       return;
     }
 
@@ -102,17 +139,29 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error:", errorData.error);
-        alert("刪除評論失敗：" + errorData.error);
+        Swal.fire({
+          title: "刪除評論失敗",
+          text: "錯誤信息：" + errorData.error,
+          icon: "error",
+          confirmButtonText: "確定"
+        });
       } else {
-        alert("評論已刪除");
-        // 呼叫父層元件的 callback 函數來更新評論列表
-        if (onCommentChange) {
-          onCommentChange();
-        }
+        Swal.fire({
+          title: "成功",
+          text: "評論已刪除",
+          icon: "success",
+          confirmButtonText: "確定"
+        });
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error deleting comment:", error);
-      alert("發生錯誤，請聯繫管理員");
+      Swal.fire({
+        title: "發生錯誤",
+        text: "請聯繫管理員",
+        icon: "error",
+        confirmButtonText: "確定"
+      });
     }
   };
 console.log(avatarUrl)

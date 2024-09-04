@@ -5,11 +5,12 @@ import Link from "next/link";
 import { CartContext } from "@/context/CartContext";
 
 
-export default function Nav() {
+export default function HomeNav() {
   const { logout } = useAuth();
   const router = useRouter();
   const [isOpen, setisOpen] = useState(false);
   const [infodata, setInfo] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
   const navRef = useRef(null);
   const { cartQuantity } = useContext(CartContext); // 使用 CartContext
   // console.log('總數量',cartQuantity)
@@ -27,8 +28,6 @@ export default function Nav() {
       router.push(`/product?page=1&sort=id_asc&search=${encodeURIComponent(searchQuery)}`);
     }
   };
-
-
 
 
 
@@ -59,6 +58,7 @@ export default function Nav() {
 
 
 
+
   const memberLevels = {
     1: '銅瓶',
     2: '銀瓶',
@@ -68,18 +68,6 @@ export default function Nav() {
 
   const GoCart = () => {
     router.push("/cart/cartCheckout1"); // 使用 router.push 直接導航到首頁
-  };
-
-  const redwine = () => {
-    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=1"); 
-  };
-
-  const whitewine = () => {
-    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=2"); 
-  };
-
-  const otherwine = () => {
-    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=3"); 
   };
 
   const goHome = () => {
@@ -97,8 +85,21 @@ export default function Nav() {
   };
 
   useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+        window.removeEventListener('scroll', handleScroll);
+    };
+
+  },[])
+
+  useEffect(() => {
     const navShop = document.querySelector(".navShop");
-    const shop_li = document.getElementById("shop_li");
+    const shop_li = document.getElementById("shop_li");    
 
     let navview = true;
     function remove() {
@@ -245,13 +246,13 @@ export default function Nav() {
 
   return (
     <>
-      <div className="nav_margin"></div>
-      <div className="HeaderCNav">
+      {/* <div className="nav_margin"></div> */}
+      <div className={`HeaderCNav ${scrolled ? '' : 'scroll'}`}>
         <div className="container d-none d-lg-flex">
           <a onClick={goHome} style={{ cursor: 'pointer' }}>
             <img
               className="nav_logo"
-              src="/nav-footer/nav_logo.png"
+              src={scrolled ? '/nav-footer/nav_logo.png' : '/nav-footer/nav_logo_b.png'}
               alt=""
               width={170}
             />
@@ -293,7 +294,8 @@ export default function Nav() {
             <div className="HeaderCart">
               <button onClick={GoCart}>
                 <i className="fa-solid fa-cart-shopping" />
-                <div className={`dot ${cartQuantity === 0 ? 'nonedot' : ''}`}>{cartQuantity}</div>
+                
+                <div className={`dot ${cartQuantity === 0 ? 'nonedot' : ''} ${scrolled ? '' : 'scroll'}`}>{cartQuantity}</div>
               </button>
             </div>
             <div className="nav_user">
@@ -347,28 +349,28 @@ export default function Nav() {
               }
             }}
           >
-            <div className={`line ${isOpen ? "rotate_l" : ""}`}></div>
-            <div className={`line ${isOpen ? "d-none" : ""}`}></div>
-            <div className={`line ${isOpen ? "rotate_r" : ""}`}></div>
+            <div className={`line ${isOpen ? "rotate_l" : ""} ${scrolled ? "" : "scroll"}`}></div>
+            <div className={`line ${isOpen ? "d-none" : ""} ${scrolled ? "" : "scroll"}`}></div>
+            <div className={`line ${isOpen ? "rotate_r" : ""} ${scrolled ? "" : "scroll"}`}></div>
           </div>
           <img
             className="nav_rwd_logo"
-            src="/nav-footer/nav_logo_rwd.png"
+            src={scrolled ? '/nav-footer/nav_logo_rwd.png' : '/nav-footer/nav_logo_rwd_b.png'}
             alt=""
             width={100}
           />
           <div className="HeaderCart">
             <button onClick={GoCart}>
-              <i className="fa-solid fa-cart-shopping" />
-              <div className={`dot ${cartQuantity === 0 ? 'nonedot' : ''}`}>{cartQuantity}</div>
+              <i className={`fa-solid fa-cart-shopping ${scrolled ? '' : 'scroll'}`} />
+              <div className={`dot ${cartQuantity === 0 ? 'nonedot' : ''} ${scrolled ? '' : 'scroll'}`}>{cartQuantity}</div>
             </button>
           </div>
         </div>
       </div>
-      <div className="navShop">
+      <div className={`navShop ${scrolled ? '' : 'scroll'}`}>
         <div className="container">
           <div className="row h-100 nav_row align-items-center">
-            <div className="col-4" onClick={redwine}>
+            <div className="col-4 ">
               <div className="navShopBox">
                 <div className="img img1" />
                 <div className="navShopBox_b d-flex align-items-center">
@@ -397,7 +399,7 @@ export default function Nav() {
                 </div>
               </div>
             </div>
-            <div className="col-4" onClick={whitewine}>
+            <div className="col-4">
               <div className="navShopBox">
                 <div className="img img2" />
                 <div className="navShopBox_b d-flex align-items-center">
@@ -421,7 +423,7 @@ export default function Nav() {
                 </div>
               </div>
             </div>
-            <div className="col-4" onClick={otherwine}>
+            <div className="col-4">
               <div className="navShopBox">
                 <div className="img img3" />
                 <div className="navShopBox_b d-flex align-items-center">

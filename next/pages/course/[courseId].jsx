@@ -273,7 +273,7 @@ export default function CourseIndex() {
   return (
     <>
       <Head>
-        <title>{course?.class_name}</title>
+        <title>醺迷仙園｜{course?.class_name}</title>
 
         <meta charSet="utf-8" />
         <meta
