@@ -1,22 +1,13 @@
-import React,{useState,useEffect, use} from "react";
+import React,{useState,useEffect, use} from "react"
 import styles from "./AddCart.module.css";
 
-export default function AddCart({addToCart}) {
+export default function AddCart({addToCart,addToFav,isFav}) {
 
-  // 點擊收藏按鈕的效果 start
-
-  const [isFav,setIsFav] = useState(false); 
-  
-  const handleFavIcon = () => {
-    setIsFav(prevState => !prevState);
-  }
-
-  // 點擊收藏按鈕的效果 end
 
   return (
     <>
       <div className={`col-lg-1 col-md-1 col-1 ${styles["product-fav-icon"]}`}>
-        <button type="button" className={`${styles['fav-button']}`} onClick={handleFavIcon}>
+        <button type="button" className={`${styles['fav-button']}`} onClick={addToFav}>
           <i className={`fa-${isFav? 'solid' : 'regular'} fa-bookmark`}></i>
         </button>
       </div>

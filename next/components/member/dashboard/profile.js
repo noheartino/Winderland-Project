@@ -4,17 +4,22 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { useAuth } from '@/hooks/use-auth'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
+import Link from 'next/link'
 
 import ProfileUpdateUser from './profile/ProfileUpdateUser'
 import ProfileUpdatePwd from './profile/ProfileUpdatePwd'
 import ProfileMembership from './profile/ProfileMembership'
 import ProfileUpdateUserRWD from './profile/ProfileUpdateUserRWD'
 import ProfileUpdatePwdRWD from './profile/ProfileUpdatePwdRWD'
-import Lv1Card from '../level/Lv1Card'
-import Lv2Card from '../level/Lv2Card'
-import Lv3Card from '../level/Lv3Card'
-import Lv4Card from '../level/Lv4Card'
-import Link from 'next/link'
+// import Lv1Card from '../level/Lv1Card'
+// import Lv2Card from '../level/Lv2Card'
+// import Lv3Card from '../level/Lv3Card'
+// import Lv4Card from '../level/Lv4Card'
+
+import Lv1Card from '@/components/member/level/Lv1Card'
+import Lv2Card from '@/components/member/level/Lv2Card'
+import Lv3Card from '@/components/member/level/Lv3Card'
+import Lv4Card from '@/components/member/level/Lv4Card'
 
 export default function DashboardProfile() {
   // 驗證登入
@@ -38,8 +43,7 @@ export default function DashboardProfile() {
   const updateAvatarUrl = useCallback(() => {
     if (auth.userData && auth.userData.avatar_url) {
       setAvatarUrl(
-        `http://localhost:3005${
-          auth.userData.avatar_url
+        `http://localhost:3005${auth.userData.avatar_url
         }?t=${new Date().getTime()}`
       );
     } else {
@@ -75,10 +79,11 @@ export default function DashboardProfile() {
         phone: auth.userData.phone || "",
         address: auth.userData.address || "",
         member_level_id: auth.userData.member_level_id || "",
+        total_spending: auth.userData.total_spending || 0,
       });
       updateAvatarUrl();
     }
-  }, [isLoading, auth.isAuth , router, updateAvatarUrl]);
+  }, [isLoading, auth.isAuth, router, updateAvatarUrl]);
 
   if (isLoading) return <div>Loading...</div>
 
@@ -231,6 +236,24 @@ export default function DashboardProfile() {
     }
   };
 
+  // * 計算升級所需的消費差額
+  const calculateUpgradeInfo = () => {
+    if (auth.userData.member_level_id === 4) {
+      return { amount: "已為最高等級會員", nextLevel: null };
+    }
+    if (auth.userData.next_level_entry_cumulative) {
+      const difference = auth.userData.next_level_entry_cumulative - auth.userData.total_spending;
+      const nextLevelId = auth.userData.member_level_id + 1;
+      return {
+        amount: difference > 0 ? `NT$ ${Math.ceil(difference).toLocaleString()}` : "NT$ 0",
+        nextLevel: membershipMapping[nextLevelId]
+      };
+    }
+    return { amount: "無法計算", nextLevel: null };
+  };
+
+  const { amount: upgradeAmountDisplay, nextLevel: nextLevelName } = calculateUpgradeInfo();
+
   return (
     <>
       <>
@@ -293,16 +316,25 @@ export default function DashboardProfile() {
 
             {/* 會員卡 */}
             <div className="membership-level d-flex  justify-content-end col-2">
-            {renderMembershipCard()}
+              {renderMembershipCard()}
             </div>
 
             {/* 升級 */}
             <div className="membership-detail col-2">
               {/* <p className="membership-exp">白金會員到期日 - 2025.07.10</p> */}
+              <div className="profile-total-spend">
+              <p className=''>年度累積消費 <span className='total-spend-span'>NT$ {Math.round(auth.userData.total_spending).toLocaleString()}</span></p>
+  {auth.userData.member_level_id < 4 ? (
+    <p>累積消費差 <span className='total-spend-span'>{upgradeAmountDisplay}</span> 升級
+    <span className='next-level-span'>{nextLevelName}</span></p>
+  ) : (
+    <p>{upgradeAmountDisplay}</p>
+  )}
+              </div>
 
               <Link href="/dashboard/level">
-              <div className="upgrade">升級攻略</div>
-            </Link>
+                <div className="upgrade">升級攻略</div>
+              </Link>
               {/* <div className="upgrade">升級攻略</div> */}
 
             </div>

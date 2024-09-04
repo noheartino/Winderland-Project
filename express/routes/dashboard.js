@@ -61,11 +61,16 @@ router.get('/profile', authenticate, async function (req, res) {
   try {
     const [rows] = await connection.query(
       `
-      SELECT u.*, iu.img AS avatar_img, l.free_coupon
-      FROM users u
-      LEFT JOIN images_user iu ON u.id = iu.user_id
-      LEFT JOIN levels l ON u.member_level_id = l.member_level_id
-      WHERE u.id = ?
+       SELECT u.*, iu.img AS avatar_img, l.free_coupon, u.total_spending,
+         l.entry_cumulative AS current_entry_cumulative,
+         CASE 
+           WHEN u.member_level_id < 4 THEN (SELECT entry_cumulative FROM levels WHERE member_level_id = u.member_level_id + 1)
+           ELSE NULL
+         END AS next_level_entry_cumulative
+          FROM users u
+          LEFT JOIN images_user iu ON u.id = iu.user_id
+          LEFT JOIN levels l ON u.member_level_id = l.member_level_id
+          WHERE u.id = ?
     `,
       [id]
     )

@@ -15,7 +15,7 @@ import Head from "next/head";
 export default function CourseIndex() {
   const router = useRouter();
   const { auth } = useAuth();
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(null);
   useEffect(() => {
     if (auth.isAuth) {
       setUserId(auth.userData?.id);
@@ -31,7 +31,7 @@ export default function CourseIndex() {
 
   let pageLimit = 8;
   const { search, view } = router.query;
-  let apiUrl = ``;
+  let apiUrl = `http://localhost:3005/api/course`;
   const [courses, setCourses] = useState([]);
   const [filterCourses, setFilterCourses] = useState([]);
   const [teachers, setTeachers] = useState([]);
@@ -39,11 +39,72 @@ export default function CourseIndex() {
   const [classAssigns, setClassAssigns] = useState([]);
   const [myFavoriteCourse, setMyFavoriteCourse] = useState([]);
   const [myCourse, setMyCourse] = useState([]);
-  const [myFirstFavoriteCourse, setmyFirstFavoriteCourse] = useState({});
-  const [firstMyCourse, setFirstMyCourse] = useState({});
+  const [myFirstFavoriteCourse, setmyFirstFavoriteCourse] = useState(null);
+  const [firstMyCourse, setFirstMyCourse] = useState(null);
   const [isHomePage, setIsHomePage] = useState(true);
   const [courseBtn, setCourseBtn] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    if (!search && !view) {
+      apiUrl = `http://localhost:3005/api/course`;
+      if(auth.isAuth){
+        apiUrl += `?userId=${userId}`
+      }
+    }
+    if (search) {
+      apiUrl = `http://localhost:3005/api/course?search=${search}`;
+      if(auth.isAuth){
+        apiUrl += `&userId=${userId}`
+      }
+    }
+    if (view) {
+      apiUrl = `http://localhost:3005/api/course?view=${view}`;
+      if(auth.isAuth){
+        apiUrl += `&userId=${userId}`
+      }
+    }
+
+    // const includeImages = false;
+    console.log("search 或 view 偵測到變動");
+
+    // 當組件掛載時執行 fetch 請求
+      fetch(apiUrl)
+        .then((response) => {
+          console.log("送出fetch URL: " + apiUrl);
+          if (!response.ok) {
+            throw new Error("Network response not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const {
+            courses,
+            comments,
+            classAssigns,
+            myFavoriteCourse,
+            myCourse,
+            teachers,
+          } = data;
+          console.log("課程列表抓取到的資料數量:" + courses.length);
+          // 處理 courses 資料，將 images 字段轉換為數組
+          setComments(comments);
+          setCourses(courses);
+          setClassAssigns(classAssigns);
+          setMyFavoriteCourse(myFavoriteCourse);
+          setMyCourse(myCourse);
+          setmyFirstFavoriteCourse(myFavoriteCourse[0]);
+          setFirstMyCourse(myCourse[0]);
+          setTeachers(teachers);
+          console.log("myCourse----------");
+          console.log(myCourse);
+          // if(isHomePage){clearBtnHref()}
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  }, [view, search, userId]);
+  // console.log(myFirstFavoriteCourse[0]);
 
   const courseBtn01 = useRef(null);
   const courseBtn02 = useRef(null);
@@ -57,36 +118,53 @@ export default function CourseIndex() {
   const [dateEnd, setDateEnd] = useState("");
   const [priceStart, setPriceStart] = useState("");
   const [priceEnd, setPriceEnd] = useState("");
-  const districts = [
-    { dId: 1, districtStr: "台北市" },
-    { dId: 2, districtStr: "新北市" },
-    { dId: 3, districtStr: "桃園市" },
-    { dId: 4, districtStr: "台中市" },
-    { dId: 5, districtStr: "台南市" },
-    { dId: 6, districtStr: "高雄市" },
-    { dId: 7, districtStr: "新竹縣" },
-    { dId: 8, districtStr: "苗栗縣" },
-    { dId: 9, districtStr: "彰化縣" },
-    { dId: 10, districtStr: "南投縣" },
-    { dId: 11, districtStr: "雲林縣" },
-    { dId: 12, districtStr: "嘉義縣" },
-    { dId: 13, districtStr: "屏東縣" },
-    { dId: 14, districtStr: "宜蘭縣" },
-    { dId: 15, districtStr: "花蓮縣" },
-    { dId: 16, districtStr: "台東縣" },
-    { dId: 17, districtStr: "澎湖縣" },
-    { dId: 18, districtStr: "金門縣" },
-    { dId: 19, districtStr: "連江縣" },
-    { dId: 20, districtStr: "基隆市" },
-    { dId: 21, districtStr: "新竹市" },
-    { dId: 22, districtStr: "嘉義市" },
-    { dId: 23, districtStr: "" },
-  ];
-  const [districtArr, setDistrictArr] = useState([
-    districts.map((district) => {
-      return district.districtStr;
-    }),
-  ]);
+  
+  const districts = []
+  
+        const districtsStrmaps=[]
+        courses.map((course)=>{districtsStrmaps.push(course.address.slice(0,3))})
+        
+        Array.from(new Set(districtsStrmaps)).map((eachCity, index)=>{
+          const districtsObj = {dId: index+1, districtStr: eachCity}
+          districts.push(districtsObj)
+        })
+        console.log("地區列表試做");
+        console.log(districts);
+  // const districts = [
+  //   { dId: 1, districtStr: "台北市" },
+  //   { dId: 2, districtStr: "新北市" },
+  //   { dId: 3, districtStr: "桃園市" },
+  //   { dId: 4, districtStr: "台中市" },
+  //   { dId: 5, districtStr: "台南市" },
+  //   { dId: 6, districtStr: "高雄市" },
+  //   { dId: 7, districtStr: "新竹縣" },
+  //   { dId: 8, districtStr: "苗栗縣" },
+  //   { dId: 9, districtStr: "彰化縣" },
+  //   { dId: 10, districtStr: "南投縣" },
+  //   { dId: 11, districtStr: "雲林縣" },
+  //   { dId: 12, districtStr: "嘉義縣" },
+  //   { dId: 13, districtStr: "屏東縣" },
+  //   { dId: 14, districtStr: "宜蘭縣" },
+  //   { dId: 15, districtStr: "花蓮縣" },
+  //   { dId: 16, districtStr: "台東縣" },
+  //   { dId: 17, districtStr: "澎湖縣" },
+  //   { dId: 18, districtStr: "金門縣" },
+  //   { dId: 19, districtStr: "連江縣" },
+  //   { dId: 20, districtStr: "基隆市" },
+  //   { dId: 21, districtStr: "新竹市" },
+  //   { dId: 22, districtStr: "嘉義市" },
+  //   { dId: 23, districtStr: "" },
+  // ];
+  const [districtArr, setDistrictArr] = useState([])
+  useEffect(()=>{
+    setDistrictArr(
+      districts.map((district) => {
+        return district.districtStr;
+      })
+    );
+    console.log("設置了districtArr: ");
+    console.log(districtArr);
+  }, [courses])
 
   useEffect(() => {
     apiUrl = `http://localhost:3005/api/course?userId=${userId}`;
@@ -103,6 +181,8 @@ export default function CourseIndex() {
   useEffect(() => {
     setFilterCourses(courses);
   }, [courses]);
+
+  // 篩選
   useEffect(() => {
     const newCoursesArray = courses.filter(
       (course) =>
@@ -144,60 +224,6 @@ export default function CourseIndex() {
     priceStart,
     priceEnd,
   ]);
-
-  useEffect(() => {
-    if (!search && !view && auth.isAuth) {
-      apiUrl = `http://localhost:3005/api/course?userId=${userId}`;
-    }
-    if (search && auth.isAuth) {
-      apiUrl = `http://localhost:3005/api/course?search=${search}&userId=${userId}`;
-    }
-    if (view && auth.isAuth) {
-      apiUrl = `http://localhost:3005/api/course?view=${view}&userId=${userId}`;
-    }
-
-    // const includeImages = false;
-    console.log("search 或 view 偵測到變動");
-
-    // 當組件掛載時執行 fetch 請求
-    if (userId) {
-      fetch(apiUrl)
-        .then((response) => {
-          console.log("送出fetch URL: " + apiUrl);
-          if (!response.ok) {
-            throw new Error("Network response not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          const {
-            courses,
-            comments,
-            classAssigns,
-            myFavoriteCourse,
-            myCourse,
-            teachers,
-          } = data;
-          console.log("課程列表抓取到的資料數量:" + courses.length);
-          // 處理 courses 資料，將 images 字段轉換為數組
-          setComments(comments);
-          setCourses(courses);
-          setClassAssigns(classAssigns);
-          setMyFavoriteCourse(myFavoriteCourse);
-          setMyCourse(myCourse);
-          setmyFirstFavoriteCourse(...myFavoriteCourse.slice(0, 1));
-          setFirstMyCourse(...myCourse.slice(0, 1));
-          setTeachers(teachers);
-          console.log("myCourse----------");
-          console.log(myCourse);
-          // if(isHomePage){clearBtnHref()}
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, [view, search, userId]);
-  // console.log(myFirstFavoriteCourse[0]);
 
   function clickCourseBtn(e, btnRef) {
     const buttonText = e.target.textContent;
@@ -512,7 +538,7 @@ export default function CourseIndex() {
                     }}
                   >
                     <Image
-                      src={`/images/course_and_tarot/courses-no-result.png`}
+                      src={`http://localhost:3005/uploads/course_and_tarot/courses-no-result.png`}
                       alt="course list no result"
                       layout="responsive"
                       width={370}

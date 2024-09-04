@@ -8,7 +8,7 @@ export default function ProductGroup({ products}) {
   return (
     <>
       <main
-        className={`col-lg-9 col-md-12 ps-lg-4 ${styles["shop-product-list"]}`}
+        className={`col-lg-9 col-md-12 ps-lg-4 pe-4 ${styles["shop-product-list"]}`}
       >
         <div className="row">
           {products.map((product) => {

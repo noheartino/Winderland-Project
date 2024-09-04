@@ -70,7 +70,7 @@ export default function FavoriteCrwd({ searchResults, searchTerm }) {
               {/* 課程資訊 */}
               <div className="d-flex" >
                 <Image
-                  src={course.image_path ? `/images/course_and_tarot/${course.image_path}` : "/images/member/fav-c1.jpg"}
+                  src={course.image_path ? `http://localhost:3005/uploads/course_and_tarot/${course.image_path}` : "/images/member/fav-c1.jpg"}
                   alt={course.class_name}
                   width={80}
                   height={80}

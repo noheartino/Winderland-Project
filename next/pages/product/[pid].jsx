@@ -11,11 +11,26 @@ import PcComment from "@/components/product-detail/comment/PcComment";
 import MobileComment from "@/components/product-detail/comment/MobileComment";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
+import Head from "next/head";
+
+
 
 export default function ProductDetail() {
+
   return (
     <>
+
       <ProductProvider>
+      <Head>
+          <title>醺迷仙園｜商品詳情</title>
+
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <link rel="icon" href="/logo.png" />
+      </Head>
         <header>
           <Nav />
         </header>
