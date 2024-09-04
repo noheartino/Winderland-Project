@@ -9,6 +9,7 @@ import ArticleIndexList from "@/components/article/ArticleIndexList";
 import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 import Head from "next/head";
+import Link from "next/link";
 
 export default function Index() {
   const [articles, setArticles] = useState([]);
@@ -77,7 +78,7 @@ export default function Index() {
           <h3>Aritcle</h3>
         </div>
         <div className="container mx-auto">
-          <div className="a-function row m-0 mb-4">
+          <div className="a-function row m-0 mt-4 mb-1">
             {/* 篩選 */}
             <div className="d-none d-lg-flex dropdown a-dropdown col-lg-2">
               <ArticleSortdropdown />
@@ -86,6 +87,8 @@ export default function Index() {
             <ArticleSearchbar />
             {/* 手機側邊欄 */}
             <ArticleRwdSidebar />
+            {/* 管理文章按鈕 */}
+            <button className={`col-auto d-none d-lg-block btn aManBtn`}><Link href={'/article/manage'}>文章管理</Link></button>
           </div>
           {/* 主要文章內容區塊 */}
           <div className="row a-contentmain">

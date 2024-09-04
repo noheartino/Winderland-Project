@@ -58,18 +58,6 @@ export default function New() {
 
   // 新增文章內容
   const handleInput = () => {
-    // Step 1: 提取出所有的 img 標籤的 alt 屬性
-    const imgElements = contentRef.current.getElementsByTagName("img");
-    const currentAltAttributes = Array.from(imgElements).map((img) => img.alt);
-
-    // Step 2: 過濾 inlineImages，保留 alt 屬性中已存在的文件
-    const updatedInlineImages = inlineImages.filter((file) =>
-      currentAltAttributes.includes(file.name)
-    );
-
-    // Step 3: 更新 inlineImages 狀態
-    setInlineImages(updatedInlineImages);
-
     const content = contentRef.current.innerHTML;
     setContent(content); // 假設你有一個 state 來存儲內容
   };
@@ -87,7 +75,7 @@ export default function New() {
     files.forEach((file, index) => {
       const img = document.createElement("img");
       img.src = newImages[index];
-      img.alt = `${file.name}`;
+      img.alt = "inline-image";
       img.className = style.inlineImage;
 
       // 插入圖片到保存的光標位置
@@ -200,14 +188,14 @@ export default function New() {
       setLoading(false);
     }
   };
-  console.log(inlineImages);
+  // console.log(inlineImages);
   // console.log(category);
   // console.log(title);
   // console.log(mainImage);
-  console.log(contentRef.current.innerHTML);
+  // console.log(contentRef.current.innerHTML);
   return (
     <>
-      <Head>
+    <Head>
         <title>新增文章</title>
 
         <meta charSet="utf-8" />
@@ -220,9 +208,9 @@ export default function New() {
       <Nav />
       {/* Banner */}
       <div className="container-fluid a-banner">
-        <h2>相關文章</h2>
-        <h3>Aritcle</h3>
-      </div>
+          <h2>相關文章</h2>
+          <h3>Aritcle</h3>
+        </div>
       <div className="eventManageNav">
         <div className="container">
           <div className="ManageNavT">文章管理</div>
