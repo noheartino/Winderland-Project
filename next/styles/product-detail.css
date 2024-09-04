@@ -35,8 +35,8 @@
 
     /* 商品詳情 */
     .product-detail {
-        height: auto;
-        margin-bottom: 10%;
+        min-height: 0px;
+        margin-bottom: 5%;
     }
 
     .product-comment{
@@ -54,7 +54,7 @@
 
     /* 回到商品首頁 */
     .product-backhome {
-        padding-right: 60%;
+        display: none;
     }
 
 
@@ -76,7 +76,7 @@
 
     /* 回商品首頁 */
     .product-backhome {
-        display: none;
+        padding-right: 45%;
     }
 
     /* 商品圖片 */
