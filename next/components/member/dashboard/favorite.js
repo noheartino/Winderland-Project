@@ -70,14 +70,15 @@ export default function DashboardFavorite() {
         <FavoriteAside onFilterChange={handleFilterChange} />
 
         <div className="favorite-list mb-5">
-        <div className="search mt-2 ">
+        {/* 搜尋 */}
+        {/* <div className="search mt-2 ">
             <FontAwesomeIcon icon={faMagnifyingGlass} className="search_icon" />
             <input
               type="text"
               value={searchTerm}
               onChange={handleSearch}
               id="search" placeholder="搜 尋 商品／課程／文章名稱 " />
-          </div>
+          </div> */}
           {(filter === 'all' || filter === 'products') && (
             <div className="favorite-p">
               <FavoriteP products={favorites.products} />
