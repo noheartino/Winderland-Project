@@ -37,7 +37,7 @@ export default function Eventindex() {
   return (
     <>
       <Head>
-        <title>酒友一支會</title>
+        <title>醺迷仙園｜酒友一支會</title>
 
         <meta charSet="utf-8" />
         <meta

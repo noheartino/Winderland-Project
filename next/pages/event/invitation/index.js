@@ -33,7 +33,7 @@ export default function Applyevent() {
   return (
     <>
       <Head>
-        <title>活動邀請函</title>
+        <title>醺迷仙園｜活動邀請函</title>
 
         <meta charSet="utf-8" />
         <meta

@@ -56,7 +56,7 @@ export default function ClassManIndex() {
   return (
     <>
       <Head>
-        <title>課程編輯</title>
+        <title>醺迷仙園｜課程編輯</title>
 
         <meta charSet="utf-8" />
         <meta

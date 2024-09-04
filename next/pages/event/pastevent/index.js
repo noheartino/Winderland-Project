@@ -66,7 +66,7 @@ export default function Applyevent() {
   return (
     <>
       <Head>
-        <title>已結束活動列表</title>
+        <title>醺迷仙園｜已結束活動列表</title>
 
         <meta charSet="utf-8" />
         <meta

@@ -257,7 +257,7 @@ export default function Applyevent() {
   return (
     <>
       <Head>
-        <title>一支會活動編輯</title>
+        <title>醺迷仙園｜一支會活動編輯</title>
 
         <meta charSet="utf-8" />
         <meta

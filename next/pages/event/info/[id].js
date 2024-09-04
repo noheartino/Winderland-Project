@@ -56,7 +56,7 @@ export default function Einfo() {
   return (
     <>
       <Head>
-        <title>{eventinfo.event_name}</title>
+        <title>醺迷仙園｜{eventinfo.event_name}</title>
 
         <meta charSet="utf-8" />
         <meta
