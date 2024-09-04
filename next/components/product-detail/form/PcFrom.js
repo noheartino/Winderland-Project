@@ -10,9 +10,16 @@ import axios from "axios";
 export default function PcFrom() {
   const [currentDetail, setCurrentDetail] = useState(0);
   const [currentAmount, setCurrentAmount] = useState(0);
+  axios.defaults.withCredentials = true;
+  const [isFav,setIsFav] = useState(false); 
+  
+  const handleFavIcon = () => {
+    setIsFav(prevState => !prevState);
+  }
 
   const { product, loading, error, detail } = useProduct();
   const { auth } = useAuth();
+  
   useEffect(() => {
     if (product && product[0] && product[0].details) {
       const foundDetail =
@@ -47,6 +54,9 @@ export default function PcFrom() {
           user_id: parseInt(auth.userData.id),
           product_detail_id: parseInt(currentDetail.id),
           product_quantity: parseInt(currentAmount),
+        },
+        {
+          withCredentials: true, // 確保這個特定請求發送 cookies
         }
       );
       if (response.data.success) {
@@ -56,6 +66,28 @@ export default function PcFrom() {
       console.error("加入購物車失敗", error.response?.data || error.message);
       alert(
         "加入購物車失敗: " + (error.response?.data?.message || error.message)
+      );
+    }
+  };
+
+  const addToFav = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3005/api/favorites/products",
+        {
+          userId: parseInt(auth.userData.id),
+          productId: parseInt(product[0].id),
+          productDetailId: parseInt(currentDetail.id),
+        }
+      );
+      if (response.data.status === "success") {
+        alert("成功加入收藏!");
+        handleFavIcon()
+      }
+    } catch (error) {
+      console.error("加入收藏", error.response?.data || error.message);
+      alert(
+        "加入收藏失敗: " + (error.response?.data?.message || error.message)
       );
     }
   };
@@ -77,7 +109,7 @@ export default function PcFrom() {
           <div className={`${styles["product-reserve"]}`}>庫存 &lt; 56件 </div>
         </div>
         <div className={`${styles["product-fav-cart"]}`}>
-          <AddCart addToCart={addToCart} />
+          <AddCart addToCart={addToCart} addToFav={addToFav} isFav={isFav} />
         </div>
       </form>
     </>

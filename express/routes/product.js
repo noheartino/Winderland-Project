@@ -468,8 +468,6 @@ router.post('/addCart', async (req, res) => {
       .replace(/\//g, '-')
       .replace(/24:/, '00:')
 
-    console.log(currentFormattedDate)
-
     const result = await db.query(
       'INSERT INTO cart_items(user_id, product_detail_id, product_quantity, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
       [
@@ -487,7 +485,7 @@ router.post('/addCart', async (req, res) => {
       result: result,
     })
   } catch (error) {
-    res.status(500).json({ success: false })
+    res.status(500).json({ success: false, message: error.message })
   }
 })
 
