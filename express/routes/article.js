@@ -23,6 +23,27 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 // multer的設定值 - END
 
+router.get('/all', async (req, res) => {
+  try {
+    let query = `SELECT a.*, 
+        GROUP_CONCAT(ia.path) AS images,
+        DATE(a.update_time) AS update_date
+      FROM article a
+      LEFT JOIN images_article ia ON a.id = ia.article_id
+      WHERE a.poster = 'Admin'
+      GROUP BY a.id
+    `
+    const [articles] = await connection.execute(query)
+
+    // 返回文章數據和總頁數
+    res.json({ articles })
+    // console.log(totalPages)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: '無法查詢資料' })
+  }
+})
+
 router.get('/', async (req, res) => {
   try {
     const {

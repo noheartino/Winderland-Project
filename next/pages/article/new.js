@@ -200,11 +200,11 @@ export default function New() {
       setLoading(false);
     }
   };
-  console.log(inlineImages);
+  // console.log(inlineImages);
   // console.log(category);
   // console.log(title);
   // console.log(mainImage);
-  console.log(contentRef.current.innerHTML);
+  // console.log(contentRef.current.innerHTML);
   return (
     <>
       <Head>

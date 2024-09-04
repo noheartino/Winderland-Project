@@ -88,7 +88,7 @@ export default function Index() {
             {/* 手機側邊欄 */}
             <ArticleRwdSidebar />
             {/* 管理文章按鈕 */}
-            <button className={`col-auto d-none d-lg-block btn aManBtn`}><Link href={'/article/manage'}>文章管理</Link></button>
+            <button className={`col-auto d-none d-lg-block btn aManBtn`}><Link href={'/article/myarticle'}>文章管理</Link></button>
           </div>
           {/* 主要文章內容區塊 */}
           <div className="row a-contentmain">

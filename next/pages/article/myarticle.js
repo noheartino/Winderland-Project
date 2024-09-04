@@ -7,40 +7,42 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
 import Link from "next/link";
 import Head from "next/head";
+import ArticlePagination from "@/components/article/article-pagination";
 
 export default function Applyevent() {
   const router = useRouter();
   // const { id } = router.query;
-  const [infodata, setInfo] = useState(null);
+  const [myarticle, setMyarticle] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const authData = useAuth().auth;
-  const UserData = authData.userData;
-  const useridis = UserData ? UserData.id : 0;
+  // const authData = useAuth().auth;
+  // const UserData = authData.userData;
+  // const useridis = UserData ? UserData.name : 0;
 
   useEffect(() => {
-    if (useridis) {
-      fetch(`http://localhost:3005/api/event/list/${useridis}`)
-        .then((response) => response.json())
-        .then((infodata) => setInfo(infodata))
-        .catch((error) => console.error("Error:", error));
-    }
-  }, [useridis]);
+    // if (useridis) {
+    fetch(`http://localhost:3005/api/article/all`)
+      .then((response) => response.json())
+      .then((data) => {
 
-  const myallevent = infodata?.myallevent ?? [];
-  const myowner = infodata?.myowner ?? [];
-  const myallapply = infodata?.myallapply ?? [];
+        // 處理 articles 資料，將 images 字段轉換為數組
+        const processedArticles = data.articles.map((article) => ({
+          ...article,
+          images: article.images ? article.images.split(",") : [],
+          content: article.content.replace(/<!--IMAGE_HERE-->/g, ""), 
+        }));
 
-  const arrt = [
-    { text: 1 },
-    { text: 2 },
-    { text: 3 },
-    { text: 4 },
-    { text: 5 },
-  ];
+        setMyarticle(processedArticles);
+        console.log(processedArticles);
+      })
+      .catch((error) => console.error("Error:", error));
+    // }
+  }, []);
+  console.log(myarticle);
   const [activeIndexes, setActiveIndexes] = useState([]);
   const [scaleYIndexes, setScaleYIndexes] = useState([]);
 
+  // 設定展開box
   const handleClick = (index) => {
     setActiveIndexes((prev) =>
       prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
@@ -55,13 +57,13 @@ export default function Applyevent() {
     }, 100);
   };
 
-  function filtertheevent(index) {
-    return myallevent.filter((i) => i.id === index)[0];
-  }
+  // function filtertheevent(index) {
+  //   return myallevent.filter((i) => i.id === index)[0];
+  // }
 
-  function filterapply(index) {
-    return myallapply.filter((i) => i.event_id === index);
-  }
+  // function filterapply(index) {
+  //   return myallapply.filter((i) => i.event_id === index);
+  // }
 
   // if (loading) return <div>Loading...</div>
   // if (!infodata) return <div>Loading...</div>;
@@ -79,8 +81,10 @@ export default function Applyevent() {
         <link rel="icon" href="/logo.png" />
       </Head>
       <Nav />
-      <EventHeader />
-      {/* {myowner ? <pre>{JSON.stringify(myowner, null, 2)}</pre> : 'Loading...'} */}
+      <div className="container-fluid a-banner">
+          <h2>相關文章</h2>
+          <h3>Aritcle</h3>
+        </div>
 
       <>
         <div className="eventManageNav">
@@ -100,62 +104,41 @@ export default function Applyevent() {
           </div>
         </div>
 
-        {myowner.length === 0 && <Noresult text={"沒有任何結果"} />}
+        {myarticle.length === 0 && <Noresult text={"沒有任何結果"} />}
 
         <div
-          className={`eventMDetailArea ${myowner.length === 0 && "noheight"}`}
+          className={`eventMDetailArea ${myarticle.length === 0 && "noheight"}`}
         >
           <div className="container">
-            {myowner.map((t, i) => {
-              const eventdata = filtertheevent(t.event_id);
-
-              const applydata = filterapply(t.event_id);
-
-              const allage = applydata.reduce(
-                (sum, person) => sum + person.age,
-                0
-              );
-
-              const allpeople = applydata.length;
-
-              const allfemale = applydata.filter(
-                (person) => person.gender === 1
-              ).length;
-
-              const allmale =
-                allpeople -
-                applydata.filter((person) => person.gender === 1).length;
-
+            {myarticle.map((art, i) => {
               return (
                 <div
-                  className={`eventDetailist ${
-                    eventdata.status === 0 ? "d-none" : ""
-                  }`}
-                  key={i}
+                  // className={`eventDetailist ${
+                  //   eventdata.status === 0 ? "d-none" : ""
+                  // }`}
+                  className={`eventDetailist`}
+                  // key={i}
                 >
+                  {/* 照片 */}
                   <div
-                    className={`DetailistBox ${
-                      eventdata.status === 1 ? "applyEnd" : ""
-                    }`}
+                    // className={`DetailistBox ${
+                    //   eventdata.status === 1 ? "applyEnd" : ""
+                    // }`}
+                    className={`DetailistBox `}
                   >
+                    {/* 照片 */}
                     <img
-                      src={`http://localhost:3005/uploads/${eventdata.event_cover_image}`}
+                      src={`http://localhost:3005/uploads/article/${art.images[0]}`}
                       alt=""
                       className="DetailistBoxPic"
                     />
                     <div className="DetailistBoxT">
                       <div className="DetailistBoxTitle">
-                        <div className={`Eventstatus`}>
-                          {eventdata.status === 1 ? "報名已截止" : "開放報名中"}
-                        </div>
-                        <div className="EventTitle">{eventdata.event_name}</div>
+                        <div className={`Eventstatus`}>{art.category}</div>
+                        <div className="EventTitle">{art.title}</div>
                       </div>
                       <div className="DetailistBoxInfo">
-                        活動日期 - {eventdata.event_date}{" "}
-                        {eventdata.event_time_start.substring(0, 5)}~
-                        {eventdata.event_time_end.substring(0, 5)}
-                        <br />
-                        活動地點 - {eventdata.event_city}
+                        發布日期 : {art.update_time}
                       </div>
                     </div>
                     <div
@@ -180,115 +163,60 @@ export default function Applyevent() {
                     } ${scaleYIndexes.includes(i) ? "scaleY" : ""}`}
                   >
                     <div className="row gx-5 mb-3">
-                      <div className="col-12">
-                        <div className="ListInformationT">活動資訊</div>
-                      </div>
                       <div className="col-10">
-                        <div className="ListInfoEventT">
-                          <div className="mb-3">
-                            活動標題 : {eventdata.event_name}
-                          </div>
-                          <div>
-                            活動日期 : {eventdata.event_date}{" "}
-                            {eventdata.event_time_start.substring(0, 5)}~
-                            {eventdata.event_time_end.substring(0, 5)}
-                          </div>
-                          <div>活動地點 : {eventdata.event_address}</div>
-                          <div>活動地標 : {eventdata.event_venue}</div>
-                        </div>
+                        <div className="ListInformationT">圖片預覽</div>
                       </div>
                       <div className="col-2">
                         <div className="eventEditIcon">
                           <Link
-                            href={`/event/edit/${eventdata.id}`}
+                            href={`/article/edit/${art.id}`}
                             className="Armallc d-flex align-items-center"
                           >
                             <div className="eventEditIconT d-none d-lg-block">
-                              編輯活動
+                              編輯文章
                             </div>
                             <i className="fa-solid fa-pen-to-square EditIconI" />
                           </Link>
                         </div>
                       </div>
-                    </div>
-                    <div className="row gx-5">
-                      <div className="col-12">
-                        <div className="eventListStatisT">參加人統計</div>
-                      </div>
-                      <div className="col-12 col-md-6 mb-4">
-                        <div className="eventLimit">
-                          <div className="eventLimiText">
-                            <div>目前人數 : {allpeople}人</div>
-                            <div>人數上限 : {eventdata.people_limit}人</div>
-                          </div>
-                          <div className="eventLimitLine">
-                            <div
-                              className="eventLimitLinedata"
-                              style={{
-                                width: `${
-                                  (allpeople / eventdata.people_limit) * 100
-                                }%`,
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-12 col-md-6 mb-4">
-                        <div className="eventAge">
-                          <div className="eventAgeText">
-                            <div>
-                              平均年齡 : {Math.round(allage / allpeople)}歲
+                      {art.images.length - 1 > 0 ?
+                        art.images.slice(1).map((image, index) => (
+                          <div key={index} className="col-12 col-md-3 mb-4">
+                            <div className="eventAge" >
+                              <div className="eventAgeText">
+                                <img
+                                  src={`http://localhost:3005/uploads/article/${image}`}
+                                  style={{
+                                    objectFit: "cover",
+                                    width: "100%",
+                                    height: "100%",
+                                  }}
+                                />
+                              </div>
                             </div>
                           </div>
-                          <div className="eventAgeLine">
-                            <div
-                              className="eventAgeLinedata"
-                              style={{
-                                width: `${Math.round(allage / allpeople) * 2}%`,
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-12 col-md-6 mb-4">
-                        <div className="eventGender">
-                          <div className="eventGenderText">
-                            <div className="male">男性 : {allmale}人</div>
-                            <div className="female">女性 : {allfemale}人</div>
-                          </div>
-                          <div className="eventGenderLine">
-                            <div
-                              className="eventGenderLinedata"
-                              style={{
-                                width: `${(allmale / allpeople) * 100}%`,
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
+                        )): <p className="text-center">文中無插入照片</p>}
                     </div>
                     <div className="row mt-4 gx-5">
                       <div className="col-12">
-                        <div className="eventListInfoT">參加人資訊</div>
+                        <div className="eventListInfoT">文章概覽</div>
                       </div>
                       <div className="col-12">
                         <div className="ListInfoComment">
-                          {applydata.map((t, i) => (
-                            <div className="eventPList">
-                              <div className="eventPListInfo">
-                                ▪ {t.neckname} &nbsp;[{" "}
-                                {t.gender === 1 ? "女" : "男"} / {t.age}歲 ]
-                              </div>
-                              <div className="ListPComment">{t.introduce}</div>
-                            </div>
-                          ))}
+                          <div className="eventPList">
+                            <div className="ListPComment" style={{ whiteSpace: "pre-wrap" }}>{art.content}</div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                
               );
+              
             })}
+            <ArticlePagination />
+
           </div>
         </div>
       </>
