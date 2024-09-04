@@ -13,7 +13,7 @@ export default function CourseIndex() {
   const [classSum, setClassSum] = useState([]);
 
   const { auth } = useAuth();
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(null);
   useEffect(() => {
     if (auth.isAuth) {
       setUserId(auth.userData?.id);
@@ -36,7 +36,6 @@ export default function CourseIndex() {
 
   // 到/api/獲取課程總數，避免網址輸入不存在的課程導致顯示錯誤
   useEffect(() => {
-    if (userId) {
       fetch(`http://localhost:3005/api/course?userId=${userId}`)
         .then((response) => {
           if (!response.ok) {
@@ -53,7 +52,6 @@ export default function CourseIndex() {
         .catch((error) => {
           console.log(error);
         });
-    }
   }, [userId, courseId]);
 
   const seriesDefaultBtn = useRef(null);
@@ -361,7 +359,7 @@ export default function CourseIndex() {
         <Nav />
 
         {/* page three course-detail start */}
-        <div className="container-fluid px-0 m-0">
+        <div className="container-fluid m-0 px-0">
           <div className="container-fluid px-0">
             <div className="container-sm px-0">
               <div className="row px-10px m-0 justify-content-center justify-content-md-start px-10px my-4">
@@ -404,7 +402,7 @@ export default function CourseIndex() {
                         >
                           <img
                             className="course-img21"
-                            src="/images/course_and_tarot/rectangle128.png"
+                            src={`http://localhost:3005/uploads/course_and_tarot/${course?.class_path}`}
                             alt=""
                           />
                           <div
@@ -631,39 +629,32 @@ export default function CourseIndex() {
                     <div className="container-fluid bg-light-gray rounded-5 w-100 shadow">
                       <div className="container-sm px-0 teacher-intro-card">
                         <div className="row p-2 p-md-4 mx-2 align-items-center justify-content-center">
-                          <a
-                            className="teacher-head col-auto me-3 px-0"
-                            href="/"
-                          >
+                          <div className="teacher-head col-auto me-3 px-0">
                             <img
                               className="course-img21"
-                              src="/images/course_and_tarot/Ellipse 8.png"
+                              src={`http://localhost:3005/uploads/course_and_tarot/${course?.teacher_path}`}
                               alt=""
                             />
-                          </a>
+                          </div>
                           <div className="teacher-text-box col col-md-4 col-lg-7 ms-3">
-                            <div className="row align-items-center">
+                          <Link className="row align-items-center justify-content-between d-flex flex-row" href={`/course/teacher/${course?.teacher_id}`}>
                               <div className="teacher-card-name col">
-                                <a href="">
+
                                   <h2 className="spac-2 text-prim-dark lh-15">
                                     {course?.name}
                                   </h2>
-                                </a>
-                                <a href="">
                                   <h5 className="spac-2 text-prim-dark lh-15">
                                     {course?.name_en}
                                   </h5>
-                                </a>
                               </div>
-                              <a className="col-auto" href="/">
-                                <div className="teacher-more d-flex align-items-center">
+                              
+                              <div className="col-auto teacher-more d-flex align-items-center">
                                   <h5 className="spac-2 text-prim-dark lh-15 me-2">
                                     講師詳情
                                   </h5>
                                   <i className="fa-solid fa-chevron-right text-prim-dark mt-1" />
-                                </div>
-                              </a>
-                            </div>
+                              </div>
+                            </Link>
                             <hr className="my-4" />
                             <h5 className="spac-2 text-prim-dark lh-15 text-justify teacher-intro-card-text">
                               {course?.description}
@@ -699,15 +690,15 @@ export default function CourseIndex() {
               </div>
               {/* course-detail md 寬度時顯示 end */}
               {/* course-detail 手機時顯示 start */}
-              <div className="row small-screen-show d-flex d-md-none">
-                <div className="col-12 d-flex flex-column align-items-center px-0">
+              <div className="row small-screen-show d-flex d-md-none px-0 mx-0">
+                <div className="col-12 d-flex flex-column align-items-center px-0 mx-0">
                   <div
                     className="course-video-video position-relative mb-3"
                     href=""
                   >
                     <img
                       className="course-img21"
-                      src="/images/course_and_tarot/rectangle128.png"
+                      src={`http://localhost:3005/uploads/course_and_tarot/${course?.class_path}`}
                       alt=""
                     />
                     <div className="absolute-t0-l0 w-100 h-100 d-flex justify-content-center align-items-center">
@@ -717,7 +708,7 @@ export default function CourseIndex() {
                     </div>
                   </div>
                 </div>
-                <div className="course-body-2 col px-10px h-100">
+                <div className="course-body-2 col px-10px h-100 mx-0">
                   <h1 className="spac-2 lh-15 text-prim-text-prim">
                     <strong>{course?.class_name}</strong>
                   </h1>
@@ -862,13 +853,13 @@ export default function CourseIndex() {
                     </div>
                   </div>
 
-                  <div className="row teacher-sm-introduce my-5">
-                    <a className="teacher-head col-auto px-0" href="/">
+                  <div className="row teacher-sm-introduce my-5 mx-0 px-0">
+                    <div className="teacher-head col-auto px-0">
                       <img
-                        src="/images/course_and_tarot/Ellipse 8.png"
+                        src={`http://localhost:3005/uploads/course_and_tarot/${course?.teacher_path}`}
                         alt=""
                       />
-                    </a>
+                    </div>
                     <div className="teacher-text-box col px-4">
                       <div>
                         <span className="h3 spac-2 text-prim-dark lh-15">
@@ -1216,7 +1207,7 @@ export default function CourseIndex() {
                     }}
                   >
                     <Image
-                      src={`/images/course_and_tarot/comments-no-result.png`}
+                      src={`http://localhost:3005/uploads/course_and_tarot/comments-no-result.png`}
                       alt="course list no result"
                       layout="responsive"
                       width={370}
@@ -1241,6 +1232,7 @@ export default function CourseIndex() {
         <div className="container-fluid py-3 my-5">
           <div className="container-sm px-0">
             <div className="row justify-content-between px-0 mx-0">
+            
               <Link className="col-auto px-0 mx-0" href="/course/teacher">
                 <div
                   type="button"

@@ -53,7 +53,7 @@ export default function CartProductTotalM() {
       // 如果沒有商品資料但有課程資料
       const firstClass = classData[0];
       setOrderData({
-        image: `/images/course_and_tarot/${firstClass.class_image}`, // 課程沒有圖片，假設使用預設圖片
+        image: `http://localhost:3005/uploads/course_and_tarot/${firstClass.class_image}`, // 課程沒有圖片，假設使用預設圖片
         name: firstClass.class_name,
         quantity: classData.length,
         totalAmount: discountedAmount,

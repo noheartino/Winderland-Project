@@ -12,7 +12,7 @@ export default function ClassManIndex() {
 
   const router = useRouter();
   const districts = [{dId: 1, districtStr: '台北市'}, {dId: 2, districtStr: '新北市'}, {dId: 3, districtStr: '桃園市'}, {dId: 4, districtStr: '台中市'}, {dId: 5, districtStr: '台南市'}, {dId: 6, districtStr: '高雄市'}, {dId: 7, districtStr: '新竹縣'}, {dId: 8, districtStr: '苗栗縣'}, {dId: 9, districtStr: '彰化縣'}, {dId: 10, districtStr: '南投縣'}, {dId: 11, districtStr: '雲林縣'}, {dId: 12, districtStr: '嘉義縣'}, {dId: 13, districtStr: '屏東縣'}, {dId: 14, districtStr: '宜蘭縣'}, {dId: 15, districtStr: '花蓮縣'}, {dId: 16, districtStr: '台東縣'}, {dId: 17, districtStr: '澎湖縣'}, {dId: 18, districtStr: '金門縣'}, {dId: 19, districtStr: '連江縣'}, {dId: 20, districtStr: '基隆市'}, {dId: 21, districtStr: '新竹市'}, {dId: 22, districtStr: '嘉義市'}]
-  const [onOrUnderline, setOnOrUnderline] = useState('')
+  const [onOrUnderline, setOnOrUnderline] = useState(null)
 
   // 抓取 user 資料
   const authData = useAuth().auth.userData
@@ -42,7 +42,7 @@ export default function ClassManIndex() {
 
 
   // 選擇上傳圖片
-  const [Cimage, setCImage] = useState('/images/course_and_tarot/classImgDefault.png');
+  const [Cimage, setCImage] = useState('http://localhost:3005/uploads/course_and_tarot/classImgDefault.png');
   const handleImageUpload = (event) => {
     const file = event.target.files[0]; // 獲取選中的文件
     if (file) {
@@ -116,9 +116,19 @@ export default function ClassManIndex() {
   }
 
   // 限制數字只能是正整數
+  function detectType(inputStr) {
+    const number = parseInt(inputStr, 10);
+    if (!isNaN(number) && inputStr.trim() !== '' && number.toString() === inputStr.trim()) {
+      return 'number';
+    } else {
+      return 'string';
+    }
+  }
+
   const [errorMsgBox, setErrorMsgBox] = useState({})
   const handlePIntegerCheck = (e) => {
-  let currentNumInput = parseInt(e.target.value);
+  let currentNumInput = e.target.value;
+  e.target.value = e.target.value.trim()
   let columnName = '';
   if (e.target.id === 'studentLimit') {
     columnName = '人數上限';
@@ -129,22 +139,10 @@ export default function ClassManIndex() {
   if (e.target.id === 'classSalePrice') {
     columnName = '優惠金額';
   }
-
-      console.log('條件檢查1');
-      console.log(currentNumInput);
-      console.log(typeof currentNumInput !== 'number');
-      console.log(isNaN(currentNumInput));
-      console.log(!Number.isInteger(currentNumInput));
-      console.log(currentNumInput<0);
-
-  if (currentNumInput && typeof currentNumInput !== 'number' || isNaN(currentNumInput) || !Number.isInteger(currentNumInput) || currentNumInput<0) {
-    
-      console.log('條件檢查2');
-      console.log(currentNumInput);
-      console.log(typeof currentNumInput !== 'number');
-      console.log(isNaN(currentNumInput));
-      console.log(!Number.isInteger(currentNumInput));
-      console.log(currentNumInput<0);
+  if (currentNumInput && detectType(currentNumInput) === 'string' || isNaN(currentNumInput)) {
+    console.log(currentNumInput)
+    console.log(detectType(currentNumInput) === 'string')
+    console.log(isNaN(currentNumInput))
 
       const currentIdStr = e.target.id;
       setErrorMsgBox(prev => ({...prev, [currentIdStr]: `${columnName}欄位需填入正整數`}))
@@ -164,9 +162,6 @@ export default function ClassManIndex() {
     
     if (startId === 'classStartDate') {
       startColumnName = '開始上課日期';
-      if(referId === 'assignEndDate'){
-        endColumnName = '報名截止日期'
-      };
       if(referId === 'classEndDate'){
         endColumnName = '課程結束日期'
       };
@@ -191,8 +186,9 @@ export default function ClassManIndex() {
     }
     setErrorMsgBox(prev => ({...prev, [startId]: ``}))
     console.log("將 "+startId+" 的錯誤內容設定為空");
-    if (!endElem.value || startElm.value && startElm.value > endElem.value) {
+    if (endElem.value.trim().length>0 && startElm.value && startElm.value > endElem.value) {
       console.log("將 "+startId+" 的錯誤內容設定為 "+startColumnName+" 不可晚於 "+endColumnName);
+      console.log("開始:"+startElm.value+"結束:"+endElem.value);
         setErrorMsgBox(prev => ({...prev, [startId]: `${startColumnName}不可晚於${endColumnName}`}))
         return;
       }
@@ -202,11 +198,12 @@ export default function ClassManIndex() {
     const handleDateTimeCheckDouble = ()=>{
       handleDateTimeCheck('classStartDate', 'classEndDate');
       handleDateTimeCheck('assignEndDate', 'classStartDate');
+      handleDateTimeCheck('assignStartDate', 'assignEndDate');
     }
 
   const handleOnlineClickClear = ()=>{
     setOnOrUnderline(1)
-    console.log(onOrUnderline);
+    console.log("onOrUnderline設置為1");
     // 清除實體課程才有的欄位
     const onlyShowWhenUnderline = ['studentLimit', 'classStartDate', 'classEndDate', 'assignStartDate', 'assignEndDate', 'dailyStartTime', 'dailyEndTime', 'classCity', 'classCityDetail']
     onlyShowWhenUnderline.forEach((elm)=>{
@@ -217,6 +214,7 @@ export default function ClassManIndex() {
 
   const handleUnderlineClickClear = ()=>{
     setOnOrUnderline(0)
+    console.log("onOrUnderline設置為0");
     // 清除線上課程才有的欄位
     const onlyShowWhenOnline = ['classVdio']
     onlyShowWhenOnline.forEach((elm)=>{
@@ -224,26 +222,22 @@ export default function ClassManIndex() {
       currentElm.value=''
     })
   }
+  console.log("onOrUnderline: "+onOrUnderline);
   useEffect(() => {
-    if(onOrUnderline != null){
+    if(onOrUnderline===0 || onOrUnderline===1){
       console.log('現在的onOrUnderline是'+onOrUnderline);
       const onlineRadio = document.getElementById('onLine');
       const underlineRadio = document.getElementById('underLine');
 
       if (onOrUnderline === 1) {
         onlineRadio.checked = true;
+        console.log("將online radio打勾")
       } else if (onOrUnderline === 0) {
         underlineRadio.checked = true;
+        console.log("將underline radio打勾")
       }
     }
   }, [onOrUnderline]);
-
-  
-// *欄位檢查:
-
-// 開始日期不可晚於結束日期
-
-// 開始時間不可晚於結束時間
 
 // 檔案格式檢查(圖片、影片)
 
@@ -271,7 +265,7 @@ export default function ClassManIndex() {
   function handleReset(){
     clearIsEmpty();
     setOnOrUnderline('')
-    setCImage('/images/course_and_tarot/classImgDefault.png')
+    setCImage('http://localhost:3005/uploads/course_and_tarot/classImgDefault.png')
     setCvideo('')
     setRemindMsgBox({})
     setErrorMsgBox({})
@@ -311,6 +305,23 @@ export default function ClassManIndex() {
     });
   }
   // 處理送出表單
+  if (!isAdmin){
+    return (
+      <>
+        <div className="container-fluid">
+          <div>請登入有權限的帳號</div>
+          <Link href="/">
+            <div
+              type="button"
+              className="btn-warning btn my-2" style={{textDecoration: 'none'}}>
+              回首頁<i className="fa-solid fa-chevron-right ms-2"></i>
+            </div>
+          </Link>
+        </div>
+      </>
+    )
+  } 
+
   const handleSubmit = async (event) => {
     event.preventDefault(); // 防止默認的表單提交
     // if(){
@@ -391,8 +402,8 @@ export default function ClassManIndex() {
       }
     }
 
-    const firstEmptyErrMsg = (Object.values(newMustBeValuedArr).filter(value => value !== ''))[0]
-    console.log(Object.values(newMustBeValuedArr).filter(value => value !== ''));
+    const firstEmptyErrMsg = (Object.values(newMustBeValuedArr).filter(value => value.trim().length>0))[0]
+    console.log(Object.values(newMustBeValuedArr).filter(value => value.trim().length>0));
     console.log('應該要有錯誤訊息: '+firstEmptyErrMsg);
 
     setMustBeValued(newMustBeValuedArr)
@@ -479,6 +490,7 @@ export default function ClassManIndex() {
           timer: 1500
         });
         router.push({pathname: '/course/teacher/management'})
+        setIsAdmin(true)
       }
       
     }catch (error) {
@@ -490,9 +502,11 @@ export default function ClassManIndex() {
       });
     }
   };
-
+  console.log("錯誤訊息box長這樣喔喔:")
+  console.log(errorMsgBox)
   return (
     <>
+    
       <div className='course-manage-wrap'>
         <Nav />
         <Head>
@@ -524,11 +538,11 @@ export default function ClassManIndex() {
                 <div className='col-12 col-lg-8 d-flex flex-column gap-3'>
                   <div className='row gx-2 gx-lg-4 row-gap-3'>
                     
-                    <div className={`col-12 flex-column gap-1 text-danger spac-1 ${Object.values(mustBeValued).some(value => value !== '') ? 'd-flex' : 'd-none'}`}>* 請檢查必填欄位 !!</div>
+                    <div className={`col-12 flex-column gap-1 text-danger spac-1 ${Object.values(mustBeValued).some(value => value.trim().length>0) ? 'd-flex' : 'd-none'}`}>* 請檢查必填欄位 !!</div>
                     <div className='col-12 d-flex flex-column gap-1'>
 
                       {/* 用來寫入不顯示的資料 */}
-                      <input type='hidden' name='onlineValue' value={onOrUnderline}/>
+                      <input type='hidden' name='onlineValue' value={onOrUnderline?onOrUnderline:''}/>
 
                       <label htmlFor='className' className='CmanageCreateTag'>
                         課程名稱 (<span id='classNameWordNum'>0</span>/25)
@@ -584,6 +598,8 @@ export default function ClassManIndex() {
                         className='CourseCreateInput'
                         onChange={handlePIntegerCheck}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`studentLimit`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`studentLimit`] ? errorMsgBox[`studentLimit`] : ''}</div>
+                      {console.log(document.getElementById('studentLimit').value)}
                       {/* 檢查數字必須是大於0的整數 */}
                     </div>
                   </div>
@@ -601,6 +617,7 @@ export default function ClassManIndex() {
                         className='CourseCreateInput'
                         onChange={handleDateTimeCheckDouble}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`classStartDate`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`classStartDate`] ? errorMsgBox[`classStartDate`] : ''}</div>
                     </div>
                     <div className='col-4 d-flex flex-column gap-1'>
                       <label htmlFor='courseEndDate' className='CmanageCreateTag'>
@@ -627,6 +644,7 @@ export default function ClassManIndex() {
                         className='CourseCreateInput'
                         onChange={()=>{handleDateTimeCheck('assignStartDate', 'assignEndDate')}}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`assignStartDate`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`assignStartDate`] ? errorMsgBox[`assignStartDate`] : ''}</div>
                     </div>
 
                     <div className='col-4 d-flex flex-column gap-1'>
@@ -640,6 +658,7 @@ export default function ClassManIndex() {
                         className='CourseCreateInput'
                         onChange={handleDateTimeCheckDouble}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`assignEndDate`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`assignEndDate`] ? errorMsgBox[`assignEndDate`] : ''}</div>
                     </div>
 
                     <div className='col-4 d-flex flex-column gap-1'>
@@ -654,6 +673,7 @@ export default function ClassManIndex() {
                         className='CourseCreateInput'
                         onChange={()=>{handleDateTimeCheck('dailyStartTime', 'dailyEndTime')}}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`dailyStartTime`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`dailyStartTime`] ? errorMsgBox[`dailyStartTime`] : ''}</div>
                     </div>
 
                     <div className='col-4 d-flex flex-column gap-1'>
@@ -715,6 +735,7 @@ export default function ClassManIndex() {
                         placeholder='--請輸入課程原價'
                         onChange={handlePIntegerCheck}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`classPrice`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`classPrice`] ? errorMsgBox[`classPrice`] : ''}</div>
                       {/* 需要是正整數 */}
                     </div>
 
@@ -730,6 +751,7 @@ export default function ClassManIndex() {
                         placeholder='--請選擇性輸入折扣後金額'
                         onChange={handlePIntegerCheck}
                       />
+                      <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`classSalePrice`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`classSalePrice`] ? errorMsgBox[`classSalePrice`] : ''}</div>
                       {/* 不可大於課程原價，需要是正整數 */}
                     </div>
                   </div>
@@ -739,7 +761,7 @@ export default function ClassManIndex() {
                   <label htmlFor='classPic' className='form-label CmanageCreateTag'>
                     課程縮圖
                   </label>
-                  <img src={Cimage} alt='' className='Cprevpic' />
+                  <img src={Cimage.trim().length>0?Cimage:'http://localhost:3005/uploads/course_and_tarot/classImgDefault.png'} alt='' className='Cprevpic' />
                   {/* <input
                     className='form-control vidAndImg-input'
                     type='file'
@@ -758,7 +780,7 @@ export default function ClassManIndex() {
                   {/* 只能上傳圖片格式(jpg,jpeg,png,gif,webp,svg,) */}
                   <div className={`${onOrUnderline === 0 ? 'd-none' : 'd-block'}`}>
                     <label htmlFor='classVdio' className='form-label CmanageCreateTag mt-2'>
-                      課程影片{console.log(typeof onOrUnderline)}
+                      課程影片
                     </label>
                     {/* <input
                       className='form-control vidAndImg-input'
