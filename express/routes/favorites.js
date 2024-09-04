@@ -145,6 +145,24 @@ router.post('/products', authenticate, async (req, res) => {
   }
 })
 
+// 商品詳細頁掛載查詢是否收藏用
+router.get('/products/check/:id', authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id
+    const productId = req.params.id
+
+    const [result] = await connection.query(
+      'SELECT * FROM user_like WHERE user_id = ? AND item_id = ? AND item_type = "product"',
+      [userId, productId]
+    )
+
+    res.json({ isFavorited: result.length > 0 })
+  } catch (error) {
+    console.error('檢查收藏狀態時出錯:', error)
+    res.status(500).json({ status: 'error', message: '服務器錯誤' })
+  }
+})
+
 // @ 從商品收藏中移除
 router.delete('/products/:id', authenticate, async (req, res) => {
   try {
