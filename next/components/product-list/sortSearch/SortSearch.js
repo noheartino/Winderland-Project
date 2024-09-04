@@ -13,6 +13,7 @@ export default function SortSearch({
 }) {
   const [localSearch, setLocalSearch] = useState(search);
   const [getSearch, setGetSearch] = useState(false);
+  const [activeSort, setActiveSort] = useState("綜合排名");
 
   useEffect(() => {
     if (search !== "") {
@@ -22,6 +23,37 @@ export default function SortSearch({
       setGetSearch(false);
     }
   }, [search]);
+
+  const handleSortClick = (sortType) => {
+    let newSort;
+    switch (sortType) {
+      case "綜合排名":
+        newSort = "rating_desc";
+        break;
+      case "最新":
+        newSort =
+          activeSort === "最新" && currentSort === "id_desc"
+            ? "id_asc"
+            : "id_desc";
+        break;
+      case "年份":
+        newSort =
+          activeSort === "年份" && currentSort === "year_desc"
+            ? "year_asc"
+            : "year_desc";
+        break;
+      case "價格":
+        newSort =
+          activeSort === "價格" && currentSort === "price_desc"
+            ? "price_asc"
+            : "price_desc";
+        break;
+      default:
+        newSort = "rating_desc";
+    }
+    setActiveSort(sortType);
+    changeSort(newSort);
+  };
 
   return (
     <>
@@ -49,10 +81,12 @@ export default function SortSearch({
             }}
           >
             <option value={"id_asc"}>默認排序</option>
-            <option value={"name_asc"}>商品名稱 A-Z</option>
-            <option value={"name_desc"}>商品名稱 Z-A</option>
-            <option value={"price_asc"}>商品金額 0-9</option>
-            <option value={"price_desc"}>商品金額 9-0</option>
+            <option value={"price_asc"}>金額 低 → 高</option>
+            <option value={"price_desc"}>金額 高 → 低</option>
+            <option value={"year_asc"}>年份 遠 → 近 </option>
+            <option value={"year_desc"}>年份 近 → 遠</option>
+            <option value={"rating_desc"}>評價 高 → 低</option>
+            <option value={"rating_asc"}>評價 低 → 高</option>
           </select>
         </div>
         {/* top的search欄 */}
@@ -116,15 +150,17 @@ export default function SortSearch({
               className={`fa-solid fa-magnifying-glass ${styles["search-icon"]}`}
             />
             <button
-            type="button"
-            onClick={() => {
-              changeSearch("");
-              setLocalSearch("");
-            }}
-            className={`${getSearch ? "d-flex" : "d-none"} ${styles['search-clear']}` }
-          >
-            <i className="fa-solid fa-xmark"></i>
-          </button>
+              type="button"
+              onClick={() => {
+                changeSearch("");
+                setLocalSearch("");
+              }}
+              className={`${getSearch ? "d-flex" : "d-none"} ${
+                styles["search-clear"]
+              }`}
+            >
+              <i className="fa-solid fa-xmark"></i>
+            </button>
           </form>
         </div>
         <div
@@ -140,13 +176,25 @@ export default function SortSearch({
       </div>
       {/* 手機排序 */}
       <div className={`${styles["shop-port"]}`}>
-        <div className={`${styles["port-top"]}`}>綜合排名</div>
-        <div className={`${styles["port-hr"]}`}>|</div>
-        <div className={`${styles["port-new"]}`}>最新</div>
-        <div className={`${styles["port-hr"]}`}>|</div>
-        <div className={`${styles["port-sales"]}`}>銷量</div>
-        <div className={`${styles["port-hr"]}`}>|</div>
-        <div className={`${styles["port-price"]}`}>價格</div>
+        {["綜合排名", "最新", "年份", "價格"].map((sortType, index) => (
+          <React.Fragment key={sortType}>
+            <button
+              type="button"
+              className={`${styles["port-button"]} ${
+                styles[`port-${sortType.toLowerCase()}`]
+              } ${activeSort === sortType ? styles.selected : ""}`}
+              onClick={() => handleSortClick(sortType)}
+            >
+              {sortType}
+              {activeSort === sortType && activeSort !== "綜合排名" && activeSort !== "最新" && (
+                <span className={styles.sortDirection}>
+                  {currentSort.includes("asc") ? " ↑" : " ↓"}
+                </span>
+              )}
+            </button>
+            {index < 3 && <div className={`${styles["port-hr"]}`}>|</div>}
+          </React.Fragment>
+        ))}
       </div>
     </>
   );

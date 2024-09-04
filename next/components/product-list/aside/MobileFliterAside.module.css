@@ -54,6 +54,10 @@
             transition: 1s;
         }
 
+        & .shop-category-tags {
+            margin-left: 7%;
+        }
+
         & .shop-aside-m-top {
             position: relative;
             display: flex;
