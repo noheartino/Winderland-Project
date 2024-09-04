@@ -119,17 +119,26 @@ export default function CourseIndex() {
   const [priceStart, setPriceStart] = useState("");
   const [priceEnd, setPriceEnd] = useState("");
   
-  const districts = []
+  let districts = []
+
+  useEffect(()=>{
+    if(courses.length>0){
+      const allAddressV = courses.map((course)=>{if(course.address){return course.address.slice(0,3)}})
+      const onlyVaddressArr = Array.from(new Set(allAddressV))
+      onlyVaddressArr.map((eachCity, index)=>{
+      const districtsObj = {'dId': index+1, 'districtStr': eachCity?eachCity:""}
+      districts.push(districtsObj)
+      console.log("test districts Array");
+      console.log(districts);
+    })
+    }
+    
+  }, [courses])
   
-        const districtsStrmaps=[]
-        courses.map((course)=>{districtsStrmaps.push(course.address.slice(0,3))})
-        
-        Array.from(new Set(districtsStrmaps)).map((eachCity, index)=>{
-          const districtsObj = {dId: index+1, districtStr: eachCity}
-          districts.push(districtsObj)
-        })
-        console.log("地區列表試做");
-        console.log(districts);
+  
+  
+  console.log("地區列表試做");
+  console.log(districts);
   // const districts = [
   //   { dId: 1, districtStr: "台北市" },
   //   { dId: 2, districtStr: "新北市" },
@@ -162,8 +171,12 @@ export default function CourseIndex() {
         return district.districtStr;
       })
     );
+    const testArr = districts.map((district) => {
+      return district.districtStr;
+    })
     console.log("設置了districtArr: ");
-    console.log(districtArr);
+    console.log(testArr);
+    console.log(districts);
   }, [courses])
 
   useEffect(() => {
@@ -185,8 +198,9 @@ export default function CourseIndex() {
   // 篩選
   useEffect(() => {
     const newCoursesArray = courses.filter(
-      (course) =>
-        districtArr.includes(course.address.slice(0, 3)) &&
+        (course) => 
+        
+        (!course.address ?true: districtArr.includes(course.address.slice(0, 3))) &&
         course.average_rating >= score &&
         (onlineFilter === "全部"
           ? true

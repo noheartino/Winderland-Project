@@ -62,6 +62,9 @@ export default function ClassManIndex() {
   const [Cimage, setCImage] = useState(`http://localhost:3005/uploads/course_and_tarot/classImgDefault.png`)
   const [Cvideo, setCvideo] = useState(null)
 
+  const [imageName, setImageName] = useState(null)
+  const [videoName, setVideoName] = useState(null)
+
   useEffect(()=>{
     // 初渲染設定初始值
     setOnOrUnderline(originClassV?.online)// onOrUnderline 初始值
@@ -80,7 +83,7 @@ export default function ClassManIndex() {
     setClassSummary(originClassV?.class_summary)// id='classSummary' 初始值
     setClassIntro(originClassV?.description)// id='classIntro' 初始值
     setCImage(!originClassImg.imgPath?`http://localhost:3005/uploads/course_and_tarot/classImgDefault.png`:`http://localhost:3005/uploads/course_and_tarot/${originClassImg?.imgPath}`) // 設定圖片預覽預設值
-    setCvideo(originClassImg?.vdioPath) // 設定影片預設值
+    setCvideo(!originClassImg.vdioPath?null:`http://localhost:3005/uploads/course_and_tarot/${originClassImg?.vdioPath}`) // 設定影片預設值
 
     // const file = document.getElementById('classPic').files[0]; // 获取第一个文件
     // if (file) {
@@ -216,6 +219,7 @@ export default function ClassManIndex() {
       const reader = new FileReader();
       reader.onloadend = () => {
         setCImage(reader.result); // 設置圖片 URL 到狀態
+        setImageName(file.name)
       };
       reader.readAsDataURL(file); // 讀取文件為 data URL
     }
@@ -228,6 +232,7 @@ export default function ClassManIndex() {
       const reader = new FileReader();
       reader.onloadend = () => {
         setCvideo(reader.result); // 設置圖片 URL 到狀態
+        setVideoName(file.name)
       };
       reader.readAsDataURL(file); // 讀取文件為 data URL
     }
@@ -541,7 +546,7 @@ export default function ClassManIndex() {
       newMustBeValuedArr.classIntro=`課程內容是必填欄位!`;
     }
     if(document.querySelector('#onLine').checked){
-      if((document.querySelector('#classVdio').files.length === 0)){
+      if((document.querySelector('#classVdio').files.length === 0 && !videoName && !originClassImg.vdioPath)){
         newMustBeValuedArr.classVdio=`線上課程必須上傳課程影片!`;
       }
     }
@@ -903,7 +908,8 @@ export default function ClassManIndex() {
                     課程縮圖
                     <img src={Cimage} alt='' className='Cprevpic' />
                     <div className="vidAndImg-input p-0 d-flex row mx-0 rounded-2">
-                        <div className='border-end border-1 m-0 col-auto px-2 py-1 fw-regular spac-0'>選擇檔案</div><div className='col px-2 py-1 fw-regular'>顯示檔案名稱</div>
+                        <div className='border-end border-1 m-0 col-auto px-2 fw-regular spac-0 d-flex align-items-center lh-25'>選擇檔案</div>
+                        <div className='col px-2 fw-regular elipes01 lh-25'>{imageName?imageName:(originClassImg.imgPath?originClassImg.imgPath:'請選擇檔案')}</div>
                     </div>
                   </label>
                   
@@ -924,11 +930,15 @@ export default function ClassManIndex() {
                   />
                   {/* 只能上傳圖片格式(jpg,jpeg,png,gif,webp,svg,) */}
                   <div className={`${onOrUnderline === 0 ? 'd-none' : 'd-block'}`}>
-                    <label htmlFor='classVdio' className='form-label CmanageCreateTag d-block' style={{boxSizing: "border-box"}}>
+                    <label htmlFor='classVdio' className='form-label CmanageCreateTag d-flex flex-column gap-1' style={{boxSizing: "border-box"}}>
                       課程影片
+                      {/* <div className="vidAndImg-input p-0 d-flex row mx-0 rounded-2">
+                        <div className='border-end border-1 m-0 col-auto px-2 py-2 fw-regular spac-0 d-flex align-items-center'>選擇檔案</div><div className='col px-2 py-2 fw-regular'>{!videoName?'請選擇檔案':videoName}</div>
+                      </div> */}
                       <div className="vidAndImg-input p-0 d-flex row mx-0 rounded-2">
-                        <div className='border-end border-1 m-0 col-auto px-2 py-1 fw-regular spac-0'>選擇檔案</div><div className='col px-2 py-1 fw-regular'>{Cvideo}顯示檔案名稱</div>
-                      </div>
+                        <div className='border-end border-1 m-0 col-auto px-2 fw-regular spac-0 d-flex align-items-center lh-25'>選擇檔案</div>
+                        <div className='col px-2 fw-regular elipes01 lh-25'>{videoName?videoName:(originClassImg.vdioPath?originClassImg.vdioPath:'請選擇檔案')}</div>
+                    </div>
                     </label>
                     {/* <input
                       className='form-control vidAndImg-input'

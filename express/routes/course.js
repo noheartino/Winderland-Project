@@ -68,7 +68,19 @@ const storage = multer.diskStorage({
   },
 })
 
-const upload = multer({ storage: storage })
+// 自定義文件過濾器
+const fileFilter = (req, file, cb) => {
+  if (!file) {
+    // 如果沒有文件，返回一個錯誤，文件將不會被上傳
+    return cb(null, false);
+  }
+  // 這裡可以添加其他文件類型檢查邏輯
+  cb(null, true);
+};
+
+const upload = multer({ storage: storage, fileFilter: fileFilter });
+
+// const upload = multer({ storage: storage })
 
 // !! 課程管理 list 顯示所有課程
 router.get('/teacher/management', async (req, res) => {
