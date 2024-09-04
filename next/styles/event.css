@@ -442,6 +442,23 @@ a.Armallmt{
     padding-inline: 15px;
     position: relative;
 
+    .ascto{
+        position: absolute;
+        right: 100px;
+        top: -5px;
+        color: #916B51;
+        width: 70px;
+        padding-left: 12px;
+        height: 28px;
+        letter-spacing: 2px;
+        background-color: white;
+        border-radius: 5px;
+        border: 1px solid #916B51;
+        font-size: 14px;
+        line-height: 10px;
+        
+    }
+
 
     .eventHomeBoxAreaTitlelRwd{
         letter-spacing: 1px;

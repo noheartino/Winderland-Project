@@ -125,6 +125,9 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
                         </div>
                         
                         {userlv >= 3 && <Link href='/event/create' className='BRwdA'><button className="eventHomeBoxAreaTitleBRwd">開團管理</button></Link>}
+                        <button className='ascto' onClick={toggleSort}>
+                            {currentSort === 'asc' ? '最早▴' : '最新▾'}
+                        </button>
                         
                         
                     </div>
