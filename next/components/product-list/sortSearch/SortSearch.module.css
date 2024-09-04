@@ -16,25 +16,26 @@
         text-align: end;
     }
 
-    .search-total{
+    .search-total {
         display: flex;
         justify-content: flex-start;
         color: var(--text_primary);
         padding-left: 1.5%;
 
-        & .search-span{
+        & .search-span {
             color: rgb(157, 60, 60);
             font-weight: 600;
         }
 
-        & .d-flex{
+        & .d-flex {
             display: flex;
         }
 
-        & .d-none{
+        & .d-none {
             display: none;
         }
     }
+
     .shop-fliter {
 
         & select {
@@ -79,8 +80,8 @@
             border: none;
             background: none;
             position: absolute;
-            right: 20px;
-            top: 7px;
+            right: 6%;
+            top: 25%;
             color: var(--purple_light);
         }
 
@@ -140,6 +141,16 @@
                 width: 90%;
             }
         }
+
+        & .search-clear {
+            font-size: 15px;
+            border: none;
+            background: none;
+            position: absolute;
+            right: 11%;
+            top: 25%;
+            color: #7C7C7C;
+        }
     }
 
     .shop-port {
@@ -154,7 +165,6 @@
         color: var(--orange);
         margin-bottom: 20px;
         padding-bottom: 3px;
-        border-bottom: 2px solid var(--light);
         text-wrap: nowrap;
 
         & .port-hr {
@@ -167,12 +177,21 @@
             margin-inline: 5%;
         }
 
-        & .port-new,
-        .port-sales,
-        .port-price {
-            width: 64px;
+        & .port-button{
+        width: 100%;
+        background: transparent;
+        color: var(--orange);
+        font-weight: 600;
+        border: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        border-bottom: 2px solid var(--light);
+
+         &.selected{
+            border-bottom: 5px solid var(--orange);
+         }
         }
-    }
+}
 
 }
 

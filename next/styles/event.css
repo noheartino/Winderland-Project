@@ -2214,3 +2214,74 @@ a.Armallmt{
     }
 
 }
+
+@keyframes arrcircle {
+    0%{
+        height: 70px;
+        border-radius: 50%;
+    }
+    20%{
+        height: 70px;
+        border-radius: 50%;
+    }
+    40%{
+        height: 75px;
+        border-radius: 50px;
+    }
+    55%{
+        height: 70px;
+        border-radius: 50px;
+    }
+    60%{
+        height: 65px;
+        border-radius: 50%;
+    }
+    100%{
+        height: 70px;
+        border-radius: 50%;
+    }
+}
+
+@keyframes arris {
+    0%{
+        top: 12px;
+    }
+    20%{
+        top: 18px;
+    }
+    40%{
+        top: 0px;
+    }
+    100%{
+        top: 12px;
+    }
+}
+.arrtotop{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 3px solid var(--wine);
+    background-color: rgba(255, 255, 255, 0.9);
+    position: fixed;
+    z-index: 1000;
+    bottom: -80px;
+    right: 80px;
+    transition: 1s;
+    animation: arrcircle 1s ease-in infinite;
+    cursor: pointer;
+
+    .arris{
+        position: absolute;
+        /* border: 1px solid lightcoral; */
+        width: 18px;
+        height: 35px;
+        left: 24px;
+        top: 15px;
+        background: url(/nav-footer/arrowtop.png) no-repeat center/95%;
+        animation: arris 3s ease-in infinite;
+    }
+}
+
+.arrtotop.active{
+    bottom: 80px;
+}

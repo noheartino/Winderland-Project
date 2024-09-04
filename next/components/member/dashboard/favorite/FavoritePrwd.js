@@ -52,7 +52,7 @@ export default function FavoritePrwd({ searchResults, searchTerm }) {
 
   return (
     <>
-      <span>{searchTerm ? '商品收藏搜尋結果' : '商品收藏'}</span>
+      <span>{searchTerm ? '商品收藏' : '商品收藏'}</span>
       <hr />
 
       {displayProducts.length === 0 ? (

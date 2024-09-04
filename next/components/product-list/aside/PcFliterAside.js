@@ -100,7 +100,7 @@ export default function PcFliterAside({
     // 構建新的 URL，只包含 category 参数
     const newQuery = categoryId ? { category: categoryId } : {};
 
-    // 使用 router.push 来更新 URL，替换当前的历史记录
+    // 使用 router.push 來更新 URL，替換當前歷史紀錄
     router.push(
       {
         pathname: "/product",
@@ -113,7 +113,7 @@ export default function PcFliterAside({
     // 調用 changeFilter 来更新组件狀態
     changeFilter("category", categoryId);
 
-    // 重置其他筛选条件
+    // 重置其他篩選條件
     changeFilter("country", "");
     changeFilter("origin", "");
     changeFilter("variet", "");

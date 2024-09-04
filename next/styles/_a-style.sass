@@ -8,15 +8,16 @@
   align-items: center
   color: var(--light)
   font-weight: 500
-  margin-bottom: 45px
+  // margin-bottom: 45px
   cursor: pointer
   h2
     font-size: 32px
     letter-spacing: 14.4px
-
+    text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.4)
   h3
     font-size: 20px
     letter-spacing: 6px
+    text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.4)
 
 /* 最上面那一列 */
 .a-function
@@ -120,6 +121,15 @@
         color: var(--purple_light)
         width: 100%
 
+  // 管理文章按鈕
+  .aManBtn
+    background-color: var(--purple_light)
+    border-radius: 44px
+    a
+      padding: 10px
+      text-decoration: none
+      color: var(--light)
+
 // 主要文章電腦側邊
 .a-contentmain
   justify-content: space-between
@@ -148,6 +158,8 @@
           margin: 0
           color: var(--text_primary)
           // padding-left: 12px
+      .active
+        background-color: var(--light)
 
     .a-btn-select
       background-color: var(--light)
@@ -215,12 +227,16 @@
     .a-collection
       height: 350px
       background: url(/images/article/collectionMark.jpeg) center center no-repeat
-      background-color: rgba(67, 1, 1, 0.5)
+      background-color: rgba(52, 0, 0, 0.5)
       background-blend-mode: darken
       display: flex
       flex-direction: column
       justify-content: center
       align-items: center
+      transition: all 0.5s ease
+      &:hover
+        background-color: rgba(24, 0, 0, 0.5)
+
 
       h3
         color: var(--light)
@@ -232,7 +248,8 @@
     .a-box
       display: flex
       height: 200px
-      border: 1px solid var(--purple_light)
+      border: 2px solid var(--wine_light)
+
       .a-box-img
         width: 40%
         // height: 200px

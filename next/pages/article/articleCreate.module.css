@@ -1,5 +1,5 @@
 .ACbg {
-  background-color: var(--light);
+  /* background-color: var(--light); */
 }
 .AcreatePage {
   background-color: #fff;
@@ -23,6 +23,7 @@
 .ACDropArea {
   height: 350px;
   border: 2px dashed #ccc;
+  background-color: #FBF9F7;
   /* display: grid; */
   /* place-items: center; */
   color: #ccc;
@@ -46,16 +47,17 @@
   height: 100%;
 }
 .ACCategory{
-  border: none;
-  border-radius: 10px;
+  background-color: #FBF9F7;
+  border: 1px solid #dbdbdb;
   color: var(--text_primary);
-  background-color: #eeeeee;
   letter-spacing: 1.4px;
 }
 
 .ACtitle {
   outline: none;
   font-size: 24px;
+  background-color: #FBF9F7;
+  border: 1px solid #dbdbdb;
   &::placeholder {
     color: #e3e2e2;
     /* letter-spacing: 1.4px; */
@@ -73,8 +75,8 @@
   outline: none;
   resize: none;
   font-size: 18px;
-  /* letter-spacing: 2px; */
-  border: 0;
+  background-color: #FBF9F7;
+  border: 1px solid #dbdbdb;
   &::placeholder {
     color: var(--wine_light);
     letter-spacing: 2px;
