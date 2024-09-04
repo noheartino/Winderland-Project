@@ -266,7 +266,7 @@ export default function Course() {
         >
           <img
             className="tarot_card_back"
-            src="/images/course_and_tarot/tarot_card_back.jpg"
+            src="http://localhost:3005/uploads/course_and_tarot/tarot_card_back.jpg"
             alt=""
           />
         </div>
@@ -281,14 +281,14 @@ export default function Course() {
             data-bs-dismiss="modal"
           >
             <h6 className="text-prim-dark m-0 me-1 text-nowrap">抽牌規則</h6>
-            <img src="/images/course_and_tarot/tarotsICON.png" alt="" width="25px" />
+            <img src="http://localhost:3005/uploads/course_and_tarot/tarotsICON.png" alt="" width="25px" />
           </button>
         </div>
         {/* 抽牌區
               <div className="pick-card-area row justify-content-center align-items-center px-0 m-0 flex-nowrap d-none" style="overflow-x: hidden">
                   <div className="col-auto d-flex flex-column justify-content-centercard-1 px-0 m-0">
                       <div className="tarot_card_div card_unactive">
-                          <img className="tarot_card_front" src="/images/course_and_tarot/theHangedMan.png" alt="" />
+                          <img className="tarot_card_front" src="http://localhost:3005/uploads/course_and_tarot/theHangedMan.png" alt="" />
                       </div>
                   </div>
               </div> */}
@@ -302,7 +302,7 @@ export default function Course() {
             <div className="tarot_card_div card_active">
               <img
                 className="tarot_card_front"
-                src="/images/course_and_tarot/theHangedMan.png"
+                src="http://localhost:3005/uploads/course_and_tarot/theHangedMan.png"
                 alt=""
               />
             </div>
@@ -315,7 +315,7 @@ export default function Course() {
             <div className="tarot_card_div card_active">
               <img
                 className="tarot_card_front"
-                src="/images/course_and_tarot/theHangedMan.png"
+                src="http://localhost:3005/uploads/course_and_tarot/theHangedMan.png"
                 alt=""
               />
             </div>
@@ -328,7 +328,7 @@ export default function Course() {
             <div className="tarot_card_div card_active">
               <img
                 className="tarot_card_front"
-                src="/images/course_and_tarot/theHangedMan.png"
+                src="http://localhost:3005/uploads/course_and_tarot/theHangedMan.png"
                 alt=""
               />
             </div>
@@ -384,7 +384,7 @@ export default function Course() {
               </div>
               <div className="col-4 d-flex justify-content-center">
                 <div className="result_cardfront_md">
-                  <img src="/images/course_and_tarot/theHangedMan.png" alt="" />
+                  <img src="http://localhost:3005/uploads/course_and_tarot/theHangedMan.png" alt="" />
                 </div>
               </div>
             </div>
@@ -405,7 +405,7 @@ export default function Course() {
               </div>
               <div className="col-4 d-flex justify-content-center">
                 <div className="result_cardfront_md">
-                  <img src="/images/course_and_tarot/theTower.png" alt="" />
+                  <img src="http://localhost:3005/uploads/course_and_tarot/theTower.png" alt="" />
                 </div>
               </div>
             </div>
@@ -431,7 +431,7 @@ export default function Course() {
                 </div>
                 <div className="col-4 d-flex justify-content-center">
                   <div className="result_cardfront_lg">
-                    <img src="/images/course_and_tarot/theChariot.png" alt="" />
+                    <img src="http://localhost:3005/uploads/course_and_tarot/theChariot.png" alt="" />
                   </div>
                 </div>
               </div>
@@ -465,7 +465,7 @@ export default function Course() {
                 <div className="result2-img-area position-relative">
                   <img
                     className="position-relative"
-                    src="/images/course_and_tarot/wineEX.png"
+                    src="http://localhost:3005/uploads/course_and_tarot/wineEX.png"
                     alt=""
                   />
                   <button
@@ -509,7 +509,7 @@ export default function Course() {
                 <div className="result2-img-area position-relative">
                   <img
                     className="position-relative"
-                    src="/images/course_and_tarot/wineEX.png"
+                    src="http://localhost:3005/uploads/course_and_tarot/wineEX.png"
                     alt=""
                   />
                   <button
@@ -551,7 +551,7 @@ export default function Course() {
                 <div className="result2-img-area position-relative">
                   <img
                     className="position-relative"
-                    src="/images/course_and_tarot/wineEX.png"
+                    src="http://localhost:3005/uploads/course_and_tarot/wineEX.png"
                     alt=""
                   />
                   <button

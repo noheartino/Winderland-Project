@@ -213,7 +213,7 @@ router.get('/courses', authenticate, async (req, res) => {
   }
 })
 
-// @ 添加文章到收藏（用在課程頁面）
+// @ 添加課程到收藏（用在課程頁面）
 router.post('/courses/:id', authenticate, async (req, res) => {
   try {
     const userId = req.user.id
@@ -244,7 +244,7 @@ router.post('/courses/:id', authenticate, async (req, res) => {
   }
 })
 
-// @ 從文章收藏中移除
+// @ 從課程收藏中移除
 router.delete('/courses/:id', authenticate, async (req, res) => {
   try {
     const userId = req.user.id
@@ -295,35 +295,35 @@ router.get('/articles', authenticate, async (req, res) => {
 })
 
 // @ 添加文章到收藏（用在文章頁面）
-// router.post('/articles/:id', authenticate, async (req, res) => {
-//   try {
-//     const userId = req.user.id
-//     const articleId = req.params.id
+router.post('/articles/:id', authenticate, async (req, res) => {
+  try {
+    const userId = req.user.id
+    const articleId = req.params.id
 
-//     // 檢查是否已收藏
-//     const [existing] = await connection.query(
-//       'SELECT * FROM user_like WHERE user_id = ? AND item_id = ? AND item_type = "article"',
-//       [userId, articleId]
-//     )
+    // 檢查是否已收藏
+    const [existing] = await connection.query(
+      'SELECT * FROM user_like WHERE user_id = ? AND item_id = ? AND item_type = "article"',
+      [userId, articleId]
+    )
 
-//     if (existing.length > 0) {
-//       return res
-//         .status(400)
-//         .json({ status: 'error', message: '文章已在收藏中' })
-//     }
+    if (existing.length > 0) {
+      return res
+        .status(400)
+        .json({ status: 'error', message: '文章已在收藏中' })
+    }
 
-//     // 添加到收藏
-//     await connection.query(
-//       'INSERT INTO user_like (user_id, item_id, item_type) VALUES (?, ?, "article")',
-//       [userId, articleId]
-//     )
+    // 添加到收藏
+    await connection.query(
+      'INSERT INTO user_like (user_id, item_id, item_type) VALUES (?, ?, "article")',
+      [userId, articleId]
+    )
 
-//     res.json({ status: 'success', message: '文章已添加到收藏' })
-//   } catch (error) {
-//     console.error('添加文章到收藏時出錯:', error)
-//     res.status(500).json({ status: 'error', message: '服務器錯誤' })
-//   }
-// })
+    res.json({ status: 'success', message: '文章已添加到收藏' })
+  } catch (error) {
+    console.error('添加文章到收藏時出錯:', error)
+    res.status(500).json({ status: 'error', message: '服務器錯誤' })
+  }
+})
 
 // @ 從文章收藏中移除
 router.delete('/articles/:id', authenticate, async (req, res) => {
@@ -344,7 +344,6 @@ router.delete('/articles/:id', authenticate, async (req, res) => {
 })
 
 // # 搜尋
-
 router.get('/search', authenticate, async (req, res) => {
   try {
     const userId = req.user.id

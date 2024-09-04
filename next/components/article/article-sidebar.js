@@ -1,5 +1,4 @@
 import React from "react";
-import ArticleDateSearch from "./article-date-search";
 import { useRouter } from "next/router";
 import style from "@/components/article/sortCheckbox.module.css";
 
@@ -10,40 +9,40 @@ export default function ArticleSidebar({
   onStartDateChange,
   onEndDateChange,
   selectedDate,
-  onCategoryChange
+  onCategoryChange,
+  selectedCategory
 }) {
-  const router = useRouter();
 
   return (
     <>
       <ul className="pt-3">
         類型
         <li
-          className="aCategoryLi"
+          className={`aCategoryLi ${selectedCategory === "knowledge" ? "active" : ""}`}
           onClick={() => onCategoryChange("knowledge")}
         >
           <p>知識</p>
         </li>
         <li
-          className="aCategoryLi"
+          className={`aCategoryLi ${selectedCategory === "regional" ? "active" : ""}`}
           onClick={() => onCategoryChange("regional")}
         >
           <p>產區特色</p>
         </li>
         <li
-          className="aCategoryLi"
+          className={`aCategoryLi ${selectedCategory === "varieties" ? "active" : ""}`}
           onClick={() => onCategoryChange("varieties")}
         >
           <p>品種介紹</p>
         </li>
         <li
-          className="aCategoryLi"
+          className={`aCategoryLi ${selectedCategory === "pairing" ? "active" : ""}`}
           onClick={() => onCategoryChange("pairing")}
         >
           <p>搭配餐點</p>
         </li>
         <li
-          className="aCategoryLi"
+          className={`aCategoryLi ${selectedCategory === "cocktail" ? "active" : ""}`}
           onClick={() => onCategoryChange("cocktail")}
         >
           <p>調酒知識</p>

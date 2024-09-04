@@ -10,6 +10,7 @@ import Nav from "@/components/Header/Header";
 import Footer from "@/components/footer/footer";
 import ListPageNation from "@/components/product-list/productlist/ListPageNation";
 import Arrtotop from "@/components/Header/arr";
+import Head from "next/head";
 
 export default function ProductIndex() {
   const [products, setProducts] = useState([]);
@@ -277,6 +278,16 @@ export default function ProductIndex() {
   return (
     <>
       <>
+      <Head>
+          <title>醺迷仙園｜商品列表</title>
+
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+          />
+          <link rel="icon" href="/logo.png" />
+      </Head>
         <header>
           <Nav />
           {/* TOP的分類名稱 */}

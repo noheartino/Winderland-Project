@@ -8,12 +8,12 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
 import Head from "next/head";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 export default function New() {
   const { auth } = useAuth();
   const [userAccount, setUserAccount] = useState(null);
   const [userId, setUserId] = useState(null);
-  console.log(auth.userData);
   // 等待獲取userId
   useEffect(() => {
     // 模擬從 useAuth 中獲取 userId
@@ -31,7 +31,7 @@ export default function New() {
     return () => clearTimeout();
   }, [auth]);
 
-  console.log(userAccount);
+  // console.log(userAccount);
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
@@ -51,12 +51,6 @@ export default function New() {
       setMainImagePreview(URL.createObjectURL(file));
     }
   };
-  // const handleInlineImageUpload = (e) => {
-  //   // 在此處理內嵌圖片上傳
-  //   const files = Array.from(e.target.files);
-  //   setInlineImages(files);
-  //   setInlineImagePreviews(files.map((file) => URL.createObjectURL(file)));
-  // };
 
   // 新增類別
   const handleCategoryChange = (e) => {
@@ -65,6 +59,18 @@ export default function New() {
 
   // 新增文章內容
   const handleInput = () => {
+    // Step 1: 提取出所有的 img 標籤的 alt 屬性
+    const imgElements = contentRef.current.getElementsByTagName("img");
+    const currentAltAttributes = Array.from(imgElements).map((img) => img.alt);
+
+    // Step 2: 過濾 inlineImages，保留 alt 屬性中已存在的文件
+    const updatedInlineImages = inlineImages.filter((file) =>
+      currentAltAttributes.includes(file.name)
+    );
+
+    // Step 3: 更新 inlineImages 狀態
+    setInlineImages(updatedInlineImages);
+
     const content = contentRef.current.innerHTML;
     setContent(content); // 假設你有一個 state 來存儲內容
   };
@@ -82,7 +88,7 @@ export default function New() {
     files.forEach((file, index) => {
       const img = document.createElement("img");
       img.src = newImages[index];
-      img.alt = "inline-image";
+      img.alt = `${file.name}`;
       img.className = style.inlineImage;
 
       // 插入圖片到保存的光標位置
@@ -118,11 +124,6 @@ export default function New() {
     saveSelection();
   };
 
-  // const processContent = (content) => {
-  //   // 替換 <img> 標籤為 <!--IMAGE_HERE--> 佔位符
-  //   const imagePlaceholderRegex = /<img[^>]*>/g;
-  //   return content.replace(imagePlaceholderRegex, "<!--IMAGE_HERE-->");
-  // };
   const processContent = (content) => {
     // 暫時將 <!--IMAGE_HERE--> 替換為特殊標記
     const placeholder = "UNIQUE_IMAGE_PLACEHOLDER";
@@ -210,14 +211,13 @@ export default function New() {
       setLoading(false);
     }
   };
-  console.log(inlineImages);
-  console.log(category);
-  console.log(title);
-  console.log(mainImage);
+  // console.log(inlineImages);
+  // console.log(category);
+  // console.log(title);
+  // console.log(mainImage);
   // console.log(contentRef.current.innerHTML);
   return (
     <>
-      {/* Header */}
       <Head>
         <title>醺迷仙園｜新增文章</title>
 
@@ -229,6 +229,29 @@ export default function New() {
         <link rel="icon" href="/logo.png" />
       </Head>
       <Nav />
+      {/* Banner */}
+      <div className="container-fluid a-banner">
+        <h2>相關文章</h2>
+        <h3>Aritcle</h3>
+      </div>
+      <div className="eventManageNav">
+        <div className="container">
+          <div className="ManageNavT">文章管理</div>
+          <div className="ManageNavList">
+            <Link href="/article/new" className="Armall">
+              <div className="NavListLi NowUnderLI">新增文章</div>
+            </Link>
+            <Link href="/article/myarticle" className="Armall">
+              <div className="NavListLi">我的文章</div>
+            </Link>
+            <Link href="/article/edit" className="Armall">
+              <div className="NavListLi">編輯文章</div>
+            </Link>
+          </div>
+        </div>
+      </div>
+      {/* Header */}
+
       <div className={`container-fuild ${style.ACbg} row`}>
         <div className={`container ${style.AcreatePage} col-lg-7 col-11 py-5`}>
           <div className={`${style.ACnav} col row ps-5 mb-3`}>
@@ -242,7 +265,7 @@ export default function New() {
           </div>
           <form className="row px-5" onSubmit={handleSubmit}>
             <select
-              className={`${style.ACCategory} ms-2 my-2 py-2 col-4`}
+              className={`${style.ACCategory} my-2 py-2 col-4`}
               value={category} // 設定選取值
               onChange={handleCategoryChange} // 監聽變更
             >
@@ -280,7 +303,7 @@ export default function New() {
             </div>
 
             <input
-              className={`${style.ACtitle} py-1 mt-2 col-12 border-0`}
+              className={`${style.ACtitle} py-1 mt-2 col-12`}
               placeholder="文章標題"
               value={title}
               onChange={(e) => setTitle(e.target.value)}

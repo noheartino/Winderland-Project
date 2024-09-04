@@ -1,4 +1,5 @@
 import React,{ useEffect, useState } from 'react'
+import { useRouter } from 'next/router';
 
 export default function CourseFilter({teachers, setScore
     , districts
@@ -18,6 +19,8 @@ export default function CourseFilter({teachers, setScore
     , priceStart
     , priceEnd
     ,setCurrentPage}) {
+
+    const router = useRouter()
 
   function handleCheckDistrict(e){
     // 點下之後，等於切換checked
@@ -44,6 +47,7 @@ export default function CourseFilter({teachers, setScore
     }
   }, [districtArr])
   function handleDistrictAll(e){
+    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
     if(e.target.checked){
         const newArr = districts.map((district)=>{
             return district.districtStr
@@ -58,27 +62,32 @@ export default function CourseFilter({teachers, setScore
   function handelSetScore(e){
     setScore(Math.floor(e.target.value));
     setCurrentPage(1)
+    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
   
   function handleOnlineRadio(e){
     setOnlineFilter(e.target.textContent);
     setCurrentPage(1)
+    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
 
   function handleTeacherSelect(e){
     setTeacherSelect(e.target.value)
     setCurrentPage(1)
+    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
 
   function handleDateStart(e) {
     setDateStart(e.target.value);
     setCurrentPage(1)
+    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
 
   function handleDateEnd(e) {
     const newDateEnd = e.target.value;
     setDateEnd(newDateEnd);
     setCurrentPage(1)
+    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
 
   function handlePriceStart(e) {
@@ -89,6 +98,7 @@ export default function CourseFilter({teachers, setScore
     const newPriceStart = Math.floor(e.target.value);
     setPriceStart(newPriceStart);
     setCurrentPage(1)
+    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
 
   function handlePriceEnd(e) {
@@ -99,11 +109,13 @@ export default function CourseFilter({teachers, setScore
     const newPriceEnd = Math.floor(e.target.value);
     setPriceEnd(newPriceEnd);
     setCurrentPage(1)
+    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
 
   function handleClearPrice(){
     setPriceEnd("")
     setPriceStart("")
+    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
   useEffect(()=>{
     document.querySelector(["#priceStart"]).value=priceStart
@@ -122,6 +134,7 @@ export default function CourseFilter({teachers, setScore
         })
     setDistrictArr(newArr)
     document.querySelector(['#districtAll']).checked=true
+    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
   return (
     <>  

@@ -71,7 +71,7 @@ export default function TeacherDetail() {
             <div className="d-flex flex-column align-items-center gap-4">
               <div className="teacher-detail-head col-auto me-3 px-0">
                 <Image
-                  src={`/images/course_and_tarot/${teacher?.teacher_path}`}
+                  src={`http://localhost:3005/uploads/course_and_tarot/${teacher?.teacher_path}`}
                   width={100}
                   height={100}
                   alt=""

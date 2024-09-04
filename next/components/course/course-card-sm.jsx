@@ -22,13 +22,14 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
             <div className="course-video-video overflow-hidden">
               <img
                 className="course-img21"
-                src={`/images/course_and_tarot/${class_path}`}
-                alt=""
+                src={`http://localhost:3005/uploads/course_and_tarot/${class_path}`}
+                alt={`${class_path}`}
+                title={`${class_path}`}
               />
             </div>
           </div>
           <div className="card-md-body col-8 col-md-12">
-            <div className="course-body-header px-0">
+            <div className="course-body-header px-0 mt-0 mt-md-3">
               <span
                 className={`${
                   isOnline === true ? "online-tag" : "underline-tag"

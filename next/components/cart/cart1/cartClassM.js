@@ -31,7 +31,7 @@ export default function CartClassM({ classItems, onRemove }) {
             <div key={item.cart_item_id} className={`d-flex ${css.cartClassBox}`}>
               <div className={css.cartClassImg}>
                 <img
-                  src={`/images/course_and_tarot/${item.class_image}`}
+                  src={`http://localhost:3005/uploads/course_and_tarot/${item.class_image}`}
                   alt="Class Image"
                 />
               </div>
