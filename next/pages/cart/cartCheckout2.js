@@ -118,7 +118,7 @@ export default function CartCheckout2() {
   return (
     <>
       <Head>
-          <title>購物車</title>
+          <title>醺迷仙園｜購物車</title>
 
           <meta charSet="utf-8" />
           <meta

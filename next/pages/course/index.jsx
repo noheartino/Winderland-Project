@@ -287,7 +287,7 @@ export default function CourseIndex() {
   return (
     <>
       <Head>
-      <title>課程首頁</title>
+      <title>醺迷仙園｜課程首頁</title>
         <meta charSet="utf-8" />
         <meta
           name="viewport"

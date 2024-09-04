@@ -90,7 +90,7 @@ export default function ArticleDetail() {
   return (
     <>
       <Head>
-        <title>{article.title}</title>
+        <title>醺迷仙園｜{article.title}</title>
 
         <meta charSet="utf-8" />
         <meta

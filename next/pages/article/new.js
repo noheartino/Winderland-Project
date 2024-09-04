@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
 import Head from "next/head";
+import Swal from "sweetalert2";
 
 export default function New() {
   const { auth } = useAuth();
@@ -190,11 +191,21 @@ export default function New() {
         );
       }
 
-      alert("文章和圖片成功上傳");
+      Swal.fire({
+        title: "成功",
+        text: "文章和圖片成功上傳",
+        icon: "success",
+        confirmButtonText: "確定"
+      });
       router.push("/article");
     } catch (error) {
       console.error(error);
-      alert("上傳失敗");
+      Swal.fire({
+        title: "上傳失敗",
+        text: "請稍後再試",
+        icon: "error",
+        confirmButtonText: "確定"
+      });
     } finally {
       setLoading(false);
     }
@@ -208,7 +219,7 @@ export default function New() {
     <>
       {/* Header */}
       <Head>
-        <title>新增文章</title>
+        <title>醺迷仙園｜新增文章</title>
 
         <meta charSet="utf-8" />
         <meta

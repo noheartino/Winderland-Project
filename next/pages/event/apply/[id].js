@@ -84,7 +84,7 @@ export default function Applyevent() {
   return (
     <>
       <Head>
-        <title>一支會活動報名</title>
+        <title>醺迷仙園｜一支會活動報名</title>
 
         <meta charSet="utf-8" />
         <meta
@@ -102,7 +102,7 @@ export default function Applyevent() {
           <div className="row g-5">
             <div className="col-12 col-lg-5">
               <img
-                src={`/event/${eventinfo.event_cover_image}`}
+                src={`http://localhost:3005/uploads/${eventinfo.event_cover_image}`}
                 alt=""
                 className="eventPageimg"
               />

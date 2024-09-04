@@ -95,7 +95,7 @@ export default function Applyevent() {
   return (
     <>
       <Head>
-        <title>WinderLand Admin - 課程管理</title>
+        <title>醺迷仙園｜課程管理</title>
 
         <meta charSet="utf-8" />
         <meta

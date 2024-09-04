@@ -510,7 +510,7 @@ export default function ClassManIndex() {
       <div className='course-manage-wrap'>
         <Nav />
         <Head>
-          <title>新增課程</title>
+          <title>醺迷仙園｜新增課程</title>
 
           <meta charSet="utf-8" />
           <meta

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from 'next/router';
 import Image from "next/image";
+import Swal from "sweetalert2";
 
 export default function TestArticleComment({ articleId, comments, userId, account }) {
   const router = useRouter();
@@ -40,7 +41,12 @@ export default function TestArticleComment({ articleId, comments, userId, accoun
   // 新增
   const handleCreate = async () => {
     if (!commentText.trim()) {
-      alert("評論內容不能為空白");
+      Swal.fire({
+        title: "警告",
+        text: "評論內容不能為空白",
+        icon: "warning",
+        confirmButtonText: "確定"
+      });
       return;
     }
 
@@ -65,14 +71,24 @@ export default function TestArticleComment({ articleId, comments, userId, accoun
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error:", errorData.error);
-        alert("提交評論失敗：" + errorData.error);
+        Swal.fire({
+          title: "提交評論失敗",
+          text: "錯誤信息：" + errorData.error,
+          icon: "error",
+          confirmButtonText: "確定"
+        });
       } else {
         const responseData = await response.json();
         console.log(
           "Comment submitted successfully with ID:",
           responseData.commentId
         );
-        alert("評論提交成功");
+        Swal.fire({
+          title: "成功",
+          text: "評論提交成功",
+          icon: "success",
+          confirmButtonText: "確定"
+        });
         // 清空輸入框或進行其他操作
         setCommentText("");
         // 刷新頁面
@@ -80,7 +96,12 @@ export default function TestArticleComment({ articleId, comments, userId, accoun
       }
     } catch (error) {
       console.error("Error submitting comment:", error);
-      alert("發生錯誤，請聯繫管理員");
+      Swal.fire({
+        title: "發生錯誤",
+        text: "請聯繫管理員",
+        icon: "error",
+        confirmButtonText: "確定"
+      });
     }
   };
 
