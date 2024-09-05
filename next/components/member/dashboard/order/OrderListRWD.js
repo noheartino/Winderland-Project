@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import OrderCardRWD from './OrderCardRWD';
 import OrderCardDetailRWD from './OrderCardDetailRWD';
 import styles from './OrderCardRWD.module.css';
+import BounceLoader from "react-spinners/BounceLoader";
 
 export default function OrderListRWD({ orders, isLoading }) {
   const [expandedStates, setExpandedStates] = useState({});
@@ -14,7 +15,21 @@ export default function OrderListRWD({ orders, isLoading }) {
   };
 
   if (isLoading) {
-    return <div>載入中...</div>;
+    return (
+      <div>
+        <BounceLoader
+          color="#851931"
+          loading={isLoading}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
   }
 
   if (orders.length === 0) {

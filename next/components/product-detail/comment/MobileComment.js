@@ -6,6 +6,7 @@ import RatingArea from "../description/RatingArea";
 import { useProduct } from "@/context/ProductContext";
 import CommentPageNation from "./CommentPageNation";
 import NextTopLoader from 'nextjs-toploader'; // 換頁進度條－nextjs-toploader
+import BounceLoader from "react-spinners/BounceLoader";
 
 
 export default function MobileComment() {
@@ -53,7 +54,23 @@ export default function MobileComment() {
     setCurrentPage(pageNumber);
   };
 
-  if (loading) return <div>加載中...</div>;
+  if (loading) {
+    return (
+      <div>
+        <BounceLoader
+          color="#851931"
+          loading={loading}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
   if (error) return <div>錯誤: {error}</div>;
   if (!product) return <div>沒有找到產品</div>;
 

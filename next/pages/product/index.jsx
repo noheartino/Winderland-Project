@@ -11,6 +11,7 @@ import Footer from "@/components/footer/footer";
 import ListPageNation from "@/components/product-list/productlist/ListPageNation";
 import Arrtotop from "@/components/Header/arr";
 import Head from "next/head";
+import BounceLoader from "react-spinners/BounceLoader";
 
 export default function ProductIndex() {
   const [products, setProducts] = useState([]);
@@ -299,18 +300,25 @@ export default function ProductIndex() {
     setPriceRange("0-150000");
   };
 
-  if (loading)
+  const override = {
+    display: "block",
+    margin: "0 auto",
+  };
+
+  if (loading) {
     return (
-      <>
-        <div class="cssload-contain">
-          <div class="cssload-dot"></div>
-          <div class="cssload-dot"></div>
-          <div class="cssload-dot"></div>
-          <div class="cssload-dot"></div>
-          <div class="cssload-dot"></div>
-        </div>
-      </>
-    );
+      <div>
+        <BounceLoader
+          color="#851931"
+          loading={loading}
+          cssOverride={override}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    ); // 或者返回一個更具體的 loading 元素
+  }
   if (error) return <div>{error}</div>;
 
   return (

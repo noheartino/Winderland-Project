@@ -6,7 +6,7 @@ import CouponRecord from "./coupon/CouponRecord";
 import CouponExpired from "./coupon/CouponExpired";
 import CouponStorage from "./coupon/CouponStorage";
 import WPointRecord from "./coupon/WPointRecord";
-
+import BounceLoader from "react-spinners/BounceLoader";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/router";
 import CouponPlusSm from "./coupon/CouponPlusSm";
@@ -150,7 +150,21 @@ export default function DashboardCoupon() {
 
   // 如果正在加載，顯示 loading 畫面
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <BounceLoader
+          color="#851931"
+          loading={loading} // 根據 loading 狀態顯示加載動畫
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
   }
 
   return (

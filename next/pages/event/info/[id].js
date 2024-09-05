@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import BounceLoader from "react-spinners/BounceLoader";
+
 
 export default function Einfo() {
   const router = useRouter();
@@ -23,7 +25,23 @@ export default function Einfo() {
     }
   }, [id]);
 
-  if (!infodata) return <div>Loading...</div>;
+  if (!infodata) {
+    return (
+      <div>
+        <BounceLoader
+          color="#851931"
+          loading={true}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
 
   const eventinfo = infodata.eventinfo[0] || [];
   const applyinfo = infodata.applyinfo || [];

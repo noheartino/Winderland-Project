@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./RatingArea.module.css";
 import { useProduct } from "@/context/ProductContext";
+import BounceLoader from "react-spinners/BounceLoader";
+
 
 export default function RatingArea() {
   const { product, loading, error } = useProduct();
@@ -49,7 +51,23 @@ export default function RatingArea() {
     }
   }, [product]);
 
-  if (loading) return <div>加載中...</div>;
+  if (loading) {
+    return (
+      <div>
+        <BounceLoader
+          color="#851931"
+          loading={loading}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
   if (error) return <div>{error}</div>;
   if (!product || !product[0] || !product[0].comments) {
     return <div>查無商品評論數據</div>;

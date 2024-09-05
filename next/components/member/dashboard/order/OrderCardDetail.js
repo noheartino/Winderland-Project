@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import styles from '@/components/member/dashboard/order/OrderCardDetail.module.css'
+import BounceLoader from "react-spinners/BounceLoader";
 
 import OrderCardDetailItem from './OrderCardDetailItem'
 import OrderCardDetailCoupon from './OrderCardDetailCoupon'
@@ -40,7 +41,23 @@ export default function OrderCardDetail({ orderUuid }) {
         fetchOrderDetails()
       }, [orderUuid])
     
-      if (isLoading) return <div>Loading...</div>
+      if (isLoading) {
+        return (
+          <div>
+            <BounceLoader
+              color="#851931"
+              loading={isLoading}
+              cssOverride={{
+                display: "block",
+                margin: "0 auto",
+              }}
+              size={30}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </div>
+        );
+      }
       if (error) return <div>Error: {error}</div>
       if (!orderData) return <div>No order data available</div>
     

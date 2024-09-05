@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/use-auth'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
 import Link from 'next/link'
-
+import BounceLoader from "react-spinners/BounceLoader";
 import ProfileUpdateUser from './profile/ProfileUpdateUser'
 import ProfileUpdatePwd from './profile/ProfileUpdatePwd'
 import ProfileMembership from './profile/ProfileMembership'
@@ -96,7 +96,23 @@ export default function DashboardProfile() {
     }
   }, [auth.isAuth, auth.userData]);
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) {
+    return (
+      <div>
+        <BounceLoader
+          color="#851931"
+          loading={isLoading} // 使用 isLoading 控制加載動畫
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
 
   if (!auth.isAuth) {
     return null;

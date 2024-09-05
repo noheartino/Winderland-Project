@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
 import Link from "next/link";
 import Head from "next/head";
+import BounceLoader from "react-spinners/BounceLoader";
 
 export default function Applyevent() {
   const router = useRouter();
@@ -25,7 +26,23 @@ export default function Applyevent() {
     }
   }, [useridis]);
 
-  if (!infodata) return <div>Loading...</div>;
+  if (!infodata) {
+    return (
+      <div>
+        <BounceLoader
+          color="#851931"
+          loading={true}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
 
   const myinvitation = infodata.myinvitation[0] || [];
   const allinvitation = infodata.allinvitation[0] || [];

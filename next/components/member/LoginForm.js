@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/use-auth'
 import Swal from 'sweetalert2'
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useFirebase } from '@/hooks/useFirebase';
+import BounceLoader from "react-spinners/BounceLoader";
 
 
 // 漂浮標籤
@@ -215,8 +216,24 @@ export default function LoginForm() {
     setShowPassword(prev => !prev);
   }, []);
 
+  const override = {
+    display: "block",
+    margin: "0 auto",
+  };
+
   if (isLoading) {
-    return <div>Loading...</div>; // 或者其他加載指示器
+    return (
+      <div>
+        <BounceLoader
+          color="#851931"
+          loading={isLoading} // 使用 isLoading 來控制加載動畫
+          cssOverride={override}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
   }
 
 

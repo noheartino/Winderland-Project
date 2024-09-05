@@ -189,7 +189,6 @@ export default function CartCheckout1() {
   const override = {
     display: "block",
     margin: "0 auto",
-    // borderColor: 'red',
   };
 
   if (loading) {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import styles from "./CategoryTitle.module.css";
+import BounceLoader from "react-spinners/BounceLoader";
 
 export default function CategoryTitle({ filters, selectFilters }) {
   const DEFAULT_IMAGE = "/shop_images/all.jpg";
@@ -73,13 +74,17 @@ export default function CategoryTitle({ filters, selectFilters }) {
   if (!isDataLoaded || !currentCategory) {
     return (
       <>
-        <div class="cssload-contain">
-          <div class="cssload-dot"></div>
-          <div class="cssload-dot"></div>
-          <div class="cssload-dot"></div>
-          <div class="cssload-dot"></div>
-          <div class="cssload-dot"></div>
-        </div>
+        <BounceLoader
+          color="#851931"
+          loading={true}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
       </>
     );;
   }

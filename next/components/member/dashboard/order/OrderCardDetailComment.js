@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '@/components/member/dashboard/order/OrderCardDetailComment.module.css'
 import Swal from 'sweetalert2'
+import BounceLoader from "react-spinners/BounceLoader";
 
 export default function OrderCardDetailComment({ orderUuid, orderStatus }) {
     const [commentableItems, setCommentableItems] = useState([]);
@@ -185,7 +186,23 @@ export default function OrderCardDetailComment({ orderUuid, orderStatus }) {
         }
     };
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) {
+        return (
+          <div>
+            <BounceLoader
+              color="#851931"
+              loading={isLoading}
+              cssOverride={{
+                display: "block",
+                margin: "0 auto",
+              }}
+              size={30}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </div>
+        );
+      }
     if (error) return <div>Error: {error}</div>;
     if (orderStatus !== '已完成') return null;
     if (commentableItems.length === 0) return <div className={styles.noCommentItems}>沒有可評論的商品</div>;
