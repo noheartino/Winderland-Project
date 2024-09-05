@@ -246,9 +246,9 @@ export default function New() {
             <Link href="/article/myarticle" className="Armall">
               <div className="NavListLi">我的文章</div>
             </Link>
-            <Link href="/article/edit" className="Armall">
+            {/* <Link href="/article/edit" className="Armall">
               <div className="NavListLi">編輯文章</div>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

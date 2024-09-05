@@ -42,6 +42,7 @@ export default function ArticleDetail() {
             category: categoryMapping[data.category] || data.category,
           };
           setArticle(processedArticle);
+          console.log(processedArticle)
         })
         .catch((error) => {
           console.log(error);

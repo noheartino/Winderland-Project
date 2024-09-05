@@ -32,12 +32,12 @@ export default function Applyevent() {
         }));
 
         setMyarticle(processedArticles);
-        console.log(processedArticles);
+        // console.log(processedArticles);
       })
       .catch((error) => console.error("Error:", error));
     // }
   }, []);
-  console.log(myarticle);
+  // console.log(myarticle);
   const [activeIndexes, setActiveIndexes] = useState([]);
   const [scaleYIndexes, setScaleYIndexes] = useState([]);
 
@@ -96,9 +96,9 @@ export default function Applyevent() {
               <Link href="/article/myarticle" className="Armall">
                 <div className="NavListLi NowUnderLI">我的文章</div>
               </Link>
-              <Link href="/article/edit" className="Armall">
+              {/* <Link href="/article/edit" className="Armall">
                 <div className="NavListLi">編輯文章</div>
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>

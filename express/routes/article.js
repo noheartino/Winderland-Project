@@ -297,75 +297,117 @@ router.put(
         articleId,
       ])
 
-      // 获取当前所有的图片路径
-      const [existingImages] = await connection.execute(
-        `SELECT path FROM images_article WHERE article_id = ?`,
-        [articleId]
-      )
-      // 排除第一笔数据
-      const existingImagePaths = existingImages.map((img) => img.path).slice(1)
-      console.log(existingImagePaths)
-      // 处理现有内嵌图片
-      const currentInlineImages = JSON.parse(existingInlineImages).slice(1)
-
-      // 找出需要删除的图片
-      const imagesToDelete = existingImagePaths.filter(
-        (path) => !currentInlineImages.includes(path)
-      )
-
-      // 删除图片
-      await Promise.all(
-        imagesToDelete.map(async (imagePath) => {
-          await connection.execute(
-            `DELETE FROM images_article WHERE article_id = ? AND path = ?`,
-            [articleId, imagePath]
-          )
-        })
-      )
-
-      // 添加主图
+      // 添加主圖
       if (req.files['mainImage']) {
         const newMainImagePath = req.files['mainImage'][0].filename
+        console.log(newMainImagePath)
 
-        // 获取当前主图路径
+        // 獲取當前主圖的 id 和路徑
         const [currentMainImage] = await connection.execute(
-          `SELECT path FROM images_article WHERE article_id = ? ORDER BY id ASC LIMIT 1`,
+          `SELECT id, path FROM images_article WHERE article_id = ? ORDER BY id ASC LIMIT 1`,
           [articleId]
         )
 
-        const currentMainImagePath =
-          currentMainImage.length > 0 ? currentMainImage[0].path : null
+        const currentMainImageId = currentMainImage[0].id
+        const currentMainImagePath = currentMainImage[0].path
 
-        // 只有当主图路径不同的时候才更新
+        // 只有當主圖路徑不同時才更新
         if (currentMainImagePath !== newMainImagePath) {
           await connection.execute(
-            `INSERT INTO images_article (article_id, path) VALUES (?, ?) ON DUPLICATE KEY UPDATE path = VALUES(path)`,
-            [articleId, newMainImagePath]
+            `UPDATE images_article SET path = ? WHERE id = ?`,
+            [newMainImagePath, currentMainImageId]
           )
         }
       }
 
-      // 添加内嵌图片
+      // 添加內嵌圖片並取得檔案名稱
       if (req.files['inlineImages']) {
         const inlineImagePaths = req.files['inlineImages'].map(
           (file) => file.filename
         )
-        const existingInlineImagePaths = currentInlineImages
 
-        // 找出需要添加的图片
-        const imagesToAdd = inlineImagePaths.filter(
-          (path) => !existingInlineImagePaths.includes(path)
+        // 獲取當前所有圖片的路徑，排除第一筆（主圖）
+        const [existingImages] = await connection.execute(
+          `SELECT path FROM images_article WHERE article_id = ? ORDER BY id ASC`,
+          [articleId]
         )
+        const existingImagePaths = existingImages
+          .map((img) => img.path)
+          .slice(1) // 排除主圖
 
-        // 添加新的图片
-        await Promise.all(
-          imagesToAdd.map(async (imagePath) => {
-            await connection.execute(
-              `INSERT INTO images_article (article_id, path) VALUES (?, ?) ON DUPLICATE KEY UPDATE path = VALUES(path)`,
-              [articleId, imagePath]
-            )
-          })
-        )
+        // 開始比對傳入的內嵌圖片和資料庫中的圖片
+        const imagesToAdd = []
+        const imagesToUpdate = []
+        const imagesToDelete = []
+
+        // 1. 比較兩個陣列的長度，若不同則添加新圖片
+        if (inlineImagePaths.length > existingImagePaths.length) {
+          // 有多的圖片需要添加
+          for (
+            let i = existingImagePaths.length;
+            i < inlineImagePaths.length;
+            i++
+          ) {
+            imagesToAdd.push(inlineImagePaths[i])
+          }
+        }
+
+        // 2. 比較每個相同位置的圖片，若有差異則更新
+        for (
+          let i = 0;
+          i < Math.min(inlineImagePaths.length, existingImagePaths.length);
+          i++
+        ) {
+          if (inlineImagePaths[i] !== existingImagePaths[i]) {
+            imagesToUpdate.push({
+              oldPath: existingImagePaths[i],
+              newPath: inlineImagePaths[i],
+            })
+          }
+        }
+
+        // 3. 比較舊的圖片是否仍存在，若不存在則刪除
+        existingImagePaths.forEach((path) => {
+          if (!inlineImagePaths.includes(path)) {
+            imagesToDelete.push(path)
+          }
+        })
+
+        // 執行新增圖片
+        if (imagesToAdd.length > 0) {
+          await Promise.all(
+            imagesToAdd.map(async (imagePath) => {
+              await connection.execute(
+                `INSERT INTO images_article (article_id, path) VALUES (?, ?)`,
+                [articleId, imagePath]
+              )
+            })
+          )
+        }
+
+        // 執行更新圖片
+        if (imagesToUpdate.length > 0) {
+          await Promise.all(
+            imagesToUpdate.map(async ({ oldPath, newPath }) => {
+              await connection.execute(
+                `UPDATE images_article SET path = ? WHERE article_id = ? AND path = ?`,
+                [newPath, articleId, oldPath]
+              )
+            })
+          )
+        }
+
+        // 執行刪除圖片
+        if (imagesToDelete.length > 0) {
+          await Promise.all(
+            imagesToDelete.map(async (imagePath) => {
+              await connection.execute(
+                `DELETE FROM images_article WHERE article_id = ? AND path = ?`,
+                [articleId, imagePath]
+              )
+            })
+          )
+        }
       }
 
       res.status(200).json({ message: '文章更新成功' })

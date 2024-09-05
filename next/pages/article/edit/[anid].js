@@ -86,13 +86,11 @@ export default function New() {
 
                 if (index < images.length - 1) {
                   const imageHTML = `
-                    <div>
-                      <img src="http://localhost:3005/uploads/article/${
-                        images[index + 1]
-                      }" 
-                           class="editInlineImage"
-                           alt="${images[index + 1]}"/>
-                    </div>`;
+                    <img src="http://localhost:3005/uploads/article/${
+                        images[index + 1]}" 
+                          class="editInlineImage"
+                          alt="${images[index + 1]}" <img/>
+                    `;
 
                   acc.push(imageHTML);
                 }
@@ -116,7 +114,7 @@ export default function New() {
     }
   }, [router.isReady]);
 
-  console.log(article.images);
+  // console.log(article.images);
   // console.log(contentRef.current.innerHTML);
   // console.log(contentRef.current.innerHTML);
 
@@ -227,10 +225,6 @@ export default function New() {
     return processedContent.trim();
   };
 
-// 提取现有的图片 alt 属性，作为现有内嵌图片路径
-// const imgElements = contentRef.current.getElementsByTagName("img");
-// const existingInlineImages = Array.from(imgElements).map((img) => img.alt);
-// console.log(existingInlineImages)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -242,7 +236,8 @@ export default function New() {
     // 提取现有的图片 alt 属性，作为现有内嵌图片路径
     const imgElements = contentRef.current.getElementsByTagName("img");
     const existingInlineImages = Array.from(imgElements).map((img) => img.alt);
-    console.log(existingInlineImages)
+    // console.log(existingInlineImages)
+    // console.log(inlineImages)
     try {
       // 使用 FormData 来处理复杂的多部分请求
       const formData = new FormData();
@@ -306,6 +301,8 @@ export default function New() {
   console.log("類別：" + category);
   console.log("標題：" + title);
   console.log("首圖：" + mainImage);
+  console.log(inlineImages);
+  console.log(mainImage)
   // console.log(contentRef.current.innerHTML);
   return (
     <>

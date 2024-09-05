@@ -4,45 +4,48 @@ import { ClientPageRoot } from "next/dist/client/components/client-page";
 
 export default function ArticleListContent({ article }) {
   if (!article || !article.images || article.images.length === 0) {
-    return null; // 或者可以返回一個預設的加載中佈局
+    return null; // 返回預設佈局或其他內容
   }
 
-  // 假設 article.content 是從資料庫提取的文章內容
   const content = article.content;
   const imagePlaceholder = /<!--IMAGE_HERE-->/g;
-  // + <!--IMAGE_HERE-->這個切的地方往上是一塊區塊
 
-  // 使用 reduce 來處理內容和圖片
-  const contentWithImages = content
-    .split(imagePlaceholder)
-    .reduce((acc, part, index) => {
-      // 插入內容部分
-      acc.push(part);
-
-      // 檢查是否需要插入圖片
-      if (index < article.images.length - 1) {
-        // 確保插入圖片不超過圖片數組的長度
-        acc.push(
-          <div className="aid-content-pic my-4" key={`image-${index}`}>
-            <Image
-              src={`http://localhost:3005/uploads/article/${article.images[index + 1]}`} // 從第二張圖片開始插入
-              alt="Description of image"
-              width={100}
-              height={100}
-              priority
-            />
-          </div>
-        );
-      }
-
-      return acc;
-    }, []);
-
+  // 將文章內容用佔位符分割
+  const contentParts = content.split(imagePlaceholder);
+  console.log(contentParts)
+  // 使用 map 將內容與圖片組合
+  const contentWithImages = contentParts.map((part, index) => {
+    // 插入文本部分
+    const textElement = <p key={`text-${index}`}>{part}</p>;
+  
+    // 插入圖片部分，如果不是最後一個段落，則插入對應的圖片
+    const imageElement =
+      index < article.images.length - 1 ? (
+        <div className="aid-pic">
+        <img
+          src={`http://localhost:3005/uploads/article/${article.images[index+1]}`}
+          alt={`Image ${index+1}`}
+          key={`image-${index+1}`}
+        />
+        </div>
+      ) : null; // 確保最後一個段落不插入圖片
+  
+    // 返回文本段和對應的圖片
+    return (
+      <React.Fragment key={`fragment-${index}`}>
+        {textElement}
+        {imageElement}
+      </React.Fragment>
+    );
+  });
+  
   return (
     <>
       <div className="aid-content-word">
         {/* 桌機 */}
-        <div className="aid-content-p d-none d-lg-block" style={{ whiteSpace: "pre-wrap" }}>
+        <div key={article.id} className="aid-content-p d-none d-lg-block" style={{ whiteSpace: "pre-wrap" }}>
+{console.log(contentWithImages)}
+
           {contentWithImages}
         </div>
         {/* rwd */}
