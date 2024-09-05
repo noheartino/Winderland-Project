@@ -11,7 +11,7 @@ export default function ArticleCommentCreate({ articleId }) {
     const { auth, updateUserInfo } = useAuth(); // 取得認證資訊
     const router = useRouter()
     const userId = auth.userData.id; // 取得使用者 ID
-    console.log(userId)
+    // console.log(userId)
     // const articleId = articleId; // 替換為實際的文章 ID
 
     try {

@@ -310,7 +310,7 @@ export default function New() {
   return (
     <>
       <Head>
-        <title>醺迷仙園｜新增文章</title>
+        <title>醺迷仙園｜編輯文章</title>
 
         <meta charSet="utf-8" />
         <meta
@@ -433,12 +433,12 @@ export default function New() {
               <MdAddPhotoAlternate className={`${style.ACaddPhoto}`} />
             </label>
             <div className={`${style.AcreateBtn} my-3 col gap-3`}>
-              <button
+              <Link href={"/article/myarticle"}><button
                 className={`${style.ACcloseBtn} btn btn-secondary`}
                 type="button"
               >
                 取消
-              </button>
+              </button></Link>
               <button
                 className={`${style.ACplusBtn} btn`}
                 type="submit"

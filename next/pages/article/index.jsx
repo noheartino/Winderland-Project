@@ -16,13 +16,20 @@ import BounceLoader from "react-spinners/BounceLoader";
 
 
 export default function Index() {
+  const [loading, setLoading] = useState(true); // 新增 loading 狀態
   const authData = useAuth().auth;
   const UserData = authData.userData;
   const myname = UserData ? UserData.user_name : "";
   const [articles, setArticles] = useState([]);
   const [articleHead, setArticleHead] = useState(null);
-  const [sortOrder, setSortOrder] = useState("")
-  const [loading, setLoading] = useState(true); // 新增 loading 狀態
+
+  const [sortOrder, setSortOrder] = useState("");
+  const [category, setCategory] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+console.log(category)
   useEffect(() => {
     const fetchArticles = () => {
       fetch(`http://localhost:3005/api/article?sortOrder=${sortOrder}`)
@@ -39,7 +46,7 @@ export default function Index() {
             images: article.images ? article.images.split(",") : [],
           }));
           setArticles(processedArticles);
-  
+
           // 隨機選擇一筆資料
           if (processedArticles.length > 0) {
             const articleHeads = Math.floor(
@@ -56,7 +63,7 @@ export default function Index() {
           setLoading(false);
         });
     };
-  
+
     fetchArticles();
   }, [sortOrder]);
   const router = useRouter();
@@ -120,7 +127,14 @@ export default function Index() {
             {/* 搜尋列 */}
             <ArticleSearchbar />
             {/* 手機側邊欄 */}
-            <ArticleRwdSidebar />
+            <ArticleRwdSidebar
+              setSortOrder={setSortOrder}
+              setCategory={setCategory}
+              setDateFilter={setDateFilter}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+            />
+            
             {/* 管理文章按鈕 */}
             {/* 只在 myname 為 'Admin' 時顯示按鈕 */}
             {myname === "Admin" && (
@@ -131,7 +145,14 @@ export default function Index() {
           </div>
           {/* 主要文章內容區塊 */}
           <div className="row a-contentmain">
-            <ArticleIndexList Article={articleHead} sortOrder={setSortOrder} />
+            <ArticleIndexList
+              Article={articleHead}
+              sortOrder={sortOrder}
+              categorySM={category}
+              dateFilterSM={dateFilter}
+              startDateSM={startDate}
+              endDateSM={endDate}
+            />
           </div>
         </div>
       </div>

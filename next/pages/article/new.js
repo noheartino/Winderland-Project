@@ -212,7 +212,7 @@ export default function New() {
     }
   };
 
-  const date = new Date().toISOString().split('T')[0];
+  const date = new Date().toISOString().split("T")[0];
   // console.log(inlineImages);
   // console.log(category);
   // console.log(title);
@@ -270,9 +270,7 @@ export default function New() {
             </div>
             <div className={`${style.ACname} col ms-3`}>
               <p className="m-0">Admin</p>
-              <div className={`${style.ACtime}`}>
-                發佈於 {date}
-              </div>
+              <div className={`${style.ACtime}`}>發佈於 {date}</div>
             </div>
           </div>
           <form className="row px-5" onSubmit={handleSubmit}>
@@ -343,12 +341,14 @@ export default function New() {
               <MdAddPhotoAlternate className={`${style.ACaddPhoto}`} />
             </label>
             <div className={`${style.AcreateBtn} my-3 col gap-3`}>
-              <button
-                className={`${style.ACcloseBtn} btn btn-secondary`}
-                type="button"
-              >
-                取消
-              </button>
+              <Link href={"/article/myarticle"}>
+                <button
+                  className={`${style.ACcloseBtn} btn btn-secondary`}
+                  type="button"
+                >
+                  取消
+                </button>
+              </Link>
               <button
                 className={`${style.ACplusBtn} btn`}
                 type="submit"

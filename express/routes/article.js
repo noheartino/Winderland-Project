@@ -142,7 +142,7 @@ router.get('/', async (req, res) => {
     const totalQuery = `SELECT COUNT(DISTINCT a.id) as total ${baseQuery} ${whereClause}`
     const [totalResult] = await connection.execute(totalQuery, params)
     const totalPages = Math.ceil(totalResult[0].total / limit)
-    console.log(totalResult)
+    // console.log(totalResult)
 
     // 查詢當前頁面的文章
     let query = `
