@@ -39,6 +39,7 @@
 
         & .star{
             color: rgb(236, 236, 236);
+            text-shadow: -1px -1px 0 var(--wine_light), 1px -1px 0 var(--wine_light), -1px 1px 0 var(--wine_light), 1px 1px 0 var(--wine_light);
         }
 
         & .product-score {
@@ -47,6 +48,7 @@
 
         & .light {
             color: #FFF177;
+            text-shadow: -1px -1px 0 var(--wine_light), 1px -1px 0 var(--wine_light), -1px 1px 0 var(--wine_light), 1px 1px 0 var(--wine_light);
         }
 
         & .product-no-score{

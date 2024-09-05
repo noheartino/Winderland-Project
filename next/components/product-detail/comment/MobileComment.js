@@ -5,6 +5,8 @@ import styles from "./MobileComment.module.css";
 import RatingArea from "../description/RatingArea";
 import { useProduct } from "@/context/ProductContext";
 import CommentPageNation from "./CommentPageNation";
+import NextTopLoader from 'nextjs-toploader'; // 換頁進度條－nextjs-toploader
+
 
 export default function MobileComment() {
   const { product, loading, error } = useProduct();
@@ -58,7 +60,7 @@ export default function MobileComment() {
   return (
     <>
       <div className={`container ${styles["product-comment-content"]}`}>
-        <CommentTitle onSortChange={handleSortChange} />
+        <CommentTitle handleSortChange={handleSortChange} />
         <div className={`${styles["product-comment-star"]}`}>
           <RatingArea />
         </div>
