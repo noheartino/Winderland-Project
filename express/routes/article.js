@@ -320,7 +320,20 @@ router.put(
         await handleMainImage(conn, articleId, newMainImagePath)
       }
 
-      // // 處理內嵌圖片
+      // 處理內嵌圖片
+      let updatedInlineImages = JSON.parse(existingInlineImages || '[]')
+      if (req.files['inlineImages']) {
+        updatedInlineImages = await processInlineImages(
+          conn,
+          articleId,
+          updatedInlineImages,
+          req.files['inlineImages']
+        )
+      } else {
+        // 如果沒有新上傳的圖片，但有現有的圖片，也需要處理
+        await handleInlineImages(conn, articleId, updatedInlineImages)
+      }
+      // 處理內嵌圖片
       // if (req.files['inlineImages']) {
       //   const inlineImagePaths = req.files['inlineImages'].map(
       //     (file) => file.filename
@@ -332,31 +345,32 @@ router.put(
       //   const parsedExistingInlineImages = JSON.parse(existingInlineImages)
       //   await handleInlineImages(conn, articleId, parsedExistingInlineImages)
       // }
-      if (req.files['inlineImages']) {
-        const newInlineImages = req.files['inlineImages'].map(
-          (file) => file.filename
-        )
-        let updatedInlineImages = newInlineImages
+      // if (req.files['inlineImages']) {
+      //   const newInlineImages = req.files['inlineImages']
 
-        if (existingInlineImages) {
-          const parsedExistingInlineImages = JSON.parse(existingInlineImages)
+      //   // 創建一個映射，將原始檔名映射到新的 UUID 檔名
+      //   const filenameMap = {}
+      //   newInlineImages.forEach((file) => {
+      //     filenameMap[file.originalname] = file.filename
+      //   })
 
-          // 創建一個映射，將舊檔名映射到新檔名
-          const filenameMap = {}
-          newInlineImages.forEach((newFilename, index) => {
-            if (parsedExistingInlineImages[index]) {
-              filenameMap[parsedExistingInlineImages[index]] = newFilename
-            }
-          })
+      //   // 更新 existingInlineImages，替換匹配的檔名
+      //   existingInlineImages = existingInlineImages.map((filename) => {
+      //     return filenameMap[filename] || filename
+      //   })
 
-          // 更新 inlineImagePaths，如果存在匹配則使用新檔名，否則保留舊檔名
-          updatedInlineImages = parsedExistingInlineImages.map(
-            (oldFilename) => filenameMap[oldFilename] || oldFilename
-          )
-        }
+      //   // 處理新上傳的圖片
+      //   await handleInlineImages(
+      //     conn,
+      //     articleId,
+      //     newInlineImages.map((file) => file.filename)
+      //   )
+      // }
 
-        await handleInlineImages(conn, articleId, updatedInlineImages)
-      }
+      // // 更新資料庫中的 existingInlineImages
+      // await updateExistingInlineImages(conn, articleId, existingInlineImages)
+
+      // console.log('Updated existingInlineImages:', existingInlineImages)
 
       await conn.commit()
       res.status(200).json({ message: 'Article updated successfully' })
@@ -390,6 +404,36 @@ async function handleMainImage(conn, articleId, newMainImagePath) {
       [articleId, newMainImagePath]
     )
   }
+}
+
+async function processInlineImages(
+  conn,
+  articleId,
+  existingInlineImages,
+  newInlineImages
+) {
+  // 創建一個映射，將原始檔名映射到新的 UUID 檔名
+  const filenameMap = {}
+  newInlineImages.forEach((file) => {
+    filenameMap[file.originalname] = file.filename
+  })
+
+  // 更新 existingInlineImages，替換匹配的檔名，保持未更換的圖片在原位置
+  let updatedInlineImages = existingInlineImages.map((filename) => {
+    return filenameMap[filename] || filename
+  })
+
+  // 將新上傳的圖片添加到列表末尾（如果它們不是替換現有圖片）
+  newInlineImages.forEach((file) => {
+    if (!existingInlineImages.includes(file.originalname)) {
+      updatedInlineImages.push(file.filename)
+    }
+  })
+
+  // 處理內嵌圖片
+  await handleInlineImages(conn, articleId, updatedInlineImages)
+
+  return updatedInlineImages
 }
 
 async function handleInlineImages(conn, articleId, updatedInlineImages) {
