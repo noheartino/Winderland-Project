@@ -85,6 +85,16 @@ export default function DashboardProfile() {
     }
   }, [isLoading, auth.isAuth, router, updateAvatarUrl]);
 
+  // 頭像維持修正
+  useEffect(() => {
+    if (auth.isAuth && auth.userData) {
+      setAvatarUrl(`http://localhost:3005${auth.userData.avatar_url
+        }?t=${new Date().getTime()}` || "/images/member/avatar/default-avatar.jpg");
+    } else {
+      setAvatarUrl("/images/member/avatar/default-avatar.jpg");
+    }
+  }, [auth.isAuth, auth.userData]);
+
   if (isLoading) return <div>Loading...</div>
 
   if (!auth.isAuth) {
