@@ -196,7 +196,7 @@ export default function CourseFilter({teachers, setScore
         
             <div className={`col-12 mx-0 px-0 d-flex align-items-center flex-wrap row-gap-2`}>
                 <span className='d-flex flex-column align-items-center'>
-                    <p className='text-nowrap me-2 my-0 p-0'>選擇開課時間區間：</p>
+                    <p className='text-nowrap me-2 my-0 p-0'>選擇開放報名時間：</p>
                     <p className='text-nowrap me-2 my-0 p-0 emmit1 text-gray'>(包含線上課程)</p>
                 </span>
                 <span className='d-flex align-items-center'>

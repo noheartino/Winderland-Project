@@ -61,15 +61,15 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
             <div className="col-12 mx-0 px-0">
               <div className='row justify-content-between'>
                 <div className='col-auto d-flex gap-2'>
-                  <div class="dropdown">
+                  <div className="dropdown">
                     <button className="btn-light-to-prim btn py-2 px-3 spac-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         課程排序<i className="fa-solid fa-sort ms-2"></i>
                     </button>
-                    <ul class="dropdown-menu">
-                      <li><button class="dropdown-item w-100" type="button">開課時間(早→晚)</button></li>
-                      <li><button class="dropdown-item w-100" type="button">開課時間(晚→早)</button></li>
-                      <li><button class="dropdown-item w-100" type="button">金額(低→高)</button></li>
-                      <li><button class="dropdown-item w-100" type="button">金額(高→低)</button></li>
+                    <ul className="dropdown-menu">
+                      <li><button className="dropdown-item w-100" type="button">開課時間(早→晚)</button></li>
+                      <li><button className="dropdown-item w-100" type="button">開課時間(晚→早)</button></li>
+                      <li><button className="dropdown-item w-100" type="button">金額(低→高)</button></li>
+                      <li><button className="dropdown-item w-100" type="button">金額(高→低)</button></li>
                     </ul>
                   </div>
                   <p className="d-inline-flex gap-1">
