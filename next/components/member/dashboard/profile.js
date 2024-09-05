@@ -85,6 +85,16 @@ export default function DashboardProfile() {
     }
   }, [isLoading, auth.isAuth, router, updateAvatarUrl]);
 
+  // 頭像維持修正
+  useEffect(() => {
+    if (auth.isAuth && auth.userData) {
+      setAvatarUrl(`http://localhost:3005${auth.userData.avatar_url
+        }?t=${new Date().getTime()}` || "/images/member/avatar/default-avatar.jpg");
+    } else {
+      setAvatarUrl("/images/member/avatar/default-avatar.jpg");
+    }
+  }, [auth.isAuth, auth.userData]);
+
   if (isLoading) return <div>Loading...</div>
 
   if (!auth.isAuth) {
@@ -290,7 +300,7 @@ export default function DashboardProfile() {
                   alt="User Avatar"
                   width={130}
                   height={130}
-                  className="rounded-circle"
+                  className="rounded-circle profileAvatar"
                   key={key} // 使用 key 強制重新渲染
                   loader={({ src }) => src} // 自定義 loader 以避免 Next.js 的圖片優化
                   unoptimized // 禁用 Next.js 的圖片優化

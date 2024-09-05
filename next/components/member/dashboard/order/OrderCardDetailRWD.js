@@ -71,7 +71,7 @@ export default function OrderCardDetail({ orderUuid }) {
                 <hr className={styles.hrRWD} />
                 <OrderCardDetailPickup orderInfo={orderData.orderInfo} />
                 <hr className={styles.hrRWD} />
-                <OrderCardDetailComment orderUuid={orderUuid} />
+                <OrderCardDetailComment orderUuid={orderUuid}    orderStatus={orderData.orderInfo.status} />
             </div>
 
 

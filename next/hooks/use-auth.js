@@ -62,6 +62,8 @@ export function AuthProvider({ children }) {
               member_level_id: data.user.member_level_id || '',
               phone: data.user.phone || '',  
               address: data.user.address || '',  
+              // 頭像維持修正
+              avatar_url: data.user.avatar_url ? `${data.user.avatar_url}?t=${new Date().getTime()}` : '/images/member/avatar/default-avatar.jpg',
             },
           })
         } else {

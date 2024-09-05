@@ -407,16 +407,25 @@ export default function LoginForm() {
                 </div>
 
                 {/* 第三方登入 */}
-                {/* <div className={styles.fastLogin}>
+                <div className={styles.fastLogin}>
                   <hr />
                   <div className={styles.buttonGroup}>
-                    <button
+                    {/* <button
                       className={`${styles.googleLogin} d-flex justify-content-center align-items-center`}
                     >
                       <GoogleLogo className="mx-3" />
                       使用GOOGLE登入
-                    </button>
+                    </button> */}
                     <button
+                      className={`${styles.googleLogin} d-flex justify-content-center align-items-center`}
+                      onClick={googleLogin}
+                      // onClick={handleGoogleLogin}
+                      type="button"  
+                    >
+                      <GoogleLogo className="mx-3" />
+                      使用GOOGLE登入
+                    </button>
+                    {/* <button
                       className={`${styles.lineLogin} d-flex justify-content-center align-items-center`}
                     >
                       <Image
@@ -427,9 +436,9 @@ export default function LoginForm() {
                         className={styles.img}
                       />
                       使用LINE登入
-                    </button>
+                    </button> */}
                   </div>
-                </div> */}
+                </div>
               </div>
             </form>
           </div>
