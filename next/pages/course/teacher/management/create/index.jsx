@@ -19,7 +19,7 @@ export default function ClassManIndex() {
   const [userId, setUserId] = useState('')
   const [isAdmin, setIsAdmin] = useState(false)
   useEffect(() => {
-    if (authData && authData.id > 0) {
+    if (authData && authData.id === 100) {
       setUserId(authData.id)
       setIsAdmin(true)
       console.log('----> set UserId = ' + authData.id);
@@ -124,7 +124,6 @@ export default function ClassManIndex() {
       return 'string';
     }
   }
-
   const [errorMsgBox, setErrorMsgBox] = useState({})
   const handlePIntegerCheck = (e) => {
   let currentNumInput = e.target.value;
@@ -138,12 +137,10 @@ export default function ClassManIndex() {
   }
   if (e.target.id === 'classSalePrice') {
     columnName = '優惠金額';
-  }
-  if (currentNumInput && detectType(currentNumInput) === 'string' || isNaN(currentNumInput)) {
-    console.log(currentNumInput)
-    console.log(detectType(currentNumInput) === 'string')
-    console.log(isNaN(currentNumInput))
-
+  } 
+  console.log("若全部false就不會跳錯誤")
+    console.log(currentNumInput+", "+(detectType(currentNumInput) === 'string')+", "+isNaN(currentNumInput)+", "+(Number(currentNumInput<0)===1))
+  if (currentNumInput && detectType(currentNumInput) === 'string' || isNaN(currentNumInput) || Number(currentNumInput<0)===1) {
       const currentIdStr = e.target.id;
       setErrorMsgBox(prev => ({...prev, [currentIdStr]: `${columnName}欄位需填入正整數`}))
     }else{
@@ -599,7 +596,6 @@ export default function ClassManIndex() {
                         onChange={handlePIntegerCheck}
                       />
                       <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`studentLimit`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`studentLimit`] ? errorMsgBox[`studentLimit`] : ''}</div>
-                      {console.log(document.getElementById('studentLimit').value)}
                       {/* 檢查數字必須是大於0的整數 */}
                     </div>
                   </div>

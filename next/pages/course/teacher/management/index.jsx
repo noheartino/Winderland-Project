@@ -18,17 +18,11 @@ export default function Applyevent() {
   const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
-    if (authData && authData.id > 0) {
+    if (authData && authData.id === 100) {
       setUserId(authData.id)
       setIsAdmin(true)
     }
   }, [useAuth()])
-    if(useAuth()){
-      console.log("1. useAuth() = ");
-      console.log(useAuth());
-      console.log('2. ----> set UserId = ' + authData);
-      console.log('3. =------> isadmin = '+isAdmin);
-    }
 
   // useEffect(() => {
   //   if (auth.isAuth) {
@@ -59,18 +53,18 @@ export default function Applyevent() {
     }
   }, [userId, isAdmin]);
 
-  const handleClick = (index) => {
-    setActiveIndexes((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    );
-    setTimeout(() => {
-      setScaleYIndexes((prev) =>
-        prev.includes(index)
-          ? prev.filter((i) => i !== index)
-          : [...prev, index]
-      );
-    }, 100);
-  };
+  // const handleClick = (index) => {
+  //   setActiveIndexes((prev) =>
+  //     prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+  //   );
+  //   setTimeout(() => {
+  //     setScaleYIndexes((prev) =>
+  //       prev.includes(index)
+  //         ? prev.filter((i) => i !== index)
+  //         : [...prev, index]
+  //     );
+  //   }, 100);
+  // };
 
   if (courses.length === 0) {
     return (
