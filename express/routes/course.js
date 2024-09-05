@@ -402,6 +402,7 @@ router.get('/:courseId', async (req, res) => {
                     teacher.name AS teacher_name,
                     images_class.class_id,
                     images_class.path AS class_path,
+                    images_class.video_path,
                     images_teacher.teacher_id,
                     images_teacher.path AS teacher_path
                 FROM 

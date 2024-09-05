@@ -182,12 +182,12 @@ export default function CourseIndex() {
         parseInt(mycourseItem.class_id)===parseInt(courseId))
         )}
   }, [myCourses])
-
   // 獲取當前課程資訊
   useEffect(() => {
     if (courseId && classSum.length > 0) {
       // console.log(courseId+"+"+classSum.length);
-      if (!(classSum.length > parseInt(courseId) && parseInt(courseId) > 0)) {
+      if (!(classSum.length+1 > parseInt(courseId) && parseInt(courseId) > 0)) {
+        
         router.push({
           pathname: "/course/1",
           query: {},
@@ -205,6 +205,7 @@ export default function CourseIndex() {
         })
         .then((data) => {
           const { course, theCourseAssigned, comments, existing } = data;
+          console.log(course);
           setCourse(course[0]);
           setCourseAssigned(theCourseAssigned);
           setComments(comments);
@@ -393,7 +394,7 @@ export default function CourseIndex() {
   return (
     <>
       <Head>
-        <title>醺迷仙園｜{course?.class_name}</title>
+        <title>醺迷仙園｜{`${course?.class_name}`}</title>
 
         <meta charSet="utf-8" />
         <meta
@@ -451,7 +452,7 @@ export default function CourseIndex() {
                         {showVideo?
                           <div className={`course-img21 video-radius bg-black`}>
                             <video className={`media-contain`} controls width="300" height="200" id={`courseVideo`} ref={videoRefs} autoPlay>
-                              <source src={`http://localhost:3005/uploads/course_and_tarot/courseV-05.mp4`} type="video/mp4" />
+                              <source src={`http://localhost:3005/uploads/course_and_tarot/${course?.video_path}`} type="video/mp4" />
                               Your browser does not support the video tag.
                             </video>
                           </div>
@@ -777,7 +778,7 @@ export default function CourseIndex() {
                   {showVideo?
                     <div className={`course-img21 video-radius bg-black`}>
                       <video className={`media-contain`} controls width="300" height="200" id={`courseVideo`} ref={videoRefs} autoPlay>
-                        <source src={`http://localhost:3005/uploads/course_and_tarot/courseV-05.mp4`} type="video/mp4" />
+                        <source src={`http://localhost:3005/uploads/course_and_tarot/${course?.video_path}`} type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
                     </div>
