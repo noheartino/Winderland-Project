@@ -90,6 +90,7 @@ export default function DashboardProfile() {
     if (auth.isAuth && auth.userData) {
       setAvatarUrl(`http://localhost:3005${auth.userData.avatar_url
         }?t=${new Date().getTime()}` || "/images/member/avatar/default-avatar.jpg");
+      // setAvatarUrl(auth.userData.avatar_url);
     } else {
       setAvatarUrl("/images/member/avatar/default-avatar.jpg");
     }
@@ -296,12 +297,14 @@ export default function DashboardProfile() {
               {/* 會員頭像 */}
               <div className="user-img">
                 <Image
-                  src={avatarUrl || "/images/member/avatar/default-avatar.jpg"}
+                  // src={avatarUrl || "/images/member/avatar/default-avatar.jpg"}
+                  src={`${avatarUrl}?t=${new Date().getTime()}`}
                   alt="User Avatar"
                   width={130}
                   height={130}
                   className="rounded-circle profileAvatar"
-                  key={key} // 使用 key 強制重新渲染
+                  // key={key} // 使用 key 強制重新渲染
+                  key={auth.userData?.id} // 使用用戶ID作為key
                   loader={({ src }) => src} // 自定義 loader 以避免 Next.js 的圖片優化
                   unoptimized // 禁用 Next.js 的圖片優化
                 />
