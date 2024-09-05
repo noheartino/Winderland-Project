@@ -22,11 +22,11 @@
             & .product-reserve {
                 font-size: 12px;
                 margin-top: 2%;
-                margin-left: 14%;
+                padding-left: 25%;
             }
 
             & .product-year-label {
-                margin-left: 9%;
+                margin-left: 7%;
             }
         }
 

@@ -1,18 +1,20 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Amount.module.css";
 
-export default function Amount({ changeAmount }) {
+export default function Amount({ changeAmount, currentDetail }) {
   // 數字輸入js start//
   const minLimit = 0;
-  const maxLimit = 99;
+  const maxLimit = currentDetail.amount;
 
   const [inputValue, setInputValue] = useState(minLimit);
 
   const addAmount = () => {
     const currentValue = Number(inputValue);
-    if (currentValue < 99) {
+    if (currentValue < maxLimit) {
       const newAddValue = currentValue + 1;
       setInputValue(newAddValue);
+    } else {
+      setInputValue(maxLimit);
     }
   };
 
@@ -30,8 +32,11 @@ export default function Amount({ changeAmount }) {
       e.target.value = value.replace(/[\D]/g, "");
     }
 
-    const newInputValue = Number(e.target.value);
-    setInputValue(newInputValue);
+    if (Number(e.target.value) > maxLimit) {
+      setInputValue(maxLimit);
+    } else {
+      setInputValue(Number(e.target.value));
+    }
   };
 
   useEffect(() => {
@@ -41,31 +46,33 @@ export default function Amount({ changeAmount }) {
   //數字輸入js end//
   return (
     <>
-      <button
-        className={`${styles["product-amount-reduce"]}`}
-        type="button"
-        onClick={reduceAmount}
-      >
-        -
-      </button>
-      <input
-        className={`${styles["product-amount-box"]}`}
-        type="text"
-        min={minLimit}
-        max={maxLimit}
-        maxLength={2}
-        value={inputValue}
-        onInput={inputRule}
-        name=""
-        id=""
-      />
-      <button
-        className={`${styles["product-amount-add"]}`}
-        type="button"
-        onClick={addAmount}
-      >
-        +
-      </button>
+      <div className={`${styles["product-selects"]}`}>
+        <button
+          className={`${styles["product-amount-reduce"]}`}
+          type="button"
+          onClick={reduceAmount}
+        >
+          -
+        </button>
+        <input
+          className={`${styles["product-amount-box"]}`}
+          type="text"
+          min={minLimit}
+          max={maxLimit}
+          maxLength={2}
+          value={inputValue}
+          onInput={inputRule}
+          name=""
+          id=""
+        />
+        <button
+          className={`${styles["product-amount-add"]}`}
+          type="button"
+          onClick={addAmount}
+        >
+          +
+        </button>
+      </div>
     </>
   );
 }
