@@ -13,6 +13,7 @@ import CartZero from "@/components/cart/cartObject/cartZero";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/router";
 import BounceLoader from "react-spinners/BounceLoader";
+import Arrtotop from "@/components/Header/arr";
 
 export default function CartCheckout1() {
   const { auth } = useAuth();
@@ -228,6 +229,7 @@ export default function CartCheckout1() {
         <CartZero />
       ) : (
         <main>
+          <Arrtotop />
           <div className="container mb-5 d-none d-lg-block">
             <div className="row">
               <div className="col-7">

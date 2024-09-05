@@ -17,6 +17,7 @@ import CartTransportBlackCat from "@/components/cart/cart2/cartTransportBlackcat
 import CartTransportBlackCatM from "@/components/cart/cart2/cartTransportBlackcatM";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Arrtotop from "@/components/Header/arr";
 
 export default function CartCheckout2() {
   const router = useRouter();
@@ -118,14 +119,14 @@ export default function CartCheckout2() {
   return (
     <>
       <Head>
-          <title>醺迷仙園｜購物車</title>
+        <title>醺迷仙園｜購物車</title>
 
-          <meta charSet="utf-8" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-          />
-          <link rel="icon" href="/logo.png" />
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <link rel="icon" href="/logo.png" />
       </Head>
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -142,6 +143,7 @@ export default function CartCheckout2() {
       />
       <Nav />
       <main>
+        <Arrtotop />
         <div className="container mb-5 d-none d-lg-block">
           <div className="row">
             <div className="col-8">
