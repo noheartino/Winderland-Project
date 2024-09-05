@@ -71,7 +71,17 @@ export default function CategoryTitle({ filters, selectFilters }) {
   }, [currentCategory, selectFilters.category, isDataLoaded]);
 
   if (!isDataLoaded || !currentCategory) {
-    return <div>載入中...</div>;
+    return (
+      <>
+        <div class="cssload-contain">
+          <div class="cssload-dot"></div>
+          <div class="cssload-dot"></div>
+          <div class="cssload-dot"></div>
+          <div class="cssload-dot"></div>
+          <div class="cssload-dot"></div>
+        </div>
+      </>
+    );;
   }
 
   return (

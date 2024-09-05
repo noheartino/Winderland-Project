@@ -299,13 +299,24 @@ export default function ProductIndex() {
     setPriceRange("0-150000");
   };
 
-  if (loading) return <div>加載中...</div>;
+  if (loading)
+    return (
+      <>
+        <div class="cssload-contain">
+          <div class="cssload-dot"></div>
+          <div class="cssload-dot"></div>
+          <div class="cssload-dot"></div>
+          <div class="cssload-dot"></div>
+          <div class="cssload-dot"></div>
+        </div>
+      </>
+    );
   if (error) return <div>{error}</div>;
 
   return (
     <>
       <>
-      <Head>
+        <Head>
           <title>醺迷仙園｜商品列表</title>
 
           <meta charSet="utf-8" />
@@ -314,7 +325,7 @@ export default function ProductIndex() {
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
           />
           <link rel="icon" href="/logo.png" />
-      </Head>
+        </Head>
         <header>
           <Nav />
           {/* TOP的分類名稱 */}
@@ -334,7 +345,7 @@ export default function ProductIndex() {
             totalItems={totalItems}
             noProducts={noProducts}
             onOpenMobileFilter={() => setIsMobileFilterOpen(true)}
-            selectFilters = {selectFilters}
+            selectFilters={selectFilters}
             handleCategoryChange={handleCategoryChange}
           />
           {/* 手機&平板版的開關aside */}
@@ -346,7 +357,7 @@ export default function ProductIndex() {
             onClose={() => setIsMobileFilterOpen(false)}
             resetFilters={resetFilters}
             fetchProducts={fetchProducts}
-            fetchFilters={fetchFilters} 
+            fetchFilters={fetchFilters}
           />
           {/* 主要內容 */}
           <div className="row main-content">
@@ -381,7 +392,7 @@ export default function ProductIndex() {
             )}
           </div>
         </div>
-        <Arrtotop/>
+        <Arrtotop />
         <Footer />
       </>
     </>
