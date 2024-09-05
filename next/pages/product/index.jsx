@@ -272,6 +272,33 @@ export default function ProductIndex() {
     fetchFilters,
   ]);
 
+  const handleCategoryChange = (categoryId) => {
+    // 構建新的 URL，只包含 category 参数
+    const newQuery = categoryId ? { category: categoryId } : {};
+
+    // 使用 router.push 來更新 URL，替換當前歷史紀錄
+    router.push(
+      {
+        pathname: "/product",
+        query: newQuery,
+      },
+      undefined,
+      { shallow: true }
+    );
+
+    // 調用 changeFilter 来更新组件狀態
+    changeFilter("category", categoryId);
+
+    // 重置其他篩選條件
+    changeFilter("country", "");
+    changeFilter("origin", "");
+    changeFilter("variet", "");
+    changeFilter("price", { min: minLimit, max: maxLimit });
+    setMinValue(minLimit);
+    setMaxValue(maxLimit);
+    setPriceRange("0-150000");
+  };
+
   if (loading) return <div>加載中...</div>;
   if (error) return <div>{error}</div>;
 
@@ -307,6 +334,8 @@ export default function ProductIndex() {
             totalItems={totalItems}
             noProducts={noProducts}
             onOpenMobileFilter={() => setIsMobileFilterOpen(true)}
+            selectFilters = {selectFilters}
+            handleCategoryChange={handleCategoryChange}
           />
           {/* 手機&平板版的開關aside */}
           <MobileFliterAside
