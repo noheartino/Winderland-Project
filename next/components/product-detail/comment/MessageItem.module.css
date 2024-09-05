@@ -214,8 +214,16 @@
 
         & .time {
             font-size: 10px;
-            margin-left: 36%;
+            margin-left: 49%;
             text-wrap: nowrap;
         }
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .more-content{
+        & .time {
+            margin-left: 45%;
+        }  
     }
 }

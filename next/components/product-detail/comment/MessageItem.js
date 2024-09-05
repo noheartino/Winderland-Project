@@ -20,7 +20,7 @@ export default function MessageItem({ sortedComments }) {
               <div className={`${styles["user-photo"]}`}>
                 <img
                   className={`${styles["photo"]}`}
-                  src={`/images/member/avatar/${comment.user_img}`}
+                  src={`http://localhost:3005/images/member/avatar/${comment.user_img}`}
                   alt=""
                 />
               </div>
@@ -28,20 +28,6 @@ export default function MessageItem({ sortedComments }) {
                 <div className={`${styles["user"]}`}>
                   <div className={`${styles["user-name"]}`}>
                     {comment.account}
-                  </div>
-                  {/* !!不確定要不要刪 */}
-                  <div className={`${styles["floor-good"]}`}>
-                    <span>B{comment.fixedIndex}</span>
-                    <span className={`${styles["divider"]}`}> | </span>
-                    <button
-                      className={`${styles["good-button"]}`}
-                      type="button"
-                    >
-                      <i
-                        className={`fa-regular fa-thumbs-up ${styles["good-icon"]}`}
-                      ></i>
-                      251
-                    </button>
                   </div>
                 </div>
                 <div className={`${styles["user-star"]}`}>
@@ -60,10 +46,6 @@ export default function MessageItem({ sortedComments }) {
               </div>
             </div>
             <div className={`${styles["more-content"]}`}>
-              {/* !!不確定要不要刪 */}
-              <div itemType="button" className={`${styles["more"]}`}>
-                <i className="fa-solid fa-ellipsis"></i>
-              </div>
               <div className={`${styles["message-content"]}`}>
                 <p className={`${styles["comment-text"]}`}>
                   {comment.comment_text}
