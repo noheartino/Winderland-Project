@@ -12,7 +12,7 @@ export default function ArticleListContent({ article }) {
 
   // 將文章內容用佔位符分割
   const contentParts = content.split(imagePlaceholder);
-  console.log(contentParts)
+  // console.log(contentParts)
   // 使用 map 將內容與圖片組合
   const contentWithImages = contentParts.map((part, index) => {
     // 插入文本部分
@@ -44,7 +44,6 @@ export default function ArticleListContent({ article }) {
       <div className="aid-content-word">
         {/* 桌機 */}
         <div key={article.id} className="aid-content-p d-none d-lg-block" style={{ whiteSpace: "pre-wrap" }}>
-{console.log(contentWithImages)}
 
           {contentWithImages}
         </div>

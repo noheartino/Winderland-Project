@@ -76,9 +76,8 @@ export default function ArticleListNav({ article }) {
     }
   };
 
-
   if (!article || !article.images || article.images.length === 0) {
-    return null; // 或者可以返回一個預設的加載中佈局
+    return null;
   }
   return (
     <>
@@ -102,13 +101,11 @@ export default function ArticleListNav({ article }) {
       </div>
       <h1 className="aid-title d-lg-none">{article.title}</h1>
       <div className="aid-pic d-lg-none my-4">
-        {/* <img src="/images/article/AA.png" alt="" />
-         */}
         <Image
-          src={`http://localhost:3005/uploads/article/${article.images[0]}`} // 必須是public資料夾裡的相對路徑
-          alt="Description of image"
-          width={100} // 圖像寬度（必需）
-          height={100} // 圖像高度（必需）
+          src={`http://localhost:3005/uploads/article/${article.images[0]}`}
+          alt={`${article.images[0]}`}
+          width={100}
+          height={100}
           priority
         />
       </div>

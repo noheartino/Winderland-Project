@@ -26,7 +26,7 @@ export default function ArticleRwdSidebar({ setCategory, setDateFilter, setStart
     setCategory(""); // 重設父元件的篩選條件
     setDateFilter(""); // 重設父元件的篩選條件
   };
-  console.log(selectedCategory);
+  // console.log(selectedCategory);
   return (
     <>
       <div className="d-lg-none col-2 a-sidebar-sm">
