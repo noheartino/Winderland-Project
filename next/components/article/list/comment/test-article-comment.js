@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from 'next/router';
 import Image from "next/image";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 export default function TestArticleComment({ articleId, userId, account, avatarUrl, onCommentChange }) {
   const router = useRouter();
