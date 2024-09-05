@@ -29,6 +29,10 @@ export default function MessageItem({ sortedComments }) {
                   <div className={`${styles["user-name"]}`}>
                     {comment.account}
                   </div>
+                  {/* !!不確定要不要刪 */}
+                  <div className={`${styles["floor-good"]}`}>
+                    <span>B{comment.fixedIndex}</span>
+                  </div>
                 </div>
                 <div className={`${styles["user-star"]}`}>
                   <div className={`${styles["stars"]}`}>
