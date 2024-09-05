@@ -58,7 +58,7 @@ export default function MobileComment() {
   return (
     <>
       <div className={`container ${styles["product-comment-content"]}`}>
-        <CommentTitle onSortChange={handleSortChange} />
+        <CommentTitle handleSortChange={handleSortChange} />
         <div className={`${styles["product-comment-star"]}`}>
           <RatingArea />
         </div>
