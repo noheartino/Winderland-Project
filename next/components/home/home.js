@@ -311,7 +311,7 @@ export default function Homepage() {
             </Link>
           </div>
           <div className="col-4">
-            <Link href={'/product?page=1&sort=id_asc&minPrice=0&maxPrice=150000'}>
+            <Link href={'http://localhost:3000/product?page=1&sort=id_asc&category=3'}>
               <div className="homeArea02_type_text">
                 <p>其他類別 (Other Types)</p>
               </div>
@@ -507,7 +507,7 @@ export default function Homepage() {
             </div>
           </div>
           <div className="col-2 article_circlebtn">
-            <a href="">
+            <a href="http://localhost:3000/course">
               <div className="all_circlebtn_blue">
                 <div className="btn_arrow_line_blue" />
                 <div className="btn_arrow_head_blue" />
