@@ -24,21 +24,20 @@ export default function Applyevent() {
     fetch(`http://localhost:3005/api/article/all`)
       .then((response) => response.json())
       .then((data) => {
-
         // 處理 articles 資料，將 images 字段轉換為數組
         const processedArticles = data.articles.map((article) => ({
           ...article,
           images: article.images ? article.images.split(",") : [],
-          content: article.content.replace(/<!--IMAGE_HERE-->/g, ""), 
+          content: article.content.replace(/<!--IMAGE_HERE-->/g, ""),
         }));
 
         setMyarticle(processedArticles);
-        console.log(processedArticles);
+        // console.log(processedArticles);
       })
       .catch((error) => console.error("Error:", error));
     // }
   }, []);
-  console.log(myarticle);
+  // console.log(myarticle);
   const [activeIndexes, setActiveIndexes] = useState([]);
   const [scaleYIndexes, setScaleYIndexes] = useState([]);
 
@@ -82,9 +81,9 @@ export default function Applyevent() {
       </Head>
       <Nav />
       <div className="container-fluid a-banner">
-          <h2>相關文章</h2>
-          <h3>Aritcle</h3>
-        </div>
+        <h2>相關文章</h2>
+        <h3>Aritcle</h3>
+      </div>
 
       <>
         <div className="eventManageNav">
@@ -97,9 +96,9 @@ export default function Applyevent() {
               <Link href="/article/myarticle" className="Armall">
                 <div className="NavListLi NowUnderLI">我的文章</div>
               </Link>
-              <Link href="/article/edit" className="Armall">
+              {/* <Link href="/article/edit" className="Armall">
                 <div className="NavListLi">編輯文章</div>
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>
@@ -112,20 +111,8 @@ export default function Applyevent() {
           <div className="container">
             {myarticle.map((art, i) => {
               return (
-                <div
-                  // className={`eventDetailist ${
-                  //   eventdata.status === 0 ? "d-none" : ""
-                  // }`}
-                  className={`eventDetailist`}
-                  // key={i}
-                >
-                  {/* 照片 */}
-                  <div
-                    // className={`DetailistBox ${
-                    //   eventdata.status === 1 ? "applyEnd" : ""
-                    // }`}
-                    className={`DetailistBox `}
-                  >
+                <div className={`eventDetailist`} key={i}>
+                  <div className={`DetailistBox `}>
                     {/* 照片 */}
                     <img
                       src={`http://localhost:3005/uploads/article/${art.images[0]}`}
@@ -179,10 +166,10 @@ export default function Applyevent() {
                           </Link>
                         </div>
                       </div>
-                      {art.images.length - 1 > 0 ?
+                      {art.images.length - 1 > 0 ? (
                         art.images.slice(1).map((image, index) => (
                           <div key={index} className="col-12 col-md-3 mb-4">
-                            <div className="eventAge" >
+                            <div className="eventAge">
                               <div className="eventAgeText">
                                 <img
                                   src={`http://localhost:3005/uploads/article/${image}`}
@@ -195,7 +182,10 @@ export default function Applyevent() {
                               </div>
                             </div>
                           </div>
-                        )): <p className="text-center">文中無插入照片</p>}
+                        ))
+                      ) : (
+                        <p className="text-center">文中無插入照片</p>
+                      )}
                     </div>
                     <div className="row mt-4 gx-5">
                       <div className="col-12">
@@ -204,19 +194,21 @@ export default function Applyevent() {
                       <div className="col-12">
                         <div className="ListInfoComment">
                           <div className="eventPList">
-                            <div className="ListPComment" style={{ whiteSpace: "pre-wrap" }}>{art.content}</div>
+                            <div
+                              className="ListPComment"
+                              style={{ whiteSpace: "pre-wrap" }}
+                            >
+                              {art.content}
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                
               );
-              
             })}
             <ArticlePagination />
-
           </div>
         </div>
       </>

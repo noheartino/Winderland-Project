@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Router, useRouter } from "next/router";
+import { useAuth } from "@/hooks/use-auth";
 
 import ArticleSearchbar from "@/components/article/article-searchbar";
 import ArticleSortdropdown from "@/components/article/article-sortdropdown";
@@ -12,6 +13,10 @@ import Head from "next/head";
 import Link from "next/link";
 
 export default function Index() {
+  const authData = useAuth().auth;
+  const UserData = authData.userData;
+  const myname = UserData ? UserData.user_name : "";
+  console.log(myname);
   const [articles, setArticles] = useState([]);
   const [articleHead, setArticleHead] = useState(null);
   const [loading, setLoading] = useState(true); // 新增 loading 狀態
@@ -88,7 +93,12 @@ export default function Index() {
             {/* 手機側邊欄 */}
             <ArticleRwdSidebar />
             {/* 管理文章按鈕 */}
-            <button className={`col-auto d-none d-lg-block btn aManBtn`}><Link href={'/article/myarticle'}>文章管理</Link></button>
+            {/* 只在 myname 為 'Admin' 時顯示按鈕 */}
+            {myname === "Admin" && (
+              <button className={`col-auto d-none d-lg-block btn aManBtn`}>
+                <Link href={"/article/myarticle"}>文章管理</Link>
+              </button>
+            )}
           </div>
           {/* 主要文章內容區塊 */}
           <div className="row a-contentmain">

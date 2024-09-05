@@ -164,7 +164,7 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
       });
     }
   };
-console.log(avatarUrl)
+// console.log(avatarUrl)
   return (
     <>
       <div className="col-12 my-4">

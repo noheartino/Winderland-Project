@@ -196,7 +196,7 @@ export default function New() {
         title: "成功",
         text: "文章和圖片成功上傳",
         icon: "success",
-        confirmButtonText: "確定"
+        confirmButtonText: "確定",
       });
       router.push("/article");
     } catch (error) {
@@ -205,12 +205,14 @@ export default function New() {
         title: "上傳失敗",
         text: "請稍後再試",
         icon: "error",
-        confirmButtonText: "確定"
+        confirmButtonText: "確定",
       });
     } finally {
       setLoading(false);
     }
   };
+
+  const date = new Date().toISOString().split('T')[0];
   // console.log(inlineImages);
   // console.log(category);
   // console.log(title);
@@ -244,9 +246,9 @@ export default function New() {
             <Link href="/article/myarticle" className="Armall">
               <div className="NavListLi">我的文章</div>
             </Link>
-            <Link href="/article/edit" className="Armall">
+            {/* <Link href="/article/edit" className="Armall">
               <div className="NavListLi">編輯文章</div>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
@@ -255,12 +257,22 @@ export default function New() {
       <div className={`container-fuild ${style.ACbg} row`}>
         <div className={`container ${style.AcreatePage} col-lg-7 col-11 py-5`}>
           <div className={`${style.ACnav} col row ps-5 mb-3`}>
-            <div className={`${style.ACicon} col-auto`}>
-              <p className="m-0"></p>
+            <div className={`${style.ACicon} col-auto p-0`}>
+              <img
+                src="/images/member/avatar/default-avatar.jpg"
+                className="m-0"
+                style={{
+                  objectFit: "cover",
+                  width: "100%",
+                  height: "100%",
+                }}
+              ></img>
             </div>
-            <div className={`${style.ACname} col`}>
-              <p className="m-0">{userAccount}</p>
-              <div className={`${style.ACtime}`}>發佈於 08/22</div>
+            <div className={`${style.ACname} col ms-3`}>
+              <p className="m-0">Admin</p>
+              <div className={`${style.ACtime}`}>
+                發佈於 {date}
+              </div>
             </div>
           </div>
           <form className="row px-5" onSubmit={handleSubmit}>
@@ -310,7 +322,7 @@ export default function New() {
             />
             <p className={`${style.ACtitleLimit}`}>({title.length}/50)</p>
             <div
-              className={`${style.ACtextarea} col-12`}
+              className={`${style.ACtextarea} col-12 p-2`}
               ref={contentRef}
               contentEditable={true}
               onInput={handleInput}
