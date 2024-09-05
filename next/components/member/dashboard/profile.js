@@ -67,7 +67,7 @@ export default function DashboardProfile() {
   };
 
   useEffect(() => {
-    if (!auth.isAuth) {
+    if (!isLoading && !auth.isAuth) {
       router.push('/member/login');
     } else if (auth.userData) {
       console.log("auth.userData:", auth.userData);
