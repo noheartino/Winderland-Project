@@ -22,6 +22,9 @@ export default function CourseFilter({teachers, setScore
 
     const router = useRouter()
 
+    // districts: ; districtArr: 目前勾選的地區
+    console.log(districts);
+    console.log(districtArr);
   function handleCheckDistrict(e){
     // 點下之後，等於切換checked
     const value = e.target.value;

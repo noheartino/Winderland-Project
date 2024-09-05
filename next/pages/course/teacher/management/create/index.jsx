@@ -19,7 +19,7 @@ export default function ClassManIndex() {
   const [userId, setUserId] = useState('')
   const [isAdmin, setIsAdmin] = useState(false)
   useEffect(() => {
-    if (authData && authData.id > 0) {
+    if (authData && authData.id === 100) {
       setUserId(authData.id)
       setIsAdmin(true)
       console.log('----> set UserId = ' + authData.id);

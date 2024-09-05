@@ -13,6 +13,7 @@ import { useAuth } from "@/hooks/use-auth";
 import Head from "next/head";
 
 export default function CourseIndex() {
+  //獲取userId
   const router = useRouter();
   const { auth } = useAuth();
   const [userId, setUserId] = useState(null);
@@ -118,21 +119,20 @@ export default function CourseIndex() {
   const [dateEnd, setDateEnd] = useState("");
   const [priceStart, setPriceStart] = useState("");
   const [priceEnd, setPriceEnd] = useState("");
-  
-  let districts = []
+  const [districts, setDistricts] = useState([])
 
   useEffect(()=>{
+    console.log(courses.length);
     if(courses.length>0){
+      const newArr = []
       const allAddressV = courses.map((course)=>{if(course.address){return course.address.slice(0,3)}})
       const onlyVaddressArr = Array.from(new Set(allAddressV))
       onlyVaddressArr.map((eachCity, index)=>{
       const districtsObj = {'dId': index+1, 'districtStr': eachCity?eachCity:""}
-      districts.push(districtsObj)
-      console.log("test districts Array");
-      console.log(districts);
+      newArr.push(districtsObj)
+      setDistricts(newArr)
     })
     }
-    
   }, [courses])
   
   
@@ -214,8 +214,8 @@ export default function CourseIndex() {
           : course.teacher_name === teacherSelect) &&
         (!dateStart
           ? true
-          : course.course_start > dateStart || !course.course_start) &&
-        (!dateEnd ? true : course.course_end < dateEnd || !course.course_end) &&
+          : course.appointment_start > dateStart || !course.appointment_start) &&
+        (!dateEnd ? true : course.appointment_end < dateEnd || !course.appointment_end) &&
         (!priceStart
           ? true
           : !course.sale_price
@@ -408,6 +408,7 @@ export default function CourseIndex() {
           {/* page one 我的課程&收藏課程 end */}
 
           <CourseList
+            userId={userId}
             courses={filterCourses}
             comments={comments}
             classAssigns={classAssigns}

@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { clippingParents } from "@popperjs/core";
 
-export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
+export default function CourseCardSm({ userId, course, averageRating, classAssignsQ }) {
   // 當前課程 / 當前課程平均得分 / 課程已報名人數
   const {
+    class_id='',
     class_name='',
     student_limit,
     price=0,
@@ -15,6 +19,38 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
   } = course;
   const isOnline = parseInt(online) === 0 ? false : true;
 
+  // 獲取當前使用者購買的課程
+  const [myCourses, setMyCourses] = useState([])
+  const [myCoursesId, setMyCoursesId] = useState([])
+  useEffect(() => {
+    if (userId) {
+      fetch(`http://localhost:3005/api/course/mycourses/${userId}`)
+        .then((response) => {
+          console.log("送出fetch，URL=" + `http://localhost:3005/api/course/mycourses/${userId}`);
+          if (!response.ok) {
+            throw new Error("Network response not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const { myCourses } = data;
+          setMyCourses(myCourses);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [class_id, userId, course]);
+
+  // myCoursesId.length 若 >0，代表這堂課有在目前登入的 user 的購買項目中
+  useEffect(()=>{
+    if(myCourses.length>0){
+     setMyCoursesId(
+        myCourses.filter((mycourseItem)=>
+        parseInt(mycourseItem.class_id)===parseInt(class_id))
+        )}
+  }, [myCourses])
+
   const imagePath = class_path ? 
     `http://localhost:3005/uploads/course_and_tarot/${class_path}` :
     `http://localhost:3005/uploads/course_and_tarot/classImgDefault.png`;
@@ -23,13 +59,17 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
       <div className="d-flex flex-column align-items-center justify-content-between cursor-pointer">
         <div className="row px-0 m-0 flex-row flex-md-column w-100 sm-card-minH">
           <div className="col-4 col-md-12 px-0">
-            <div className="course-video-video overflow-hidden">
+            <div className="course-video-video overflow-hidden position-relative">
               <img
                 className="course-img21"
                 src={imagePath}
                 alt={`${class_path}`}
                 title={`${class_path}`}
               />
+              {myCoursesId && myCoursesId.length>0 ?<div className="absolute-t0-l0 text-white w-100 h-100 text-end p-2 text-shadow-sm"><i className="fa-regular fa-circle-check me-2"></i>已報名</div>
+              :""
+              }
+              
             </div>
           </div>
           <div className="card-md-body col-8 col-md-12">
@@ -139,7 +179,7 @@ export default function CourseCardSm({ course, averageRating, classAssignsQ }) {
               >
                 <i className="fa-solid fa-location-dot text-sec-dark-blue" />
                 <span className="ms-2 spac-1 text-sec-dark-blue emmit1">
-                  上課縣市-{address.slice(0, 3)}
+                  上課縣市-{address?address.slice(0, 3):''}
                 </span>
               </div>
               <div className="course-process-footer mt-2 d-flex align-items-center justify-content-end justify-content-md-start flex-wrap row-gap-2 gap-3">

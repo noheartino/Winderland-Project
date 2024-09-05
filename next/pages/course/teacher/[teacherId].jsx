@@ -211,16 +211,19 @@ export default function TeacherDetail() {
                         {/* teacher-detail-suggest 課程卡片 start */}
                         {/* card-sm online start */}
                         {teacherCourses.map((teacherCourse) => {
+                          console.log(teacherCourse)
                           return (
                             <div
-                              key={teacherCourse.id}
-                              className="col-12 col-md-4 col-xl-3 px-20px d-flex flex-column align-items-center justify-content-between"
+                              key={teacherCourse?.id}
+                              className="col-12 col-md-4 col-xl-3 px-10px d-flex flex-column align-items-center justify-content-between"
                             >
-                              <CourseCardSm
-                                course={teacherCourse}
-                                averageRating={averageRating}
-                                classAssignsQ={teacherCourse.assigned}
-                              />
+                              <Link href={`/course/${teacherCourse?.class_id}`}>
+                                <CourseCardSm
+                                  course={teacherCourse}
+                                  averageRating={averageRating}
+                                  classAssignsQ={teacherCourse.assigned}
+                                />
+                              </Link>
                             </div>
                           );
                         })}

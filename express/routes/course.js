@@ -72,13 +72,13 @@ const storage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
   if (!file) {
     // 如果沒有文件，返回一個錯誤，文件將不會被上傳
-    return cb(null, false);
+    return cb(null, false)
   }
   // 這裡可以添加其他文件類型檢查邏輯
-  cb(null, true);
-};
+  cb(null, true)
+}
 
-const upload = multer({ storage: storage, fileFilter: fileFilter });
+const upload = multer({ storage: storage, fileFilter: fileFilter })
 
 // const upload = multer({ storage: storage })
 
@@ -250,7 +250,7 @@ router.get('/', async (req, res) => {
                 ORDER BY 
                     class.id ASC;`
     querySQLParams = [`%${search}%`, `%${search}%`]
-    console.log("---!! querySQL=2");
+    console.log('---!! querySQL=2')
   }
   console.log('送出的查詢詞語是: ' + search)
   let querySQLComments = `SELECT comments.* FROM comments`
@@ -265,6 +265,7 @@ router.get('/', async (req, res) => {
                             ON 
                                 order_details.order_uuid = orders.order_uuid
                             WHERE order_details.class_id>0
+                            AND orders.status NOT IN ('尚未付款', '訂單已取消')
                             ORDER BY orders.order_uuid ASC;`
   // let querySQLMyFavoriteCourse = `select class.* from class`
   let querySQLMyFavoriteCourse = `SELECT user_like.*, class.*, class.id AS class_id, user_like.id AS user_like_id, images_class.class_id, images_class.path AS class_path
@@ -276,7 +277,7 @@ router.get('/', async (req, res) => {
   let courseBtnSQLwords = ``
   if (!view || view === '全部') {
     courseBtnSQLwords = `AND order_details.class_id > 0`
-    console.log(courseBtnSQLwords + '點擊:全部，或是 view 未定' )
+    console.log(courseBtnSQLwords + '點擊:全部，或是 view 未定')
   } else if (view === '實體') {
     courseBtnSQLwords = `AND order_details.class_id > 0 AND class.online = 0`
     console.log(courseBtnSQLwords + '點擊:' + view)
@@ -298,6 +299,7 @@ router.get('/', async (req, res) => {
                             JOIN
                                 teacher ON class.teacher_id = teacher.id
                             WHERE orders.user_id = ${userId}
+                                AND orders.status NOT IN ('尚未付款', '訂單已取消')
                                 ${courseBtnSQLwords}
                             ORDER BY orders.order_uuid ASC;`
   // if(userId){
@@ -312,9 +314,15 @@ router.get('/', async (req, res) => {
   // if(search){
   //   console.log("search-----> "+search);
   // }
-  console.log('測試11!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' + req.originalUrl)
+  console.log(
+    '測試11!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' +
+      req.originalUrl
+  )
   try {
-    console.log('測試22!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' + req.originalUrl)
+    console.log(
+      '測試22!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' +
+        req.originalUrl
+    )
 
     const [courses] = search
       ? await connection.execute(querySQL, querySQLParams)
@@ -323,11 +331,12 @@ router.get('/', async (req, res) => {
     const [comments] = await connection.execute(querySQLComments)
     const [classAssigns] = await connection.execute(querySQLClassAsign)
 
-      const [myFavoriteCourse] = userId ? await connection.execute(
-        querySQLMyFavoriteCourse
-      ): [null]
-      const [myCourse] = userId ? await connection.execute(querySQLMyCourse): [null]
-    
+    const [myFavoriteCourse] = userId
+      ? await connection.execute(querySQLMyFavoriteCourse)
+      : [null]
+    const [myCourse] = userId
+      ? await connection.execute(querySQLMyCourse)
+      : [null]
 
     const [teachers] = await connection.execute(teachersSQL)
     res.json({
@@ -346,6 +355,39 @@ router.get('/', async (req, res) => {
     console.log('來源測試:' + req.originalUrl)
   }
 })
+
+// 獲取指定 user 的所有購買課程
+router.get('/mycourses/:userId', async (req, res) => {
+  const { userId } = req.params
+  let myCoursesSQL = `SELECT 
+                      order_details.*, 
+                      orders.*, 
+                      order_details.id AS order_details_id
+                  FROM 
+                      order_details 
+                  JOIN 
+                      orders 
+                  ON 
+                      order_details.order_uuid = orders.order_uuid
+                  WHERE orders.user_id = ?
+                  AND orders.status NOT IN ('尚未付款', '訂單已取消')
+                  AND order_details.class_id > 0 
+                  ORDER BY orders.order_uuid ASC`
+  let myCoursesParams = [userId]
+
+  try {
+    const [myCourses] = await connection.execute(myCoursesSQL, myCoursesParams)
+    res.json({
+      status: 'success',
+      message: `成功抓取 userID= ${userId} 的所有購買課程`,
+      myCourses,
+    })
+    console.log('測試:**********' + req.originalUrl)
+  } catch (err) {
+    res.status(500).json({ error: 'error' + err.message })
+  }
+})
+
 router.get('/:courseId', async (req, res) => {
   const { series, userId } = req.query
   const courseId = req.params.courseId
@@ -381,7 +423,8 @@ router.get('/:courseId', async (req, res) => {
                                 orders 
                             ON 
                                 order_details.order_uuid = orders.order_uuid
-                            WHERE order_details.class_id=${courseId};`
+                            WHERE order_details.class_id=${courseId}
+                            AND orders.status NOT IN ('尚未付款', '訂單已取消');`
 
   let commentSQLparams = `comments.created_at DESC`
   if (series === 'timeOldToNew') {
