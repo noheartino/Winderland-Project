@@ -125,6 +125,9 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
                         </div>
                         
                         {userlv >= 3 && <Link href='/event/create' className='BRwdA'><button className="eventHomeBoxAreaTitleBRwd">開團管理</button></Link>}
+                        <button className='ascto' onClick={toggleSort}>
+                            {currentSort === 'asc' ? '最早▴' : '最新▾'}
+                        </button>
                         
                         
                     </div>
@@ -134,7 +137,7 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
                                 <div className="col-12 col-lg-4 mb-4" key={i}>
                                     <div className="eventHomeBox_able">
                                         <div className="apply_able">報名期間內</div>
-                                        <img src={`http://localhost:3005/uploads/${t.event_cover_image}`} alt="" className="eventHomeBoxImg" />
+                                        <img src={`http://localhost:3005/uploads/event/${t.event_cover_image}`} alt="" className="eventHomeBoxImg" />
                                         <div className="eventHomeBox_text">
                                             <div className="title">{t.event_name}</div>
                                             <div className="info">

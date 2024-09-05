@@ -6,6 +6,7 @@ import EventHomeList from "@/components/event/eventHomeList";
 import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
 import Head from "next/head";
+import Arrtotop from "@/components/Header/arr";
 
 export default function Eventindex() {
   const [eventData, setData] = useState([]);
@@ -57,6 +58,7 @@ export default function Eventindex() {
         onpage={handlePageChange}
         currentpage={currentPage}
       />
+      <Arrtotop />
       <Footer />
     </>
   );

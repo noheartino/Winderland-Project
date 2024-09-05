@@ -39,6 +39,13 @@ export default function RatingArea() {
         totalComments,
         averageRating: Number(averageRating).toFixed(1),
       });
+    } else {
+      // 如果沒有評論，設置一個默認的 ratingStats
+      setRatingStats({
+        ratingCounts: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
+        totalComments: 0,
+        averageRating: "暫無",
+      });
     }
   }, [product]);
 
@@ -53,31 +60,54 @@ export default function RatingArea() {
     <>
       <div className={`row ${styles["rating-area"]}`}>
         <div className={`col-9 ${styles["rating-group"]}`}>
-          {[5, 4, 3, 2, 1].map((rating) => (
-            <div key={rating} className={`${styles["rating-item"]}`}>
-              <div className={`${styles["rating-bar"]}`}>
-                <span className={`${styles["rating-number"]}`}>{rating}</span>
-                <div className={`${styles["bar-container"]}`}>
-                  <div
-                    className={`${styles["bar"]}`}
-                    style={{
-                      width:`${(ratingStats.ratingCounts[rating] / ratingStats.totalComments)*100}%`
-                    }}
-                  ></div>
+          {product[0].comments.length > 0 ? (
+            <>
+              {[5, 4, 3, 2, 1].map((rating) => (
+                <div key={rating} className={`${styles["rating-item"]}`}>
+                  <div className={`${styles["rating-bar"]}`}>
+                    <span className={`${styles["rating-number"]}`}>
+                      {rating}
+                    </span>
+                    <div className={`${styles["bar-container"]}`}>
+                      <div
+                        className={`${styles["bar"]}`}
+                        style={{
+                          width: `${
+                            (ratingStats.ratingCounts[rating] /
+                              ratingStats.totalComments) *
+                            100
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              ))}
+            </>
+          ) : (
+            <>
+              {[5, 4, 3, 2, 1].map((rating) => (
+                <div key={rating} className={`${styles["rating-item"]}`}>
+                  <div className={`${styles["rating-bar"]}`}>
+                    <span className={`${styles["rating-number"]}`}>
+                      {rating}
+                    </span>
+                    <div className={`${styles["bar-container"]}`}></div>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
         </div>
         <div className={`col-3 ${styles["rating-score"]}`}>
           <span className={`${styles["average-rating"]}`}>
-            {ratingStats.averageRating}
+            {ratingStats ? ratingStats.averageRating : "暫無評論"}
           </span>
           <span className={`${styles["star"]}`}>
             <i className="fa-solid fa-star"></i>
           </span>
           <span className={`${styles["review-count"]}`}>
-            {ratingStats.totalComments}則評論
+            {ratingStats ? ratingStats.totalComments : 0}則評論
           </span>
         </div>
       </div>
