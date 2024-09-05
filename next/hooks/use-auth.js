@@ -52,9 +52,10 @@ export function AuthProvider({ children }) {
       if (response.ok) {
         const { status, data } = await response.json();
         // console.log('Auth status response:', data);
-        if (status === 'success') {
+        if (status === 'success' && data.isAuth) {
           setAuth({
-            isAuth: data.isAuth,
+            // isAuth: data.isAuth,
+            isAuth: true,
             userData: {
               ...data.user,
               gender: data.user.gender || '',
