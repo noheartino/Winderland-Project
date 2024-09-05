@@ -224,7 +224,10 @@ export default function New() {
 
     return processedContent.trim();
   };
-
+  // const imgElements = contentRef.current.getElementsByTagName("img");
+  // const existingInlineImages = Array.from(imgElements).map((img) => img.alt);
+  // console.log(existingInlineImages)
+  // console.log(inlineImages)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -236,7 +239,7 @@ export default function New() {
     // 提取现有的图片 alt 属性，作为现有内嵌图片路径
     const imgElements = contentRef.current.getElementsByTagName("img");
     const existingInlineImages = Array.from(imgElements).map((img) => img.alt);
-    // console.log(existingInlineImages)
+    console.log(existingInlineImages)
     // console.log(inlineImages)
     try {
       // 使用 FormData 来处理复杂的多部分请求

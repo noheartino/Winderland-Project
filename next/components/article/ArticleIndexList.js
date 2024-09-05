@@ -8,7 +8,8 @@ import Link from "next/link";
 import ArticlePagination from "./article-pagination";
 import { FaBookmark } from "react-icons/fa";
 
-export default function ArticleIndexList({ Article }) {
+export default function ArticleIndexList({ Article, sortOrder }) {
+  console.log(Article)
   const router = useRouter();
   const { search, category } = router.query;
 
@@ -41,6 +42,9 @@ export default function ArticleIndexList({ Article }) {
       apiUrl.searchParams.append("startDate", startDate);
       apiUrl.searchParams.append("endDate", endDate);
     }
+    if (sortOrder) {
+      apiUrl.searchParams.append("sortOrder", sortOrder);
+    }
     apiUrl.searchParams.append("page", currentPage);
     apiUrl.searchParams.append("limit", 6); // 每頁顯示6筆
 
@@ -65,7 +69,7 @@ export default function ArticleIndexList({ Article }) {
       .catch((error) => {
         console.log(error);
       });
-  }, [search, category, dateFilter, startDate, endDate, currentPage]);
+  }, [search, category, dateFilter, startDate, endDate, currentPage, sortOrder]);
 
   // 取得背景圖片的路徑
   const [isHovered, setIsHovered] = useState(false);

@@ -16,42 +16,46 @@ export default function Index() {
   const authData = useAuth().auth;
   const UserData = authData.userData;
   const myname = UserData ? UserData.user_name : "";
-  console.log(myname);
   const [articles, setArticles] = useState([]);
   const [articleHead, setArticleHead] = useState(null);
+  const [sortOrder, setSortOrder] = useState("")
   const [loading, setLoading] = useState(true); // 新增 loading 狀態
   useEffect(() => {
-    fetch("http://localhost:3005/api/article")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // 處理 articles 資料，將 images 字段轉換為數組
-        const processedArticles = data.articles.map((article) => ({
-          ...article,
-          images: article.images ? article.images.split(",") : [],
-        }));
-        setArticles(processedArticles);
-
-        // 隨機選擇一筆資料
-        if (processedArticles.length > 0) {
-          const articleHeads = Math.floor(
-            Math.random() * processedArticles.length
-          );
-          setArticleHead(processedArticles[articleHeads]);
-        } else {
-          setArticleHead(null);
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
-  }, []);
+    const fetchArticles = () => {
+      fetch(`http://localhost:3005/api/article?sortOrder=${sortOrder}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // 處理 articles 資料，將 images 字段轉換為數組
+          const processedArticles = data.articles.map((article) => ({
+            ...article,
+            images: article.images ? article.images.split(",") : [],
+          }));
+          setArticles(processedArticles);
+  
+          // 隨機選擇一筆資料
+          if (processedArticles.length > 0) {
+            const articleHeads = Math.floor(
+              Math.random() * processedArticles.length
+            );
+            setArticleHead(processedArticles[articleHeads]);
+          } else {
+            setArticleHead(null);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoading(false);
+        });
+    };
+  
+    fetchArticles();
+  }, [sortOrder]);
   const router = useRouter();
   const handleLink = () => {
     router.push(`/article`);
@@ -86,7 +90,15 @@ export default function Index() {
           <div className="a-function row m-0 mt-4 mb-1">
             {/* 篩選 */}
             <div className="d-none d-lg-flex dropdown a-dropdown col-lg-2">
-              <ArticleSortdropdown />
+              <select
+                className="btn a-sort-btn"
+                onChange={(e) => setSortOrder(e.target.value)}
+              >
+                <option value="">默認排序</option>
+                <option value="latest">最新發布</option>
+                <option value="oldest">由舊到新</option>
+              </select>
+              {/* <ArticleSortdropdown /> */}
             </div>
             {/* 搜尋列 */}
             <ArticleSearchbar />
@@ -102,7 +114,7 @@ export default function Index() {
           </div>
           {/* 主要文章內容區塊 */}
           <div className="row a-contentmain">
-            <ArticleIndexList Article={articleHead} />
+            <ArticleIndexList Article={articleHead} sortOrder={setSortOrder} />
           </div>
         </div>
       </div>
