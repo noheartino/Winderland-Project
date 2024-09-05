@@ -8,8 +8,9 @@ import Link from "next/link";
 import ArticlePagination from "./article-pagination";
 import { FaBookmark } from "react-icons/fa";
 
-export default function ArticleIndexList({ Article, sortOrder }) {
-  console.log(Article)
+export default function ArticleIndexList({ Article, sortOrder, categorySM, dateFilterSM, startDateSM, endDateSM }) {
+
+  console.log(startDateSM)
   const router = useRouter();
   const { search, category } = router.query;
 
@@ -30,21 +31,23 @@ export default function ArticleIndexList({ Article, sortOrder }) {
       apiUrl.searchParams.append("search", search);
     }
 
-    if (category) {
-      apiUrl.searchParams.append("category", category);
+    if (category || categorySM) {
+      apiUrl.searchParams.append("category", category || categorySM);
     }
 
-    if (dateFilter) {
-      apiUrl.searchParams.append("dateFilter", dateFilter);
+    if (dateFilter || dateFilterSM) {
+      apiUrl.searchParams.append("dateFilter", dateFilter || dateFilterSM);
     }
 
-    if (startDate && endDate) {
-      apiUrl.searchParams.append("startDate", startDate);
-      apiUrl.searchParams.append("endDate", endDate);
+    if (startDate && endDate || startDateSM && endDateSM) {
+      apiUrl.searchParams.append("startDate", startDate || startDateSM);
+      apiUrl.searchParams.append("endDate", endDate || endDateSM);
     }
+    // console.log(sortOrder)
     if (sortOrder) {
       apiUrl.searchParams.append("sortOrder", sortOrder);
     }
+
     apiUrl.searchParams.append("page", currentPage);
     apiUrl.searchParams.append("limit", 6); // 每頁顯示6筆
 
@@ -69,7 +72,7 @@ export default function ArticleIndexList({ Article, sortOrder }) {
       .catch((error) => {
         console.log(error);
       });
-  }, [search, category, dateFilter, startDate, endDate, currentPage, sortOrder]);
+  }, [search, category, dateFilter, startDate, endDate, currentPage, sortOrder, categorySM, dateFilterSM, startDateSM, endDateSM]);
 
   // 取得背景圖片的路徑
   const [isHovered, setIsHovered] = useState(false);
@@ -251,7 +254,7 @@ export default function ArticleIndexList({ Article, sortOrder }) {
               <ArticleIndexCard key={article.id} article={article} />
             ))
           ) : (
-            <h3 className="text-center" style={{ color: "var(--text_gray)" }}>
+            <h3 className="text-center" style={{ color: "var(--text_gray)"}}>
               沒有搜尋到可顯示的文章
             </h3>
           )

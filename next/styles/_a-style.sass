@@ -85,6 +85,7 @@
       background-color: var(--wine_light)
 
     .a-offcanvas
+      width: 70% !important
       .a-offcanvas-header
         height: 60px
         background-color: var(--primary)
@@ -94,28 +95,37 @@
           align-items: center
 
     .a-offcanvas-body
+      padding: 20px
+      p
+        color: var(--text_primary)
+        padding-bottom: 10px
+
       .a-sort-btn
+        text-align: start
         width: 100%
         background-color: transparent
-        color: var(--purple_light)
+        color: var(--text_primary)
         font-size: 12px
+        padding: 10px
         margin: 0
-        display: flex
-        justify-content: space-between
-        align-items: center
-        border: 1px solid var(--purple_light)
+        border: 1px solid var(--wine_light)
         border-radius: 44px
+      .aCateBtn
+        background-color: var(--light)
+        border-radius: 7px
+        color: var(--text_primary)
+      // .a-dropdown-menu
+      //   border: 1px solid var(--purple_light)
 
-      .a-dropdown-menu
-        border: 1px solid var(--purple_light)
-
-        a
-          font-size: 12px
-          color: var(--purple_light)
-          text-align: center
+      //   a
+      //     font-size: 12px
+      //     color: var(--purple_light)
+      //     text-align: center
 
       .a-smside-bottombtn
         background-color: var(--light)
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25)
+        border-radius: 2px
         color: var(--purple_light)
         width: 100%
 
@@ -313,7 +323,7 @@
 
 /* 日期 */
 .a-date
-  justify-content: space-between
+  // justify-content: space-between
   align-items: center
   color: var(--text_primary)
   font-size: 12px
@@ -321,9 +331,11 @@
   letter-spacing: 1.2px
   .a-date-block
     .a-date-input
+      padding-top: 10px
+      padding-bottom: 10px
       text-align: center
       width: 100%
-      border: 1px solid var(--purple_light)
+      border: 1px solid #E1E1E1
       border-radius: 44px
       color: var(--purple_light)
 
