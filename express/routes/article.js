@@ -15,8 +15,7 @@ const storage = multer.diskStorage({
     callback(null, path.join(__dirname, '..', 'public', 'uploads', 'article'))
   },
   filename: function (req, file, callback) {
-    const uniqueSuffix = uuidv4()
-    callback(null, uniqueSuffix + path.extname(file.originalname))
+    callback(null, file.originalname)
   },
 })
 
