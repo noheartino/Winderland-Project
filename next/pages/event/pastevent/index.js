@@ -136,7 +136,7 @@ export default function Applyevent() {
                     }`}
                   >
                     <img
-                      src={`http://localhost:3005/uploads/${eventdata.event_cover_image}`}
+                      src={`http://localhost:3005/uploads/event/${eventdata.event_cover_image}`}
                       alt=""
                       className="DetailistBoxPic"
                     />

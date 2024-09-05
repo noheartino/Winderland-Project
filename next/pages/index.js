@@ -2,6 +2,7 @@ import React from "react";
 import HomeNav from "@/components/Header/HomeHeader";
 import Footer from "@/components/footer/footer";
 import Homepage from "@/components/home/home";
+import Arrtotop from "@/components/Header/arr";
 import Head from "next/head";
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
       <HomeNav />
       <Homepage />
       <Footer />
+      <Arrtotop />
     </>
   );
 }

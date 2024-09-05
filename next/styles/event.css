@@ -43,6 +43,11 @@ a.A-rmpre{
     text-decoration: none;
 }
 
+a.rmall{
+    text-decoration: none;
+    color: var(--text_primary);
+}
+
 a.Armall{
     text-decoration: none;
     display: block;
@@ -436,6 +441,23 @@ a.Armallmt{
 .eventHomeBoxAreaTitleRwd{
     padding-inline: 15px;
     position: relative;
+
+    .ascto{
+        position: absolute;
+        right: 100px;
+        top: -5px;
+        color: #916B51;
+        width: 70px;
+        padding-left: 12px;
+        height: 28px;
+        letter-spacing: 2px;
+        background-color: white;
+        border-radius: 5px;
+        border: 1px solid #916B51;
+        font-size: 14px;
+        line-height: 10px;
+        
+    }
 
 
     .eventHomeBoxAreaTitlelRwd{
@@ -2269,6 +2291,11 @@ a.Armallmt{
     transition: 1s;
     animation: arrcircle 1s ease-in infinite;
     cursor: pointer;
+
+    @media screen and (max-width: 576px){
+        right: 30px;
+        transform: scale(0.8);
+    }
 
     .arris{
         position: absolute;

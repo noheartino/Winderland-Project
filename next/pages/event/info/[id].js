@@ -77,7 +77,7 @@ export default function Einfo() {
           <div className="row g-5">
             <div className="col-12 col-lg-5">
               <img
-                src={`http://localhost:3005/uploads/${eventinfo.event_cover_image}`}
+                src={`http://localhost:3005/uploads/event/${eventinfo.event_cover_image}`}
                 alt=""
                 className="eventPageimg"
               />
