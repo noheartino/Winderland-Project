@@ -27,6 +27,7 @@ export default function DashboardCoupon() {
 
   const [userPoints, setUserPoints] = useState([]);
   const [memberLevelName, setMemberLevelName] = useState("");
+  console.log(userId)
 
   // 等待獲取userId
   useEffect(() => {
