@@ -27,7 +27,7 @@ export default function DashboardCoupon() {
 
   const [userPoints, setUserPoints] = useState([]);
   const [memberLevelName, setMemberLevelName] = useState("");
-
+  // console.log(freeCoupon)
   // 等待獲取userId
   useEffect(() => {
     // 模擬從 useAuth 中獲取 userId

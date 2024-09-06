@@ -12,6 +12,7 @@ export default function CouponStorage({
   userGetCoupons,
   setUserGetCoupons
 }) {
+  // console.log(freeCoupon)
   const [isGetVisible, setIsGetVisible] = useState(true);
   // const [userGetCoupons, setUserGetCoupons] = useState([]);
 
