@@ -3,7 +3,7 @@ import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import Image from "next/image";
 
 export default function WPointList({userpointdata}) {
-  console.log(userpointdata)
+  // console.log(userpointdata)
   return (
     <>
       <div className="col-6 px-1 my-2">
@@ -45,10 +45,10 @@ export default function WPointList({userpointdata}) {
       </div>
       <div className="col-3 my-2">
         <p className={`${style.couponRecordDate} py-2 m-0 d-none d-lg-block`}>
-          2024.06.08
+          {userpointdata.fullDate}
         </p>
         <p className={`${style.couponRecordDateSm} ps-3 py-2 m-0 d-lg-none`}>
-          06.08
+          {userpointdata.monthDay}
         </p>
       </div>
       <div className="col-3 my-2">

@@ -4,7 +4,7 @@ import WPointList from "./WPointList";
 import { clippingParents } from "@popperjs/core";
 
 export default function WPointRecord({ userPointsRecord }) {
-  console.log(userPointsRecord);
+  // console.log(userPointsRecord);
   const [isUsedVisible, setIsUsedVisible] = useState(false);
 
   const toggleUsedVisibility = () => {
@@ -17,7 +17,7 @@ export default function WPointRecord({ userPointsRecord }) {
           <span className={`${style.CTitle} row py-2`}>
             <i className="fa-solid fa-ticket col-auto" />
             WP (W Point) 使用紀錄
-            <i className={`fa-solid fa-angle-down ${style.pointDown} col`} />
+            {/* <i className={`fa-solid fa-angle-down ${style.pointDown} col`} /> */}
           </span>
 
           <div className="row mt-2">
@@ -30,7 +30,7 @@ export default function WPointRecord({ userPointsRecord }) {
         <div className={`${style.couponRecordContent} mx-3 mt-3 mb-5`}>
           <div className={`${style.couponRecordHeader} row`}>
             <div className="col-6">
-              <p className={`${style.couponRecordTitle} py-2`}>使用點數</p>
+              <p className={`${style.couponRecordTitle} py-2`}>獲得點數</p>
             </div>
             <div className="col-3">
               <p className={`${style.couponRecordTitle} py-2`}>日期</p>
@@ -85,7 +85,7 @@ export default function WPointRecord({ userPointsRecord }) {
         >
           <div className={`${style.couponRecordHeader} row`}>
             <div className="col-6">
-              <p className={`${style.couponRecordTitleSm} py-2`}>使用點數</p>
+              <p className={`${style.couponRecordTitleSm} py-2`}>獲得點數</p>
             </div>
             <div className="col-3">
               <p className={`${style.couponRecordTitleSm} ps-3 py-2`}>日期</p>

@@ -7,7 +7,6 @@ import { HiOutlineTicket } from "react-icons/hi";
 
 export default function CouponRecord({ userUsedCoupons }) {
   const [isUsedVisible, setIsUsedVisible] = useState(false);
-console.log(userUsedCoupons)
   const toggleUsedVisibility = () => {
     setIsUsedVisible(!isUsedVisible);
   };
