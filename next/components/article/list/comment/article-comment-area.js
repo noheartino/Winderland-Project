@@ -86,7 +86,6 @@ export default function ArticleCommentArea({ articleId }) {
                 account={account}
                 articleId={articleId}
                 comments={comments}
-                avatarUrl={avatarUrl}
                 onCommentChange={onCommentChange}
               />
             </div>
@@ -98,7 +97,7 @@ export default function ArticleCommentArea({ articleId }) {
                   comment={comment}
                   index={index}
                   userId={userId}
-                  avatarUrl={avatarUrl}
+                  // avatarUrl={avatarUrl}
                   onCommentChange={onCommentChange}
                 />
               ))

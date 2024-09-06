@@ -20,14 +20,23 @@ router.get('/:id', async (req, res) => {
     }
 
     // 獲取該文章的所有評論
+    // const [comments] = await connection.execute(
+    //   `SELECT comments.*, users.account
+    //    FROM comments
+    //    JOIN users ON comments.user_id = users.id
+    //    WHERE comments.entity_type = ? AND comments.entity_id = ?
+    //    ORDER BY comments.created_at ASC`,
+    //   [entity_type, id]
+    // )
     const [comments] = await connection.execute(
-      `SELECT comments.*, users.account
+      `SELECT comments.*, users.account, images_user.img AS user_avatar
        FROM comments
        JOIN users ON comments.user_id = users.id
+       LEFT JOIN images_user ON comments.user_id = images_user.user_id
        WHERE comments.entity_type = ? AND comments.entity_id = ?
        ORDER BY comments.created_at ASC`,
       [entity_type, id]
-    )
+    );
 
     // 返回評論列表
     res.status(200).json(comments)
