@@ -2,7 +2,8 @@ import React from "react";
 import style from "@/components/member/dashboard/coupon/coupon.module.css";
 import Image from "next/image";
 
-export default function WPointList() {
+export default function WPointList({userpointdata}) {
+  console.log(userpointdata)
   return (
     <>
       <div className="col-6 px-1 my-2">
@@ -18,7 +19,7 @@ export default function WPointList() {
               height={50}
             />
             <p className={`${style.listWpoint} m-0 p-0 col`}>W Point</p>
-            <div className={`${style.listUsedPoint} m-0 col`}>1020P</div>
+            <div className={`${style.listUsedPoint} m-0 col`}> {userpointdata.earned_points}P</div>
             </div>
           {/* <div className={`col d-flex justify-content-end ps-0`}>
           </div> */}
@@ -36,7 +37,7 @@ export default function WPointList() {
               height={30}
             />
             <p className={`${style.listWpoint} m-0 p-0 col`} style={{fontSize:"10px"}}>W Point</p>
-            <div className={`${style.listUsedPoint} m-0 col`} style={{fontSize:"14px"}}>1000P</div>
+            <div className={`${style.listUsedPoint} m-0 col`} style={{fontSize:"14px"}}>{userpointdata.earned_points}P</div>
           </div>
           {/* <div className={`col d-flex justify-content-end ps-0`}>
           </div> */}
@@ -52,10 +53,10 @@ export default function WPointList() {
       </div>
       <div className="col-3 my-2">
         <p className={`${style.couponRecordCost} py-2 m-0 d-none d-lg-block`}>
-          -NT $350
+          -NT ${userpointdata.pointUsed}
         </p>
         <p className={`${style.couponRecordCostSm} py-2 m-0 d-lg-none`}>
-          -$350
+          -${userpointdata.pointUsed}
         </p>
       </div>
     </>

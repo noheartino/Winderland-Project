@@ -92,7 +92,7 @@
 
   .showGetCoupon {
     /* display: block; */
-    max-height: 500px; /* 根據內容高度調整 */
+    max-height: 45vh; /* 根據內容高度調整 */
     opacity: 1;
     visibility: visible;
     position: relative;

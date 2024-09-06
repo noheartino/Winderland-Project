@@ -11,7 +11,18 @@ router.get('/:userId', async (req, res) => {
 
     // 獲取優惠券
     const [userCoupons] = await connection.execute(
-      'SELECT * FROM user_coupon WHERE user_id = ?',
+      `SELECT 
+          uc.*,
+          COALESCE(o.coupon_amount, 0) AS used_coupon_amount
+        FROM 
+          user_coupon uc
+        LEFT JOIN 
+          orders o ON uc.coupon_id = o.coupon_id
+        WHERE 
+          uc.user_id = ?
+        GROUP BY
+          uc.id
+      `,
       [userId]
     )
 

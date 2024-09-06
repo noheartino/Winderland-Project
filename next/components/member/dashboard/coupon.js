@@ -27,14 +27,15 @@ export default function DashboardCoupon() {
 
   const [userPoints, setUserPoints] = useState([]);
   const [memberLevelName, setMemberLevelName] = useState("");
-  console.log(userId)
+
+  const [userPointsRecord, setUserPointsRecord] = useState([]);
 
   // 等待獲取userId
   useEffect(() => {
     // 模擬從 useAuth 中獲取 userId
     const fetchUserId = () => {
       setTimeout(() => {
-        const id = auth.userData?.id; // 從 auth 取得 userId
+        const id = auth.userData?.id;
         setUserId(id);
         setMemberLevelId(auth.userData?.member_level_id);
         setfreeCoupon(auth.userData?.free_coupon);
@@ -48,15 +49,15 @@ export default function DashboardCoupon() {
     return () => clearTimeout();
   }, [auth]);
 
-  useEffect(() => {
-    if (!loading) {
-      if (!userId | !freeCoupon | !memberLevelId) {
-        // 如果 userId 不存在，則進行重定向
-        // 會影響google登入，先備註起來！不用驗證了！
-        //router.push("/member/login");
-      }
-    }
-  }, [userId, loading, router]);
+  // useEffect(() => {
+  //   if (!loading) {
+  //     if (!userId | !freeCoupon | !memberLevelId) {
+  //       // 如果 userId 不存在，則進行重定向
+  //       // 會影響google登入，先備註起來！不用驗證了！
+  //       //router.push("/member/login");
+  //     }
+  //   }
+  // }, [userId, loading, router]);
 
   // 獲取全部優惠券(領取優惠券使用)
   useEffect(() => {
@@ -98,20 +99,22 @@ export default function DashboardCoupon() {
         const processedUserPoints = data.userPoints.length
           ? data.userPoints[0]
           : defaultUserPoints;
-
+          
+        const defaultUsedPointsRecord = data.pointsRecord;
         setUserCoupons(userAllCoupon);
         setUserGetCoupons(userGetCouponData);
         setUserUsedCoupons(userUsedCouponData);
         setUserExpiredCoupons(userExpiredCouponData);
 
         setUserPoints(processedUserPoints);
+        setUserPointsRecord(defaultUsedPointsRecord);
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
   }, [userId]);
 
-  // console.log(memberLevelId);
+  // console.log(userUsedCoupons);
   // 會員等級
   useEffect(() => {
     const fetchMemberLevel = async () => {
@@ -152,7 +155,14 @@ export default function DashboardCoupon() {
   // 如果正在加載，顯示 loading 畫面
   if (loading) {
     return (
-      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <div
+        style={{
+          height: "50vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <ClipLoader
           color="#851931"
           loading={loading} // 根據 loading 狀態顯示加載動畫
@@ -224,8 +234,13 @@ export default function DashboardCoupon() {
         </div>
 
         {/* wpoints的使用紀錄 */}
+        {/* {console.log(userPointsRecord)} */}
         <div className="row">
-          <WPointRecord userId={userId} />
+          {userPointsRecord && userPointsRecord.length > 0 ? (
+            <WPointRecord userId={userId} userPointsRecord={userPointsRecord} />
+          ) : (
+            <p>No point records available.</p>
+          )}
         </div>
       </div>
     </>

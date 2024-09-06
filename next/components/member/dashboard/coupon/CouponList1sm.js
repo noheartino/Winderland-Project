@@ -34,7 +34,7 @@ export default function CouponList1sm({ coupon }) {
     <>
       <div className="col-6 px-4 my-3">
         {/* 一組優惠券 */}
-        <div className={`col-12 d-lg-none px-3 py-2`}>
+        <div className={`col-12 d-lg-none px-1 py-2`}>
           <div
             className={`${style.couponCard} row px-2 py-3 ${couponcss.cardClass}`}
             title={coupon.name}
@@ -48,19 +48,19 @@ export default function CouponList1sm({ coupon }) {
         </div>
       </div>
       <div className="col-3 my-3">
-        <p className={`${style.couponRecordDate} py-2 m-0 d-none d-lg-block`}>
+        {/* <p className={`${style.couponRecordDate} py-2 m-0 d-none d-lg-block`}>
           {formattedDate}
-        </p>
+        </p> */}
         <p className={`${style.couponRecordDateSm} py-2 ps-3 m-0 d-lg-none`}>
           {formattedNoYear}
         </p>
       </div>
       <div className="col-3 my-3">
-        <p className={`${style.couponRecordCost} py-2 m-0 d-none d-lg-block`}>
-          -NT $350
-        </p>
+        {/* <p className={`${style.couponRecordCost} py-2 m-0 d-none d-lg-block`}>
+          -NT ${coupon.coupon_amount}
+        </p> */}
         <p className={`${style.couponRecordCostSm} py-2 m-0 d-lg-none`}>
-          -$350
+          -${coupon.coupon_amount}
         </p>
       </div>
     </>

@@ -40,12 +40,14 @@ router.get('/:userId', async (req, res) => {
     // 獲取優惠券
     const [userCoupons] = await connection.execute(
       `SELECT uc.*, 
-             c.name, 
-             c.category, 
-             c.min_spend
-      FROM user_coupon uc
-      JOIN coupon c ON uc.coupon_id = c.id
-      WHERE uc.user_id = ?`,
+       c.name, 
+       c.category, 
+       c.min_spend,
+       o.coupon_amount
+FROM user_coupon uc
+JOIN coupon c ON uc.coupon_id = c.id
+LEFT JOIN orders o ON uc.coupon_id = o.coupon_id AND o.user_id = uc.user_id
+WHERE uc.user_id = ?`,
       [userId]
     )
 
@@ -55,7 +57,15 @@ router.get('/:userId', async (req, res) => {
       [userId]
     )
 
-    res.json({ userCoupons, userPoints })
+    // 獲取使用點數
+    const [pointsRecord] = await connection.execute(
+      `SELECT id, payment_date, earned_points, pointUsed
+    FROM orders
+    WHERE user_id = ?`,
+      [userId]
+    )
+
+    res.json({ userCoupons, userPoints, pointsRecord })
   } catch (err) {
     console.error(err)
     res
