@@ -213,7 +213,7 @@ export default function DashboardCoupon() {
       }
     };
 
-    if (memberLevelId) {
+    if (userData.memberLevelId) {
       fetchMemberLevel();
     }
   }, [userData.memberLevelId]);
@@ -251,7 +251,7 @@ export default function DashboardCoupon() {
         <CouponStorage
           userId={userData.userId}
           freeCoupon={userData.freeCoupon}
-          memberLevelName={userData.memberLevelName}
+          memberLevelName={memberLevelName}
           userGetCoupons={userGetCoupons}
           setUserGetCoupons={setUserGetCoupons}
         />
