@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import styles from '@/components/member/dashboard/order/OrderCardDetailRWD.module.css'
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 import OrderCardDetailItem from './OrderCardDetailItem'
 import OrderCardDetailCouponRWD from './OrderCardDetailCouponRWD'
@@ -43,8 +43,8 @@ export default function OrderCardDetail({ orderUuid }) {
 
     if (isLoading) {
         return (
-          <div>
-            <BounceLoader
+          <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <ClipLoader
               color="#851931"
               loading={isLoading}
               cssOverride={{

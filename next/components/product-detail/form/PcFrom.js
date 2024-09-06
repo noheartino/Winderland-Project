@@ -8,7 +8,7 @@ import { useProduct } from "@/context/ProductContext";
 import { useFavorite } from "@/hooks/use-fav.js";
 import Swal from "sweetalert2";
 import axios from "axios";
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 
 export default function PcFrom() {
@@ -98,8 +98,8 @@ export default function PcFrom() {
 
   if (loading) {
     return (
-      <div>
-        <BounceLoader
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
           color="#851931"
           loading={loading}
           cssOverride={{

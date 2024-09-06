@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import Link from "next/link";
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 import ProfileUpdateUser from "./profile/ProfileUpdateUser";
 import ProfileUpdatePwd from "./profile/ProfileUpdatePwd";
 import ProfileMembership from "./profile/ProfileMembership";
@@ -108,8 +108,8 @@ export default function DashboardProfile() {
 
   if (isLoading) {
     return (
-      <div>
-        <BounceLoader
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
           color="#851931"
           loading={isLoading} // 使用 isLoading 控制加載動畫
           cssOverride={{

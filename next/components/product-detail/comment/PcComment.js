@@ -4,7 +4,7 @@ import Message from "./Message";
 import styles from "./PcComment.module.css";
 import { useProduct } from "@/context/ProductContext";
 import CommentPageNation from "./CommentPageNation";
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 
 export default function PcComment() {
@@ -54,8 +54,8 @@ export default function PcComment() {
 
   if (loading) {
     return (
-      <div>
-        <BounceLoader
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
           color="#851931"
           loading={loading}
           cssOverride={{

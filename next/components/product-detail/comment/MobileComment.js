@@ -6,7 +6,7 @@ import RatingArea from "../description/RatingArea";
 import { useProduct } from "@/context/ProductContext";
 import CommentPageNation from "./CommentPageNation";
 import NextTopLoader from 'nextjs-toploader'; // 換頁進度條－nextjs-toploader
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 
 export default function MobileComment() {
@@ -56,8 +56,8 @@ export default function MobileComment() {
 
   if (loading) {
     return (
-      <div>
-        <BounceLoader
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
           color="#851931"
           loading={loading}
           cssOverride={{

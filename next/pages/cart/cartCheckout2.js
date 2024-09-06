@@ -83,7 +83,7 @@ export default function CartCheckout2() {
       Swal.fire({
         icon: 'warning',               // 警告框的圖標
         title: '注意',                 // 警告框的標題
-        text: '購買課程只能使用信用卡付款', // 警告框的文本
+        text: '單買課程只能使用信用卡付款', // 警告框的文本
         confirmButtonText: '確定'       // 確認按鈕的文本
       });
       

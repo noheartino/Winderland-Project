@@ -17,7 +17,7 @@ import OrderListRWD from "@/components/member/dashboard/order/OrderListRWD";
 
 import styles from "@/components/member/dashboard/order/OrderCardDetail.module.css";
 
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 // @ 預設導出
 export default function DashboardOrder() {
@@ -144,8 +144,8 @@ export default function DashboardOrder() {
             </div>
 
             {isLoading ? (
-              <div>
-                <BounceLoader
+              <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <ClipLoader
                   color="#851931"
                   loading={isLoading} // 使用 isLoading 控制加載動畫
                   cssOverride={{

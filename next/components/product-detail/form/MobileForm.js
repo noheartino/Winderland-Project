@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import { useAuth } from "@/hooks/use-auth";
 import { useProduct } from "@/context/ProductContext";
 import { useFavorite } from "@/hooks/use-fav.js";
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 
 export default function MobileForm() {
@@ -97,8 +97,8 @@ export default function MobileForm() {
 
   if (loading) {
     return (
-      <div>
-        <BounceLoader
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
           color="#851931"
           loading={loading}
           cssOverride={{

@@ -12,7 +12,7 @@ import Footer from "@/components/footer/footer";
 import Head from "next/head";
 import Link from "next/link";
 
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 
 export default function Index() {
@@ -74,8 +74,8 @@ console.log(category)
   // 如果正在加載，顯示 loading 畫面
   if (loading) {
     return (
-      <div>
-        <BounceLoader
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
           color="#851931"
           loading={loading}
           cssOverride={{

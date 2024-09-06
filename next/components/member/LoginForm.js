@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/use-auth'
 import Swal from 'sweetalert2'
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useFirebase } from '@/hooks/useFirebase';
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 
 // 漂浮標籤
@@ -223,8 +223,8 @@ export default function LoginForm() {
 
   if (isLoading) {
     return (
-      <div>
-        <BounceLoader
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
           color="#851931"
           loading={isLoading} // 使用 isLoading 來控制加載動畫
           cssOverride={override}

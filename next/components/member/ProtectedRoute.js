@@ -2,7 +2,7 @@
 import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/use-auth';
 import { useEffect } from 'react';
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const ProtectedRoute = ({ children }) => {
   const { auth, isLoading, checkAuth } = useAuth();
@@ -35,8 +35,8 @@ const ProtectedRoute = ({ children }) => {
   if (isLoading || !isChecked) {
     console.log('ProtectedRoute: Still loading');
     return (
-      <div>
-        <BounceLoader
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
           color="#851931"
           loading={isLoading || !isChecked} // 根據 isLoading 或 isChecked 來控制加載
           cssOverride={{

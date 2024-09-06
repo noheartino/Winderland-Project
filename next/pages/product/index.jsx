@@ -11,7 +11,7 @@ import Footer from "@/components/footer/footer";
 import ListPageNation from "@/components/product-list/productlist/ListPageNation";
 import Arrtotop from "@/components/Header/arr";
 import Head from "next/head";
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function ProductIndex() {
   const [products, setProducts] = useState([]);
@@ -307,8 +307,8 @@ export default function ProductIndex() {
 
   if (loading) {
     return (
-      <div>
-        <BounceLoader
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
           color="#851931"
           loading={loading}
           cssOverride={override}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '@/components/member/dashboard/order/OrderCardDetailComment.module.css'
 import Swal from 'sweetalert2'
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function OrderCardDetailComment({ orderUuid, orderStatus }) {
     const [commentableItems, setCommentableItems] = useState([]);
@@ -188,8 +188,8 @@ export default function OrderCardDetailComment({ orderUuid, orderStatus }) {
 
     if (isLoading) {
         return (
-          <div>
-            <BounceLoader
+          <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <ClipLoader
               color="#851931"
               loading={isLoading}
               cssOverride={{

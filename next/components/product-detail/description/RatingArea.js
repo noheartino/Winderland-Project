@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./RatingArea.module.css";
 import { useProduct } from "@/context/ProductContext";
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 
 export default function RatingArea() {
@@ -53,8 +53,8 @@ export default function RatingArea() {
 
   if (loading) {
     return (
-      <div>
-        <BounceLoader
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
           color="#851931"
           loading={loading}
           cssOverride={{

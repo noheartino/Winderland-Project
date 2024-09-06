@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import styles from "./CategoryTitle.module.css";
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function CategoryTitle({ filters, selectFilters }) {
   const DEFAULT_IMAGE = "/shop_images/all.jpg";
@@ -73,8 +73,8 @@ export default function CategoryTitle({ filters, selectFilters }) {
 
   if (!isDataLoaded || !currentCategory) {
     return (
-      <>
-        <BounceLoader
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
           color="#851931"
           loading={true}
           cssOverride={{
@@ -85,7 +85,7 @@ export default function CategoryTitle({ filters, selectFilters }) {
           aria-label="Loading Spinner"
           data-testid="loader"
         />
-      </>
+      </div>
     );;
   }
 

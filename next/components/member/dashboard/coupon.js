@@ -6,7 +6,7 @@ import CouponRecord from "./coupon/CouponRecord";
 import CouponExpired from "./coupon/CouponExpired";
 import CouponStorage from "./coupon/CouponStorage";
 import WPointRecord from "./coupon/WPointRecord";
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/router";
 import CouponPlusSm from "./coupon/CouponPlusSm";
@@ -151,8 +151,8 @@ export default function DashboardCoupon() {
   // 如果正在加載，顯示 loading 畫面
   if (loading) {
     return (
-      <div>
-        <BounceLoader
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
           color="#851931"
           loading={loading} // 根據 loading 狀態顯示加載動畫
           cssOverride={{
