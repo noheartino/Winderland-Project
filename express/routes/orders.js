@@ -178,15 +178,93 @@ router.get('/history/:orderUuid', authenticate, async (req, res) => {
 
 // # 訂單評論
 // @ 獲取訂單可評論商品
+// router.get('/commentable-items/:orderUuid', authenticate, async (req, res) => {
+//   try {
+//     const { orderUuid } = req.params
+//     const userId = req.user.id
+
+//     // 檢查訂單是否屬於該用戶且在30天內
+//     const [orderCheck] = await connection.query(
+//       `SELECT created_at FROM orders
+//        WHERE order_uuid = ? AND user_id = ? AND created_at > DATE_SUB(NOW(), INTERVAL 30 DAY)`,
+//       [orderUuid, userId]
+//     )
+
+//     if (orderCheck.length === 0) {
+//       return res
+//         .status(403)
+//         .json({ status: 'error', message: '無法評論此訂單' })
+//     }
+
+//     // 獲取可評論的商品和課程，並檢查是否已評論
+//     const [items] = await connection.query(
+//       `(SELECT
+//         od.id as order_detail_id,
+//         p.id as item_id,
+//         p.name as item_name,
+//         'product' as item_type,
+//         pd.capacity,
+//         pd.years,
+//         co.name as country_name,
+//         NULL as teacher_name,
+//         CASE WHEN comments.id IS NOT NULL THEN 1 ELSE 0 END as is_commented,
+//         comments.rating as existing_rating,
+//         comments.comment_text as existing_comment,
+//         0 as sort_order  -- 商品的排序順序為 0
+//       FROM order_details od
+//       JOIN product p ON od.product_id = p.id
+//       JOIN product_detail pd ON od.product_detail_id = pd.id
+//       JOIN product pr ON pd.product_id = pr.id
+//       JOIN origin o ON pr.origin_id = o.id
+//       JOIN country co ON o.country_id = co.id
+//       LEFT JOIN comments ON comments.entity_type = 'product' AND comments.entity_id = p.id AND comments.user_id = ?
+//       WHERE od.order_uuid = ? AND od.product_id IS NOT NULL)
+
+//       UNION ALL
+
+//       (SELECT
+//         od.id as order_detail_id,
+//         c.id as item_id,
+//         c.name as item_name,
+//         'class' as item_type,
+//         NULL as capacity,
+//         NULL as years,
+//         NULL as country_name,
+//         t.name as teacher_name,
+//         CASE WHEN comments.id IS NOT NULL THEN 1 ELSE 0 END as is_commented,
+//         comments.rating as existing_rating,
+//         comments.comment_text as existing_comment,
+//         1 as sort_order  -- 課程的排序順序為 1
+//       FROM order_details od
+//       JOIN class c ON od.class_id = c.id
+//       JOIN teacher t ON c.teacher_id = t.id
+//       LEFT JOIN comments ON comments.entity_type = 'class' AND comments.entity_id = c.id AND comments.user_id = ?
+//       WHERE od.order_uuid = ? AND od.class_id IS NOT NULL)
+
+//       ORDER BY sort_order, order_detail_id`,
+//       [userId, orderUuid, userId, orderUuid]
+//     )
+
+//     console.log('Fetched items:', items)
+
+//     res.json({ status: 'success', data: items })
+//   } catch (error) {
+//     console.error('獲取可評論商品時出錯:', error)
+//     res
+//       .status(500)
+//       .json({ status: 'error', message: '服務器錯誤', error: error.message })
+//   }
+// })
+
 router.get('/commentable-items/:orderUuid', authenticate, async (req, res) => {
   try {
     const { orderUuid } = req.params
     const userId = req.user.id
 
-    // 檢查訂單是否屬於該用戶且在30天內
+    // 檢查訂單是否屬於該用戶且狀態為已完成
     const [orderCheck] = await connection.query(
-      `SELECT created_at FROM orders 
-       WHERE order_uuid = ? AND user_id = ? AND created_at > DATE_SUB(NOW(), INTERVAL 30 DAY)`,
+      `SELECT status FROM orders 
+       WHERE order_uuid = ? AND user_id = ? AND status = '已完成'`,
       [orderUuid, userId]
     )
 
@@ -210,7 +288,7 @@ router.get('/commentable-items/:orderUuid', authenticate, async (req, res) => {
         CASE WHEN comments.id IS NOT NULL THEN 1 ELSE 0 END as is_commented,
         comments.rating as existing_rating,
         comments.comment_text as existing_comment,
-        0 as sort_order  -- 商品的排序順序為 0
+        0 as sort_order
       FROM order_details od
       JOIN product p ON od.product_id = p.id
       JOIN product_detail pd ON od.product_detail_id = pd.id
@@ -234,7 +312,7 @@ router.get('/commentable-items/:orderUuid', authenticate, async (req, res) => {
         CASE WHEN comments.id IS NOT NULL THEN 1 ELSE 0 END as is_commented,
         comments.rating as existing_rating,
         comments.comment_text as existing_comment,
-        1 as sort_order  -- 課程的排序順序為 1
+        1 as sort_order
       FROM order_details od
       JOIN class c ON od.class_id = c.id
       JOIN teacher t ON c.teacher_id = t.id
@@ -244,8 +322,6 @@ router.get('/commentable-items/:orderUuid', authenticate, async (req, res) => {
       ORDER BY sort_order, order_detail_id`,
       [userId, orderUuid, userId, orderUuid]
     )
-
-    console.log('Fetched items:', items)
 
     res.json({ status: 'success', data: items })
   } catch (error) {
@@ -257,15 +333,62 @@ router.get('/commentable-items/:orderUuid', authenticate, async (req, res) => {
 })
 
 // @ 提交評論
+// router.post('/submit-comment', authenticate, async (req, res) => {
+//   try {
+//     const { orderUuid, itemId, itemType, rating, commentText } = req.body
+//     const userId = req.user.id
+
+//     // 檢查訂單是否屬於該用戶且在30天內
+//     const [orderCheck] = await connection.query(
+//       `SELECT created_at FROM orders 
+//        WHERE order_uuid = ? AND user_id = ? AND created_at > DATE_SUB(NOW(), INTERVAL 30 DAY)`,
+//       [orderUuid, userId]
+//     )
+
+//     if (orderCheck.length === 0) {
+//       return res
+//         .status(403)
+//         .json({ status: 'error', message: '無法評論此訂單' })
+//     }
+
+//     // 檢查是否已經評論過
+//     const [existingComment] = await connection.query(
+//       `SELECT id FROM comments 
+//    WHERE entity_type = ? AND entity_id = ? AND user_id = ?`,
+//       [itemType, itemId, userId]
+//     )
+
+//     if (existingComment.length > 0) {
+//       return res
+//         .status(400)
+//         .json({ status: 'error', message: '您已經評論過此項目' })
+//     }
+
+//     // 插入評論
+//     await connection.query(
+//       `INSERT INTO comments (entity_type, entity_id, user_id, comment_text, rating) 
+//        VALUES (?, ?, ?, ?, ?)`,
+//       [itemType, itemId, userId, commentText, rating]
+//     )
+
+//     res.json({ status: 'success', message: '評論已成功提交' })
+//   } catch (error) {
+//     console.error('提交評論時出錯:', error)
+//     res
+//       .status(500)
+//       .json({ status: 'error', message: '服務器錯誤', error: error.message })
+//   }
+// })
+
 router.post('/submit-comment', authenticate, async (req, res) => {
   try {
     const { orderUuid, itemId, itemType, rating, commentText } = req.body
     const userId = req.user.id
 
-    // 檢查訂單是否屬於該用戶且在30天內
+    // 檢查訂單是否屬於該用戶且狀態為已完成
     const [orderCheck] = await connection.query(
-      `SELECT created_at FROM orders 
-       WHERE order_uuid = ? AND user_id = ? AND created_at > DATE_SUB(NOW(), INTERVAL 30 DAY)`,
+      `SELECT status FROM orders 
+       WHERE order_uuid = ? AND user_id = ? AND status = '已完成'`,
       [orderUuid, userId]
     )
 

@@ -56,8 +56,8 @@ export default function ArticleListNav({ article }) {
                // 顯示錯誤提示
                Swal.fire({
                 icon: 'error',
-                title: '操作失敗',
-                text: '無法更改收藏狀態，請稍後再試',
+                title: '請先登入',
+                text: '您需要登入才能收藏文章',
                 timer: 1500,
                 showConfirmButton: false
               });

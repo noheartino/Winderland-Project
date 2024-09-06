@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { CartContext } from "@/context/CartContext";
-
 
 export default function Nav() {
   const { logout } = useAuth();
@@ -12,79 +11,88 @@ export default function Nav() {
   const [infodata, setInfo] = useState(null);
   const navRef = useRef(null);
   const { cartQuantity } = useContext(CartContext); // 使用 CartContext
+  const [avatarUrl, setAvatarUrl] = useState("/nav-footer/default_user.jpg");
+
   // console.log('總數量',cartQuantity)
 
-  const Data = useAuth().auth
-  const userData = (Data && Data.userData) ? Data.userData : '';
+  const Data = useAuth().auth;
+  const userData = Data && Data.userData ? Data.userData : "";
 
-
-  const userId = userData ? userData.id : 0
-
+  const userId = userData ? userData.id : 0;
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       const searchQuery = event.target.value;
-      router.push(`/product?page=1&sort=id_asc&search=${encodeURIComponent(searchQuery)}`);
+      router.push(
+        `/product?page=1&sort=id_asc&search=${encodeURIComponent(searchQuery)}`
+      );
     }
   };
-
-
-
-
 
   useEffect(() => {
     if (userId) {
       fetch(`http://localhost:3005/api/header/${userId}`)
-        .then(response => response.json())
-        .then(infodata => setInfo(infodata))
-        .catch(error => console.error('Error:', error));
+        .then((response) => response.json())
+        .then((infodata) => setInfo(infodata))
+        .catch((error) => console.error("Error:", error));
     }
+
+    // 抓取頭像 URL
+    fetch(`http://localhost:3005/api/dashboard/profile/avatar/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success" && data.data.avatar_url) {
+          setAvatarUrl(`http://localhost:3005${data.data.avatar_url}`);
+        } else {
+          setAvatarUrl("/nav-footer/default_user.jpg"); // 使用預設頭像
+        }
+      })
+      .catch((error) => {
+        console.error("抓取頭像錯誤:", error);
+        setAvatarUrl("/nav-footer/default_user.jpg"); // 使用預設頭像
+      });
   }, [userId]);
 
+  useEffect(() => {
+    const handleAvatarUpdated = (event) => {
+      setAvatarUrl(event.detail);
+    };
 
+    window.addEventListener('avatarUpdated', handleAvatarUpdated);
 
-  let userinfo = infodata?.userinfo?.[0]?.img || [];
-
-  // 修改會員頭像路徑
-  const avatarUrl = userData && userData.avatar_url
-    ? `http://localhost:3005${userData.avatar_url}`
-    : '/nav-footer/default_user.jpg';
-
-
-  if (typeof userinfo === 'string') {
-    userinfo = userinfo.replace(/[\r\n]+/g, '');
-  } else {
-    userinfo = ''
-  }
+    return () => {
+      window.removeEventListener('avatarUpdated', handleAvatarUpdated);
+    };
+  }, []);
 
 
 
   const memberLevels = {
-    1: '銅瓶',
-    2: '銀瓶',
-    3: '金瓶',
-    4: '白金瓶'
-  }
+    1: "銅瓶",
+    2: "銀瓶",
+    3: "金瓶",
+    4: "白金瓶",
+  };
 
   const GoCart = () => {
     router.push("/cart/cartCheckout1"); // 使用 router.push 直接導航到首頁
   };
 
   const redwine = () => {
-    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=1"); 
+    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=1");
   };
 
   const whitewine = () => {
-    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=2"); 
+    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=2");
   };
 
   const otherwine = () => {
-    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=3"); 
+    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=3");
   };
 
   const goHome = () => {
     router.push("/");
-  }
+  };
 
   const hamburgerHook = () => {
     setisOpen((prevState) => !prevState);
@@ -236,19 +244,18 @@ export default function Nav() {
   const handleLogout = async () => {
     try {
       await logout();
-      router.push('/'); // 登出成功後導航到首頁
+      router.push("/"); // 登出成功後導航到首頁
     } catch (error) {
-      console.error('登出失敗:', error);
+      console.error("登出失敗:", error);
     }
   };
-
 
   return (
     <>
       <div className="nav_margin"></div>
       <div className="HeaderCNav">
         <div className="container d-none d-lg-flex">
-          <a onClick={goHome} style={{ cursor: 'pointer' }}>
+          <a onClick={goHome} style={{ cursor: "pointer" }}>
             <img
               className="nav_logo"
               src="/nav-footer/nav_logo.png"
@@ -273,27 +280,32 @@ export default function Nav() {
               <li>商品列表+</li>
             </Link>
 
-            <Link href="/article" >
+            <Link href="/article">
               <li>相關文章</li>
             </Link>
-            <Link href="/course" >
+            <Link href="/course">
               <li>品酒課程</li>
             </Link>
-            <Link href="/event" >
+            <Link href="/event">
               <li>活動專區</li>
             </Link>
-
-
           </ul>
           <div className="HeaderCNavR">
             <div className="NavCSearch">
               <i className="fa-solid fa-magnifying-glass NavCSearchIcon" />
-              <input id="nav_search" type="text" placeholder="搜 尋" onKeyDown={handleKeyPress} />
+              <input
+                id="nav_search"
+                type="text"
+                placeholder="搜 尋"
+                onKeyDown={handleKeyPress}
+              />
             </div>
             <div className="HeaderCart">
               <button onClick={GoCart}>
                 <i className="fa-solid fa-cart-shopping" />
-                <div className={`dot ${cartQuantity === 0 ? 'nonedot' : ''}`}>{cartQuantity}</div>
+                <div className={`dot ${cartQuantity === 0 ? "nonedot" : ""}`}>
+                  {cartQuantity}
+                </div>
               </button>
             </div>
             <div className="nav_user">
@@ -303,15 +315,19 @@ export default function Nav() {
             </div>
             <div className="user_area">
               <div className="user_area_t">
-                {userData && <div className={`userlvis lv${userData.member_level_id}`}>Lv.{userData.member_level_id}</div>}
+                {userData && (
+                  <div className={`userlvis lv${userData.member_level_id}`}>
+                    Lv.{userData.member_level_id}
+                  </div>
+                )}
                 {/* <div className={`userlvis lv${userData.member_level_id}`}>Lv.4</div> */}
                 <div className="user_area_tl">
                   {/* 修正頭像路徑 */}
                   <img src={avatarUrl} alt="" />
                 </div>
                 <div className="user_area_tr">
-                  <p>{userData ? userData.user_name : '訪客'}</p>
-                  <p>{userData ? userData.account : '--'}</p>
+                  <p>{userData ? userData.user_name : "訪客"}</p>
+                  <p>{userData ? userData.account : "--"}</p>
                 </div>
               </div>
               <div className="line" />
@@ -330,7 +346,15 @@ export default function Nav() {
                 </Link>
               </ul>
               <div className="user_area_btn">
-                {userData ? <button className="logout" onClick={handleLogout}>登出</button> : <Link href="/dashboard/profile"><button className="login">登入 / 註冊</button></Link>}
+                {userData ? (
+                  <button className="logout" onClick={handleLogout}>
+                    登出
+                  </button>
+                ) : (
+                  <Link href="/dashboard/profile">
+                    <button className="login">登入 / 註冊</button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -360,7 +384,9 @@ export default function Nav() {
           <div className="HeaderCart">
             <button onClick={GoCart}>
               <i className="fa-solid fa-cart-shopping" />
-              <div className={`dot ${cartQuantity === 0 ? 'nonedot' : ''}`}>{cartQuantity}</div>
+              <div className={`dot ${cartQuantity === 0 ? "nonedot" : ""}`}>
+                {cartQuantity}
+              </div>
             </button>
           </div>
         </div>
@@ -449,21 +475,40 @@ export default function Nav() {
         </div>
       </div>
       <div className="navShop_list"></div>
-      <div ref={navRef} className={`nav_rwdArea d-lg-none ${isOpen ? "display" : ""}`}>
+      <div
+        ref={navRef}
+        className={`nav_rwdArea d-lg-none ${isOpen ? "display" : ""}`}
+      >
         <div className="nav_rwdArea_head">
           <div className="nav_rwdArea_head_t">
             <div className="nrht_l d-flex align-items-center">
               {/* <img className="rounded-circle nrht_lpic" src={userData ? `/images/member/avatar/${userinfo}` : '/nav-footer/default_user.jpg'} alt="" width={60} height={60}/> */}
-              <img className="rounded-circle nrht_lpic" src={avatarUrl} alt="" width={60} height={60} />
+              <img
+                className="rounded-circle nrht_lpic"
+                src={avatarUrl}
+                alt=""
+                width={60}
+                height={60}
+              />
               <div className="nrht_l_text ms-3">
-                <div>{userData ? userData.user_name : '訪客'}</div>
-                <div>{userData ? userData.account : '--'}</div>
+                <div>{userData ? userData.user_name : "訪客"}</div>
+                <div>{userData ? userData.account : "--"}</div>
               </div>
             </div>
-            <Link className="Ano" href="/dashboard/profile" onClick={hamburgerHook}>
+            <Link
+              className="Ano"
+              href="/dashboard/profile"
+              onClick={hamburgerHook}
+            >
               <div className="d-flex align-items-center">
-              {userData ? <div className={`nrht_r me-3 lv${userData.member_level_id}`}>{memberLevels[userData.member_level_id]}</div> : <div className="nrht_r me-3 lv0">尚未登入</div>}
-              <i className="fa-solid fa-chevron-right" />
+                {userData ? (
+                  <div className={`nrht_r me-3 lv${userData.member_level_id}`}>
+                    {memberLevels[userData.member_level_id]}
+                  </div>
+                ) : (
+                  <div className="nrht_r me-3 lv0">尚未登入</div>
+                )}
+                <i className="fa-solid fa-chevron-right" />
               </div>
             </Link>
           </div>
@@ -514,7 +559,17 @@ export default function Nav() {
           </ul>
         </div>
         <div className="nav_rwdArea_logout">
-            {userData && <button className="rwd_logout" onClick={() => { handleLogout(); hamburgerHook(); }}>帳號登出</button>}
+          {userData && (
+            <button
+              className="rwd_logout"
+              onClick={() => {
+                handleLogout();
+                hamburgerHook();
+              }}
+            >
+              帳號登出
+            </button>
+          )}
         </div>
       </div>
       {/* {userData ? <pre>{JSON.stringify(userData, null, 2)}</pre> : 'Loading...'}

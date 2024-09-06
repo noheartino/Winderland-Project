@@ -43,6 +43,11 @@ a.A-rmpre{
     text-decoration: none;
 }
 
+a.rmall{
+    text-decoration: none;
+    color: var(--text_primary);
+}
+
 a.Armall{
     text-decoration: none;
     display: block;
@@ -436,6 +441,23 @@ a.Armallmt{
 .eventHomeBoxAreaTitleRwd{
     padding-inline: 15px;
     position: relative;
+
+    .ascto{
+        position: absolute;
+        right: 100px;
+        top: -5px;
+        color: #916B51;
+        width: 70px;
+        padding-left: 12px;
+        height: 28px;
+        letter-spacing: 2px;
+        background-color: white;
+        border-radius: 5px;
+        border: 1px solid #916B51;
+        font-size: 14px;
+        line-height: 10px;
+        
+    }
 
 
     .eventHomeBoxAreaTitlelRwd{
@@ -1072,6 +1094,17 @@ a.Armallmt{
         letter-spacing: 3px;
     }
 
+    .emailinput{
+        height: 55px;
+        width: 530px;
+        padding-left: 10px;
+        border: 2px solid #916B51;
+        border-radius: 3px;
+        margin-right: 20px;
+        margin-top: 30px;
+        margin-bottom: 70px;
+    }
+
     .eventCardOuter{
         width: 800px;
         height: 250px;
@@ -1146,14 +1179,14 @@ a.Armallmt{
     }
 
     .eventGoHome{
-        width: 350px;
-        padding-block: 20px;
+        width: 250px;
+        padding-block: 15px;
         background-color: #916B51;
         color: white;
         letter-spacing: 3px;
         border: none;
         border-radius: 5px;
-        margin-top: 50px;
+        margin-top: 30px;
         margin-bottom: 70px;
     }
             
@@ -2269,6 +2302,11 @@ a.Armallmt{
     transition: 1s;
     animation: arrcircle 1s ease-in infinite;
     cursor: pointer;
+
+    @media screen and (max-width: 576px){
+        right: 30px;
+        transform: scale(0.8);
+    }
 
     .arris{
         position: absolute;

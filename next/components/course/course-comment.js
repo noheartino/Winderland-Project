@@ -1,16 +1,16 @@
 import React from "react";
 import CourseCommentMore from "./course-comment-more";
+import styles from './comment-avatar.module.css';
 
 export default function ArticleComment({comment, index}) {
   return (
     <>
         <div className="course-comment row">
           <div className="col-auto">
+            {/* 頭像 */}
             <div className="course-comment-icon d-flex justify-content-center align-items-center">
-              <h2 className="m-0 text-white d-none d-md-block">{comment?.account.slice(0,2)}</h2>
-              <h5 className="m-0 text-white d-block d-md-none">{comment?.account.slice(0,2)}</h5>
+              <img className={`${styles['course-comment-avatar']}`} src={`http://localhost:3005/images/member/avatar/${comment.user_img}`} alt="" />
             </div>
-
           </div>
           <div className="course-user-comment-section col">
             <div className="course-comment-bubble-nav row align-items-end mb-2 justify-content-between">

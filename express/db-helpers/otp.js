@@ -2,7 +2,8 @@
 
 // 資料庫查詢處理函式
 import { generateToken } from '#configs/otp.js'
-
+// 密碼加密
+import bcrypt from 'bcrypt'
 // 資料庫使用
 import connection from '##/configs/mysql.js'
 
@@ -97,7 +98,11 @@ const createOtp = async (email, exp = 30, limit = 60) => {
 
 // 更新密碼
 const updatePassword = async (email, token, password) => {
+  const conn = await connection.getConnection()
+
   try {
+    await conn.beginTransaction()
+
     // 檢查otp是否已經存在
     const [otp] = await connection.execute(
       'SELECT * FROM otp WHERE email = ? AND token = ? LIMIT 1',
@@ -108,27 +113,37 @@ const updatePassword = async (email, token, password) => {
     // 沒找到回傳false
     if (!foundOtp) {
       console.log('ERROR - OTP Token資料不存在'.bgRed)
+      await conn.rollback()
       return false
     }
 
     // 計算目前時間比對是否超過，到期的timestamp
     if (Date.now() > foundOtp.exp_timestamp) {
       console.log('ERROR - OTP Token已到期'.bgRed)
+      await conn.rollback()
+
       return false
     }
 
+    // 加密新密碼
+    const hashedPassword = await bcrypt.hash(password, 10)
+
     // 修改密碼
-    await connection.execute('UPDATE users SET password = ? WHERE id = ?', [
-      password,
+    await conn.query('UPDATE users SET password = ? WHERE id = ?', [
+      hashedPassword,
       foundOtp.user_id,
     ])
 
     // 移除otp記錄
     await connection.execute('DELETE FROM otp WHERE id = ?', [foundOtp.id])
+    await conn.commit()
     return true
   } catch (error) {
+    await conn.rollback()
     console.error('Error in updatePassword:', error)
     throw error
+  } finally {
+    conn.release()
   }
 }
 export { createOtp, updatePassword }

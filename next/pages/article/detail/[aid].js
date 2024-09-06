@@ -10,21 +10,20 @@ import { FaCircleChevronUp } from "react-icons/fa6";
 import Head from "next/head";
 import { FaCaretRight } from "react-icons/fa";
 import Link from "next/link";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 export default function ArticleDetail() {
   const router = useRouter();
-  const [article, setArticle] = useState([]);
+  const [article, setArticle] = useState({}); // 使用空對象作為初始值
 
   useEffect(() => {
-    const { aid } = router.query; // 取得路由中的 id 參數
+    const { aid } = router.query;
     const categoryMapping = {
       葡萄酒小知識: "知識",
       產區特色: "產區",
       葡萄品種介紹: "品種",
       搭配餐點推薦: "配餐",
       調酒知識: "調酒",
-      // 添加其他需要轉換的 category
     };
     if (router.isReady) {
       fetch(`http://localhost:3005/api/article/${aid}`)
@@ -35,14 +34,12 @@ export default function ArticleDetail() {
           return response.json();
         })
         .then((data) => {
-          // 處理 articles 資料，將 images 字段轉換為數組
           const processedArticle = {
             ...data,
             images: data.images ? data.images.split(",") : [],
             category: categoryMapping[data.category] || data.category,
           };
           setArticle(processedArticle);
-          // console.log(processedArticle)
         })
         .catch((error) => {
           console.log(error);
@@ -50,120 +47,116 @@ export default function ArticleDetail() {
     }
   }, [router.isReady]);
 
-  // 書籤
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   useEffect(() => {
-    // Check if the article is already bookmarked when the component mounts
-    checkBookmarkStatus();
-  }, [article]);
+    if (article.id) {
+      checkBookmarkStatus();
+    }
+  }, [article.id]);
 
   const checkBookmarkStatus = async () => {
     try {
-      const response = await fetch('http://localhost:3005/api/favorites/articles', {
-        method: 'GET',
-        credentials: 'include',
-      });
+      const response = await fetch(
+        "http://localhost:3005/api/favorites/articles",
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
       const data = await response.json();
-      if (data.status === 'success') {
-        setIsBookmarked(data.data.some(bookmark => bookmark.id === article.id));
+      if (data.status === "success") {
+        setIsBookmarked(
+          data.data.some((bookmark) => bookmark.id === article.id)
+        );
       }
     } catch (error) {
-      console.error('Error checking bookmark status:', error);
+      console.error("Error checking bookmark status:", error);
     }
   };
 
   const toggleBookmark = async () => {
     try {
       const url = `http://localhost:3005/api/favorites/articles/${article.id}`;
-      const method = isBookmarked ? 'DELETE' : 'POST';
-      
+      const method = isBookmarked ? "DELETE" : "POST";
+
       const response = await fetch(url, {
         method: method,
-        credentials: 'include',
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       const data = await response.json();
-      if (data.status === 'success') {
+      if (data.status === "success") {
         setIsBookmarked(!isBookmarked);
 
-           // 顯示 Sweet Alert 提示
-           Swal.fire({
-            icon: 'success',
-            title: isBookmarked ? '已取消收藏' : '收藏成功',
-            text: isBookmarked ? '文章已從您的收藏中移除' : '文章已添加到您的收藏',
-            timer: 1500,
-            showConfirmButton: false
-          });
+        Swal.fire({
+          icon: "success",
+          title: isBookmarked ? "已取消收藏" : "收藏成功",
+          text: isBookmarked
+            ? "文章已從您的收藏中移除"
+            : "文章已添加到您的收藏",
+          timer: 1500,
+          showConfirmButton: false,
+        });
       } else {
-        console.error('Error toggling bookmark:', data.message);
+        console.error("Error toggling bookmark:", data.message);
 
-               // 顯示錯誤提示
-               Swal.fire({
-                icon: 'error',
-                title: '操作失敗',
-                text: '無法更改收藏狀態，請稍後再試',
-                timer: 1500,
-                showConfirmButton: false
-              });
+        Swal.fire({
+          icon: "error",
+          title: "操作失敗",
+          text: "無法更改收藏狀態，請稍後再試",
+          timer: 1500,
+          showConfirmButton: false,
+        });
       }
     } catch (error) {
-      console.error('Error toggling bookmark:', error);
+      console.error("Error toggling bookmark:", error);
 
-       // 顯示錯誤提示
-       Swal.fire({
-        icon: 'error',
-        title: '操作失敗',
-        text: '發生錯誤，請稍後再試',
+      Swal.fire({
+        icon: "error",
+        title: "操作失敗",
+        text: "發生錯誤，請稍後再試",
         timer: 1500,
-        showConfirmButton: false
+        showConfirmButton: false,
       });
     }
   };
 
-  // 捲動的按鈕
   const [showButton, setShowButton] = useState(false);
   const [scrollTimeout, setScrollTimeout] = useState(null);
+
   useEffect(() => {
     const handleScroll = () => {
-      // 清除之前的定時器
       if (scrollTimeout) {
         clearTimeout(scrollTimeout);
       }
 
-      // 檢查捲動位置，設定顯示狀態
       if (window.scrollY > 100) {
-        // 當捲動超過100px時顯示按鈕
         setShowButton(true);
       } else {
         setShowButton(false);
       }
 
-      // 設置新的定時器，檢查滾動是否停止
       const timeout = setTimeout(() => {
-        setShowButton(false); // 停止滾動後隱藏按鈕
-      }, 1500); // 延遲時間為1000毫秒（1秒）
+        setShowButton(false);
+      }, 1500);
 
       setScrollTimeout(timeout);
     };
 
-    // 添加 scroll 事件監聽器
     window.addEventListener("scroll", handleScroll);
 
-    // 清除事件監聽器
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      // 清除在卸載時設置的定時器
       if (scrollTimeout) {
         clearTimeout(scrollTimeout);
       }
     };
   }, [scrollTimeout]);
 
-  // 平滑滾動到頂部
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -174,8 +167,7 @@ export default function ArticleDetail() {
   return (
     <>
       <Head>
-        <title>醺迷仙園｜{article.title}</title>
-
+        <title>{`醺迷仙園｜${article.title}`}</title>
         <meta charSet="utf-8" />
         <meta
           name="viewport"
@@ -183,6 +175,7 @@ export default function ArticleDetail() {
         />
         <link rel="icon" href="/logo.png" />
       </Head>
+
       {/* Header */}
       <Nav />
       <div className="container pb-5">
@@ -214,15 +207,29 @@ export default function ArticleDetail() {
         </div>
       </div>
       {/* 書籤 */}
-      <div className="row" style={{position:"relative"}}>
-      <div className="aid-bookmark d-lg-none ms-auto col-auto" style={{position:"absolute", top:"10px", right:"25px", backgroundColor:"var(--primary)", padding:"15px 18px 15px 18px" ,borderRadius:"50%"}}>
-          <i 
-            className={`fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark`}
+      <div className="row" style={{ position: "relative" }}>
+        <div
+          className="aid-bookmark d-lg-none ms-auto col-auto"
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "25px",
+            backgroundColor: "var(--primary)",
+            padding: "15px 18px 15px 18px",
+            borderRadius: "50%",
+          }}
+        >
+          <i
+            className={`fa-${isBookmarked ? "solid" : "regular"} fa-bookmark`}
             onClick={toggleBookmark}
-            style={{ cursor: 'pointer', fontSize:"20px", color:"var(--light)" }}
+            style={{
+              cursor: "pointer",
+              fontSize: "20px",
+              color: "var(--light)",
+            }}
           />
         </div>
-        </div>
+      </div>
       {/* 評論區 */}
       <ArticleCommentArea articleId={article.id} />
       {/* Footer */}

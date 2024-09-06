@@ -90,9 +90,6 @@ export default function CourseNav({setIsHomePage, isHomePage}) {
                 #品酒
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>
-                #挑選酒
-              </span>
-              <span className="nav-tag cursor-pointer" onClick={handleClick}>
                 #認證課程
               </span>
               <span className="nav-tag cursor-pointer" onClick={handleClick}>

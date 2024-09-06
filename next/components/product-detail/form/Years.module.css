@@ -19,7 +19,9 @@
 }
 
 @media screen and (max-width: 992px) {
-
+    .select {
+        height: 50px;
+    }
 }
 
 @media screen and (max-width: 767px) {
@@ -28,7 +30,7 @@
         color: var(--text_primary);
         border: 2px solid var(--wine_light);
         width: 100%;
-        height: 40px;
+        height: 50px;
         text-align: center;
         appearance: none;
         background-image: url(/product_images/years-arrow.svg);

@@ -1,0 +1,50 @@
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    & .page-button,
+    & .firstPage-button,
+    & .prevPage-button,
+    & .nextPage-button,
+    & .lastPage-button {
+        height: 40px;
+        width: 35px;
+        background-color: #ffffff;
+        border: 2px solid var(--wine_light);
+        color: var(--text_primary);
+    }
+
+    & .page-button {
+        &:hover {
+            background-color: #fbf2f2;
+        }
+    }
+
+    & .d-none {
+        display: none;
+    }
+
+    & .d-block {
+        display: block;
+    }
+
+    & .current-page {
+        background-color: var(--wine_light);
+
+        &:hover {
+            background-color: var(--wine_light);
+        }
+    }
+
+    & .page-omit{
+        border: none;
+        background-color: transparent;
+    }
+
+    & .prevPage-button, & .nextPage-button{
+        width: 45px;
+    }
+}

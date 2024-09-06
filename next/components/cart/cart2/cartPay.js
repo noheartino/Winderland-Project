@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import css from "@/components/cart/cart2/cartPay.module.css";
-import axios from "axios"; // 引入 axios 或其他 HTTP 請求庫
-import { useRouter } from "next/router"; // 引入 useRouter
+import axios from "axios";
+import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 
 export default function CartPay({
@@ -12,6 +12,8 @@ export default function CartPay({
   selectedTransport,
   transportData,
   transportBlackCatData,
+  setSelectedPayment, // 父元件應該傳進來以便我們修改付款方式
+  setSelectedTransport, // 父元件應該傳進來以便我們修改運送方式
 }) {
   const [finalAmount, setFinalAmount] = useState(0);
   const [productData, setProductData] = useState([]);
@@ -20,8 +22,8 @@ export default function CartPay({
   const [isFormValid, setIsFormValid] = useState(false);
   const [formError, setFormError] = useState("");
   const [orderNumber, setOrderNumber] = useState("");
-  const [discountAmounts, setDiscountAmounts] = useState(0); //優惠券折扣掉的金額
-  const router = useRouter(); // 使用 useRouter 來進行導航
+  const [discountAmounts, setDiscountAmounts] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     const storedFinalAmount = sessionStorage.getItem("finalAmount");
@@ -36,9 +38,17 @@ export default function CartPay({
     if (storedProductData) setProductData(JSON.parse(storedProductData));
     if (storedClassData) setClassData(JSON.parse(storedClassData));
     if (storedCoupon) setSelectedCoupon(JSON.parse(storedCoupon));
-    if (storedDiscountAmounts)
-      setDiscountAmounts(JSON.parse(storedDiscountAmounts));
+    if (storedDiscountAmounts) setDiscountAmounts(storedDiscountAmounts);
   }, []);
+
+  useEffect(() => {
+    if (productData.length === 0 && classData.length > 0) {
+      // 如果只有課程資料，將付款方式強制設為信用卡並禁用運送方式
+      setSelectedPayment("creditpay");
+      setSelectedTransport(null); // 清空運送方式
+    }
+    validateForm();
+  }, [productData, classData]);
 
   const minLength = {
     pickupPhone: 10,
@@ -53,22 +63,30 @@ export default function CartPay({
     let valid = true;
     let errorMessages = [];
 
-    if (!selectedPayment || !selectedTransport) {
+    if (!selectedPayment) {
       valid = false;
-      errorMessages.push("請選擇付款方式和運送方式");
+      errorMessages.push("請選擇付款方式");
+    } else if (productData.length === 0 && classData.length > 0) {
+      // 如果只有課程資料，檢查是否選擇了信用卡
+      if (selectedPayment !== "creditpay") {
+        valid = false;
+        errorMessages.push("購買課程只能使用信用卡付款");
+      }
     } else {
+      if (!selectedTransport) {
+        valid = false;
+        errorMessages.push("請選擇運送方式");
+      }
       if (selectedTransport === "transprot711") {
         if (!transportData || Object.keys(transportData).length === 0) {
           valid = false;
           errorMessages.push("請填寫7-11資料");
         } else {
-          const { storeName, storeAddress, pickupName, pickupPhone } =
-            transportData;
+          const { storeName, storeAddress, pickupName, pickupPhone } = transportData;
           if (!storeName || !storeAddress || !pickupName) {
             valid = false;
             errorMessages.push("7-11資料不完整");
           }
-          // 如果 pickupPhone 是 undefined 或空字串，設為空字串
           const validPickupPhone = pickupPhone || "";
           if (validPickupPhone.length < minLength.pickupPhone) {
             valid = false;
@@ -78,23 +96,15 @@ export default function CartPay({
       }
 
       if (selectedTransport === "blackcat") {
-        if (
-          !transportBlackCatData ||
-          Object.keys(transportBlackCatData).length === 0
-        ) {
+        if (!transportBlackCatData || Object.keys(transportBlackCatData).length === 0) {
           valid = false;
           errorMessages.push("請填寫黑貓宅急便資料");
         } else {
-          const {
-            address: blackCatAddress,
-            name,
-            phone: blackCatPhoneNumber,
-          } = transportBlackCatData;
+          const { address: blackCatAddress, name, phone: blackCatPhoneNumber } = transportBlackCatData;
           if (!blackCatAddress || !name) {
             valid = false;
             errorMessages.push("黑貓宅急便資料不完整");
           }
-          // 如果 blackCatPhoneNumber 是 undefined 或空字串，設為空字串
           const validBlackCatPhoneNumber = blackCatPhoneNumber || "";
           if (validBlackCatPhoneNumber.length < minLength.blackCatPhoneNumber) {
             valid = false;
@@ -141,7 +151,6 @@ export default function CartPay({
           sessionStorage.setItem("userId", userId);
 
           if (selectedPayment === "productpay") {
-            // 貨到付款
             response = await axios.post(
               "http://localhost:3005/api/cart/cashOnDelivery",
               {
@@ -158,12 +167,8 @@ export default function CartPay({
                 discountAmounts,
               }
             );
-
             setOrderNumber(response.data.orderNumber);
-            // 清除 sessionStorage 中的優惠券資料
             sessionStorage.removeItem("selectedCoupon");
-
-            // 導航到確認頁
             router.push("/cart/cartCheckout3");
           } else if (selectedPayment === "creditpay") {
             const goECPayTestOnly = (discountedAmount) => {
@@ -179,8 +184,6 @@ export default function CartPay({
                 }
               });
             };
-
-            // 信用卡付款
             response = await axios.post(
               "http://localhost:3005/api/cart/creditCardPayment",
               {
@@ -197,14 +200,8 @@ export default function CartPay({
                 discountAmounts,
               }
             );
-
-            // 假設後端返回了訂單編號
             setOrderNumber(response.data.orderNumber);
-
-            // 清除 sessionStorage 中的優惠券資料
             sessionStorage.removeItem("selectedCoupon");
-
-            // 在處理完成後，可能需要導航至某個頁面
             goECPayTestOnly(discountedAmount);
           }
 
@@ -221,7 +218,7 @@ export default function CartPay({
         Swal.fire({
           icon: "warning",
           title: "表單驗證錯誤",
-          html: formError, // 使用 HTML 格式顯示錯誤消息
+          html: formError,
         });
       }
     }
@@ -240,7 +237,7 @@ export default function CartPay({
                   ? "信用卡"
                   : "貨到付款"
                 : "請選擇付款方式"}
-              {selectedTransport && selectedTransport === "transprot711"
+              {productData.length > 0 && selectedTransport && selectedTransport === "transprot711"
                 ? "(7-11)"
                 : selectedTransport === "blackcat"
                 ? "(黑貓宅急便)"

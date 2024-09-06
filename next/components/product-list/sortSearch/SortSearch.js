@@ -10,6 +10,8 @@ export default function SortSearch({
   totalItems,
   onOpenMobileFilter,
   noProducts,
+  selectFilters,
+  handleCategoryChange,
 }) {
   const [localSearch, setLocalSearch] = useState(search);
   const [getSearch, setGetSearch] = useState(false);
@@ -23,6 +25,10 @@ export default function SortSearch({
       setGetSearch(false);
     }
   }, [search]);
+
+  useEffect(() => {
+    console.log("目前的篩選啦",selectFilters)
+  },[selectFilters])
 
   const handleSortClick = (sortType) => {
     let newSort;
@@ -109,7 +115,7 @@ export default function SortSearch({
                 changeSearch(localSearch);
               }
             }}
-            className={`${getSearch ? "d-none" : "d-flex"}`}
+            className={`${getSearch ? "d-none" : "d-flex"}` }
           >
             <i className="fa-solid fa-magnifying-glass" />
           </button>

@@ -52,9 +52,10 @@ export function AuthProvider({ children }) {
       if (response.ok) {
         const { status, data } = await response.json();
         // console.log('Auth status response:', data);
-        if (status === 'success') {
+        if (status === 'success' && data.isAuth) {
           setAuth({
-            isAuth: data.isAuth,
+            // isAuth: data.isAuth,
+            isAuth: true,
             userData: {
               ...data.user,
               gender: data.user.gender || '',
@@ -62,6 +63,8 @@ export function AuthProvider({ children }) {
               member_level_id: data.user.member_level_id || '',
               phone: data.user.phone || '',  
               address: data.user.address || '',  
+              // 頭像維持修正
+              avatar_url: data.user.avatar_url ? `${data.user.avatar_url}?t=${new Date().getTime()}` : '/images/member/avatar/default-avatar.jpg',
             },
           })
         } else {

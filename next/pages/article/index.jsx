@@ -12,6 +12,9 @@ import Footer from "@/components/footer/footer";
 import Head from "next/head";
 import Link from "next/link";
 
+import ClipLoader from "react-spinners/ClipLoader";
+
+
 export default function Index() {
   const [loading, setLoading] = useState(true); // 新增 loading 狀態
   const authData = useAuth().auth;
@@ -70,7 +73,21 @@ console.log(category)
   // console.log(articleHead)
   // 如果正在加載，顯示 loading 畫面
   if (loading) {
-    return <div>Loading...</div>; // 你可以替換成更符合風格的 loading 畫面
+    return (
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
+          color="#851931"
+          loading={loading}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
   }
   return (
     <>

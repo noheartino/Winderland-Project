@@ -11,8 +11,10 @@ import Footer from "@/components/footer/footer";
 import CourseIndexPageNav from "@/components/course/courseIndexPageNav";
 import { useAuth } from "@/hooks/use-auth";
 import Head from "next/head";
+import Arrtotop from "@/components/Header/arr";
 
 export default function CourseIndex() {
+  //獲取userId
   const router = useRouter();
   const { auth } = useAuth();
   const [userId, setUserId] = useState(null);
@@ -118,18 +120,26 @@ export default function CourseIndex() {
   const [dateEnd, setDateEnd] = useState("");
   const [priceStart, setPriceStart] = useState("");
   const [priceEnd, setPriceEnd] = useState("");
+  const [districts, setDistricts] = useState([])
+
+  useEffect(()=>{
+    console.log(courses.length);
+    if(courses.length>0){
+      const newArr = []
+      const allAddressV = courses.map((course)=>{if(course.address){return course.address.slice(0,3)}})
+      const onlyVaddressArr = Array.from(new Set(allAddressV))
+      onlyVaddressArr.map((eachCity, index)=>{
+      const districtsObj = {'dId': index+1, 'districtStr': eachCity?eachCity:""}
+      newArr.push(districtsObj)
+      setDistricts(newArr)
+    })
+    }
+  }, [courses])
   
-  const districts = []
   
-        const districtsStrmaps=[]
-        courses.map((course)=>{districtsStrmaps.push(course.address.slice(0,3))})
-        
-        Array.from(new Set(districtsStrmaps)).map((eachCity, index)=>{
-          const districtsObj = {dId: index+1, districtStr: eachCity}
-          districts.push(districtsObj)
-        })
-        console.log("地區列表試做");
-        console.log(districts);
+  
+  console.log("地區列表試做");
+  console.log(districts);
   // const districts = [
   //   { dId: 1, districtStr: "台北市" },
   //   { dId: 2, districtStr: "新北市" },
@@ -162,8 +172,12 @@ export default function CourseIndex() {
         return district.districtStr;
       })
     );
+    const testArr = districts.map((district) => {
+      return district.districtStr;
+    })
     console.log("設置了districtArr: ");
-    console.log(districtArr);
+    console.log(testArr);
+    console.log(districts);
   }, [courses])
 
   useEffect(() => {
@@ -185,8 +199,9 @@ export default function CourseIndex() {
   // 篩選
   useEffect(() => {
     const newCoursesArray = courses.filter(
-      (course) =>
-        districtArr.includes(course.address.slice(0, 3)) &&
+        (course) => 
+        
+        (!course.address ?true: districtArr.includes(course.address.slice(0, 3))) &&
         course.average_rating >= score &&
         (onlineFilter === "全部"
           ? true
@@ -200,8 +215,8 @@ export default function CourseIndex() {
           : course.teacher_name === teacherSelect) &&
         (!dateStart
           ? true
-          : course.course_start > dateStart || !course.course_start) &&
-        (!dateEnd ? true : course.course_end < dateEnd || !course.course_end) &&
+          : course.appointment_start > dateStart || !course.appointment_start) &&
+        (!dateEnd ? true : course.appointment_end < dateEnd || !course.appointment_end) &&
         (!priceStart
           ? true
           : !course.sale_price
@@ -305,6 +320,7 @@ export default function CourseIndex() {
       <div className="course_wrap">
         {/* Header */}
         <Nav />
+        <Arrtotop />
 
         <CourseNav setIsHomePage={setIsHomePage} isHomePage={isHomePage} />
 
@@ -394,6 +410,7 @@ export default function CourseIndex() {
           {/* page one 我的課程&收藏課程 end */}
 
           <CourseList
+            userId={userId}
             courses={filterCourses}
             comments={comments}
             classAssigns={classAssigns}

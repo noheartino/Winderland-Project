@@ -128,6 +128,7 @@ export default function ForgetPasswordForm() {
                                 </div>
                             </form>
                         </div>
+                        <div style={{ height: "180px" }}></div>
                     </div>
                 </main>
 
@@ -159,6 +160,7 @@ export default function ForgetPasswordForm() {
 
 
                                 <button className={`${styles.button} mb-5 mt-3 `} type="submit">送出驗證</button>
+                                <div style={{ height: "80px" }}></div>
 
 
                             </div>

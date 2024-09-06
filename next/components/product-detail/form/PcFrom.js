@@ -1,26 +1,30 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./PcFrom.module.css";
 import Amount from "./Amount";
 import Years from "./Years";
 import AddCart from "./AddCart";
 import { useAuth } from "@/hooks/use-auth";
 import { useProduct } from "@/context/ProductContext";
+import { useFavorite } from "@/hooks/use-fav.js";
+import Swal from "sweetalert2";
 import axios from "axios";
-import Swal from 'sweetalert2';
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 export default function PcFrom() {
-  const [currentDetail, setCurrentDetail] = useState(0);
+  const [currentDetail, setCurrentDetail] = useState(null);
   const [currentAmount, setCurrentAmount] = useState(0);
-  axios.defaults.withCredentials = true;
-  const [isFav,setIsFav] = useState(false); 
-  
-  const handleFavIcon = () => {
-    setIsFav(prevState => !prevState);
-  }
-
   const { product, loading, error, detail } = useProduct();
   const { auth } = useAuth();
-  
+  const { isFav, isCheckingFav, toggleFavorite, checkFavoriteStatus } =
+    useFavorite(product?.[0]?.id);
+
+  const productDetail = product?.[0]?.details.find(
+    (d) => d.id === currentDetail?.id
+  );
+
+  const productDetailAmount = productDetail?.amount;
+
   useEffect(() => {
     if (product && product[0] && product[0].details) {
       const foundDetail =
@@ -28,26 +32,36 @@ export default function PcFrom() {
         product[0].details[0];
       setCurrentDetail(foundDetail);
     }
-    if (auth && auth.userData && auth.userData.id) {
-      console.log(auth.userData.id);
-    }
-  }, [product, detail, auth]);
+  }, [product, detail]);
 
+  useEffect(() => {
+    if (product?.[0]?.id && auth.userData) {
+      checkFavoriteStatus();
+    }
+  }, [product, auth.userData, checkFavoriteStatus]);
+
+  const handleToggleFavorite = async () => {
+    if (!auth.userData) {
+      Swal.fire({
+        icon: "warning",
+        title: "請先登入",
+        text: "您需要登入才能收藏商品",
+      });
+      return;
+    }
+    await toggleFavorite(currentDetail.id);
+  };
   const changeAmount = (newAmount) => {
     setCurrentAmount(newAmount);
   };
 
-  if (loading) return <div>加載中...</div>;
-  if (error) return <div>{error}</div>;
-  if (!product || !currentDetail) return <div>查無此商品</div>;
-
-  // 加入購物車
   const addToCart = async () => {
     try {
       if (currentAmount === 0 || currentAmount === "0") {
         Swal.fire({
-          icon: 'warning',
-          title: '請選擇數量',
+          icon: "warning",
+          title: "請選擇數量",
+          text: "請選擇至少一件商品",
         });
         return;
       }
@@ -60,46 +74,47 @@ export default function PcFrom() {
           product_quantity: parseInt(currentAmount),
         },
         {
-          withCredentials: true, // 確保這個特定請求發送 cookies
+          withCredentials: true,
         }
       );
+
       if (response.data.success) {
         Swal.fire({
-          icon: 'success',
-          title: '成功加入購物車!',
+          icon: "success",
+          title: "成功加入購物車!",
+          showConfirmButton: false,
+          timer: 1500,
         });
       }
     } catch (error) {
       console.error("加入購物車失敗", error.response?.data || error.message);
       Swal.fire({
-        icon: 'error',
-        title: '加入購物車失敗',
-        text: '請先登入會員',
+        icon: "warning",
+        title: "加入購物車失敗",
+        text: "請先登入",
       });
     }
   };
 
-  const addToFav = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3005/api/favorites/products",
-        {
-          userId: parseInt(auth.userData.id),
-          productId: parseInt(product[0].id),
-          productDetailId: parseInt(currentDetail.id),
-        }
-      );
-      if (response.data.status === "success") {
-        alert("成功加入收藏!");
-        handleFavIcon()
-      }
-    } catch (error) {
-      console.error("加入收藏", error.response?.data || error.message);
-      alert(
-        "加入收藏失敗: " + (error.response?.data?.message || error.message)
-      );
-    }
-  };
+  if (loading) {
+    return (
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
+          color="#851931"
+          loading={loading}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
+  if (error) return <div>錯誤: {error}</div>;
+  if (!product || !currentDetail) return <div>查無此商品</div>;
 
   return (
     <>
@@ -108,17 +123,24 @@ export default function PcFrom() {
           <div className={`${styles["product-amount"]}`}>
             <div className={`${styles["product-amount-input"]}`}>
               <label htmlFor="">數量</label>
-              <Amount value={currentAmount} changeAmount={changeAmount} />
+              <Amount value={currentAmount} changeAmount={changeAmount} currentDetail={currentDetail}  />
             </div>
             <div className={`col-6 ${styles["product-year"]}`}>
               <label htmlFor="">年份</label>
               <Years />
             </div>
           </div>
-          <div className={`${styles["product-reserve"]}`}>庫存 &lt; 56件 </div>
+          <div className={`${styles["product-reserve"]}`}>
+            庫存  {productDetail.amount}件
+          </div>
         </div>
         <div className={`${styles["product-fav-cart"]}`}>
-          <AddCart addToCart={addToCart} addToFav={addToFav} isFav={isFav} />
+          <AddCart
+            addToCart={addToCart}
+            toggleFavorite={handleToggleFavorite}
+            isFav={isFav}
+            isCheckingFav={isCheckingFav}
+          />
         </div>
       </form>
     </>

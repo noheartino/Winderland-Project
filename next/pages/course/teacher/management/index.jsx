@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
 import Link from "next/link";
 import Head from "next/head";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Applyevent() {
   const router = useRouter();
@@ -17,17 +18,11 @@ export default function Applyevent() {
   const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
-    if (authData && authData.id > 0) {
+    if (authData && authData.id === 100) {
       setUserId(authData.id)
       setIsAdmin(true)
     }
   }, [useAuth()])
-    if(useAuth()){
-      console.log("1. useAuth() = ");
-      console.log(useAuth());
-      console.log('2. ----> set UserId = ' + authData);
-      console.log('3. =------> isadmin = '+isAdmin);
-    }
 
   // useEffect(() => {
   //   if (auth.isAuth) {
@@ -58,21 +53,35 @@ export default function Applyevent() {
     }
   }, [userId, isAdmin]);
 
-  const handleClick = (index) => {
-    setActiveIndexes((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    );
-    setTimeout(() => {
-      setScaleYIndexes((prev) =>
-        prev.includes(index)
-          ? prev.filter((i) => i !== index)
-          : [...prev, index]
-      );
-    }, 100);
-  };
+  // const handleClick = (index) => {
+  //   setActiveIndexes((prev) =>
+  //     prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+  //   );
+  //   setTimeout(() => {
+  //     setScaleYIndexes((prev) =>
+  //       prev.includes(index)
+  //         ? prev.filter((i) => i !== index)
+  //         : [...prev, index]
+  //     );
+  //   }, 100);
+  // };
 
-  if (!courses){
-    return <div>Loading...</div>;
+  if (courses.length === 0) {
+    return (
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
+          color="#851931"
+          loading={true}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
   }
    
   if (!isAdmin){

@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 export default function Einfo() {
   const router = useRouter();
@@ -23,7 +25,23 @@ export default function Einfo() {
     }
   }, [id]);
 
-  if (!infodata) return <div>Loading...</div>;
+  if (!infodata) {
+    return (
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
+          color="#851931"
+          loading={true}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
 
   const eventinfo = infodata.eventinfo[0] || [];
   const applyinfo = infodata.applyinfo || [];
@@ -77,7 +95,7 @@ export default function Einfo() {
           <div className="row g-5">
             <div className="col-12 col-lg-5">
               <img
-                src={`http://localhost:3005/uploads/${eventinfo.event_cover_image}`}
+                src={`http://localhost:3005/uploads/event/${eventinfo.event_cover_image}`}
                 alt=""
                 className="eventPageimg"
               />

@@ -32,8 +32,10 @@ export default function OrderCardRWD({ order }) {
 
   // 處理圖片路徑
   const imagePath = order.firstItemImage
-    ? `/images/${order.firstItemType === 'product' ? 'product' : 'course_and_tarot'}/${order.firstItemImage}`
-    : '/images/default-order-image.png'
+    ? (order.firstItemType === 'product'
+        ? `/images/product/${order.firstItemImage}`
+        : `http://localhost:3005/uploads/course_and_tarot/${order.firstItemImage}`)
+    : '/images/default-order-image.png';
 
   return (
     <>

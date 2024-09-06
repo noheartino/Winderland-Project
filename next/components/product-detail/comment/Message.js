@@ -3,10 +3,10 @@ import MessageItem from './MessageItem'
 import styles from "./Message.module.css"
 
 
-export default function Message() {
+export default function Message({sortedComments}) {
   return (
     <div className={`${styles['Message-Items']}`}>
-        <MessageItem/>
+        <MessageItem sortedComments={sortedComments}/>
     </div>
   )
 }

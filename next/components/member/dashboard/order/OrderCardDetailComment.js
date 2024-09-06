@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styles from '@/components/member/dashboard/order/OrderCardDetailComment.module.css'
 import Swal from 'sweetalert2'
+import ClipLoader from "react-spinners/ClipLoader";
 
-export default function OrderCardDetailComment({ orderUuid }) {
+export default function OrderCardDetailComment({ orderUuid, orderStatus }) {
     const [commentableItems, setCommentableItems] = useState([]);
     const [comments, setComments] = useState({});
     const [submittedComments, setSubmittedComments] = useState({});
@@ -11,10 +12,56 @@ export default function OrderCardDetailComment({ orderUuid }) {
     const [hoveredRatings, setHoveredRatings] = useState({});
 
 
-    useEffect(() => {
-        fetchCommentableItems();
-    }, [orderUuid]);
+    // useEffect(() => {
+    //     fetchCommentableItems();
+    // }, [orderUuid]);
 
+
+    // const fetchCommentableItems = async () => {
+    //     try {
+    //         setIsLoading(true);
+    //         const response = await fetch(`http://localhost:3005/api/orders/commentable-items/${orderUuid}`, {
+    //             credentials: 'include',
+    //         });
+
+    //         if (!response.ok) {
+    //             const errorData = await response.json();
+    //             throw new Error(errorData.message || 'Failed to fetch commentable items');
+    //         }
+
+    //         const data = await response.json();
+    //         console.log('Fetched commentable items:', data.data); // 添加日誌
+    //         setCommentableItems(data.data);
+    //         setComments(data.data.reduce((acc, item) => ({
+    //             ...acc,
+    //             [item.item_id]: {
+    //                 rating: item.existing_rating || 0,
+    //                 text: item.existing_comment || ''
+    //             }
+    //         }), {}));
+    //         setSubmittedComments(data.data.reduce((acc, item) => ({
+    //             ...acc,
+    //             [item.item_id]: item.is_commented ? {
+    //                 rating: item.existing_rating,
+    //                 text: item.existing_comment
+    //             } : null
+    //         }), {}));
+    //     } catch (err) {
+    //         console.error('Error fetching commentable items:', err);
+    //         setError(err.message);
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
+    
+    //可評論
+    useEffect(() => {
+        if (orderStatus === '已完成') {
+            fetchCommentableItems();
+        } else {
+            setIsLoading(false);
+        }
+    }, [orderUuid, orderStatus]);
 
     const fetchCommentableItems = async () => {
         try {
@@ -29,7 +76,6 @@ export default function OrderCardDetailComment({ orderUuid }) {
             }
 
             const data = await response.json();
-            console.log('Fetched commentable items:', data.data); // 添加日誌
             setCommentableItems(data.data);
             setComments(data.data.reduce((acc, item) => ({
                 ...acc,
@@ -51,7 +97,7 @@ export default function OrderCardDetailComment({ orderUuid }) {
         } finally {
             setIsLoading(false);
         }
-    };
+    }; 
 
     // 星星評價
     const handleRatingChange = (itemId, rating) => {
@@ -140,10 +186,26 @@ export default function OrderCardDetailComment({ orderUuid }) {
         }
     };
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) {
+        return (
+          <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <ClipLoader
+              color="#851931"
+              loading={isLoading}
+              cssOverride={{
+                display: "block",
+                margin: "0 auto",
+              }}
+              size={30}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </div>
+        );
+      }
     if (error) return <div>Error: {error}</div>;
-    if (commentableItems.length === 0) return
-    <div className={styles.overCommentTime}>已超過評論時間</div>;
+    if (orderStatus !== '已完成') return null;
+    if (commentableItems.length === 0) return <div className={styles.noCommentItems}>沒有可評論的商品</div>;
 
     return (
         <>

@@ -1,55 +1,54 @@
-import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
+import React from 'react';
+import Image from 'next/image';
 
 export default function OrderCard({ order }) {
-
   const getStatusClass = (status) => {
     switch (status) {
       case '出貨準備中':
-        return 'text-warning'
+        return 'text-warning';
       case '已出貨':
-        return 'text-info'
+        return 'text-info';
       case '已送達':
       case '已完成':
-        return 'text-success'
+        return 'text-success';
       case '訂單已取消':
-        return 'text-danger'
+        return 'text-danger';
       case '尚未付款':
-        return 'text-secondary'
+        return 'text-secondary';
       default:
-        return ''
+        return '';
     }
-  }
+  };
 
   if (!order) {
     return (
       <div className="mb-4 d-flex justify-content-center align-items-center" style={{ height: '200px' }}>
         <h3>目前尚無訂單記錄</h3>
       </div>
-    )
+    );
   }
 
- // 處理圖片路徑
- const imagePath = order.firstItemImage 
- ? `/images/${order.firstItemType === 'product' ? 'product' : 'course_and_tarot'}/${order.firstItemImage}`
- : '/images/default-order-image.png'
-
+  // 處理圖片路徑
+  const imagePath = order.firstItemImage
+    ? (order.firstItemType === 'product'
+        ? `/images/product/${order.firstItemImage}`
+        : `http://localhost:3005/uploads/course_and_tarot/${order.firstItemImage}`)
+    : '/images/default-order-image.png';
 
   return (
     <>
-      <div className=" mb-4 d-flex">
+      <div className="mb-4 d-flex">
         <Image
-           src={imagePath}
+          src={imagePath}
           alt="First item"
           width={97}
           height={97}
           className="order-img mt-4 ms-4"
-              //  layout="fill"
-        objectFit="contain"
+          objectFit="contain"
         />
 
         <div className="order-detail mt-4">
-          <table className="table ">
+          <table className="table">
             <thead>
               <tr>
                 <th scope="col">總件數</th>
@@ -67,7 +66,7 @@ export default function OrderCard({ order }) {
                   {order.transport}
                 </td>
                 <td className={getStatusClass(order.status)}>
-                {order.status}
+                  {order.status}
                 </td>
 
                 <td style={{ color: 'var(--orange)' }}>
@@ -79,5 +78,5 @@ export default function OrderCard({ order }) {
         </div>
       </div>
     </>
-  )
+  );
 }

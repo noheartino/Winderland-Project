@@ -272,12 +272,22 @@ router.post('/cashOnDelivery', async (req, res) => {
 
     // 插入訂單資料
     const insertOrderQuery = `
-      INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, coupon_amount, earned_points, pointUsed, pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, totalMoney, created_at, updated_at)
-      VALUES (?, ?, '尚未付款', '貨到付款', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
-    `
+    INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, coupon_amount, earned_points, pointUsed, pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, totalMoney, created_at, updated_at)
+    VALUES (?, ?, ?, '貨到付款', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
+  `
+
+    // 檢查 cartItems 中是否只有課程資料
+    const hasOnlyClasses = cartItems.every(
+      (item) => item.class_id && !item.product_detail_id
+    )
+
+    // 設定訂單狀態，如果只有課程資料則為 '已完成'
+    const orderStatus = hasOnlyClasses ? '已完成' : '尚未付款'
+
     const [orderResult] = await conn.query(insertOrderQuery, [
       orderNumber,
       userId,
+      orderStatus, // 動態設定訂單狀態
       60, // 固定運費，已無條件捨去
       couponData?.coupon_id || null,
       discountAmounts || null,
@@ -529,13 +539,23 @@ router.post('/creditCardPayment', async (req, res) => {
 
     // 插入訂單資料
     const insertOrderQuery = `
-      INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, coupon_amount, earned_points, pointUsed,pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, totalMoney, created_at, updated_at)
-      VALUES (?, ?, '出貨準備中', '信用卡', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
-    `
+    INSERT INTO orders (order_uuid, user_id, status, payment_method, payment_date, shipping_fee, coupon_id, coupon_amount, earned_points, pointUsed, pickup_name, pickup_phone, pickup_address, pickup_store_name, transport, totalMoney, created_at, updated_at)
+    VALUES (?, ?, ?, '信用卡', NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());
+  `
+
+    // 檢查 cartItems 中是否只有課程資料
+    const hasOnlyClasses = cartItems.every(
+      (item) => item.class_id && !item.product_detail_id
+    )
+
+    // 設定訂單狀態，如果只有課程資料則為 '已完成'
+    const orderStatus = hasOnlyClasses ? '已完成' : '信用卡'
+
     const [orderResult] = await conn.query(insertOrderQuery, [
       orderNumber,
       userId,
-      60,
+      orderStatus, // 動態設定訂單狀態
+      60, // 固定運費，已無條件捨去
       couponData?.coupon_id || null,
       discountAmounts || null,
       earnedPoints,

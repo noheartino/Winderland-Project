@@ -35,12 +35,12 @@
 
     /* 商品詳情 */
     .product-detail {
-        height: auto;
-        margin-bottom: 10%;
+        min-height: 0px;
+        margin-bottom: 5%;
     }
 
     .product-comment{
-        min-height: 1000px;
+        min-height: 650px;
         height: auto;
         background-color: #F9F9F9;
         display: flex;
@@ -54,7 +54,7 @@
 
     /* 回到商品首頁 */
     .product-backhome {
-        padding-right: 60%;
+        display: none;
     }
 
 
@@ -64,6 +64,10 @@
 
     }
     
+    /* 商品圖片 */
+    .product-photos {
+        margin-top: 5%
+    }
 
 }
 
@@ -76,7 +80,7 @@
 
     /* 回商品首頁 */
     .product-backhome {
-        display: none;
+        padding-right: 45%;
     }
 
     /* 商品圖片 */

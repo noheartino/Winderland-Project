@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router';
 import { useAuth } from '@/hooks/use-auth';
 import { useEffect } from 'react';
+import ClipLoader from "react-spinners/ClipLoader";
 
 const ProtectedRoute = ({ children }) => {
   const { auth, isLoading, checkAuth } = useAuth();
@@ -33,7 +34,21 @@ const ProtectedRoute = ({ children }) => {
 
   if (isLoading || !isChecked) {
     console.log('ProtectedRoute: Still loading');
-    return <div>Loading...</div>;
+    return (
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
+          color="#851931"
+          loading={isLoading || !isChecked} // 根據 isLoading 或 isChecked 來控制加載
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
   }
 
   // 如果用戶已登入，渲染子組件
