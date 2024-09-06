@@ -23,7 +23,7 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
   , dateStart
   , dateEnd
   , priceStart
-  , priceEnd }) {
+  , priceEnd, }) {
   const router = useRouter()
 
   function handleHref(e, class_id) {
@@ -40,6 +40,33 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
   } else {
     lastItemIndex = currentPage * pageLimit - 1;
   }
+
+  // 
+  const handleCourseOrder = (e, fetchStr) => {
+    const { query, pathname } = router;
+    const newOrderValue = fetchStr;
+    const newQuery = { ...query };
+    if (newOrderValue) {
+      newQuery.order = newOrderValue;
+    } else {
+      delete newQuery.order;
+    }
+    const newUrl = {
+      pathname,
+      query: newQuery,
+    };
+    router.push(newUrl, undefined, { shallow: true, scroll: false});
+  };
+
+  const handleClearOrder = () => {
+    const { query, pathname } = router;
+    const { order, ...newQuery } = query;
+    const newUrl = {
+      pathname,
+      query: newQuery,
+    };
+    router.push(newUrl, undefined, { shallow: true, scroll: false });
+  };
 
   return (
     <>
@@ -66,10 +93,11 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
                         課程排序<i className="fa-solid fa-sort ms-2"></i>
                     </button>
                     <ul className="dropdown-menu">
-                      <li><button className="dropdown-item w-100" type="button">開課時間(早→晚)</button></li>
-                      <li><button className="dropdown-item w-100" type="button">開課時間(晚→早)</button></li>
-                      <li><button className="dropdown-item w-100" type="button">金額(低→高)</button></li>
-                      <li><button className="dropdown-item w-100" type="button">金額(高→低)</button></li>
+                      <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={(e)=>handleCourseOrder(e, 'earlyToLate')}>開課時間(早→晚)<i className="ms-4 fa-solid fa-arrow-down-short-wide"></i></button></li>
+                      <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={(e)=>handleCourseOrder(e, 'lateToEarly')}>開課時間(晚→早)<i className="ms-4 fa-solid fa-arrow-up-wide-short"></i></button></li>
+                      <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={(e)=>handleCourseOrder(e, 'pLowToHigh')}>金額(低→高)<i className="ms-4 fa-solid fa-arrow-up-9-1"></i></button></li>
+                      <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={(e)=>handleCourseOrder(e, 'pHightToLow')}>金額(高→低)<i className="ms-4 fa-solid fa-arrow-down-9-1"></i></button></li>
+                      <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={handleClearOrder}>清除排序<i className="ms-4 fa-solid fa-xmark"></i></button></li>
                     </ul>
                   </div>
                   <p className="d-inline-flex gap-1">

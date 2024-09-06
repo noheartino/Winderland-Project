@@ -185,11 +185,28 @@ router.get('/teacher', async (req, res) => {
 
 router.get('/', async (req, res) => {
   const { userId } = req.query
-  const { search, view } = req.query
+  const { search, view, order } = req.query
   let querySQL = null
   let querySQLParams = []
   let classSumSQL = `SELECT class.* FROM class`
   let teachersSQL = `SELECT teacher.* FROM teacher`
+
+  // courses 的 order方式
+  let coursesOrderStr = `ORDER BY class.id ASC`
+  if (!order) {coursesOrderStr = `ORDER BY class.id ASC`}
+  if (order==='earlyToLate'){
+    coursesOrderStr = `ORDER BY class.appointment_start ASC`
+  }
+  if (order==='lateToEarly'){
+    coursesOrderStr = `ORDER BY class.appointment_start DESC`
+  }
+  if (order==='pLowToHigh'){
+    coursesOrderStr = `ORDER BY CASE WHEN class.sale_price IS NOT NULL THEN class.sale_price ELSE price END ASC`
+  }
+  if (order==='pHightToLow'){
+    coursesOrderStr = `ORDER BY CASE WHEN class.sale_price IS NOT NULL THEN class.sale_price ELSE price END DESC`
+  }
+
   if (!search) {
     // querySQL = `select class.* from class`
     querySQL = `SELECT 
@@ -216,8 +233,8 @@ router.get('/', async (req, res) => {
                     comments ON class.id = comments.entity_id AND comments.entity_type = 'class'
                 GROUP BY 
                     class.id, class.name, teacher.id, teacher.name, images_class.class_id, images_class.path, images_teacher.teacher_id, images_teacher.path
-                ORDER BY 
-                    class.id ASC;`
+                ${coursesOrderStr};`
+  
   } else {
     // querySQL = `select class.* from class`
     querySQL = `SELECT 
@@ -287,6 +304,7 @@ router.get('/', async (req, res) => {
   }
   // let todayDateOnly = new Date().toISOString().split('T')[0]
   // let querySQLMyCourse = `select class.* from class`
+
   let querySQLMyCourse = `SELECT order_details.order_uuid, order_details.class_id, orders.user_id, orders.order_uuid, class.*, class.id AS class_id, images_class.class_id, images_class.path AS class_path, class.name AS class_name, teacher.id AS teacher_id, teacher.name AS teacher_name
                             FROM
                                 order_details
@@ -314,16 +332,7 @@ router.get('/', async (req, res) => {
   // if(search){
   //   console.log("search-----> "+search);
   // }
-  console.log(
-    '測試11!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' +
-      req.originalUrl
-  )
   try {
-    console.log(
-      '測試22!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:' +
-        req.originalUrl
-    )
-
     const [courses] = search
       ? await connection.execute(querySQL, querySQLParams)
       : await connection.execute(querySQL)
@@ -350,6 +359,7 @@ router.get('/', async (req, res) => {
       classSum,
       teachers,
     })
+    console.log('測試首頁列表get:' + req.originalUrl)
   } catch (err) {
     res.status(500).json({ error: 'error' + err.message })
     console.log('來源測試:' + req.originalUrl)

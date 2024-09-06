@@ -63,8 +63,8 @@ export default function CourseCardSm({ userId, course, averageRating, classAssig
               <img
                 className="course-img21"
                 src={imagePath}
-                alt={`${class_path}`}
-                title={`${class_path}`}
+                alt={`${class_name}`}
+                title={`${class_name}`}
               />
               {myCoursesId && myCoursesId.length>0 ?<div className="absolute-t0-l0 text-white w-100 h-100 text-end p-2 text-shadow-sm"><i className="fa-regular fa-circle-check me-2"></i>已報名</div>
               :""

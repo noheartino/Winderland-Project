@@ -200,9 +200,9 @@ export default function CourseFilter({teachers, setScore
                     <p className='text-nowrap me-2 my-0 p-0 emmit1 text-gray'>(包含線上課程)</p>
                 </span>
                 <span className='d-flex align-items-center'>
-                  <input type="date" className="form-control w-50" placeholder="選擇開課時間" aria-label="選擇開課時間" onChange={handleDateStart}/>
+                  <input type="date" className="form-control w-50" placeholder="選擇開課時間" aria-label="選擇開課時間" onChange={handleDateStart} value={dateStart}/>
                   <span className="mx-2">~</span>
-                  <input type="date" className="form-control w-50" placeholder="選擇結束時間" aria-label="選擇結束時間" onChange={handleDateEnd}/>
+                  <input type="date" className="form-control w-50" placeholder="選擇結束時間" aria-label="選擇結束時間" onChange={handleDateEnd} value={dateEnd}/>
                 </span>
                 {(dateStart && dateEnd && dateStart>dateEnd)?<span className='text-nowrap ms-3 text-prim-wine'>* 開始時間不得大於結束時間!!</span>:""}
             </div>

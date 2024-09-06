@@ -31,7 +31,7 @@ export default function CourseIndex() {
   }, [auth]);
 
   let pageLimit = 8;
-  const { search, view } = router.query;
+  const { search, view, order } = router.query;
   let apiUrl = `http://localhost:3005/api/course`;
   const [courses, setCourses] = useState([]);
   const [filterCourses, setFilterCourses] = useState([]);
@@ -46,25 +46,44 @@ export default function CourseIndex() {
   const [courseBtn, setCourseBtn] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
+    // 篩選要傳遞的 QUERY
+   const { query} = router;
+  if (!search && !view) {
+    
+    apiUrl = `http://localhost:3005/api/course`;
+    if(userId){
+      apiUrl += `?userId=${userId}`
+      if(order){
+        apiUrl += `&order=${order}`
+      }
+    }else{
+      if(!order){
+        delete {...query}.order;
+      }
+    }
+    console.log(apiUrl);
+  }
+  if (search) {
+    apiUrl = `http://localhost:3005/api/course?search=${search}`;
+    if(auth.isAuth){
+      apiUrl += `&userId=${userId}`
+    }
+    if(order){
+      apiUrl += `&order=${order}`
+    }
+  }
+  if (view) {
+    apiUrl = `http://localhost:3005/api/course?view=${view}`;
+    if(auth.isAuth){
+      apiUrl += `&userId=${userId}`
+    }
+    if(order){
+      apiUrl += `&order=${order}`
+    }
+  }
+  
+
   useEffect(() => {
-    if (!search && !view) {
-      apiUrl = `http://localhost:3005/api/course`;
-      if(auth.isAuth){
-        apiUrl += `?userId=${userId}`
-      }
-    }
-    if (search) {
-      apiUrl = `http://localhost:3005/api/course?search=${search}`;
-      if(auth.isAuth){
-        apiUrl += `&userId=${userId}`
-      }
-    }
-    if (view) {
-      apiUrl = `http://localhost:3005/api/course?view=${view}`;
-      if(auth.isAuth){
-        apiUrl += `&userId=${userId}`
-      }
-    }
 
     // const includeImages = false;
     console.log("search 或 view 偵測到變動");
@@ -104,7 +123,7 @@ export default function CourseIndex() {
         .catch((error) => {
           console.log(error);
         });
-  }, [view, search, userId]);
+  }, [view, search, userId, apiUrl]);
   // console.log(myFirstFavoriteCourse[0]);
 
   const courseBtn01 = useRef(null);

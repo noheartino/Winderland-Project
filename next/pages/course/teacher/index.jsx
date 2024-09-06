@@ -143,7 +143,7 @@ export default function TeacherIndex() {
                 <div className="w-100 bg-white rounded-5 m-auto teacher-detail-suggest-course">
 
                   {/* teacher-list start */}
-                  <div className="container-fluid">
+                  <div className="container-fluid px-4">
                     <div className="container-sm pb-5 pt-3">
 
                       <div className="row px-10px justify-content-center justify-content-lg-between mb-5 flex-column flex-lg-row align-items-center row-gap-3">
