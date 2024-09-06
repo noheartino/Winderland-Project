@@ -14,7 +14,9 @@ export default function Einfo() {
   const { id } = router.query;
   const [infodata, setInfo] = useState(null);
 
-  const [ownerimg, setOwnerimg] = useState("/nav-footer/default_user.jpg");
+  // const [ownerimg, setOwnerimg] = useState("http://localhost:3005/images/member/avatar/4.png");
+
+  // setOwnerimg("http://localhost:3005/images/member/avatar/4.png")
 
   useEffect(() => {
     if (id) {
@@ -60,6 +62,8 @@ export default function Einfo() {
   const males = applyinfo.filter((p) => p.gender === 0).length;
   const gavg = Math.round((males / (males + females)) * 100);
 
+
+
   // function ownerpic(index){
   //   return imginfo.filter((e) => e.user_id === index )
   // }
@@ -85,7 +89,7 @@ export default function Einfo() {
       </Head>
       <Nav />
 
-      {/* {imageInfo ? <pre>{JSON.stringify(imageInfo, null, 2)}</pre> : 'Loading...'} */}
+      {/* {Nowid ? <pre>{JSON.stringify(Nowid, null, 2)}</pre> : 'Loading...'} */}
 
       <EventHeader />
       <div className="eventPageArea">
@@ -193,7 +197,7 @@ export default function Einfo() {
               <div className="eventOwner">
                 <div className="eventOwnerT">開團人</div>
                 <div className="eventOwnerInfo">
-                  <img src={ownerimg} alt="" className="eventOwnerPic" />
+                  <img src={`http://localhost:3005/images/member/avatar/${Nowid}.png`} alt="" className="eventOwnerPic" onError={(e) => e.target.src = `http://localhost:3005/images/member/avatar/cat.png`} />
                   <div className="eventOwnerInfoT">
                     {applyinfo[0].neckname} <br />
                     {applyinfo[0].gender === 0 ? "男" : "女"} /{" "}
