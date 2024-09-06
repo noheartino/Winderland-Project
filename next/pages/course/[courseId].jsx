@@ -1014,7 +1014,7 @@ export default function CourseIndex() {
                       </div>
                       :
                       <div className="col pe-0">
-                        <button className="btn w-100 spac-3 btn-sec-orange py-2">
+                        <button className="btn w-100 spac-3 btn-sec-orange py-2" onClick={handleCourseWriteInCart}>
                           <h6 className="text-white">加入購物車</h6>
                         </button>
                       </div>}

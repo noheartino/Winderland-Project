@@ -94,7 +94,7 @@ router.get('/teacher/management', async (req, res) => {
                       LEFT JOIN comments ON class.id = comments.entity_id AND comments.entity_type = 'class'
                       GROUP BY 
                           class_id, class_name, student_limit, class.assigned, class.teacher_id, class.price, class.sale_price, class.online, class.address, class.appointment_start, class.appointment_end, class.course_start, class.course_end, class.daily_start_time, class.daily_end_time, class.class_summary, class_description, class_status, teacher_name, class_path, teacher_path
-                      ORDER BY class.id ASC;`
+                      ORDER BY class.id DESC;`
   try {
     const [courses] = await connection.execute(coursesSQL)
     res.json({
@@ -655,6 +655,24 @@ router.put(
       class_price,
       class_sale_price,
     } = req.body
+    console.log('傳入的 req.body 值:', {
+      class_name,
+      teacher_id,
+      onlineValue,
+      student_limit,
+      class_start_date,
+      class_end_date,
+      assign_start_date,
+      assign_end_date,
+      daily_start_time,
+      daily_end_time,
+      class_city,
+      class_city_detail,
+      classSummary,
+      classIntro,
+      class_price,
+      class_sale_price,
+    })
 
     const courseId = req.params.courseId
     console.log('courseId= ' + courseId)
@@ -667,7 +685,7 @@ router.put(
     const cityDetail = (class_city_detail || '').trim()
     const address = `${city}${cityDetail}`.trim()
 
-    // 更新课程信息的 SQL 语句
+    // 更新课程信息的 SQL
     let updateCourseSQL = `UPDATE class SET
                         name = ?,
                         student_limit = ?,
@@ -704,13 +722,20 @@ router.put(
       classSummary || null,
       classIntro || null,
       0,
-      courseId, // 更新课程的 ID
+      courseId,
     ]
 
-    // 更新图片和视频路径的 SQL 语句
+    // 更新路徑的 SQL
+    let updateImgSQL = req.files['classPic'] ? `path = ?` : ``
+    let updateVidSQL =
+      req.files['classPic'] && req.files['classVdio']
+        ? `, video_path = ?`
+        : !req.files['classPic'] && req.files['classVdio']
+          ? `video_path = ?`
+          : ``
+
     let updateImgAndVdioSQL = `UPDATE images_class SET
-    path = ?,
-    video_path = ?
+    ${updateImgSQL}${updateVidSQL}
     WHERE class_id = ?;`
 
     try {
@@ -720,7 +745,7 @@ router.put(
         updateCourseParams
       )
 
-      // 获取上传的文件名
+      // 取得上傳的檔名
       const classImgFile = req.files['classPic']
         ? req.files['classPic'][0].filename
         : null
@@ -728,13 +753,23 @@ router.put(
         ? req.files['classVdio'][0].filename
         : null
 
-      // 更新图片和视频路径
-      let updateImgAndVdioParams = [classImgFile, classVdioFile, courseId]
+      // 更新上傳的檔案路徑
+      let updateImgAndVdioParams =
+        req.files['classPic'] && req.files['classVdio']
+          ? [classImgFile, classVdioFile, courseId]
+          : !req.files['classPic'] && req.files['classVdio']
+            ? [classVdioFile, courseId]
+            : req.files['classPic'] && !req.files['classVdio']
+              ? [classImgFile, courseId]
+              : [courseId]
 
-      const [updateImgAndVdio] = await connection.execute(
-        updateImgAndVdioSQL,
-        updateImgAndVdioParams
-      )
+      const [updateImgAndVdio] =
+        !req.files['classPic'] && !req.files['classVdio']
+          ? '不執行上傳'
+          : await connection.execute(
+              updateImgAndVdioSQL,
+              updateImgAndVdioParams
+            )
 
       // 抓取課程原本的資料
 

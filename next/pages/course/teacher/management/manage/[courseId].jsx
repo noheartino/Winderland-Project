@@ -62,6 +62,18 @@ export default function ClassManIndex() {
   const [Cimage, setCImage] = useState(`http://localhost:3005/uploads/course_and_tarot/classImgDefault.png`)
   const [Cvideo, setCvideo] = useState(null)
 
+  // 實體課程欄位的狀態設定為空值
+  const resetOnlineStatus = ()=>{
+    setStudentLimit(null)
+    setClassStartDate(null)
+    setClassEndDate(null)
+    setAssignStartDate(null)
+    setAssignEndDate(null)
+    setDailyStartTime(null)
+    setDailyEndTime(null)
+    setWholeClassCity(null)
+  }
+
   const [imageName, setImageName] = useState(null)
   const [videoName, setVideoName] = useState(null)
 
@@ -188,6 +200,7 @@ export default function ClassManIndex() {
     onlyShowWhenUnderline.forEach((elm)=>{
       const currentElm = document.getElementById(`${elm}`)
       currentElm.value=''
+      resetOnlineStatus()
     })
   }
   const handleUnderlineClickClear = ()=>{
@@ -196,6 +209,8 @@ export default function ClassManIndex() {
     onlyShowWhenOnline.forEach((elm)=>{
       const currentElm = document.getElementById(`${elm}`)
       currentElm.value=''
+      console.log(currentElm);
+      console.log(currentElm.value);
     })
   }
   // 抓取所有教師資料
@@ -210,6 +225,19 @@ export default function ClassManIndex() {
         .catch(error => console.error('Error:', error));
   }, [])
   // 23 : {id: 24, name: '蘭居岳'}
+
+  // 設置初始欄位字數(有字數限制的欄位)
+  useEffect(()=>{
+    const wLimitColsArr = ['className', 'classCityDetail', 'classSummary', 'classIntro']
+    const wLimitShowArr = ['classNameWordNum', 'CmanageCreateTagWordNum', 'classSummaryWordNum', 'classIntroWordNum']
+    wLimitColsArr.map((key, index)=>{
+      const wLimitCol = document.getElementById(wLimitShowArr[index])
+      const wLimitShow = document.getElementById(key)
+      if(wLimitCol && wLimitShow){
+        wLimitCol.textContent=wLimitShow.value.length
+      }
+    })
+  }, [className])
 
 
   // 選擇上傳圖片(如果有上傳的文件就把 Cimage 狀態設置為上傳的文件)
@@ -310,7 +338,7 @@ export default function ClassManIndex() {
   } 
   console.log("若全部false就不會跳錯誤")
     console.log(currentNumInput+", "+(detectType(currentNumInput) === 'string')+", "+isNaN(currentNumInput)+", "+(Number(currentNumInput<=0)===1))
-  if (currentNumInput && detectType(currentNumInput) === 'string' || isNaN(currentNumInput) || Number(currentNumInput<=0)===1) {
+    if (currentNumInput && detectType(currentNumInput) === 'string' || isNaN(currentNumInput) || Number(currentNumInput<0)===1) {
       const currentIdStr = e.target.id;
       setErrorMsgBox(prev => ({...prev, [currentIdStr]: `${columnName}欄位需填入正整數`}))
     }else{
@@ -440,6 +468,9 @@ export default function ClassManIndex() {
       timer: 1500
     });
     router.push(`${courseId}`, undefined, {scroll: false})
+  }
+  const handleCancel = ()=>{
+    router.push(`/course/teacher/management`)
   }
 
   // 清除 isEmpty 樣式
@@ -693,7 +724,7 @@ export default function ClassManIndex() {
                       <input type='hidden' name='onlineValue' value={onOrUnderline?onOrUnderline:''}/>
 
                       <label htmlFor='className' className='CmanageCreateTag'>
-                        課程名稱 (<span id='classNameWordNum'>0</span>/25)
+                        * 課程名稱 (<span id='classNameWordNum'>0</span>/25)
                       </label>
                       <input type='text' name='class_name' id='className' className='CourseCreateInput' onChange={handleClassNameChange} value={className}/>
                       <div className={`text-gray-light spac-1 emmit1 ${remindMsgBox['className']?'d-block':'d-none'}`}>* {remindMsgBox['className']?remindMsgBox['className']:''}</div>
@@ -702,7 +733,7 @@ export default function ClassManIndex() {
                   <div className='row gx-2 gx-lg-4 row-gap-3'>
                     <div className='col-4 d-flex flex-column gap-1'>
                       <label htmlFor='teacherId' className='CmanageCreateTag'>
-                        授課教師
+                        * 授課教師
                       </label>
 
                       <select className='form-select form-select-sm CourseCreateInput' aria-label='Small select example' name='teacher_id' id='teacherId' defaultValue='' onChange={handleTeacherIdChange} value={teacherId}>
@@ -716,7 +747,7 @@ export default function ClassManIndex() {
                     </div>
                     <div className='col-4 d-flex flex-column gap-1'>
                       <label htmlFor='onAndUnderLine' className='CmanageCreateTag'>
-                        開課性質
+                        * 開課性質
                       </label>
                       <div className='d-flex gap-3'>
                         <div className='form-check CM-check-box'>
@@ -736,7 +767,7 @@ export default function ClassManIndex() {
 
                     <div className={`col-4 flex-column gap-1 ${onOrUnderline && onOrUnderline === 1 ? 'd-none' : 'd-flex'}`}>
                       <label htmlFor='studentLimit' className='CmanageCreateTag'>
-                        人數上限
+                        * 人數上限
                       </label>
                       <input
                         type='number'
@@ -753,7 +784,7 @@ export default function ClassManIndex() {
 
                     <div className='col-4 d-flex flex-column gap-1'>
                       <label htmlFor='courseStartDate' className='CmanageCreateTag'>
-                        開始上課日期
+                        * 開始上課日期
                         {/* 實體不可晚於結束日期 */}
                       </label>
                       <input
@@ -767,7 +798,7 @@ export default function ClassManIndex() {
                     </div>
                     <div className='col-4 d-flex flex-column gap-1'>
                       <label htmlFor='courseEndDate' className='CmanageCreateTag'>
-                        課程結束日期
+                        * 課程結束日期
                       </label>
                       <input
                         type='date'
@@ -780,7 +811,7 @@ export default function ClassManIndex() {
 
                     <div className='col-4 d-flex flex-column gap-1'>
                       <label htmlFor='assignStartDate' className='CmanageCreateTag'>
-                        報名開始日期
+                        * 報名開始日期
                         {/* 不可晚於結束日期 */}
                       </label>
                       <input
@@ -795,7 +826,7 @@ export default function ClassManIndex() {
 
                     <div className='col-4 d-flex flex-column gap-1'>
                       <label htmlFor='assignEndDate' className='CmanageCreateTag'>
-                        報名截止日期
+                        * 報名截止日期
                       </label>
                       <input
                         type='date'
@@ -809,7 +840,7 @@ export default function ClassManIndex() {
 
                     <div className='col-4 d-flex flex-column gap-1'>
                       <label htmlFor='dailyStartTime' className='CmanageCreateTag'>
-                        上課時間
+                        * 上課時間
                         {/* 不可晚於結束時間 */}
                       </label>
                       <input
@@ -824,7 +855,7 @@ export default function ClassManIndex() {
 
                     <div className='col-4 d-flex flex-column gap-1'>
                       <label htmlFor='dailyEndTime' className='CmanageCreateTag'>
-                        下課時間
+                        * 下課時間
                       </label>
                       <input
                         type='time'
@@ -840,7 +871,7 @@ export default function ClassManIndex() {
                     <div className='col-4 d-flex flex-column gap-1'>
                       
                       <label htmlFor='classCity' className='CmanageCreateTag'>
-                        開課縣市
+                        * 開課縣市
                       </label>
                       <select className='form-select form-select-sm CourseCreateInput' aria-label='Small select example' name='class_city' id='classCity' defaultValue='' onChange={handleClassCityChange} value={wholeClassCity?.slice(0,3)}>
                           <option value='' disabled>--請選擇縣市</option>
@@ -854,7 +885,7 @@ export default function ClassManIndex() {
 
                     <div className='col-8 d-flex flex-column gap-1'>
                       <label htmlFor='classCityDetail' className='CmanageCreateTag'>
-                        詳細開課地址 (<span id='CmanageCreateTagWordNum'>0</span>/40)
+                        * 詳細開課地址 (<span id='CmanageCreateTagWordNum'>0</span>/40)
                       </label>
                       <input
                         type='text'
@@ -862,7 +893,7 @@ export default function ClassManIndex() {
                         id='classCityDetail'
                         className='CourseCreateInput'
                         placeholder='--請輸入不包含縣市在內的詳細地點'
-                        onChange={handleClassCityDetailChange} value={wholeClassCity?.slice(3)}
+                        onChange={handleClassCityDetailChange} value={wholeClassCity && wholeClassCity?.slice(3)!== 'undefined' ? wholeClassCity?.slice(3) : ""}
                       />
                       <div className={`text-gray-light spac-1 emmit1 ${remindMsgBox['classCityDetail']?'d-block':'d-none'}`}>* {remindMsgBox['classCityDetail']?remindMsgBox['classCityDetail']:''}</div>
                     </div>
@@ -871,7 +902,7 @@ export default function ClassManIndex() {
                   <div className='row gx-2 gx-lg-4 row-gap-3'>
                     <div className='col-4 d-flex flex-column gap-1'>
                       <label htmlFor='classPrice' className='CmanageCreateTag'>
-                        課程金額
+                        * 課程金額
                       </label>
                       <input
                         type='text'
@@ -931,7 +962,7 @@ export default function ClassManIndex() {
                   {/* 只能上傳圖片格式(jpg,jpeg,png,gif,webp,svg,) */}
                   <div className={`${onOrUnderline === 0 ? 'd-none' : 'd-block'}`}>
                     <label htmlFor='classVdio' className='form-label CmanageCreateTag d-flex flex-column gap-1' style={{boxSizing: "border-box"}}>
-                      課程影片
+                      * 課程影片
                       {/* <div className="vidAndImg-input p-0 d-flex row mx-0 rounded-2">
                         <div className='border-end border-1 m-0 col-auto px-2 py-2 fw-regular spac-0 d-flex align-items-center'>選擇檔案</div><div className='col px-2 py-2 fw-regular'>{!videoName?'請選擇檔案':videoName}</div>
                       </div> */}
@@ -972,7 +1003,7 @@ export default function ClassManIndex() {
                 </div>
                 <div className='col-12 d-flex flex-column gap-1'>
                   <label htmlFor='classIntro' className='CmanageCreateTag'>
-                    課程內容 (<span id='classIntroWordNum'>0</span>/1500)
+                    * 課程內容 (<span id='classIntroWordNum'>0</span>/1500)
                   </label>
                   <div className={`text-gray-light spac-1 emmit1 ${remindMsgBox['classIntro']?'d-block':'d-none'}`}>* {remindMsgBox['classIntro']?remindMsgBox['classIntro']:''}</div>
                   <textarea
@@ -988,9 +1019,14 @@ export default function ClassManIndex() {
                     填入原資料
                   </button>
 
+                  <button type='button' className='CeventCR' onClick={handleCancel}>
+                    取消
+                  </button>
+
                   <button type='submit' className='CeventCS d-block'>
                     儲存變更
                   </button>
+
                 </div>
               </div>
             </form>
