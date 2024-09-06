@@ -173,7 +173,7 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
           <div className="col-auto">
             {/* 桌機icon */}
             <div className="au-icon d-none d-lg-flex">
-              <img className="m-0" src={avatarUrl} />
+              <img className="m-0" src={`http://localhost:3005/images/member/avatar/${comment.user_avatar}`} />
             </div>
             {/* 手機icon */}
             <div className="au-icon-sm d-lg-none">
