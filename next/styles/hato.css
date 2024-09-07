@@ -1,0 +1,535 @@
+
+.HatoOuterArea{
+    width: 100%;
+    height: 100vh;
+    opacity: 0.1;
+    transition: 2.5s;
+    background: url(/images/hato/hatonbg.jpg) no-repeat center/cover;
+    position: relative;
+
+    .sentaku{
+        /* border: 3px solid lightcoral; */
+        width: 550px;
+        height: 300px;
+        position: absolute;
+        right: calc(50% - 420px);
+        top: 15%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        opacity: 1;
+        transition: 1s ease-out;
+
+
+        .sentakushi{
+            width: 100%;
+            height: 100px;
+            color: #0b657c;
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            line-height: 100px;
+            text-align: center;
+            cursor: pointer;
+            /* border: 2px solid lightcoral; */
+            background: url(/images/hato/taiwa_unselect.png) no-repeat center/contain;
+        }
+
+        .sentakushi:hover{
+            background: url(/images/hato/taiwa_select.png) no-repeat center/contain;
+        }
+    }
+
+    .sentaku.hide{
+        opacity: 0;
+    }
+
+    .ishato{
+        filter: blur(0.5px);
+        position: absolute;
+        left: calc(50% - 400px);
+        bottom: 325px;
+        opacity: 0;
+        /* border: 3px solid lightblue; */
+        width: 350px;
+        height: 350px;
+        transition: 1s;
+        background: url(/images/hato/hato_f.gif) no-repeat center/contain;
+    }
+    .ishato.view{
+        opacity: 1;
+    }
+}
+
+.HatoOuterArea.view{
+    opacity: 1;
+}
+
+.kaiwa{
+    width: 900px;
+    /* border: 2px solid lightblue; */
+    height: 270px;
+    background: url(/images/hato/kaiwa.png) no-repeat 48%50%/contain;
+    position: absolute;
+    bottom: 100px;
+    transition: 1s;
+    left: calc(50% - 450px);
+    opacity: 0;
+    cursor: pointer;
+
+    .aite{
+        position: absolute;
+        left: 115px;
+        top: 32px;
+        font-size: 22px;
+        letter-spacing: 3px;
+        font-weight: 900;
+        color: white;
+    }
+
+    .kotoba{
+        position: absolute;
+        color: #0b657c;
+        font-weight: 900;
+        font-size: 18px;
+        line-height: 30px;
+        letter-spacing: 1px;
+        left: 100px;
+        top: 90px;
+    }
+
+    .kaiwaarr{
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        right: 55px;
+        bottom: 55px;
+        background: url(/images/hato/hatoarr.png) no-repeat center/contain;
+        animation: kaiwaarr 1s ease-in infinite;
+    }
+
+    .skip{
+        position: absolute;
+        color: #46a9c2;
+        right: 90px;
+        bottom: 50px;
+        letter-spacing: 2px;
+    }
+ 
+}
+
+@keyframes kaiwaarr{
+    0%{
+        bottom: 55px;
+    }
+    30%{
+        bottom: 47px;
+    }
+    100%{
+        bottom: 55px;
+    }
+}
+.kaiwa.view{
+    opacity: 1;
+}
+
+.pokerArea{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background: radial-gradient(circle , rgb(255, 255, 255) 0%, rgb(245, 245, 245) 40%, rgb(50, 50, 50) 250%); 
+    display: none;
+
+    .pokercard{
+        width: 205px;
+        height: 330px;
+        background: url(/images/hato/pok0.png) center/cover;
+        /* transition: .5s; */
+        cursor: pointer;
+        box-shadow: 2px 2px 12px gray;
+        border-radius: 12px;
+        transition: .3s;
+    }
+    .pokercard:hover{
+        transform: translateY(-60px) scale(1.2);
+        z-index: 10;
+    }
+    /* .pokercard:hover ~ .pokercard {
+        filter: blur(5px);
+    } */
+
+    .p1 {
+        position: absolute;
+        left: 18%;
+        top: calc(50% - 175px);
+        transform: rotate(15deg);
+    }
+    .p2 {
+        position: absolute;
+        left: 22%;
+        top: calc(50% - 170px);
+        transform: rotate(5deg);
+    }
+    .p3 {
+        position: absolute;
+        left: 26%;
+        top: calc(50% - 190px);
+        transform: rotate(5deg);
+    }
+    .p4 {
+        position: absolute;
+        left: 30%;
+        top: calc(50% - 165px);
+        transform: rotate(-15deg);
+    }
+    .p5 {
+        position: absolute;
+        left: 35%;
+        top: calc(50% - 185px);
+        transform: rotate(-5deg);
+    }
+    .p6 {
+        position: absolute;
+        left: 38%;
+        top: calc(50% - 145px);
+        transform: rotate(5deg);
+    }
+    .p7 {
+        position: absolute;
+        left: 42%;
+        top: calc(50% - 215px);
+        transform: rotate(-5deg);
+    }
+    .p8 {
+        position: absolute;
+        left: 45%;
+        top: calc(50% - 165px);
+        transform: rotate(5deg);
+    }
+    .p9 {
+        position: absolute;
+        left: 52%;
+        top: calc(50% - 165px);
+        transform: rotate(5deg);
+    }
+    .p10 {
+        position: absolute;
+        left: 55%;
+        top: calc(50% - 195px);
+        transform: rotate(-5deg);
+    }
+    .p11 {
+        position: absolute;
+        left: 60%;
+        top: calc(50% - 185px);
+        transform: rotate(-10deg);
+    }
+    .p12 {
+        position: absolute;
+        left: 63%;
+        top: calc(50% - 185px);
+        transform: rotate(-5deg);
+    }
+    .p13 {
+        position: absolute;
+        left: 68%;
+        top: calc(50% - 185px);
+        transform: rotate(10deg);
+    }
+
+}
+
+.pokerArea.active{
+    display: block;
+}
+
+@keyframes resultcard{
+    0%{
+        opacity: 0;
+        left: calc(50% - 100px);
+        top: 100%;
+        transform: scale(1);
+    }
+    20%{
+        opacity: 1;
+        left: calc(50% - 100px);
+        top: 30%;
+        transform: scale(1.3);
+    }
+    90%{
+        opacity: 1;
+        left: calc(50% - 100px);
+        top: 40%;
+        transform: scale(1.3) rotate(0);
+    }
+    100%{
+        opacity: 1;
+        left: calc(50% - 100px);
+        top: calc(50% - 175px);
+        transform: scale(1.1) rotate(-3deg);
+        
+    }
+}
+
+.pokerResult1.active{
+    display: block;
+}
+.pokerResult1{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.8);
+    display: none;
+    cursor: pointer;
+
+    .resulttext{
+        width: 100%;
+        text-align: center;
+        font-size: 36px;
+        letter-spacing: 5px;
+        color: #0b657c;
+        position: absolute;
+        top: 60px;
+    }
+
+    .resultcard1{
+        width: 205px;
+        height: 330px;
+        cursor: pointer;
+        box-shadow: 2px 2px 12px gray;
+        border-radius: 12px;
+        position: absolute;
+        left: calc(50% - 100px);
+        top: calc(50% - 175px);
+        transform: scale(1);
+        opacity: 0;
+        pointer-events: none;
+        
+    }
+
+    .resultcard1.active{
+        animation: resultcard 2s ease-out forwards;
+    }
+}
+
+.pokerArea_sec{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background: radial-gradient(circle , rgb(255, 255, 255) 0%, rgb(245, 245, 245) 40%, rgb(50, 50, 50) 250%); 
+    display: none;
+
+    .pokercard{
+        width: 205px;
+        height: 330px;
+        background: url(/images/hato/pok0.png) center/cover;
+        /* transition: .5s; */
+        cursor: pointer;
+        box-shadow: 2px 2px 12px gray;
+        border-radius: 12px;
+        transition: .3s;
+    }
+    .pokercard:hover{
+        transform: translateY(-60px) scale(1.2);
+        z-index: 10;
+    }
+    /* .pokercard:hover ~ .pokercard {
+        filter: blur(5px);
+    } */
+
+    .p1 {
+        position: absolute;
+        left: 18%;
+        top: calc(50% - 195px);
+        transform: rotate(5deg);
+    }
+    .p2 {
+        position: absolute;
+        left: 22%;
+        top: calc(50% - 150px);
+        transform: rotate(10deg);
+    }
+    .p3 {
+        position: absolute;
+        left: 26%;
+        top: calc(50% - 180px);
+        transform: rotate(-5deg);
+    }
+    .p4 {
+        position: absolute;
+        left: 30%;
+        top: calc(50% - 165px);
+        transform: rotate(-10deg);
+    }
+    .p5 {
+        position: absolute;
+        left: 35%;
+        top: calc(50% - 185px);
+        transform: rotate(5deg);
+    }
+    .p6 {
+        position: absolute;
+        left: 40%;
+        top: calc(50% - 145px);
+        transform: rotate(-5deg);
+    }
+    .p7 {
+        position: absolute;
+        left: 43%;
+        top: calc(50% - 215px);
+        transform: rotate(-5deg);
+    }
+    .p8 {
+        position: absolute;
+        left: 48%;
+        top: calc(50% - 165px);
+        transform: rotate(-15deg);
+    }
+    .p9 {
+        position: absolute;
+        left: 52%;
+        top: calc(50% - 165px);
+        transform: rotate(5deg);
+    }
+    .p10 {
+        position: absolute;
+        left: 55%;
+        top: calc(50% - 205px);
+        transform: rotate(-5deg);
+    }
+    .p11 {
+        position: absolute;
+        left: 62%;
+        top: calc(50% - 185px);
+        transform: rotate(-10deg);
+    }
+    .p12 {
+        position: absolute;
+        left: 68%;
+        top: calc(50% - 185px);
+        transform: rotate(5deg);
+    }
+
+}
+
+.pokerArea_sec.active{
+    display: block;
+}
+
+
+
+.pokerResult2.active{
+    display: block;
+}
+.pokerResult2{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.8);
+    display: none;
+    cursor: pointer;
+
+    .resulttext{
+        width: 100%;
+        text-align: center;
+        font-size: 36px;
+        letter-spacing: 5px;
+        color: #0b657c;
+        position: absolute;
+        top: 60px;
+    }
+
+    .resultcard2{
+        width: 205px;
+        height: 330px;
+        cursor: pointer;
+        box-shadow: 2px 2px 12px gray;
+        border-radius: 12px;
+        position: absolute;
+        left: calc(50% - 100px);
+        top: calc(50% - 175px);
+        transform: scale(1);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .resultcard2.active{
+        animation: resultcard 2s ease-out forwards;
+    }
+}
+
+.pokerArea_result{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background: radial-gradient(circle , rgb(255, 255, 255) 0%, rgb(245, 245, 245) 40%, rgb(50, 50, 50) 250%); 
+    display: none;
+
+    .resultcard1{
+        width: 205px;
+        height: 330px;
+        cursor: pointer;
+        box-shadow: 2px 2px 12px gray;
+        border-radius: 12px;
+        position: absolute;
+        left: calc(50% - 220px);
+        top: calc(50% - 175px);
+        transform: scale(1);
+    }
+    .resultcard2{
+        width: 205px;
+        height: 330px;
+        cursor: pointer;
+        box-shadow: 2px 2px 12px gray;
+        border-radius: 12px;
+        position: absolute;
+        left: calc(50% + 20px);
+        top: calc(50% - 175px);
+        transform: scale(1);
+    }
+    .resulttext{
+        font-size: 60px;
+        color: #0b657c;
+        font-weight: 900;
+        letter-spacing: 5px;
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        top: 70px;
+    }
+    .prev{
+        position: absolute;
+        font-size: 20px;
+        font-weight: 900;
+        color: #0b657c;
+        left: calc(50% - 138px);
+        bottom: calc(30% - 50px);
+    }
+    .next{
+        position: absolute;
+        font-size: 20px;
+        font-weight: 900;
+        color: #0b657c;
+        left: calc(50% + 115px);
+        bottom: calc(30% - 50px);
+    }
+}
+
+.pokerArea_result.active{
+    display: block;
+}
