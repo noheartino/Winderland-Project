@@ -10,6 +10,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/router";
 import CouponPlusSm from "./coupon/CouponPlusSm";
+import axios from 'axios'; 
 
 export default function DashboardCoupon() {
   const router = useRouter();
@@ -27,37 +28,88 @@ export default function DashboardCoupon() {
 
   const [userPoints, setUserPoints] = useState([]);
   const [memberLevelName, setMemberLevelName] = useState("");
-  console.log(userId)
 
-  // 等待獲取userId
+  const [userPointsRecord, setUserPointsRecord] = useState([]);
+
+  // // 等待獲取userId
+  // useEffect(() => {
+  //   // 模擬從 useAuth 中獲取 userId
+  //   const fetchUserId = () => {
+  //     setTimeout(() => {
+  //       const id = auth.userData?.id;
+  //       setUserId(id);
+  //       setMemberLevelId(auth.userData?.member_level_id);
+  //       setfreeCoupon(auth.userData?.free_coupon);
+  //       setLoading(false);
+  //     }, 1000);
+  //   };
+
+  //   fetchUserId();
+
+  //   // 清除定時器以防止內存洩漏
+  //   return () => clearTimeout();
+  // }, [auth]);
+  // console.log(freeCoupon)
+  // useEffect(() => {
+  //   if (!loading) {
+  //     if (!userId | !freeCoupon | !memberLevelId) {
+  //       // 如果 userId 不存在，則進行重定向
+  //       // 會影響google登入，先備註起來！不用驗證了！
+  //       //router.push("/member/login");
+  //     }
+  //   }
+  // }, [userId, loading, router]);
+  const [userData, setUserData] = useState({
+    userId: null,
+    memberLevelId: null,
+    freeCoupon: null,
+    loading: true,
+    error: null,
+  });
+
   useEffect(() => {
-    // 模擬從 useAuth 中獲取 userId
-    const fetchUserId = () => {
-      setTimeout(() => {
-        const id = auth.userData?.id; // 從 auth 取得 userId
-        setUserId(id);
-        setMemberLevelId(auth.userData?.member_level_id);
-        setfreeCoupon(auth.userData?.free_coupon);
-        setLoading(false);
-      }, 1000);
+    const fetchUserData = async () => {
+      try {
+        // 首先獲取基本用戶數據
+        const id = auth.userData?.id;
+        const memberLevelId = auth.userData?.member_level_id;
+        // console.log(memberLevelId)
+        if (!memberLevelId) {
+          throw new Error("Member level ID not found");
+        }
+
+        // 然後使用 memberLevelId 來獲取會員等級信息
+        const response = await axios.get(
+          `http://localhost:3005/api/member/membership-info/${memberLevelId}`
+        );
+
+        if (response.data.status === "success") {
+          const { free_coupon } = response.data.membershipInfo;
+
+          setUserData({
+            userId: id,
+            memberLevelId: memberLevelId,
+            freeCoupon: free_coupon,
+            loading: false,
+            error: null,
+          });
+        } else {
+          throw new Error("Failed to fetch membership info");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setUserData((prev) => ({
+          ...prev,
+          loading: false,
+          error: error.message,
+        }));
+      }
     };
 
-    fetchUserId();
-
-    // 清除定時器以防止內存洩漏
-    return () => clearTimeout();
+    fetchUserData();
   }, [auth]);
 
-  useEffect(() => {
-    if (!loading) {
-      if (!userId | !freeCoupon | !memberLevelId) {
-        // 如果 userId 不存在，則進行重定向
-        // 會影響google登入，先備註起來！不用驗證了！
-        //router.push("/member/login");
-      }
-    }
-  }, [userId, loading, router]);
-
+  // console.log(userData)
   // 獲取全部優惠券(領取優惠券使用)
   useEffect(() => {
     // 使用 fetch 從後端 API 獲取資料
@@ -73,7 +125,7 @@ export default function DashboardCoupon() {
 
   // 會員擁有的資料取用
   useEffect(() => {
-    fetch(`http://localhost:3005/api/coupon/${userId}`)
+    fetch(`http://localhost:3005/api/coupon/${userData.userId}`)
       .then((response) => response.json())
       .then((data) => {
         // 全部
@@ -99,19 +151,36 @@ export default function DashboardCoupon() {
           ? data.userPoints[0]
           : defaultUserPoints;
 
+        // 處理日期
+        const formatDate = (dateString) => {
+          const date = new Date(dateString);
+          return date.toISOString().split("T")[0];
+        };
+        const formatMonthDay = (dateString) => {
+          const date = new Date(dateString);
+          const month = String(date.getMonth() + 1).padStart(2, "0");
+          const day = String(date.getDate()).padStart(2, "0");
+          return `${month}-${day}`;
+        };
+        const processedPointsData = data.pointsRecord.map((record) => ({
+          ...record,
+          fullDate: formatDate(record.payment_date),
+          monthDay: formatMonthDay(record.payment_date),
+        }));
         setUserCoupons(userAllCoupon);
         setUserGetCoupons(userGetCouponData);
         setUserUsedCoupons(userUsedCouponData);
         setUserExpiredCoupons(userExpiredCouponData);
 
         setUserPoints(processedUserPoints);
+        setUserPointsRecord(processedPointsData);
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
-  }, [userId]);
+  }, [userData.userId]);
 
-  // console.log(memberLevelId);
+  // console.log(userUsedCoupons);
   // 會員等級
   useEffect(() => {
     const fetchMemberLevel = async () => {
@@ -123,7 +192,7 @@ export default function DashboardCoupon() {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ member_level_id: memberLevelId }),
+            body: JSON.stringify({ member_level_id: userData.memberLevelId }),
           }
         );
 
@@ -144,18 +213,25 @@ export default function DashboardCoupon() {
       }
     };
 
-    if (memberLevelId) {
+    if (userData.memberLevelId) {
       fetchMemberLevel();
     }
-  }, [memberLevelId]);
+  }, [userData.memberLevelId]);
 
   // 如果正在加載，顯示 loading 畫面
-  if (loading) {
+  if (userData.loading) {
     return (
-      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <div
+        style={{
+          height: "50vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <ClipLoader
           color="#851931"
-          loading={loading} // 根據 loading 狀態顯示加載動畫
+          loading={userData.loading} // 根據 loading 狀態顯示加載動畫
           cssOverride={{
             display: "block",
             margin: "0 auto",
@@ -173,8 +249,8 @@ export default function DashboardCoupon() {
       <div className={`container ${style["coupon-content"]} m-0 mx-auto`}>
         {/* 優惠券倉庫 */}
         <CouponStorage
-          userId={userId}
-          freeCoupon={freeCoupon}
+          userId={userData.userId}
+          freeCoupon={userData.freeCoupon}
           memberLevelName={memberLevelName}
           userGetCoupons={userGetCoupons}
           setUserGetCoupons={setUserGetCoupons}
@@ -182,18 +258,18 @@ export default function DashboardCoupon() {
 
         {/* 手機的領券的標題 */}
         <CouponPlusSm
-          userId={userId}
-          freeCoupon={freeCoupon}
+          userId={userData.userId}
+          freeCoupon={userData.freeCoupon}
           setUserGetCoupons={setUserGetCoupons}
         />
 
         <div className="row">
           {/* 優惠券使用紀錄 */}
-          <CouponRecord userId={userId} userUsedCoupons={userUsedCoupons} />
+          <CouponRecord userId={userData.userId} userUsedCoupons={userUsedCoupons} />
 
           {/* 優惠券過期紀錄 */}
           <CouponExpired
-            userId={userId}
+            userId={userData.userId}
             userExpiredCoupons={userExpiredCoupons}
           />
         </div>
@@ -210,7 +286,7 @@ export default function DashboardCoupon() {
         {/* wpoints 2 nav */}
         <div className="wpoint-navbar mt-5 mx-3 row">
           {/* {console.log(userPoints)} */}
-          <WPointShow userId={userId} userPoints={userPoints} />
+          <WPointShow userId={userData.userId} userPoints={userPoints} />
 
           {/* 會員說明的區塊 */}
           <div
@@ -224,8 +300,13 @@ export default function DashboardCoupon() {
         </div>
 
         {/* wpoints的使用紀錄 */}
+        {/* {console.log(userPointsRecord)} */}
         <div className="row">
-          <WPointRecord userId={userId} />
+          {userPointsRecord && userPointsRecord.length > 0 ? (
+            <WPointRecord userId={userData.userId} userPointsRecord={userPointsRecord} />
+          ) : (
+            <p>No point records available.</p>
+          )}
         </div>
       </div>
     </>

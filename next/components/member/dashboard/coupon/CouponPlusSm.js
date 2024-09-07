@@ -180,7 +180,7 @@ export default function CouponPlusSm({
               style={{ fontSize: "20px" }}
             />
             <p className="col m-0">領取本月會員優惠券</p>
-            <i className={`fa-solid fa-angle-down ${style.pointDown} col`} />
+            <i className={`fa-solid fa-angle-down ${style.pointDown} col-auto`} />
           </span>
           <div className="row mt-2">
             <p

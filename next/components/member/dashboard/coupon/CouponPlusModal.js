@@ -201,7 +201,7 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
                 const isChecked = selectedCoupons.some(
                   (c) => c.id === coupon.id
                 );
-                {console.log(coupon);}
+                {/* {console.log(coupon);} */}
                 {/* {console.log(selectedCoupons)} */}
                 {/* console.log(`Coupon ID: ${coupon.id}, isChecked: ${isChecked}`); */}
 

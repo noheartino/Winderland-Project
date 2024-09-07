@@ -7,6 +7,7 @@ export default function CouponList1({ coupon }) {
     // 如果 coupon 或 coupon.id 不存在，返回 null 或其他佔位符內容
     return null;
   }
+  // console.log(coupon)
   const getCategoryClass = (category) => {
     switch (category) {
       case "倍數折扣":
@@ -57,17 +58,17 @@ export default function CouponList1({ coupon }) {
         <p className={`${style.couponRecordDate} py-2 m-0 d-none d-lg-block`}>
          {formattedDate}
         </p>
-        <p className={`${style.couponRecordDateSm} py-2 ps-3 m-0 d-lg-none`}>
+        {/* <p className={`${style.couponRecordDateSm} py-2 ps-3 m-0 d-lg-none`}>
           {formattedNoYear}
-        </p>
+        </p> */}
       </div>
       <div className="col-3 my-3">
         <p className={`${style.couponRecordCost} py-2 m-0 d-none d-lg-block`}>
-          -NT $350
+          -NT ${coupon.coupon_amount}
         </p>
-        <p className={`${style.couponRecordCostSm} py-2 m-0 d-lg-none`}>
-          -$350
-        </p>
+        {/* <p className={`${style.couponRecordCostSm} py-2 m-0 d-lg-none`}>
+          -$ {coupon.coupon_amount}
+        </p> */}
       </div>
     </>
   );
