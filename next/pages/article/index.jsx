@@ -19,10 +19,10 @@ export default function Index() {
   const [loading, setLoading] = useState(true); // 新增 loading 狀態
   const authData = useAuth().auth;
   const UserData = authData.userData;
-  const myname = UserData ? UserData.user_name : "";
+  const myname = UserData ? UserData.account : "";
   const [articles, setArticles] = useState([]);
   const [articleHead, setArticleHead] = useState(null);
-
+  
   const [sortOrder, setSortOrder] = useState("");
   const [category, setCategory] = useState("");
   const [dateFilter, setDateFilter] = useState("");
