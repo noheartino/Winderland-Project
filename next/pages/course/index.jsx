@@ -34,6 +34,7 @@ export default function CourseIndex() {
   const { search, view, order } = router.query;
   let apiUrl = `http://localhost:3005/api/course`;
   const [courses, setCourses] = useState([]);
+  const [courseOrigin, setCourseOrigin] = useState([]);
   const [filterCourses, setFilterCourses] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [comments, setComments] = useState([]);
@@ -45,6 +46,22 @@ export default function CourseIndex() {
   const [isHomePage, setIsHomePage] = useState(true);
   const [courseBtn, setCourseBtn] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+
+  // 執行清除篩選
+  // function handleClearAllSort(){
+  //   setOnlineFilter("全部")
+  //   setTeacherSelect("全部")
+  //   setDateStart("")
+  //   setDateEnd("")
+  //   setPriceStart("")
+  //   setPriceEnd("")
+  //   const newArr = districts.map((district)=>{
+  //           return district.districtStr
+  //       })
+  //   setDistrictArr(newArr)
+  //   document.querySelector(['#districtAll']).checked=true
+  //   router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
+  // }
 
     // 篩選要傳遞的 QUERY
    const { query} = router;
@@ -81,7 +98,6 @@ export default function CourseIndex() {
       apiUrl += `&order=${order}`
     }
   }
-  
 
   useEffect(() => {
 
@@ -105,25 +121,26 @@ export default function CourseIndex() {
             myFavoriteCourse,
             myCourse,
             teachers,
+            courseOrigin,
           } = data;
-          console.log("課程列表抓取到的資料數量:" + courses.length);
           // 處理 courses 資料，將 images 字段轉換為數組
           setComments(comments);
           setCourses(courses);
+          setCourseOrigin(courseOrigin);
           setClassAssigns(classAssigns);
           setMyFavoriteCourse(myFavoriteCourse);
           setMyCourse(myCourse);
           setmyFirstFavoriteCourse(myFavoriteCourse[0]);
           setFirstMyCourse(myCourse[0]);
           setTeachers(teachers);
-          console.log("myCourse----------");
-          console.log(myCourse);
+          // console.log("myCourse----------");
+          // console.log(myCourse);
           // if(isHomePage){clearBtnHref()}
         })
         .catch((error) => {
           console.log(error);
         });
-  }, [view, search, userId, apiUrl]);
+  }, [view, search, userId, apiUrl, auth]);
   // console.log(myFirstFavoriteCourse[0]);
 
   const courseBtn01 = useRef(null);
@@ -139,64 +156,27 @@ export default function CourseIndex() {
   const [priceStart, setPriceStart] = useState("");
   const [priceEnd, setPriceEnd] = useState("");
   const [districts, setDistricts] = useState([])
+  
+  console.log("地區列表製做:");
+  console.log(districts);
+
+  const [districtArr, setDistrictArr] = useState([])
 
   useEffect(()=>{
-    console.log(courses.length);
-    if(courses.length>0){
-      const newArr = []
-      const allAddressV = courses.map((course)=>{if(course.address){return course.address.slice(0,3)}})
-      const onlyVaddressArr = Array.from(new Set(allAddressV))
-      onlyVaddressArr.map((eachCity, index)=>{
-      const districtsObj = {'dId': index+1, 'districtStr': eachCity?eachCity:""}
-      newArr.push(districtsObj)
-      setDistricts(newArr)
-    })
-    }
-  }, [courses])
-  
-  
-  
-  console.log("地區列表試做");
-  console.log(districts);
-  // const districts = [
-  //   { dId: 1, districtStr: "台北市" },
-  //   { dId: 2, districtStr: "新北市" },
-  //   { dId: 3, districtStr: "桃園市" },
-  //   { dId: 4, districtStr: "台中市" },
-  //   { dId: 5, districtStr: "台南市" },
-  //   { dId: 6, districtStr: "高雄市" },
-  //   { dId: 7, districtStr: "新竹縣" },
-  //   { dId: 8, districtStr: "苗栗縣" },
-  //   { dId: 9, districtStr: "彰化縣" },
-  //   { dId: 10, districtStr: "南投縣" },
-  //   { dId: 11, districtStr: "雲林縣" },
-  //   { dId: 12, districtStr: "嘉義縣" },
-  //   { dId: 13, districtStr: "屏東縣" },
-  //   { dId: 14, districtStr: "宜蘭縣" },
-  //   { dId: 15, districtStr: "花蓮縣" },
-  //   { dId: 16, districtStr: "台東縣" },
-  //   { dId: 17, districtStr: "澎湖縣" },
-  //   { dId: 18, districtStr: "金門縣" },
-  //   { dId: 19, districtStr: "連江縣" },
-  //   { dId: 20, districtStr: "基隆市" },
-  //   { dId: 21, districtStr: "新竹市" },
-  //   { dId: 22, districtStr: "嘉義市" },
-  //   { dId: 23, districtStr: "" },
-  // ];
-  const [districtArr, setDistrictArr] = useState([])
-  useEffect(()=>{
-    setDistrictArr(
-      districts.map((district) => {
+    if(districts.length>0){
+      setDistrictArr(
+        districts.map((district) => {
+          return district.districtStr;
+        })
+      );
+      const testArr = districts.map((district) => {
         return district.districtStr;
       })
-    );
-    const testArr = districts.map((district) => {
-      return district.districtStr;
-    })
-    console.log("設置了districtArr: ");
-    console.log(testArr);
-    console.log(districts);
-  }, [courses])
+      // console.log("設置了districtArr: ");
+      // console.log(testArr);
+      // console.log(districts);
+    }
+  }, [courses, districts, courseOrigin, auth])
 
   useEffect(() => {
     apiUrl = `http://localhost:3005/api/course?userId=${userId}`;
@@ -205,14 +185,33 @@ export default function CourseIndex() {
       query: {},
     });
   }, []);
+
   useEffect(() => {
     if (!view) {
       setIsHomePage(true);
     }
   }, [router.query]);
+
   useEffect(() => {
     setFilterCourses(courses);
-  }, [courses]);
+  }, [courses, courseOrigin]);
+
+
+  useEffect(()=>{
+    console.log(courseOrigin);
+    console.log(courses);
+    if(courseOrigin.length>0){
+        console.log(courseOrigin);
+        const newArr = []
+        const allAddressV = courseOrigin.map((course)=>{if(course.address){return course.address.slice(0,3)}})
+        const onlyVaddressArr = Array.from(new Set(allAddressV))
+        onlyVaddressArr.map((eachCity, index)=>{
+        const districtsObj = {'dId': index+1, 'districtStr': eachCity?eachCity:""}
+        newArr.push(districtsObj)
+        setDistricts(newArr)
+      })
+    }
+  }, [courses, courseOrigin, auth])
 
   // 篩選
   useEffect(() => {
@@ -339,7 +338,7 @@ export default function CourseIndex() {
         {/* Header */}
         <Nav />
 
-        <CourseNav setIsHomePage={setIsHomePage} isHomePage={isHomePage} />
+        <CourseNav setIsHomePage={setIsHomePage} isHomePage={isHomePage}/>
 
         {/* first page start */}
         <div

@@ -253,6 +253,7 @@ export default function ClassManIndex() {
       classCityDetail: '',
       classPrice: '',
       classIntro: '',
+      classPic: '',
       classVdio: '',
   })
   // 檢查 mustBeValued 有有效鍵值對: Object.entries(mustBeValued).filter(([key, value]) => value != '')
@@ -281,6 +282,7 @@ export default function ClassManIndex() {
         classCityDetail: '',
         classPrice: '',
         classIntro: '',
+        classPic: '',
         classVdio: '',
     })
     router.push('create')
@@ -347,6 +349,7 @@ export default function ClassManIndex() {
       classCityDetail: '',
       classPrice: '',
       classIntro: '',
+      classPic: '',
       classVdio: '',
     }
     if(!document.querySelector('#className').value){
@@ -397,6 +400,9 @@ export default function ClassManIndex() {
       if((document.querySelector('#classVdio').files.length === 0)){
         newMustBeValuedArr.classVdio=`線上課程必須上傳課程影片!`;
       }
+    }
+    if(document.querySelector('#classPic').files.length === 0){
+      newMustBeValuedArr.classPic=`必須上傳課程圖片!`;
     }
 
     const firstEmptyErrMsg = (Object.values(newMustBeValuedArr).filter(value => value.trim().length>0))[0]
@@ -765,6 +771,9 @@ export default function ClassManIndex() {
                     name='fileUpload'
                     onChange={handleImageUpload}
                   /> */}
+                  <label htmlFor='classPic' className='form-label CmanageCreateTag mt-2'>
+                      * 課程圖片
+                    </label>
                   <input
                     className='form-control vidAndImg-input'
                     type='file'

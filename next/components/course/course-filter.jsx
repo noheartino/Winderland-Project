@@ -23,7 +23,7 @@ export default function CourseFilter({teachers, setScore
     const router = useRouter()
 
     // districts: ; districtArr: 目前勾選的地區
-    console.log(districts);
+    console.log(districts.length);
     console.log(districtArr);
   function handleCheckDistrict(e){
     // 點下之後，等於切換checked
@@ -42,13 +42,20 @@ export default function CourseFilter({teachers, setScore
     setDistrictArr(newArr)
     document.querySelector(['#districtAll']).checked=true
   }, [])
+
   useEffect(()=>{
+    console.log(districtArr);
+    console.log("執行權選或反選");
     if(districtArr.length!=districts.length){
         document.querySelector(['#districtAll']).checked=false
+        console.log("反選");
+        console.log(districtArr.lenth+"&&&&&"+districts.length);
     }else{
         document.querySelector(['#districtAll']).checked=true
+        console.log("全選");
     }
   }, [districtArr])
+
   function handleDistrictAll(e){
     router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
     if(e.target.checked){

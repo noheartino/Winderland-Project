@@ -207,6 +207,31 @@ router.get('/', async (req, res) => {
     coursesOrderStr = `ORDER BY CASE WHEN class.sale_price IS NOT NULL THEN class.sale_price ELSE price END DESC`
   }
 
+  let courseOriginSQL = `SELECT 
+                            class.*,
+                            class.id AS class_id,
+                            class.name AS class_name,
+                            teacher.*,
+                            teacher.id AS teacher_id,
+                            teacher.name AS teacher_name,
+                            images_class.class_id,
+                            images_class.path AS class_path,
+                            images_teacher.teacher_id,
+                            images_teacher.path AS teacher_path,
+                            COALESCE(AVG(comments.rating), 0) AS average_rating
+                        FROM 
+                            class
+                        LEFT JOIN
+                            teacher ON class.teacher_id = teacher.id
+                        LEFT JOIN
+                            images_class ON class.id = images_class.class_id
+                        LEFT JOIN
+                            images_teacher ON teacher.id = images_teacher.teacher_id
+                        LEFT JOIN 
+                            comments ON class.id = comments.entity_id AND comments.entity_type = 'class'
+                        GROUP BY 
+                            class.id, class.name, teacher.id, teacher.name, images_class.class_id, images_class.path, images_teacher.teacher_id, images_teacher.path;`
+
   if (!search) {
     // querySQL = `select class.* from class`
     querySQL = `SELECT 
@@ -333,6 +358,8 @@ router.get('/', async (req, res) => {
   //   console.log("search-----> "+search);
   // }
   try {
+    
+    const [courseOrigin] = await connection.execute(courseOriginSQL)
     const [courses] = search
       ? await connection.execute(querySQL, querySQLParams)
       : await connection.execute(querySQL)
@@ -358,6 +385,7 @@ router.get('/', async (req, res) => {
       myCourse,
       classSum,
       teachers,
+      courseOrigin
     })
     console.log('測試首頁列表get:' + req.originalUrl)
   } catch (err) {
