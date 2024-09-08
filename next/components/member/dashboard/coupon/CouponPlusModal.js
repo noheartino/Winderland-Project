@@ -229,7 +229,7 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
               </p>
               <button
                 type="button"
-                className="btn btn-primary"
+                className={`btn ${style.plusBtnCoupon}`}
                 onClick={handleConfirm}
               >
                 確認領取

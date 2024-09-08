@@ -285,7 +285,7 @@ export default function New() {
         icon: "success",
         confirmButtonText: "確定",
       });
-      router.push(`/article`);
+      router.push(`/article/detail/${article.id}`);
     } catch (error) {
       console.error(error);
       Swal.fire({
@@ -444,7 +444,7 @@ export default function New() {
                 type="submit"
                 disabled={loading}
               >
-                {loading ? "新增中..." : "新增文章"}
+                {loading ? "編輯中..." : "編輯文章"}
               </button>
             </div>
           </form>

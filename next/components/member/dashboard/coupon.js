@@ -178,7 +178,7 @@ export default function DashboardCoupon() {
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
-  }, [userData.userId]);
+  }, [userData.userId, setUserGetCoupons]);
 
   // console.log(userUsedCoupons);
   // 會員等級
@@ -256,12 +256,12 @@ export default function DashboardCoupon() {
           setUserGetCoupons={setUserGetCoupons}
         />
 
-        {/* 手機的領券的標題 */}
+        {/* 手機的領券的標題
         <CouponPlusSm
           userId={userData.userId}
           freeCoupon={userData.freeCoupon}
           setUserGetCoupons={setUserGetCoupons}
-        />
+        /> */}
 
         <div className="row">
           {/* 優惠券使用紀錄 */}
