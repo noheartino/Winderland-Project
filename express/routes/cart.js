@@ -549,7 +549,7 @@ router.post('/creditCardPayment', async (req, res) => {
     )
 
     // 設定訂單狀態，如果只有課程資料則為 '已完成'
-    const orderStatus = hasOnlyClasses ? '已完成' : '信用卡'
+    const orderStatus = hasOnlyClasses ? '已完成' : '出貨準備中'
 
     const [orderResult] = await conn.query(insertOrderQuery, [
       orderNumber,
