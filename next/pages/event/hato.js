@@ -83,12 +83,41 @@ export default function Hato() {
         }
     };
 
+    const hatoimg = {
+        2: 'hatoB.png',
+        3: 'hatoE.png',
+        5: 'hatouu_s.gif',
+        6: 'hatoF.png',
+        7: 'hatoF.png',
+        8: 'hatouu_s.gif',
+        9: 'hatoB.png',
+        10: 'hatoB.png',
+        12: 'hatoB.png',
+        13: 'hatoE.png',
+        14: 'hatoE.png',
+        15: 'hatoF.png',
+        16: 'hatoF.png',
+        17: 'hatoB.png',
+        19: 'hatoB.png',
+        23: 'hatoE.png',
+        24: 'hatoF.png',
+        25: 'hatoF.png',
+        26: 'hatoE.png',
+        27: 'hatoE.png',
+        28: 'hatoF.png',
+        29: 'hatoF.png',
+        30: 'hatoE.png',
+        31: 'hatoE.png',
+        32: 'hatoBe.png',
+        33: 'hatoBe.png'
+    }
+
 
     const hato = {
         0: '[ 請點擊以開始劇情... ]',
         1: '嘿~ 你撞到我了!!',
         3: '算了! 沒空理你這人類 ...',
-        4: '啊!!! 媽媽他們飛走了~ 怎麼辦啊?',
+        4: '咦!!! 媽媽他們飛走了~ 怎麼辦啊?',
         6: '人類... 其實我不緊張~ \n因為這整個莊園是我家!',
         8: '媽媽他們應該是去發傳單了~ \n我們正在推廣我們的酒莊，你來跟我玩個小遊戲吧~',
         10: '我這裡有十三張撲克牌，請你隨機抽取一張',
@@ -100,7 +129,7 @@ export default function Hato() {
         23: '媽媽他們也快要回來了，我也要為明天的...準備...',
         24: '我先送你回首頁囉~',
         26: '...可是下次再見時，我應該記不得你了',
-        28: '抱歉，我也不想這樣...我不該說太多',
+        28: '抱歉，我也不想這樣...',
         30: '我大概知道...我跟媽媽走失了好多次，抽了好多的牌...'
     }
 
@@ -312,7 +341,7 @@ export default function Hato() {
                     <div className="sentakushi sen2">{people[nowstep] ? people[nowstep]["2"] : ''}</div>
                     <div className="sentakushi sen3">{people[nowstep] ? people[nowstep]["3"] : ''}</div>
                 </div>
-                <div className="ishato" />
+                <div className="ishato" style={{ background: `url(/images/hato/${hatoimg[nowstep] ? hatoimg[nowstep] : 'hato_f.gif'}) no-repeat center/contain` }}/>
                 <div className="kaiwa" onClick={clickstep}>
                     <div className="aite">鴿子</div>
                     <div className="kotoba" style={{ whiteSpace: 'pre-line' }}>
