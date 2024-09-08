@@ -107,14 +107,15 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
 
   // 刪除
   const handleDelete = async () => {
-    // 彈出確認對話框
-    const confirmDelete = window.confirm(
-      "您確定要刪除此評論嗎？此操作無法恢復。"
-    );
+    // // 彈出確認對話框
+    // const confirmDelete = window.confirm(
+    //   "您確定要刪除此評論嗎？此操作無法恢復。"
+    // );
 
-    if (!confirmDelete) {
-      return; // 如果用戶取消，則退出函數
-    }
+    // if (!confirmDelete) {
+    //   return; // 如果用戶取消，則退出函數
+    // }
+    
 
     if (commentUser !== userId) {
       Swal.fire({
