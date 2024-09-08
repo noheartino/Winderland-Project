@@ -212,9 +212,19 @@
   & .btn-border-white {
     background-color: transparent;
     border: 0.075rem solid #ffffff;
-    color: var(--primary) !important;
+    color: #ffffff !important;
     &:hover{
       background-color: var(--wine) !important;
+      border: 0.075rem solid var(--wine);
+      color: #ffffff !important;
+    }
+  }
+  & .btn-border-white-primText {
+    background-color: transparent;
+    border: 0.075rem solid #ffffff;
+    color: var(--wine) !important;
+    &:hover{
+      background-color: var(--primary) !important;
       border: 0.075rem solid var(--wine);
       color: #ffffff !important;
     }

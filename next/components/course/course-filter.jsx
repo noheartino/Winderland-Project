@@ -151,6 +151,9 @@ export default function CourseFilter({teachers, setScore
   }
   return (
     <>  
+        <div className='row mx-0 px-10px mb-3 spac-1 text-prim-text-prim fw-bold justify-content-between  d-flex d-md-none'>
+          <div className='col-auto cursor-pointer btn-border-wine btn' onClick={handleClearAllSort}>清除篩選<i className="fa-solid fa-xmark ms-2"></i></div>
+        </div>
         <div className='row mx-0 px-10px mb-3 spac-1 text-prim-text-prim fw-bold justify-content-between'>
                     
                     <div className='col-auto d-flex flex-row align-items-center list-group'>
@@ -160,7 +163,7 @@ export default function CourseFilter({teachers, setScore
                             <label className="form-check-label stretched-link spac-1 text-gray" htmlFor={`districtAll`}>全部 (包含線上課程)</label>
                         </span>
                     </div>
-                    <div className='col-auto cursor-pointer btn-border-wine btn' onClick={handleClearAllSort}>清除篩選<i className="fa-solid fa-xmark ms-2"></i></div>
+                    <div className='col-auto cursor-pointer btn-border-wine btn d-none d-md-block' onClick={handleClearAllSort}>清除篩選<i className="fa-solid fa-xmark ms-2"></i></div>
                     
         </div>
                     
