@@ -395,7 +395,7 @@ export default function CourseIndex() {
   return (
     <>
       <Head>
-        <title>醺迷仙園｜{`${course?.class_name}`}</title>
+        <title>{`醺迷仙園｜${course?.class_name}`}</title>
 
         <meta charSet="utf-8" />
         <meta
@@ -990,7 +990,7 @@ export default function CourseIndex() {
                       </p>
                     </div>
                   </div>
-                  <div className="row justify-content-between align-items-center my-3">
+                  <div className="row justify-content-between align-items-center my-3 px-0 mx-0">
                   {course?.online === 0 && myCourses && myCoursesId.length>0 ?
                     ""
                   :
@@ -1015,7 +1015,7 @@ export default function CourseIndex() {
                         </button>
                       </div>
                       :
-                      <div className="col pe-0">
+                      <div className="col pe-0 px-0 mx-0">
                         <button className="btn w-100 spac-3 btn-sec-orange py-2" onClick={handleCourseWriteInCart}>
                           <h6 className="text-white">加入購物車</h6>
                         </button>
@@ -1161,7 +1161,7 @@ export default function CourseIndex() {
                 <div className="col course-comment-progress-bar d-flex flex-column justify-content-between">
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-11">
+                    <div className="col-10">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -1184,14 +1184,14 @@ export default function CourseIndex() {
                     </div>
                     <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
-                        {comments.filter((v) => v.rating === 5).length}
+                        5 ( {comments.filter((v) => v.rating === 5).length} 則)
                       </p>
                     </div>
                   </div>
                   {/* 單條評分bar end */}
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-11">
+                    <div className="col-10">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -1214,14 +1214,14 @@ export default function CourseIndex() {
                     </div>
                     <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
-                        {comments.filter((v) => v.rating === 4).length}
+                        4 ( {comments.filter((v) => v.rating === 4).length} 則)
                       </p>
                     </div>
                   </div>
                   {/* 單條評分bar end */}
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-11">
+                    <div className="col-10">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -1244,14 +1244,14 @@ export default function CourseIndex() {
                     </div>
                     <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
-                        {comments.filter((v) => v.rating === 3).length}
+                        3 ( {comments.filter((v) => v.rating === 3).length} 則)
                       </p>
                     </div>
                   </div>
                   {/* 單條評分bar end */}
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-11">
+                    <div className="col-10">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -1274,14 +1274,14 @@ export default function CourseIndex() {
                     </div>
                     <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
-                        {comments.filter((v) => v.rating === 2).length}
+                        2 ( {comments.filter((v) => v.rating === 2).length} 則)
                       </p>
                     </div>
                   </div>
                   {/* 單條評分bar end */}
                   {/* 單條評分bar start */}
                   <div className="row align-items-center">
-                    <div className="col-11">
+                    <div className="col-10">
                       <div
                         className="progress bg-light-gray light-wine-border"
                         role="progressbar"
@@ -1304,7 +1304,7 @@ export default function CourseIndex() {
                     </div>
                     <div className="col px-0 text-center">
                       <p className="text-sec-dark-blue">
-                        {comments.filter((v) => v.rating === 1).length}
+                        1 ( {comments.filter((v) => v.rating === 1).length} 則)
                       </p>
                     </div>
                   </div>

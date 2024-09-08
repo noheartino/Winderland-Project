@@ -252,22 +252,32 @@ export default function Applyevent() {
                       </div>
                       <div className="col-10">
                         <div className="CMListInfoEventT">
-                          <div className="mb-1">
+                          <div className="mb-2">
                             課程名稱 : {course?.class_name}
                           </div>
                           <div className="CMDetailistBoxInfo">
-                            報名日期 -{" "}
-                            {handleDateFormat(course?.appointment_start)}~
-                            {handleDateFormat(course?.appointment_end)}
+                            <div className={`${course.online && course.online===1?'d-none':'d-block'}`}>
+                              報名日期 -{" "}
+                              {handleDateFormat(course?.appointment_start)}~
+                              {handleDateFormat(course?.appointment_end)}
+                              <br />
+                              開課日期 - {handleDateFormat(course?.course_start)}~
+                              {handleDateFormat(course?.course_end)}
+                              <br />
+                              課程地點 - {course?.address}
+                              <br />
+                              上課時間 -{" "}
+                              {handleTimeFormat(course?.daily_start_time)}-
+                              {handleTimeFormat(course?.daily_end_time)}
                             <br />
-                            開課日期 - {handleDateFormat(course?.course_start)}~
-                            {handleDateFormat(course?.course_end)}
+                            </div>
+                            課程金額 - {course.sale_price && course.sale_price>0 ? 
+                              <p className="text-gray-light d-inline-block"><del>NT$ ${course?.price}</del></p>:
+                              <p className="text-sec-orange d-inline-block">NT$ ${course?.price}</p>}
                             <br />
-                            課程地點 - {course?.address}
-                            <br />
-                            上課時間 -{" "}
-                            {handleTimeFormat(course?.daily_start_time)}-
-                            {handleTimeFormat(course?.daily_end_time)}
+                            {course.sale_price && course.sale_price>0 ? 
+                              <div>課程優惠金額 - <p className="text-sec-orange d-inline-block">NT$ ${course?.sale_price}</p></div>:""}
+                            
                           </div>
                         </div>
                       </div>
@@ -285,7 +295,7 @@ export default function Applyevent() {
                         </div>
                       </div>
                     </div>
-                    <div className="row gx-5">
+                    <div className={`row gx-5 ${course.online && course.online===1?'d-none':'d-flex'}`}>
                       <div className="col-12">
                         <div className="CMListStatisT">報名人數統計</div>
                       </div>
