@@ -21,19 +21,19 @@
 }
 
 .multiplierDiscount {
-    background: linear-gradient(to right, #a5d1df, #597179);
-}
-
-.multiplierDiscountBox {
-    background-color: #5b839a;
-}
-
-.amountDiscount {
     background: linear-gradient(to right, #F46274, #851931);
 }
 
-.amountDiscountBox {
+.multiplierDiscountBox {
     background-color: #851931;
+}
+
+.amountDiscount {
+    background: linear-gradient(to right, #a5d1df, #597179);
+}
+
+.amountDiscountBox {
+    background-color: #5b839a;
 }
 
 .cartCouponText {

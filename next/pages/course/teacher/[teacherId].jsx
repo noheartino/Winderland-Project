@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import CourseCardSm from "@/components/course/course-card-sm";
 import Head from "next/head";
+import Arrtotop from "@/components/Header/arr";
 
 export default function TeacherDetail() {
   // 需要資料: 目前teacher & 目前teacher的comments 、 courses中此teacher的課程列表=>card-sm:{當前課程 / 當前課程平均得分 / 課程已報名人數}
@@ -65,6 +66,7 @@ export default function TeacherDetail() {
       <div className="course_wrap">
         {/* Header */}
         <Nav />
+        <Arrtotop />
         {/* page four teacher-detail start */}
         <div className="fourth-page-wrap">
           <div className="container-fluid px-0 teacher-detail-banner rounded-bottom-5 overflow-hidden d-flex justify-content-center align-items-center pb-5">

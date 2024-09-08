@@ -12,28 +12,12 @@ export default function CouponStorage({
   userGetCoupons,
   setUserGetCoupons
 }) {
+
   const [isGetVisible, setIsGetVisible] = useState(true);
-  // const [userGetCoupons, setUserGetCoupons] = useState([]);
-
-  // useEffect(() => {
-  //   fetch(`http://localhost:3005/api/coupon/${userId}`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       // 全部
-  //       const userGetCouponData = data.userCoupons.filter((coupon) => coupon.status === "get")
-
-  //       setUserGetCoupons(userGetCouponData)
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching user data:", error);
-  //     });
-  // }, [userId]);
 
   const toggleGetVisibility = () => {
     setIsGetVisible(!isGetVisible);
   };
-
-  // console.log(userGetCoupons)
 
   return (
     <>

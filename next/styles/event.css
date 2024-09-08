@@ -1094,6 +1094,17 @@ a.Armallmt{
         letter-spacing: 3px;
     }
 
+    .emailinput{
+        height: 55px;
+        width: 530px;
+        padding-left: 10px;
+        border: 2px solid #916B51;
+        border-radius: 3px;
+        margin-right: 20px;
+        margin-top: 30px;
+        margin-bottom: 70px;
+    }
+
     .eventCardOuter{
         width: 800px;
         height: 250px;
@@ -1168,14 +1179,14 @@ a.Armallmt{
     }
 
     .eventGoHome{
-        width: 350px;
-        padding-block: 20px;
+        width: 250px;
+        padding-block: 15px;
         background-color: #916B51;
         color: white;
         letter-spacing: 3px;
         border: none;
         border-radius: 5px;
-        margin-top: 50px;
+        margin-top: 30px;
         margin-bottom: 70px;
     }
             
@@ -2311,4 +2322,32 @@ a.Armallmt{
 
 .arrtotop.active{
     bottom: 80px;
+}
+
+
+
+
+
+
+/* tarot */
+
+.tarotCardarea{
+    
+    .card-wrap {
+        display: grid;
+        place-content: center;
+        inset: 0;
+        transform-style: preserve-3d;
+        perspective: 800px;
+      }
+      .card {
+        border-radius: 1.5rem;
+        height: 80vh;
+        aspect-ratio: 9 / 16;
+        background: url("https://cdn.midjourney.com/f87ef132-b7e1-40a4-9e7c-0bf90e7e7724/0_3.png");
+        background-size: cover;
+        box-shadow: 50px 50px 30px rgba(0, 0, 0, 0.3);
+        transform: rotateX(10deg) rotateY(10deg);
+      }
+    
 }

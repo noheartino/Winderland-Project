@@ -8,6 +8,7 @@ import Footer from "@/components/footer/footer";
 import { useAuth } from "@/hooks/use-auth";
 import Head from "next/head";
 import Swal from "sweetalert2";
+import Arrtotop from "@/components/Header/arr";
 
 export default function CourseIndex() {
   const [classSum, setClassSum] = useState([]);
@@ -406,6 +407,7 @@ export default function CourseIndex() {
       <div className="course_wrap">
         {/* Header */}
         <Nav />
+        <Arrtotop />
 
         {/* page three course-detail start */}
         <div className="container-fluid m-0 px-0">

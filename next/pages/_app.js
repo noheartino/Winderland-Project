@@ -13,6 +13,7 @@ import '@/styles/_cart.css';
 import '@/styles/event.css';
 import '@/styles/product.css';
 import '@/styles/product-detail.css';
+import '@/styles/hato.css';
 // -----各自主頁css檔案 end-----
 
 // import其他套件

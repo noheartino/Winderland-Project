@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./IntroduceList.module.css"
 import { useProduct } from "@/context/ProductContext";
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 export default function IntroduceList() {
   const {product,loading,error,detail} = useProduct();
@@ -15,7 +17,23 @@ export default function IntroduceList() {
     };
   }, [product, detail])
   
-  if (loading) return <div>加載中...</div>;
+  if (loading) {
+    return (
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
+          color="#851931"
+          loading={loading}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
   if (error) return <div>{error}</div>;
   if (!product || !currentDetail) return <div>查無此商品</div>;
 

@@ -61,16 +61,15 @@ router.get('/profile', authenticate, async function (req, res) {
   try {
     const [rows] = await connection.query(
       `
-       SELECT u.*, iu.img AS avatar_img, l.free_coupon, u.total_spending,
+       SELECT u.*, l.free_coupon, u.total_spending,
          l.entry_cumulative AS current_entry_cumulative,
          CASE 
            WHEN u.member_level_id < 4 THEN (SELECT entry_cumulative FROM levels WHERE member_level_id = u.member_level_id + 1)
            ELSE NULL
          END AS next_level_entry_cumulative
-          FROM users u
-          LEFT JOIN images_user iu ON u.id = iu.user_id
-          LEFT JOIN levels l ON u.member_level_id = l.member_level_id
-          WHERE u.id = ?
+         FROM users u
+         LEFT JOIN levels l ON u.member_level_id = l.member_level_id
+         WHERE u.id = ?
     `,
       [id]
     )
@@ -82,13 +81,6 @@ router.get('/profile', authenticate, async function (req, res) {
     const user = rows[0]
     delete user.password // 不回傳密碼
 
-    // 處理頭像路徑
-    if (user.avatar_img) {
-      user.avatar_url = `/images/member/avatar/${user.avatar_img}`
-    } else {
-      user.avatar_url = '/images/member/avatar/default-avatar.jpg'
-    }
-
     return res.json({ status: 'success', data: { user } })
   } catch (error) {
     console.error('Error fetching user:', error)
@@ -96,7 +88,49 @@ router.get('/profile', authenticate, async function (req, res) {
       .status(500)
       .json({ status: 'error', message: '獲取會員資料失敗' })
   }
-})
+ })
+
+// @ GET - 獲取會員頭像
+router.get('/profile/avatar/:id', async function (req, res) {
+  const userId = parseInt(req.params.id, 10);
+
+  if (isNaN(userId)) {
+    return res.status(400).json({ status: 'error', message: '無效的會員ID' });
+  }
+
+  try {
+    // 查詢資料庫以獲取圖片文件名
+    const [rows] = await connection.query(
+      'SELECT img FROM images_user WHERE user_id = ?',
+      [userId]
+    );
+
+    if (rows.length === 0) {
+      // 如果沒有找到頭像，返回空
+      return res.json({
+        status: 'success',
+        data: { avatar_url: null }
+      });
+    }
+
+    const avatarFilename = rows[0].img;
+    const avatarUrl = `/images/member/avatar/${avatarFilename}`;
+
+    res.json({
+      status: 'success',
+      data: { avatar_url: avatarUrl }
+    });
+  } catch (error) {
+    console.error('Error fetching avatar:', error);
+    res.status(500).json({
+      status: 'error',
+      message: '獲取頭像失敗',
+      error: error.message,
+    });
+  }
+});
+
+
 
 // @ POST - 上傳頭像
 router.post(

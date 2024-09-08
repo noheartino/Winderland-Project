@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 import { useAuth } from "@/hooks/use-auth";
 import { useProduct } from "@/context/ProductContext";
 import { useFavorite } from "@/hooks/use-fav.js";
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 export default function MobileForm() {
   const [currentDetail, setCurrentDetail] = useState(null);
@@ -93,7 +95,23 @@ export default function MobileForm() {
     }
   };
 
-  if (loading) return <div>加載中...</div>;
+  if (loading) {
+    return (
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
+          color="#851931"
+          loading={loading}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
   if (error) return <div>錯誤: {error}</div>;
   if (!product || !currentDetail) return <div>查無此商品</div>;
   return (

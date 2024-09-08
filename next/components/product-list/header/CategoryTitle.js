@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import styles from "./CategoryTitle.module.css";
+import ClipLoader from "react-spinners/ClipLoader";
 
 export default function CategoryTitle({ filters, selectFilters }) {
   const DEFAULT_IMAGE = "/shop_images/all.jpg";
@@ -71,7 +72,21 @@ export default function CategoryTitle({ filters, selectFilters }) {
   }, [currentCategory, selectFilters.category, isDataLoaded]);
 
   if (!isDataLoaded || !currentCategory) {
-    return <div>載入中...</div>;
+    return (
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
+          color="#851931"
+          loading={true}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );;
   }
 
   return (

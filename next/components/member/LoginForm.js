@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/use-auth'
 import Swal from 'sweetalert2'
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useFirebase } from '@/hooks/useFirebase';
+import ClipLoader from "react-spinners/ClipLoader";
 
 
 // 漂浮標籤
@@ -215,8 +216,24 @@ export default function LoginForm() {
     setShowPassword(prev => !prev);
   }, []);
 
+  const override = {
+    display: "block",
+    margin: "0 auto",
+  };
+
   if (isLoading) {
-    return <div>Loading...</div>; // 或者其他加載指示器
+    return (
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
+          color="#851931"
+          loading={isLoading} // 使用 isLoading 來控制加載動畫
+          cssOverride={override}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
   }
 
 
@@ -407,16 +424,25 @@ export default function LoginForm() {
                 </div>
 
                 {/* 第三方登入 */}
-                {/* <div className={styles.fastLogin}>
+                <div className={styles.fastLogin}>
                   <hr />
                   <div className={styles.buttonGroup}>
-                    <button
+                    {/* <button
                       className={`${styles.googleLogin} d-flex justify-content-center align-items-center`}
                     >
                       <GoogleLogo className="mx-3" />
                       使用GOOGLE登入
-                    </button>
+                    </button> */}
                     <button
+                      className={`${styles.googleLogin} d-flex justify-content-center align-items-center`}
+                      onClick={googleLogin}
+                      // onClick={handleGoogleLogin}
+                      type="button"  
+                    >
+                      <GoogleLogo className="mx-3" />
+                      使用GOOGLE登入
+                    </button>
+                    {/* <button
                       className={`${styles.lineLogin} d-flex justify-content-center align-items-center`}
                     >
                       <Image
@@ -427,9 +453,9 @@ export default function LoginForm() {
                         className={styles.img}
                       />
                       使用LINE登入
-                    </button>
+                    </button> */}
                   </div>
-                </div> */}
+                </div>
               </div>
             </form>
           </div>

@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
 import Link from "next/link";
 import Head from "next/head";
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 export default function Applyevent() {
   const router = useRouter();
@@ -53,7 +55,23 @@ export default function Applyevent() {
     }, 100);
   };
 
-  if (!infodata) return <div>Loading...</div>;
+  if (!infodata) {
+    return (
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
+          color="#851931"
+          loading={true}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
 
   function filtertheevent(index) {
     return myallevent.filter((i) => i.id === index)[0];

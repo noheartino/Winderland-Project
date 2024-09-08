@@ -8,7 +8,7 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
   const [selectedCoupons, setSelectedCoupons] = useState([]);
   const [claimedCoupons, setClaimedCoupons] = useState([]);
   const [usedClaimedCoupons, setUsedClaimedCoupons] = useState([]);
-
+// console.log(plusCoupons)
   useEffect(() => {
     // 取得所有優惠券的資料
     fetch("http://localhost:3005/api/coupon")

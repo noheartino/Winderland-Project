@@ -45,7 +45,7 @@ export default function MessageItem({ sortedComments }) {
                       ></i>
                     ))}
                   </div>
-                  <div className={`${styles["score"]}`}>{comment.rating}</div>
+                  <div className={`${styles["score"]}`}></div>
                 </div>
               </div>
             </div>

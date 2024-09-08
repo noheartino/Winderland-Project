@@ -1,33 +1,33 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import Image from 'next/image'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import { useAuth } from '@/hooks/use-auth'
-import { useRouter } from 'next/router'
-import Swal from 'sweetalert2'
-import Link from 'next/link'
-
-import ProfileUpdateUser from './profile/ProfileUpdateUser'
-import ProfileUpdatePwd from './profile/ProfileUpdatePwd'
-import ProfileMembership from './profile/ProfileMembership'
-import ProfileUpdateUserRWD from './profile/ProfileUpdateUserRWD'
-import ProfileUpdatePwdRWD from './profile/ProfileUpdatePwdRWD'
+import React, { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from "next/router";
+import Swal from "sweetalert2";
+import Link from "next/link";
+import ClipLoader from "react-spinners/ClipLoader";
+import ProfileUpdateUser from "./profile/ProfileUpdateUser";
+import ProfileUpdatePwd from "./profile/ProfileUpdatePwd";
+import ProfileMembership from "./profile/ProfileMembership";
+import ProfileUpdateUserRWD from "./profile/ProfileUpdateUserRWD";
+import ProfileUpdatePwdRWD from "./profile/ProfileUpdatePwdRWD";
 // import Lv1Card from '../level/Lv1Card'
 // import Lv2Card from '../level/Lv2Card'
 // import Lv3Card from '../level/Lv3Card'
 // import Lv4Card from '../level/Lv4Card'
 
-import Lv1Card from '@/components/member/level/Lv1Card'
-import Lv2Card from '@/components/member/level/Lv2Card'
-import Lv3Card from '@/components/member/level/Lv3Card'
-import Lv4Card from '@/components/member/level/Lv4Card'
+import Lv1Card from "@/components/member/level/Lv1Card";
+import Lv2Card from "@/components/member/level/Lv2Card";
+import Lv3Card from "@/components/member/level/Lv3Card";
+import Lv4Card from "@/components/member/level/Lv4Card";
 
 export default function DashboardProfile() {
   // 驗證登入
   const { auth, updateUserInfo, isLoading } = useAuth();
   const router = useRouter();
 
-  const [avatarUrl, setAvatarUrl] = useState('');
-  const [uploadStatus, setUploadStatus] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [uploadStatus, setUploadStatus] = useState("");
   const [key, setKey] = useState(0);
 
   const [formData, setFormData] = useState({
@@ -43,7 +43,8 @@ export default function DashboardProfile() {
   const updateAvatarUrl = useCallback(() => {
     if (auth.userData && auth.userData.avatar_url) {
       setAvatarUrl(
-        `http://localhost:3005${auth.userData.avatar_url
+        `http://localhost:3005${
+          auth.userData.avatar_url
         }?t=${new Date().getTime()}`
       );
     } else {
@@ -67,8 +68,8 @@ export default function DashboardProfile() {
   };
 
   useEffect(() => {
-    if (!auth.isAuth) {
-      router.push('/member/login');
+    if (!isLoading && !auth.isAuth) {
+      router.push("/member/login");
     } else if (auth.userData) {
       console.log("auth.userData:", auth.userData);
       setFormData({
@@ -81,28 +82,60 @@ export default function DashboardProfile() {
         member_level_id: auth.userData.member_level_id || "",
         total_spending: auth.userData.total_spending || 0,
       });
+
+      // 合併的 useEffect，更新頭像 URL
+      const fetchAvatarUrl = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:3005/api/dashboard/profile/avatar/${auth.userData.id}`
+          );
+          const data = await response.json();
+          if (data.status === "success" && data.data.avatar_url) {
+            setAvatarUrl(`http://localhost:3005${data.data.avatar_url}?t=${new Date().getTime()}`);
+          } else {
+            setAvatarUrl("/images/member/avatar/default-avatar.jpg");
+          }
+        } catch (error) {
+          console.error("抓取頭像錯誤:", error);
+          setAvatarUrl("/images/member/avatar/default-avatar.jpg");
+        }
+      };
+
+      fetchAvatarUrl();
       updateAvatarUrl();
     }
-  }, [isLoading, auth.isAuth, router, updateAvatarUrl]);
+  }, [isLoading, auth.isAuth, auth.userData, router, updateAvatarUrl]);
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) {
+    return (
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
+          color="#851931"
+          loading={isLoading} // 使用 isLoading 控制加載動畫
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
 
   if (!auth.isAuth) {
     return null;
   }
 
-  // @ 更換會員頭像
   const handleAvatarChange = async (event) => {
-    // console.log('更換會員頭像函式');
     const file = event.target.files[0];
     if (!file) return;
-    console.log(file);
+
     const formData = new FormData();
     formData.append("avatar", file);
 
     try {
-      // setUploadStatus('上傳中...');
-      console.log("會員頭像上傳要求中...");
       const response = await fetch(
         "http://localhost:3005/api/dashboard/profile/upload-avatar",
         {
@@ -113,51 +146,38 @@ export default function DashboardProfile() {
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP 錯誤！狀態碼: ${response.status}`);
       }
 
       const result = await response.json();
-      console.log("會員頭像上傳回應:", result);
-
       if (result.status === "success") {
-        console.log("會員頭像更換成功");
-        const newAvatarUrl = result.data.avatar_url;
-        const updateResult = await updateUserInfo({
-          ...auth.userData,
-          avatar_url: newAvatarUrl,
+        // 更新頭像 URL
+        const newAvatarUrl = `http://localhost:3005${result.data.avatar_url}`;
+        setAvatarUrl(newAvatarUrl);
+
+        // 發送自定義事件
+        const event = new CustomEvent("avatarUpdated", {
+          detail: newAvatarUrl,
         });
+        window.dispatchEvent(event);
 
-        if (updateResult.success) {
-          setAvatarUrl(
-            `http://localhost:3005${newAvatarUrl}?t=${new Date().getTime()}`
-          );
-          // setUploadStatus('頭像已更換成功');
-          setKey((prevKey) => prevKey + 1);
-
-          // 使用 SweetAlert2 顯示成功訊息
-          await Swal.fire({
-            icon: "success",
-            title: "頭像更新成功",
-            text: "您的會員頭像已成功更新",
-            confirmButtonText: "確定",
-            confirmButtonColor: "#60464C",
-          });
-        } else {
-          throw new Error("更新用戶資料失敗");
-        }
+        // 顯示成功提示
+        await Swal.fire({
+          icon: "success",
+          title: "頭像更新成功",
+          text: "您的頭像已成功更新。",
+          confirmButtonText: "確定",
+          confirmButtonColor: "#60464C",
+        });
       } else {
-        console.error("頭像上傳失敗:", result.message);
         throw new Error(result.message || "頭像上傳失敗");
       }
     } catch (error) {
-      console.error("頭像上傳出錯:", error);
-
-      // setUploadStatus('上傳出錯: ' + error.message);
-      // 使用 SweetAlert2 顯示錯誤訊息
+      console.error("更新頭像錯誤:", error);
       await Swal.fire({
         icon: "error",
         title: "頭像更新失敗",
-        text: error.message || "上傳過程中發生錯誤，請稍後再試",
+        text: error.message || "更新頭像時發生錯誤。",
         confirmButtonText: "確定",
         confirmButtonColor: "#60464C",
       });
@@ -242,17 +262,23 @@ export default function DashboardProfile() {
       return { amount: "已為最高等級會員", nextLevel: null };
     }
     if (auth.userData.next_level_entry_cumulative) {
-      const difference = auth.userData.next_level_entry_cumulative - auth.userData.total_spending;
+      const difference =
+        auth.userData.next_level_entry_cumulative -
+        auth.userData.total_spending;
       const nextLevelId = auth.userData.member_level_id + 1;
       return {
-        amount: difference > 0 ? `NT$ ${Math.ceil(difference).toLocaleString()}` : "NT$ 0",
-        nextLevel: membershipMapping[nextLevelId]
+        amount:
+          difference > 0
+            ? `NT$ ${Math.ceil(difference).toLocaleString()}`
+            : "NT$ 0",
+        nextLevel: membershipMapping[nextLevelId],
       };
     }
     return { amount: "無法計算", nextLevel: null };
   };
 
-  const { amount: upgradeAmountDisplay, nextLevel: nextLevelName } = calculateUpgradeInfo();
+  const { amount: upgradeAmountDisplay, nextLevel: nextLevelName } =
+    calculateUpgradeInfo();
 
   return (
     <>
@@ -290,8 +316,9 @@ export default function DashboardProfile() {
                   alt="User Avatar"
                   width={130}
                   height={130}
-                  className="rounded-circle"
-                  key={key} // 使用 key 強制重新渲染
+                  className="profileAvatar"
+                  style={{ borderRadius: '50%' }} 
+                  key={avatarUrl} // 使用 avatarUrl 作為 key
                   loader={({ src }) => src} // 自定義 loader 以避免 Next.js 的圖片優化
                   unoptimized // 禁用 Next.js 的圖片優化
                 />
@@ -323,20 +350,31 @@ export default function DashboardProfile() {
             <div className="membership-detail col-2">
               {/* <p className="membership-exp">白金會員到期日 - 2025.07.10</p> */}
               <div className="profile-total-spend">
-              <p className=''>年度累積消費 <span className='total-spend-span'>NT$ {Math.round(auth.userData.total_spending).toLocaleString()}</span></p>
-  {auth.userData.member_level_id < 4 ? (
-    <p>累積消費差 <span className='total-spend-span'>{upgradeAmountDisplay}</span> 升級
-    <span className='next-level-span'>{nextLevelName}</span></p>
-  ) : (
-    <p>{upgradeAmountDisplay}</p>
-  )}
+                <p className="">
+                  年度累積消費{" "}
+                  <span className="total-spend-span">
+                    NT${" "}
+                    {Math.round(auth.userData.total_spending).toLocaleString()}
+                  </span>
+                </p>
+                {auth.userData.member_level_id < 4 ? (
+                  <p>
+                    累積消費差{" "}
+                    <span className="total-spend-span">
+                      {upgradeAmountDisplay}
+                    </span>{" "}
+                    升級
+                    <span className="next-level-span">{nextLevelName}</span>
+                  </p>
+                ) : (
+                  <p>{upgradeAmountDisplay}</p>
+                )}
               </div>
 
               <Link href="/dashboard/level">
                 <div className="upgrade">升級攻略</div>
               </Link>
               {/* <div className="upgrade">升級攻略</div> */}
-
             </div>
           </section>
           <hr style={{ border: "3px solid var(--light)" }} />
@@ -370,14 +408,15 @@ export default function DashboardProfile() {
                   {userGender} / {userAge}歲 / {auth.userData.birthday}
                 </div>
               </div>
-              <div className="user-img-rwd ">
+              <div className="user-img-rwd">
                 <Image
                   src={avatarUrl || "/images/member/avatar/default-avatar.jpg"}
                   alt="User Avatar"
                   width={130}
                   height={130}
-                  className="rounded-circle "
-                  key={key} // 使用 key 強制重新渲染
+                  className="profileAvatar"
+                  style={{ borderRadius: '50%' }} 
+                  key={avatarUrl} // 使用 avatarUrl 作為 key
                   loader={({ src }) => src} // 自定義 loader 以避免 Next.js 的圖片優化
                   unoptimized // 禁用 Next.js 的圖片優化
                 />

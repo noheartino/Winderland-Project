@@ -11,6 +11,7 @@ import Footer from "@/components/footer/footer";
 import CourseIndexPageNav from "@/components/course/courseIndexPageNav";
 import { useAuth } from "@/hooks/use-auth";
 import Head from "next/head";
+import Arrtotop from "@/components/Header/arr";
 
 export default function CourseIndex() {
   //獲取userId
@@ -337,6 +338,7 @@ export default function CourseIndex() {
       <div className="course_wrap">
         {/* Header */}
         <Nav />
+        <Arrtotop />
 
         <CourseNav setIsHomePage={setIsHomePage} isHomePage={isHomePage}/>
 

@@ -8,7 +8,9 @@ import Link from "next/link";
 import ArticlePagination from "./article-pagination";
 import { FaBookmark } from "react-icons/fa";
 
-export default function ArticleIndexList({ Article }) {
+export default function ArticleIndexList({ Article, sortOrder, categorySM, dateFilterSM, startDateSM, endDateSM }) {
+
+  console.log(startDateSM)
   const router = useRouter();
   const { search, category } = router.query;
 
@@ -29,18 +31,23 @@ export default function ArticleIndexList({ Article }) {
       apiUrl.searchParams.append("search", search);
     }
 
-    if (category) {
-      apiUrl.searchParams.append("category", category);
+    if (category || categorySM) {
+      apiUrl.searchParams.append("category", category || categorySM);
     }
 
-    if (dateFilter) {
-      apiUrl.searchParams.append("dateFilter", dateFilter);
+    if (dateFilter || dateFilterSM) {
+      apiUrl.searchParams.append("dateFilter", dateFilter || dateFilterSM);
     }
 
-    if (startDate && endDate) {
-      apiUrl.searchParams.append("startDate", startDate);
-      apiUrl.searchParams.append("endDate", endDate);
+    if (startDate && endDate || startDateSM && endDateSM) {
+      apiUrl.searchParams.append("startDate", startDate || startDateSM);
+      apiUrl.searchParams.append("endDate", endDate || endDateSM);
     }
+    // console.log(sortOrder)
+    if (sortOrder) {
+      apiUrl.searchParams.append("sortOrder", sortOrder);
+    }
+
     apiUrl.searchParams.append("page", currentPage);
     apiUrl.searchParams.append("limit", 6); // 每頁顯示6筆
 
@@ -65,7 +72,7 @@ export default function ArticleIndexList({ Article }) {
       .catch((error) => {
         console.log(error);
       });
-  }, [search, category, dateFilter, startDate, endDate, currentPage]);
+  }, [search, category, dateFilter, startDate, endDate, currentPage, sortOrder, categorySM, dateFilterSM, startDateSM, endDateSM]);
 
   // 取得背景圖片的路徑
   const [isHovered, setIsHovered] = useState(false);
@@ -76,13 +83,13 @@ export default function ArticleIndexList({ Article }) {
   // 導向某篇文章
   const handleLink = () => {
     if (Article.id) {
-      <Link href={`/article/${Article.id}`}></Link>
+      <Link href={`/article/detail/${Article.id}`}></Link>;
     }
   };
 
   // 類別
   const handleCategoryChange = (newCategory) => {
-    setCurrentPage(1)
+    setCurrentPage(1);
     router.push({
       pathname: router.pathname,
       query: { ...router.query, category: newCategory },
@@ -91,7 +98,7 @@ export default function ArticleIndexList({ Article }) {
 
   // 日期radio篩選用
   const handleDateFilterChange = (e) => {
-    setCurrentPage(1)
+    setCurrentPage(1);
     router.push({
       pathname: router.pathname,
       query: {},
@@ -101,24 +108,24 @@ export default function ArticleIndexList({ Article }) {
   };
 
   const handleFilterSubmit = (e) => {
-    setCurrentPage(1)
+    setCurrentPage(1);
     setDateFilter(e.target.value);
   };
 
   // 輸入日期篩選用
   const handleStartDateChange = (value) => {
-    setCurrentPage(1)
+    setCurrentPage(1);
     setStartDate(value);
   };
 
   const handleEndDateChange = (value) => {
-    setCurrentPage(1)
+    setCurrentPage(1);
     setEndDate(value);
   };
 
   // 清空篩選用
   const handleResetFilters = () => {
-    setCurrentPage(1)
+    setCurrentPage(1);
     router.push({
       pathname: router.pathname,
       query: {},
@@ -158,50 +165,61 @@ export default function ArticleIndexList({ Article }) {
       <div className="a-content col-lg-9 row g-3">
         {/* 文章頭條 */}
         <div className="col-9 col-lg-8 aTitleBlock">
-          <div
-            className="a-title d-none d-lg-flex"
-            style={{
-              backgroundImage: backgroundImage,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              position: "relative", // 使遮罩層的絕對定位有效
-              height: "350px",
-              cursor: "pointer",
-            }}
-            onClick={handleLink}
-            onMouseEnter={() => setIsHovered(true)} // 滑鼠移入時增加遮罩
-            onMouseLeave={() => setIsHovered(false)} // 滑鼠移出時移除遮罩
+          <Link
+            href={`/article/detail/${Article.id}`}
+            style={{ textDecoration: "none" }}
           >
-            <h3 style={{zIndex:"1"}}>{Article ? Article.title : "..."}</h3>
-            {/* 遮罩層 */}
             <div
+              className="a-title d-none d-lg-flex"
               style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: "linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))", // 遮罩的顏色
-                opacity: isHovered ? 1 : 0, // 使用 opacity 進行漸變
-                transition: "opacity 0.6s ease", // 平滑過渡效果
-                pointerEvents: "none", // 避免遮罩阻擋點擊事件
+                backgroundImage: backgroundImage,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                position: "relative", // 使遮罩層的絕對定位有效
+                height: "350px",
+                cursor: "pointer",
               }}
-            ></div>
-          </div>
-          {/* 手機頭條 */}
-          <div
-            className="a-title d-lg-none"
-            style={{
-              backgroundImage: backgroundImage,
-              height: "200px",
-              padding: "20px",
-            }}
-            onClick={handleLink}
-          >
-            <h3 style={{ fontSize: "18px" }}>
-              {Article ? Article.title : "..."}
-            </h3>
-          </div>
+              onClick={handleLink}
+              onMouseEnter={() => setIsHovered(true)} // 滑鼠移入時增加遮罩
+              onMouseLeave={() => setIsHovered(false)} // 滑鼠移出時移除遮罩
+            >
+              <h3 style={{ zIndex: "1" }}>{Article ? Article.title : "..."}</h3>
+              {/* 遮罩層 */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background:
+                    "linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))", // 遮罩的顏色
+                  opacity: isHovered ? 1 : 0, // 使用 opacity 進行漸變
+                  transition: "opacity 0.6s ease", // 平滑過渡效果
+                  pointerEvents: "none", // 避免遮罩阻擋點擊事件
+                }}
+              ></div>
+            </div>
+            {/* 手機頭條 */}
+            <div
+              className="a-title d-lg-none"
+              style={{
+                backgroundImage: backgroundImage,
+                height: "200px",
+                padding: "20px",
+              }}
+              onClick={handleLink}
+            >
+              <Link
+                href={`/article/detail/${Article.id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <h3 style={{ fontSize: "18px" }}>
+                  {Article ? Article.title : "..."}
+                </h3>
+              </Link>
+            </div>
+          </Link>
         </div>
         {/* 收藏 */}
         <div className="col-3 col-lg-4">
@@ -236,7 +254,7 @@ export default function ArticleIndexList({ Article }) {
               <ArticleIndexCard key={article.id} article={article} />
             ))
           ) : (
-            <h3 className="text-center" style={{ color: "var(--text_gray)" }}>
+            <h3 className="text-center" style={{ color: "var(--text_gray)"}}>
               沒有搜尋到可顯示的文章
             </h3>
           )

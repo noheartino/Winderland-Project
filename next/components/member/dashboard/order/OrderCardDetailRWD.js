@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import styles from '@/components/member/dashboard/order/OrderCardDetailRWD.module.css'
+import ClipLoader from "react-spinners/ClipLoader";
 
 import OrderCardDetailItem from './OrderCardDetailItem'
 import OrderCardDetailCouponRWD from './OrderCardDetailCouponRWD'
@@ -40,7 +41,23 @@ export default function OrderCardDetail({ orderUuid }) {
         fetchOrderDetails()
     }, [orderUuid])
 
-    if (isLoading) return <div>Loading...</div>
+    if (isLoading) {
+        return (
+          <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <ClipLoader
+              color="#851931"
+              loading={isLoading}
+              cssOverride={{
+                display: "block",
+                margin: "0 auto",
+              }}
+              size={30}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </div>
+        );
+      }
     if (error) return <div>Error: {error}</div>
     if (!orderData) return <div>No order data available</div>
 
@@ -71,7 +88,7 @@ export default function OrderCardDetail({ orderUuid }) {
                 <hr className={styles.hrRWD} />
                 <OrderCardDetailPickup orderInfo={orderData.orderInfo} />
                 <hr className={styles.hrRWD} />
-                <OrderCardDetailComment orderUuid={orderUuid} />
+                <OrderCardDetailComment orderUuid={orderUuid}    orderStatus={orderData.orderInfo.status} />
             </div>
 
 

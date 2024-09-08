@@ -201,7 +201,7 @@ export default function Homepage() {
             布根地的馬賽克地形，導致每塊葡萄園都有著千變萬化的土壤性質；隨著山坡的起伏形成許多微氣候區，使得即便位於同一塊葡萄園中，也有些微的差異性；而鑒於每位釀酒人的風格不一，令此區釀出的酒款變化多端、類型多元。布根地葡萄酒也因此被公認為全世界最難懂的葡萄酒。
           </p>
         </div>
-        <div className="bird" />
+        <div className="bird" onClick={() => {router.push('/event/hato')}}/>
         <a href="#homeArea01">
           <div className="homebar_scroll">
             <div className="scroll_line" />

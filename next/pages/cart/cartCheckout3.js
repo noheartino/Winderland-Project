@@ -11,6 +11,7 @@ import CartClassDetailM from "@/components/cart/cart3/cartClassDetailM";
 import Footer from "@/components/footer/footer";
 import Nav from "@/components/Header/Header";
 import Head from "next/head";
+import Arrtotop from "@/components/Header/arr";
 
 export default function CartCheckout3() {
   const [userId, setUserId] = useState(null);
@@ -43,14 +44,14 @@ export default function CartCheckout3() {
   return (
     <>
       <Head>
-          <title>醺迷仙園｜購物車</title>
+        <title>醺迷仙園｜購物車</title>
 
-          <meta charSet="utf-8" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-          />
-          <link rel="icon" href="/logo.png" />
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <link rel="icon" href="/logo.png" />
       </Head>
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -67,6 +68,7 @@ export default function CartCheckout3() {
       />
       <Nav />
       <main>
+        <Arrtotop />
         <div className="container mb-5 d-none d-lg-block">
           <div className="row">
             <div className="col-8">
@@ -116,7 +118,9 @@ export default function CartCheckout3() {
               <CartMoneyTotal userId={userId} />
               <CartPayDividend userId={userId} />
               <div className="checkOutEnd">
-                <button className="goOrder" onClick={goOrder}>訂單查詢</button>
+                <button className="goOrder" onClick={goOrder}>
+                  訂單查詢
+                </button>
                 <button className="goPage" onClick={goHome}>
                   回首頁
                 </button>
@@ -141,7 +145,9 @@ export default function CartCheckout3() {
             <b>已完成結帳!!</b>
           </div>
           <div className="checkOutEnd">
-            <button className="goOrder" onClick={goOrder}>訂單查詢</button>
+            <button className="goOrder" onClick={goOrder}>
+              訂單查詢
+            </button>
             <button className="goPage" onClick={goHome}>
               回首頁
             </button>

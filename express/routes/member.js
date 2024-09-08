@@ -30,7 +30,7 @@ router.get('/auth-status', authenticate, async (req, res) => {
     )
 
     if (!users.length) {
-      console.log('User not found for id:', req.user.id);
+      console.log('User not found for id:', req.user.id)
       return res.status(404).json({ status: 'fail', message: 'User not found' })
     }
     const user = users[0]
@@ -53,6 +53,9 @@ router.get('/auth-status', authenticate, async (req, res) => {
           birthday: user.birthday,
           address: user.address,
           total_spending: user.total_spending,
+          avatar_url: user.avatar_url
+            ? `/images/member/avatar/${user.avatar_url}`
+            : '/images/member/avatar/default-avatar.jpg',
         },
       },
     })

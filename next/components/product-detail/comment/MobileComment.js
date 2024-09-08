@@ -5,6 +5,9 @@ import styles from "./MobileComment.module.css";
 import RatingArea from "../description/RatingArea";
 import { useProduct } from "@/context/ProductContext";
 import CommentPageNation from "./CommentPageNation";
+import NextTopLoader from 'nextjs-toploader'; // 換頁進度條－nextjs-toploader
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 export default function MobileComment() {
   const { product, loading, error } = useProduct();
@@ -51,14 +54,30 @@ export default function MobileComment() {
     setCurrentPage(pageNumber);
   };
 
-  if (loading) return <div>加載中...</div>;
+  if (loading) {
+    return (
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
+          color="#851931"
+          loading={loading}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
   if (error) return <div>錯誤: {error}</div>;
   if (!product) return <div>沒有找到產品</div>;
 
   return (
     <>
       <div className={`container ${styles["product-comment-content"]}`}>
-        <CommentTitle onSortChange={handleSortChange} />
+        <CommentTitle handleSortChange={handleSortChange} />
         <div className={`${styles["product-comment-star"]}`}>
           <RatingArea />
         </div>

@@ -17,6 +17,8 @@ import CartTransportBlackCat from "@/components/cart/cart2/cartTransportBlackcat
 import CartTransportBlackCatM from "@/components/cart/cart2/cartTransportBlackcatM";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Arrtotop from "@/components/Header/arr";
+import Swal from "sweetalert2";
 
 export default function CartCheckout2() {
   const router = useRouter();
@@ -29,6 +31,8 @@ export default function CartCheckout2() {
   const [originalPoints, setOriginalPoints] = useState(0); // 儲存原本點數
   const [transportData, setTransportData] = useState({}); //運送資料7-11
   const [transportBlackCatData, setTransportBlackCatData] = useState({}); // 新增狀態來儲存黑貓運送資料
+  const [productData, setProductData] = useState([]);
+  const [classData, setClassData] = useState([]);
 
   useEffect(() => {
     const storedUserId = sessionStorage.getItem("user_id");
@@ -38,6 +42,8 @@ export default function CartCheckout2() {
       "transportBlackCatData"
     );
     const storedPoints = sessionStorage.getItem("pointsUsed");
+    const storedProductData = sessionStorage.getItem("productData");
+    const storedClassData = sessionStorage.getItem("classData");
 
     if (storedUserId) {
       setUserId(storedUserId);
@@ -54,6 +60,8 @@ export default function CartCheckout2() {
     if (storedPoints) {
       setPointsUsed(JSON.parse(storedPoints));
     }
+    if (storedProductData) setProductData(JSON.parse(storedProductData));
+    if (storedClassData) setClassData(JSON.parse(storedClassData));
     // 檢查是否為直接輸入網址
     if (!document.referrer && !storedUserId) {
       router.push("/member/login");
@@ -65,25 +73,47 @@ export default function CartCheckout2() {
   };
 
   const handlePaymentChange = (event) => {
-    setSelectedPayment(event.target.value);
+    const value = event.target.value;
+
+    if (
+      classData.length > 0 &&
+      productData.length === 0 &&
+      value === "productpay"
+    ) {
+      Swal.fire({
+        icon: 'warning',               // 警告框的圖標
+        title: '注意',                 // 警告框的標題
+        text: '單買課程只能使用信用卡付款', // 警告框的文本
+        confirmButtonText: '確定'       // 確認按鈕的文本
+      });
+      
+    } else {
+      setSelectedPayment(value);
+    }
   };
 
   const handleTransportChange = (event) => {
-    const value = event.target.value;
-    setSelectedTransport(value);
-
-    if (value === "blackCat") {
-      // 清除其他運送方式的資料
-      setTransportData({});
-      localStorage.removeItem("store711"); // 清除 store711 的資料
-    } else if (value === "other") {
-      // 清除黑貓運送方式的資料
-      setTransportBlackCatData({});
-      localStorage.removeItem("store711"); // 清除 store711 的資料
+    if (classData.length > 0 && productData.length === 0) {
+      Swal.fire({
+        icon: 'info',                // 信息框的圖標類型
+        title: '提醒',              // 警告框的標題
+        text: '購買課程不需運送',  // 警告框的文本
+        confirmButtonText: '確定'   // 確認按鈕的文本
+      });
     } else {
-      // 清除黑貓運送方式的資料
-      setTransportBlackCatData({});
-      localStorage.removeItem("store711"); // 清除 store711 的資料
+      const value = event.target.value;
+      setSelectedTransport(value);
+
+      if (value === "blackCat") {
+        setTransportData({});
+        localStorage.removeItem("store711");
+      } else if (value === "other") {
+        setTransportBlackCatData({});
+        localStorage.removeItem("store711");
+      } else {
+        setTransportBlackCatData({});
+        localStorage.removeItem("store711");
+      }
     }
   };
 
@@ -118,14 +148,14 @@ export default function CartCheckout2() {
   return (
     <>
       <Head>
-          <title>醺迷仙園｜購物車</title>
+        <title>醺迷仙園｜購物車</title>
 
-          <meta charSet="utf-8" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-          />
-          <link rel="icon" href="/logo.png" />
+        <meta charSet="utf-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <link rel="icon" href="/logo.png" />
       </Head>
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -142,6 +172,7 @@ export default function CartCheckout2() {
       />
       <Nav />
       <main>
+        <Arrtotop />
         <div className="container mb-5 d-none d-lg-block">
           <div className="row">
             <div className="col-8">
@@ -272,7 +303,9 @@ export default function CartCheckout2() {
                 pointsUsed={pointsUsed}
                 originalPoints={originalPoints}
                 selectedPayment={selectedPayment}
+                setSelectedPayment={setSelectedPayment} // 傳遞 setSelectedPayment 函數
                 selectedTransport={selectedTransport}
+                setSelectedTransport={setSelectedTransport} // 傳遞 setSelectedTransport 函數
                 transportData={
                   selectedTransport === "transprot711" ? transportData : {}
                 }
@@ -406,7 +439,9 @@ export default function CartCheckout2() {
             pointsUsed={pointsUsed}
             originalPoints={originalPoints}
             selectedPayment={selectedPayment}
+            setSelectedPayment={setSelectedPayment} // 傳遞 setSelectedPayment 函數
             selectedTransport={selectedTransport}
+            setSelectedTransport={setSelectedTransport} // 傳遞 setSelectedTransport 函數
             transportData={
               selectedTransport === "transprot711" ? transportData : {}
             }

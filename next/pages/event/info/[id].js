@@ -6,13 +6,17 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 export default function Einfo() {
   const router = useRouter();
   const { id } = router.query;
   const [infodata, setInfo] = useState(null);
 
-  const [ownerimg, setOwnerimg] = useState("/nav-footer/default_user.jpg");
+  // const [ownerimg, setOwnerimg] = useState("http://localhost:3005/images/member/avatar/4.png");
+
+  // setOwnerimg("http://localhost:3005/images/member/avatar/4.png")
 
   useEffect(() => {
     if (id) {
@@ -23,7 +27,23 @@ export default function Einfo() {
     }
   }, [id]);
 
-  if (!infodata) return <div>Loading...</div>;
+  if (!infodata) {
+    return (
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
+          color="#851931"
+          loading={true}
+          cssOverride={{
+            display: "block",
+            margin: "0 auto",
+          }}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
 
   const eventinfo = infodata.eventinfo[0] || [];
   const applyinfo = infodata.applyinfo || [];
@@ -41,6 +61,8 @@ export default function Einfo() {
   const females = applyinfo.filter((p) => p.gender === 1).length;
   const males = applyinfo.filter((p) => p.gender === 0).length;
   const gavg = Math.round((males / (males + females)) * 100);
+
+
 
   // function ownerpic(index){
   //   return imginfo.filter((e) => e.user_id === index )
@@ -67,7 +89,7 @@ export default function Einfo() {
       </Head>
       <Nav />
 
-      {/* {imageInfo ? <pre>{JSON.stringify(imageInfo, null, 2)}</pre> : 'Loading...'} */}
+      {/* {Nowid ? <pre>{JSON.stringify(Nowid, null, 2)}</pre> : 'Loading...'} */}
 
       <EventHeader />
       <div className="eventPageArea">
@@ -175,7 +197,7 @@ export default function Einfo() {
               <div className="eventOwner">
                 <div className="eventOwnerT">開團人</div>
                 <div className="eventOwnerInfo">
-                  <img src={ownerimg} alt="" className="eventOwnerPic" />
+                  <img src={`http://localhost:3005/images/member/avatar/${Nowid}.png`} alt="" className="eventOwnerPic" onError={(e) => e.target.src = `http://localhost:3005/images/member/avatar/cat.png`} />
                   <div className="eventOwnerInfoT">
                     {applyinfo[0].neckname} <br />
                     {applyinfo[0].gender === 0 ? "男" : "女"} /{" "}

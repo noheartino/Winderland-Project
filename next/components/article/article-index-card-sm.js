@@ -1,14 +1,15 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { PiDiamondFill } from "react-icons/pi";
+import Link from "next/link";
 
 export default function ArticleIndexCardSm({ article }) {
-  const router = useRouter();
-  const handleLink = () => {
-    if (article && article.id) {
-      router.push(`/article/${article.id}`);
-    }
-  };
+  // const router = useRouter();
+  // const handleLink = () => {
+  //   if (article && article.id) {
+  //     <Link href={`/article/detail/${article.id}`}></Link>;
+  //   }
+  // };
 
   return (
     <>
@@ -38,9 +39,9 @@ export default function ArticleIndexCardSm({ article }) {
               by {article.poster} l {article.update_date}
             </h5>
             <div className="a-readmore">
-              <button className="btn a-btn-content" onClick={handleLink}>
-                閱讀文章
-              </button>
+              <Link href={`/article/detail/${article.id}`}>
+                <button className="btn a-btn-content">閱讀文章</button>
+              </Link>
             </div>
           </div>
         </div>

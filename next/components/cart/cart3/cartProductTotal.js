@@ -8,7 +8,8 @@ export default function CartProductTotal() {
     quantity: 0,
     totalAmount: 0,
     transportText: '', // 新增欄位
-    paymentText: ''    // 新增欄位
+    paymentText: '',    // 新增欄位
+    orderStatus: '出貨準備中' // 新增欄位
   });
 
   useEffect(() => {
@@ -21,15 +22,7 @@ export default function CartProductTotal() {
 
     let transportText = '';
     let paymentText = '';
-
-    // 根據 selectedTransport 設置 transportText
-    if (selectedTransport === 'transport711') {
-      transportText = '7-11';
-    } else if (selectedTransport === 'blackcat') {
-      transportText = '黑貓宅急便';
-    } else {
-      transportText = '7-11'; // 默認顯示 7-11
-    }
+    let orderStatus = '出貨準備中'; // 默認狀態
 
     // 根據 selectedPayment 設置 paymentText
     if (selectedPayment === 'creditpay') {
@@ -41,24 +34,36 @@ export default function CartProductTotal() {
     if (productData.length > 0) {
       // 如果有商品資料
       const firstProduct = productData[0];
+      // 根據 selectedTransport 設置 transportText
+      if (selectedTransport === 'transport711') {
+        transportText = '7-11';
+      } else if (selectedTransport === 'blackcat') {
+        transportText = '黑貓宅急便';
+      } else {
+        transportText = '7-11'; // 默認顯示 7-11
+      }
       setOrderData({
         image: `/images/product/${firstProduct.product_image}`,
         name: firstProduct.product_name,
         quantity: productData.reduce((acc, item) => acc + item.product_quantity, 0) + classData.length,
         totalAmount: discountedAmount,
         transportText, // 更新欄位
-        paymentText   // 更新欄位
+        paymentText,   // 更新欄位
+        orderStatus    // 狀態保持為出貨準備中
       });
     } else if (classData.length > 0) {
-      // 如果沒有商品資料但有課程資料
+      // 如果只有課程資料
       const firstClass = classData[0];
+      orderStatus = '已完成'; // 如果只有課程，狀態設為已完成
+      transportText = '';     // 不顯示運送方式
       setOrderData({
         image: `http://localhost:3005/uploads/course_and_tarot/${firstClass.class_image}`, // 課程沒有圖片，假設使用預設圖片
         name: firstClass.class_name,
         quantity: classData.length,
         totalAmount: discountedAmount,
-        transportText, // 更新欄位
-        paymentText   // 更新欄位
+        transportText, // 不顯示運送方式
+        paymentText,   // 更新欄位
+        orderStatus    // 狀態設為已完成
       });
     }
   }, []);
@@ -93,7 +98,7 @@ export default function CartProductTotal() {
                 <br />
                 {orderData.transportText}
               </div>
-              <div className={`${css.orderStatus3} ${css.orderStatus2}`}>出貨準備中</div>
+              <div className={`${css.orderStatus3} ${css.orderStatus2}`}>{orderData.orderStatus}</div>
               <div className={`${css.orderTotal3} ${css.orderTotal2}`}>NT$ {Math.floor(orderData.totalAmount).toLocaleString()}</div>
             </div>
           </div>

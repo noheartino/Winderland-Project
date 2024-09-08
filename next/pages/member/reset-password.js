@@ -20,6 +20,7 @@ export default function ResetPassword() {
       </Head>
       <Nav />
       <ResetPasswordForm />
+      <div style={{ height: "120px", backgroundColor: "#ba445e" }}></div>
       <Footer />
     </>
   );

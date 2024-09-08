@@ -72,7 +72,8 @@ export default function OrderCardDetailItem({ item, type }) {
 
                         {/* 數量 */}
                         <div className={styles.orderDetailNumber}>
-                            {item.product_quantity}
+                            {/* {item.product_quantity} */}
+                            {quantity}
                         </div>
                         {/* 小計 */}
                         <div className={styles.orderDetailTotal}>
@@ -120,7 +121,8 @@ export default function OrderCardDetailItem({ item, type }) {
 
                         {/* 數量 */}
                         <div className={styles.orderDetailNumber}>
-                            {item.product_quantity}
+                            {/* {item.product_quantity} */}
+                            {quantity}
                         </div>
                         {/* 小計 */}
                         <div className={styles.orderDetailTotal}>

@@ -475,7 +475,7 @@ router.get('/:courseId', async (req, res) => {
   } else {
     commentSQLparams = `comments.created_at DESC`
   }
-  let commentsSQL = `SELECT comments.*, users.account FROM comments JOIN users ON comments.user_id = users.id WHERE comments.entity_type = 'class' AND comments.entity_id = ${courseId} ORDER BY ${commentSQLparams}`
+  let commentsSQL = `SELECT comments.*, users.account, images_user.img AS user_img FROM comments JOIN users ON comments.user_id = users.id LEFT JOIN images_user ON users.id = images_user.user_id WHERE comments.entity_type = 'class' AND comments.entity_id = ${courseId} ORDER BY ${commentSQLparams}`
   console.log('------' + commentSQLparams + '------')
   console.log('------' + series + '------')
   console.log('courseId=' + courseId)

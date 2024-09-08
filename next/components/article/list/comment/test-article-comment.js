@@ -1,29 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import Image from "next/image";
 import Swal from "sweetalert2";
 import Link from "next/link";
 
-export default function TestArticleComment({ articleId, userId, account, avatarUrl, onCommentChange }) {
+export default function TestArticleComment({ articleId, userId, account, onCommentChange }) {
   const router = useRouter();
 
   const [commentText, setCommentText] = useState("");
   const [rows, setRows] = useState(2);
+  const [avatarUrl, setAvatarUrl] = useState("/nav-footer/default_user.jpg")
 
-  if (!userId) {
-
-    // 渲染登入提示和按鈕
-    return (
-      <div className="text-center mt-2 mb-5">
-        <p className="mb-3" style={{letterSpacing:"1.4px", fontSize:"18px"}}>想分享點什麼嗎</p>
-        <Link href="/member/login"
-          className="btn btn-primary aLoginButton"
-        >
-          點擊登入留言
-        </Link>
-      </div>
-    );
-  }
+  // 頭像
+  useEffect(() => {
+    // 抓取頭像 URL
+    fetch(`http://localhost:3005/api/dashboard/profile/avatar/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success" && data.data.avatar_url) {
+          setAvatarUrl(`http://localhost:3005${data.data.avatar_url}`);
+        } else {
+          setAvatarUrl("/nav-footer/default_user.jpg"); // 使用預設頭像
+        }
+      })
+      .catch((error) => {
+        console.error("抓取頭像錯誤:", error);
+        setAvatarUrl("/nav-footer/default_user.jpg"); // 使用預設頭像
+      });
+  }, [userId]);
 
   // 新增
   const handleCreate = async () => {
@@ -93,6 +97,23 @@ export default function TestArticleComment({ articleId, userId, account, avatarU
       });
     }
   };
+
+
+  if (!userId) {
+
+    // 渲染登入提示和按鈕
+    return (
+      <div className="text-center mt-2 mb-5">
+        <p className="mb-3" style={{letterSpacing:"1.4px", fontSize:"18px"}}>想分享點什麼嗎</p>
+        <Link href="/member/login"
+          className="btn btn-primary aLoginButton"
+        >
+          點擊登入留言
+        </Link>
+      </div>
+    );
+  }
+
 
   return (
     <>

@@ -12,7 +12,8 @@ import Footer from "@/components/footer/footer";
 import CartZero from "@/components/cart/cartObject/cartZero";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/router";
-import BounceLoader from "react-spinners/BounceLoader";
+import ClipLoader from "react-spinners/ClipLoader";
+import Arrtotop from "@/components/Header/arr";
 
 export default function CartCheckout1() {
   const { auth } = useAuth();
@@ -188,13 +189,12 @@ export default function CartCheckout1() {
   const override = {
     display: "block",
     margin: "0 auto",
-    // borderColor: 'red',
   };
 
   if (loading) {
     return (
-      <div>
-        <BounceLoader
+      <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <ClipLoader
           color="#851931"
           loading={loading}
           cssOverride={override}
@@ -228,6 +228,7 @@ export default function CartCheckout1() {
         <CartZero />
       ) : (
         <main>
+          <Arrtotop />
           <div className="container mb-5 d-none d-lg-block">
             <div className="row">
               <div className="col-7">

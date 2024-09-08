@@ -145,7 +145,7 @@ export default function ResetPasswordForm() {
       <div className={`d-none d-lg-block`}>
         <main className={styles.main}>
           <div className={styles.bgResetPwd}>
-            <div className={styles.resetPwdBox}>
+            <div className={`${styles.resetPwdBox} mb-5`}>
 
               <form onSubmit={handleSubmit}>
 
@@ -186,8 +186,8 @@ export default function ResetPasswordForm() {
                   </div>
                 </div>
               </form>
-
             </div>
+            {/* <div style={{ height: "80px" }}></div> */}
           </div>
         </main>
       </div>
