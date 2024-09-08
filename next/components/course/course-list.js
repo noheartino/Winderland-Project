@@ -124,7 +124,7 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
                     type="button"
                     className={`btn-border-white btn py-1 px-3 spac-1 justify-content-center align-items-center ${router.query.search?'d-flex':'d-none'}`} onClick={handleNavClear}
                   >
-                  清除搜尋<i class="fa-solid fa-xmark ms-2"></i>
+                  清除搜尋<i className="fa-solid fa-xmark ms-2"></i>
                   </div>
                 </div>
               </div>
