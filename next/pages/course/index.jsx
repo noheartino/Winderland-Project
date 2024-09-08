@@ -47,6 +47,7 @@ export default function CourseIndex() {
   const [isHomePage, setIsHomePage] = useState(true);
   const [courseBtn, setCourseBtn] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // 執行清除篩選
   // function handleClearAllSort(){
@@ -83,20 +84,33 @@ export default function CourseIndex() {
   }
   if (search) {
     apiUrl = `http://localhost:3005/api/course?search=${search}`;
+    
     if(auth.isAuth){
       apiUrl += `&userId=${userId}`
-    }
-    if(order){
-      apiUrl += `&order=${order}`
+      if(order){
+        apiUrl += `&order=${order}`
+      }
+    }else{
+      if(order){
+        apiUrl += `&order=${order}`
+      }else{
+        apiUrl = `http://localhost:3005/api/course?search=${search}`;
+      }
     }
   }
   if (view) {
     apiUrl = `http://localhost:3005/api/course?view=${view}`;
     if(auth.isAuth){
       apiUrl += `&userId=${userId}`
-    }
-    if(order){
-      apiUrl += `&order=${order}`
+      if(order){
+        apiUrl += `&order=${order}`
+      }
+    }else{
+      if(order){
+        apiUrl += `&order=${order}`
+      }else{
+        apiUrl = `http://localhost:3005/api/course?view=${view}`;
+      }
     }
   }
 
@@ -104,6 +118,7 @@ export default function CourseIndex() {
 
     // const includeImages = false;
     console.log("search 或 view 偵測到變動");
+    console.log("course首頁送出Fetch: "+apiUrl);
 
     // 當組件掛載時執行 fetch 請求
       fetch(apiUrl)
@@ -317,6 +332,16 @@ export default function CourseIndex() {
       query: {},
     });
   }
+  // 清除搜尋結果
+  const handleClear=(e)=>{
+    setSearchTerm("")
+    router.push({
+      pathname: '/course',
+      query: {},
+    }, undefined, {scroll: false});
+    setIsHomePage(true)
+    setCurrentPage(1)
+  }
   return (
     <>
       <Head>
@@ -340,7 +365,7 @@ export default function CourseIndex() {
         <Nav />
         <Arrtotop />
 
-        <CourseNav setIsHomePage={setIsHomePage} isHomePage={isHomePage}/>
+        <CourseNav setIsHomePage={setIsHomePage} isHomePage={isHomePage} setCurrentPage={setCurrentPage}/>
 
         {/* first page start */}
         <div
@@ -426,7 +451,7 @@ export default function CourseIndex() {
             </div>
           </div>
           {/* page one 我的課程&收藏課程 end */}
-
+         
           <CourseList
             userId={userId}
             courses={filterCourses}
@@ -453,6 +478,7 @@ export default function CourseIndex() {
             dateEnd={dateEnd}
             priceStart={priceStart}
             priceEnd={priceEnd}
+            handleNavClear={handleClear}
           />
         </div>
         {/* first page end */}

@@ -30,9 +30,11 @@ export default function CourseFilter({teachers, setScore
     const value = e.target.value;
     if (!districtArr.includes(value)) {
       setDistrictArr([...districtArr, value]);
+      setCurrentPage(1)
     } else {
       const updatedArr = districtArr.filter((item) => item !== value);
       setDistrictArr(updatedArr);
+      setCurrentPage(1)
     }
   }
   useEffect(()=>{
@@ -72,32 +74,32 @@ export default function CourseFilter({teachers, setScore
   function handelSetScore(e){
     setScore(Math.floor(e.target.value));
     setCurrentPage(1)
-    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
+    // router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
   
   function handleOnlineRadio(e){
     setOnlineFilter(e.target.textContent);
     setCurrentPage(1)
-    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
+    // router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
 
   function handleTeacherSelect(e){
     setTeacherSelect(e.target.value)
     setCurrentPage(1)
-    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
+    // router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
 
   function handleDateStart(e) {
     setDateStart(e.target.value);
     setCurrentPage(1)
-    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
+    // router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
 
   function handleDateEnd(e) {
     const newDateEnd = e.target.value;
     setDateEnd(newDateEnd);
     setCurrentPage(1)
-    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
+    // router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
 
   function handlePriceStart(e) {
@@ -108,7 +110,7 @@ export default function CourseFilter({teachers, setScore
     const newPriceStart = Math.floor(e.target.value);
     setPriceStart(newPriceStart);
     setCurrentPage(1)
-    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
+    // router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
 
   function handlePriceEnd(e) {
@@ -119,13 +121,13 @@ export default function CourseFilter({teachers, setScore
     const newPriceEnd = Math.floor(e.target.value);
     setPriceEnd(newPriceEnd);
     setCurrentPage(1)
-    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
+    // router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
 
   function handleClearPrice(){
     setPriceEnd("")
     setPriceStart("")
-    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
+    // router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
   useEffect(()=>{
     document.querySelector(["#priceStart"]).value=priceStart
@@ -139,12 +141,13 @@ export default function CourseFilter({teachers, setScore
     setDateEnd("")
     setPriceStart("")
     setPriceEnd("")
+    setScore(0)
     const newArr = districts.map((district)=>{
             return district.districtStr
         })
     setDistrictArr(newArr)
     document.querySelector(['#districtAll']).checked=true
-    router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
+    // router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   }
   return (
     <>  
@@ -154,7 +157,7 @@ export default function CourseFilter({teachers, setScore
                         <span>勾選欲篩選的地區：</span>
                         <span className='list-group-item border-0 p-1'>
                             <input className="form-check-input me-1" type="checkbox" id={`districtAll`} onClick={handleDistrictAll}></input>
-                            <label className="form-check-label stretched-link spac-1 text-gray" htmlFor={`districtAll`}>全部</label>
+                            <label className="form-check-label stretched-link spac-1 text-gray" htmlFor={`districtAll`}>全部 (包含線上課程)</label>
                         </span>
                     </div>
                     <div className='col-auto cursor-pointer btn-border-wine btn' onClick={handleClearAllSort}>清除篩選<i className="fa-solid fa-xmark ms-2"></i></div>
@@ -164,7 +167,7 @@ export default function CourseFilter({teachers, setScore
         <div className='row mx-0 px-10px flex-wrap gap-3 row-gap-0'>
             {districts.map((district)=>{
                 return (
-                    <div key={district.dId} className='col-auto d-flex list-group'>
+                    <div key={district.dId} className={`col-auto list-group ${district.districtStr===""?"d-none":'d-flex'}`}>
                         <div className='list-group-item border-0 p-1'>
                             <input className="form-check-input me-1" type="checkbox" value={district.districtStr} id={`CheckboxStretched${district.dId}`} onChange={handleCheckDistrict} checked={districtArr.includes(district.districtStr)?true:false}></input>
                             <label className="form-check-label stretched-link spac-1 text-gray" htmlFor={`CheckboxStretched${district.dId}`}>{!district.districtStr?"無地址(線上課程)":district.districtStr}</label>

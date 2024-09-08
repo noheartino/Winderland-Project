@@ -212,7 +212,7 @@
   & .btn-border-white {
     background-color: transparent;
     border: 0.075rem solid #ffffff;
-    color: #ffffff !important;
+    color: var(--primary) !important;
     &:hover{
       background-color: var(--wine) !important;
       border: 0.075rem solid var(--wine);

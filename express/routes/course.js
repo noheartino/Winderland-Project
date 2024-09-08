@@ -193,17 +193,26 @@ router.get('/', async (req, res) => {
 
   // courses 的 order方式
   let coursesOrderStr = `ORDER BY class.id ASC`
-  if (!order) {coursesOrderStr = `ORDER BY class.id ASC`}
+  console.log("order傳遞過來的內容!!!!!!!!!!!");
+  console.log(order);
+  if (!order) {
+    coursesOrderStr = `ORDER BY class.id ASC`
+    console.log("◎◎◎◎◎◎◎◎◎◎◎◎◎◎◎◎");
+  }
   if (order==='earlyToLate'){
+    console.log("●●●●●●●●●●●●●●●●●●●●●●●●●●●●●");
     coursesOrderStr = `ORDER BY class.appointment_start ASC`
   }
   if (order==='lateToEarly'){
+    console.log("○○○○○○○○○○○○○○○○○○○○○○○○○○○○○");
     coursesOrderStr = `ORDER BY class.appointment_start DESC`
   }
   if (order==='pLowToHigh'){
+    console.log("※※※※※※※※※※※※※※※※");
     coursesOrderStr = `ORDER BY CASE WHEN class.sale_price IS NOT NULL THEN class.sale_price ELSE price END ASC`
   }
   if (order==='pHightToLow'){
+    console.log("◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆");
     coursesOrderStr = `ORDER BY CASE WHEN class.sale_price IS NOT NULL THEN class.sale_price ELSE price END DESC`
   }
 
@@ -289,8 +298,7 @@ router.get('/', async (req, res) => {
                     OR teacher.name LIKE ?
                 GROUP BY 
                     class.id, class.name, teacher.id, teacher.name, images_class.class_id, images_class.path, images_teacher.teacher_id, images_teacher.path
-                ORDER BY 
-                    class.id ASC;`
+                ${coursesOrderStr};`
     querySQLParams = [`%${search}%`, `%${search}%`]
     console.log('---!! querySQL=2')
   }

@@ -23,7 +23,7 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
   , dateStart
   , dateEnd
   , priceStart
-  , priceEnd, }) {
+  , priceEnd, handleNavClear, }) {
   const router = useRouter()
 
   function handleHref(e, class_id) {
@@ -120,6 +120,12 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
                       查看所有講師<i className="fa-solid fa-chevron-right ms-2"></i>
                     </div>
                   </Link>
+                  <div
+                    type="button"
+                    className={`btn-border-white btn py-1 px-3 spac-1 justify-content-center align-items-center ${router.query.search?'d-flex':'d-none'}`} onClick={handleNavClear}
+                  >
+                  清除搜尋<i class="fa-solid fa-xmark ms-2"></i>
+                  </div>
                 </div>
               </div>
               <div className="collapse mt-3" id="collapes-courseFilter">
@@ -157,6 +163,7 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
 
             {/* course-list button area end */}
           </div>
+          
           <div className="row px-0 m-0 course-mycourse-box row-gap-5">
 
             {courses && courses.length > 0 ?

@@ -1,25 +1,28 @@
 import React,{ useState, useEffect, useRef } from 'react'
 import { useRouter } from "next/router";
 
-export default function CourseNav({setIsHomePage, isHomePage}) {
+export default function CourseNav({setIsHomePage, isHomePage, setCurrentPage}) {
   const [searchTerm, setSearchTerm] = useState("");
   const searchInputRef = useRef(null);
   
   useEffect(()=>{
     if(isHomePage===false){
       setSearchTerm("")
+      setCurrentPage(1)
     }
   }, [isHomePage])
   
 
   const router = useRouter();
   const handleSearch = () => {
+    console.log(searchTerm);
     if (searchTerm.trim()) {
       router.push({
         pathname: '/course',
         query: { search: searchTerm },
       });
       setIsHomePage(true)
+      setCurrentPage(1)
     }
     if(searchTerm.trim().length<1){
       router.push({
@@ -27,6 +30,7 @@ export default function CourseNav({setIsHomePage, isHomePage}) {
         query: {},
       });
       setIsHomePage(true)
+      setCurrentPage(1)
     }
   };
 
@@ -38,6 +42,7 @@ export default function CourseNav({setIsHomePage, isHomePage}) {
       query: {},
     });
     setIsHomePage(true)
+    setCurrentPage(1)
   }
   // 處理鍵盤事件
   const handleKeyDown = (e) => {
@@ -48,6 +53,7 @@ export default function CourseNav({setIsHomePage, isHomePage}) {
   const handleClick = (e) => {
     const tagText = e.target.textContent.slice(1);
     setIsHomePage(true)
+    setCurrentPage(1)
     if (tagText.trim()) {
       router.push({
         pathname: '/course',
