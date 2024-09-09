@@ -261,6 +261,10 @@ export default function ClassManIndex() {
   // 檢查 errorMsgBox 有有效鍵值對: Object.entries(errorMsgBox).filter(([key, value]) => value != '')
 
   function handleReset(){
+    document.querySelector('#classNameWordNum').textContent = 0;
+    document.querySelector('#CmanageCreateTagWordNum').textContent = 0;
+    document.querySelector('#classSummaryWordNum').textContent = 0;
+    document.querySelector('#classIntroWordNum').textContent = 0;
     clearIsEmpty();
     setOnOrUnderline('')
     setCImage('http://localhost:3005/uploads/course_and_tarot/classImgDefault.png')
