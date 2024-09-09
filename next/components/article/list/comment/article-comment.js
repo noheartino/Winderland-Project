@@ -107,14 +107,15 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
 
   // 刪除
   const handleDelete = async () => {
-    // 彈出確認對話框
-    const confirmDelete = window.confirm(
-      "您確定要刪除此評論嗎？此操作無法恢復。"
-    );
+    // // 彈出確認對話框
+    // const confirmDelete = window.confirm(
+    //   "您確定要刪除此評論嗎？此操作無法恢復。"
+    // );
 
-    if (!confirmDelete) {
-      return; // 如果用戶取消，則退出函數
-    }
+    // if (!confirmDelete) {
+    //   return; // 如果用戶取消，則退出函數
+    // }
+    
 
     if (commentUser !== userId) {
       Swal.fire({
@@ -177,7 +178,7 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
             </div>
             {/* 手機icon */}
             <div className="au-icon-sm d-lg-none">
-            <img className="m-0" src={avatarUrl} />
+            <img className="m-0" src={`http://localhost:3005/images/member/avatar/${comment.user_avatar}`} />
             </div>
           </div>
           <div className="aucomment-section col">
@@ -189,11 +190,11 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
 
               <div className="col-5 col-lg-4">
                 {/* 評論的上排nav */}
-                <ul className="au-nav-items row align-items-center justify-content-center m-0 p-0">
+                <ul className="au-nav-items row align-items-center justify-content-left m-0 p-0">
                   {/* 樓層 */}
                   <li className="col-auto pe-3">B{index + 1}</li>
                   {/* 讚數 */}
-                  <li className="col-auto px-3">
+                  {/* <li className="col-auto px-3">
                     <a href="">
                       <i
                         className="fa-regular fa-thumbs-up me-1"
@@ -201,7 +202,7 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
                       />
                       <p className="d-none d-lg-inline">有幫助</p>
                     </a>
-                  </li>
+                  </li> */}
                   {/* 回覆 */}
                   {/* <li className="col-auto ps-3 border-0">
                     <a href="">

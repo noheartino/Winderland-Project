@@ -4,15 +4,15 @@ import CouponCard from "./CouponCard";
 import CouponPlusModal from "./CouponPlusModal";
 import { FaRegSadTear } from "react-icons/fa";
 import { HiOutlineTicket } from "react-icons/hi";
+import CouponPlusSm from "./CouponPlusSm";
 
 export default function CouponStorage({
   userId,
   freeCoupon,
   memberLevelName,
   userGetCoupons,
-  setUserGetCoupons
+  setUserGetCoupons,
 }) {
-
   const [isGetVisible, setIsGetVisible] = useState(true);
 
   const toggleGetVisibility = () => {
@@ -26,7 +26,10 @@ export default function CouponStorage({
       <div className="coupon-navbar row my-3 d-none d-lg-flex">
         <div className={`${style.couponNav} col-12 col-lg-7`}>
           <span className={`${style.CTitle} row py-2`}>
-            <HiOutlineTicket className="col-auto" style={{fontSize:"26px"}}/>
+            <HiOutlineTicket
+              className="col-auto"
+              style={{ fontSize: "26px" }}
+            />
             <p className="col m-0 p-0">優惠券倉庫</p>
             <i
               className={`d-lg-none fa-solid fa-angle-down ${style.pointDown} col`}
@@ -68,8 +71,14 @@ export default function CouponStorage({
       {/* 手機上方nav */}
       <div className="coupon-navbar row my-3 d-lg-none">
         <div className={`${style.couponNav} col-12 col-lg-7 px-4`}>
-          <span className={`${style.CTitleSm} row py-2`} onClick={toggleGetVisibility}>
-            <HiOutlineTicket className="col-auto" style={{fontSize:"20px"}}/>
+          <span
+            className={`${style.CTitleSm} row py-2`}
+            onClick={toggleGetVisibility}
+          >
+            <HiOutlineTicket
+              className="col-auto"
+              style={{ fontSize: "20px" }}
+            />
             優惠券倉庫
             <i className={`fa-solid fa-angle-down ${style.pointDown} col`} />
           </span>
@@ -101,7 +110,7 @@ export default function CouponStorage({
           ))
         )}
       </div>
-      
+
       <div
         className={`${style.couponZoneSm} row d-lg-none py-4 mx-3 mt-3 mb-5 ${
           isGetVisible ? style.showGetCoupon : style.hideGetCoupon
@@ -121,6 +130,12 @@ export default function CouponStorage({
           ))
         )}
       </div>
+      {/* 手機的領券的標題 */}
+      <CouponPlusSm
+        userId={userId}
+        freeCoupon={freeCoupon}
+        setUserGetCoupons={setUserGetCoupons}
+      />
     </>
   );
 }

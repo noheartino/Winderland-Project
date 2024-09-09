@@ -85,7 +85,7 @@
 
 /* 當沒有折扣價格時，增加 padding-top */
 .cartProductDel.no-discount {
-  padding-top: 30px; /* 可以根據需要調整 */
+  padding-top: 5px; /* 可以根據需要調整 */
 }
 
 
@@ -99,10 +99,10 @@
 
 @media screen and (max-width: 1200px) {
   .cartProductDel.has-discount {
-    padding-top: 30px;
+    padding-top: 10px;
   }
   .cartProductDel.no-discount {
-    padding-top: 65px;
+    padding-top: 35px;
   }
 }
 
@@ -135,10 +135,10 @@
   }
 
   .cartProductDel.has-discount {
-    padding-top: 30px;
+    padding-top: 5px;
   }
   .cartProductDel.no-discount {
-    padding-top: 50px;
+    padding-top: 30px;
   }
 
   .cartMoney {
@@ -175,11 +175,11 @@
   }
 
   .cartProductDel.has-discount {
-    padding-top: 30px;
+    padding-top: 5px;
     width: 80px;
   }
   .cartProductDel.no-discount {
-    padding-top: 45px;
+    padding-top: 25px;
     width: 80px;
   }
 
@@ -191,10 +191,10 @@
 
 @media screen and (max-width: 450px) {
   .cartProductDel.has-discount {
-    padding-top: 50px;
+    padding-top: 20px;
   }
   .cartProductDel.no-discount {
-    padding-top: 70px;
+    padding-top: 50px;
   }
 }
 

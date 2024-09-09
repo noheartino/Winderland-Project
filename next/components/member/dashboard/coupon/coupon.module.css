@@ -179,7 +179,7 @@
   .cantselected {
     background: linear-gradient(90deg, #d0d0d0 0%, #717171 100%) !important;
   }
-  .cantselectedC{
+  .cantselectedC {
     background: #717171 !important;
   }
 
@@ -365,5 +365,19 @@
     font-size: 20px;
     font-weight: 400;
     letter-spacing: 4px;
+  }
+}
+
+.plusBtnCoupon {
+  background: var(--primary);
+  transition: 0.5s all ease;
+  color: #fff;
+  border: 0;
+  &:hover {
+    background: var(--wine);
+    color: #fff;
+  }
+  &:active {
+    transform: scale(0.9);
   }
 }

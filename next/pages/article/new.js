@@ -198,7 +198,7 @@ export default function New() {
         icon: "success",
         confirmButtonText: "確定",
       });
-      router.push("/article");
+      router.push(`/article/detail/${articleId}`);
     } catch (error) {
       console.error(error);
       Swal.fire({
