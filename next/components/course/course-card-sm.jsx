@@ -10,7 +10,7 @@ export default function CourseCardSm({ userId, course, averageRating, classAssig
     class_name='',
     student_limit,
     price=0,
-    sale_price=0,
+    sale_price="",
     online,
     address,
     teacher_name,
@@ -185,7 +185,7 @@ export default function CourseCardSm({ userId, course, averageRating, classAssig
               <div className="course-process-footer mt-2 d-flex align-items-center justify-content-end justify-content-md-start flex-wrap row-gap-2 gap-3">
                 <span
                   className={`h6 text-gray-light spac-2 origin-price mx-2 ${
-                    sale_price > 0 ? "d-inline-block d-md-none" : "d-none"
+                    sale_price || parseInt(sale_price)>0 ? "d-inline-block d-md-none" : "d-none"
                   }`}
                 >
                   <del>NT${price.toLocaleString()}</del>
@@ -193,13 +193,13 @@ export default function CourseCardSm({ userId, course, averageRating, classAssig
                 
                 <span className="h5 spac-2">
                   NT$
-                  {sale_price > 0
+                  {sale_price || parseInt(sale_price)>0
                     ? sale_price.toLocaleString()
                     : price.toLocaleString()}
                 </span>
                 <span
                   className={`h6 text-gray-light spac-2 origin-price ${
-                    sale_price > 0 ? "d-none d-md-inline-block" : "d-none"
+                    sale_price || parseInt(sale_price)>0 ? "d-none d-md-inline-block" : "d-none"
                   }`}
                 >
                   <del>NT${price.toLocaleString()}</del>
