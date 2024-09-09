@@ -256,10 +256,49 @@ export default function ClassManIndex() {
       classPic: '',
       classVdio: '',
   })
-  // 檢查 mustBeValued 有有效鍵值對: Object.entries(mustBeValued).filter(([key, value]) => value != '')
 
-  // 檢查 errorMsgBox 有有效鍵值對: Object.entries(errorMsgBox).filter(([key, value]) => value != '')
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === 'f') {
+        event.preventDefault();  // 防止瀏覽器打開內建的搜尋功能
+        setTimeout(() => {
+          handleQuickFill();  // 呼叫你想要執行的表單填寫函數
+        }, 300);
+      }
+    };
 
+    // 僅在瀏覽器端添加事件監聽
+    document.addEventListener('keydown', handleKeyDown);
+
+    // 清除事件監聽，避免記憶體洩漏
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  const handleQuickFill = ()=>{
+      document.getElementById('className').value='微醺系列：斟一杯詩意 酌一口快意';
+      document.getElementById('studentLimit').value=5;
+      document.getElementById('teacherId').value=1;
+      document.getElementById('classStartDate').value='2024-10-01';
+      document.getElementById('classEndDate').value='2024-10-09';
+      document.getElementById('assignStartDate').value='2024-09-01';
+      document.getElementById('assignEndDate').value='2024-09-02';
+      document.getElementById('dailyStartTime').value='09:00';
+      document.getElementById('dailyEndTime').value='15:00';
+      document.getElementById('classCity').value='台中市';
+      document.getElementById('classCityDetail').value='烏日區中山路三段1號';
+      document.getElementById('classPrice').value=1850;
+      document.getElementById('classSalePrice').value=1780;
+      document.getElementById('classSummary').value = '飲酒，不只是喝醉狂歡。\n酒是詩，酒是情，品酒能為生活增添一份優雅和樂趣。\n你知道如何選擇適合不同場合的酒款嗎？是否懂得品味每一滴酒中的故事和歷史？\n你想知道如何將單純的飲酒體驗，升華成為一場感官盛宴嗎？\n\n就讓專業品酒師用深入淺出的品飲實作方式，\n傳授你如何從選酒、聞香、品味、搭配等方面，輕鬆掌握品酒的訣竅，\n在快節奏的現代生活中，讓我們慢下腳步，細細品味每一口佳釀。\n品酒不僅僅是一種儀式，更是一種生活態度，是每天都可以享受的精緻時光。';
+      document.getElementById('classIntro').value='微醺系列課程強調的是對生活品味的追求，而非單純的飲酒，學員們在課程中學會的不僅是如何品酒，更是透過課程體驗來提升自己，並在未來的生活中應用這些知識，展現出自己的品味和風格。\n\n1. 透過觀察、嗅聞和品嘗來感受葡萄酒的各種風味。\n\n2. 如何辨識葡萄酒的顏色、香氣和口感。\n\n3. 以嗅聞來感受葡萄酒中的果香、花香和香料的氣味。\n\n4. 了解葡萄酒的基本常識、品種特色、品酒步驟及辨識酒標的技巧。\n\n5. 葡萄酒養生知識 - 乾白酒的品味學問。';
+
+      document.querySelector('#classNameWordNum').textContent = document.getElementById('className').value.length;
+      document.querySelector('#CmanageCreateTagWordNum').textContent = document.getElementById('classCityDetail').value.length;
+      document.querySelector('#classSummaryWordNum').textContent = document.getElementById('classSummary').value.length;
+      document.querySelector('#classIntroWordNum').textContent = document.getElementById('classIntro').value.length;
+  }
+    
   function handleReset(){
     document.querySelector('#classNameWordNum').textContent = 0;
     document.querySelector('#CmanageCreateTagWordNum').textContent = 0;
@@ -544,7 +583,6 @@ export default function ClassManIndex() {
               <div className='row row-gap-3'>
                 <div className='col-12 col-lg-8 d-flex flex-column gap-3'>
                   <div className='row gx-2 gx-lg-4 row-gap-3'>
-                    
                     <div className={`col-12 flex-column gap-1 text-danger spac-1 ${Object.values(mustBeValued).some(value => value.trim().length>0) ? 'd-flex' : 'd-none'}`}>* 請檢查必填欄位 !!</div>
                     <div className='col-12 d-flex flex-column gap-1'>
 
@@ -764,9 +802,14 @@ export default function ClassManIndex() {
 
                 </div>
                 <div className='col-12 col-lg-4 d-flex flex-column gap-1'>
-                  <label htmlFor='classPic' className='form-label CmanageCreateTag'>
-                    課程縮圖
-                  </label>
+                  <div className='row d-flex flex-row justify-content-between px-0 mx-0'>
+                    <div className='col-auto px-0 mx-0'>
+                      <label htmlFor='classPic' className='form-label CmanageCreateTag mb-0'>
+                        課程縮圖
+                      </label>
+                    </div>
+                    <div className={`col-auto spac-1 d-flex cursor-pointer emmit2 px-0 mx-0`} style={{color: 'transparent'}} onClick={handleQuickFill}>快速填入</div>
+                  </div>
                   <img src={Cimage.trim().length>0?Cimage:'http://localhost:3005/uploads/course_and_tarot/classImgDefault.png'} alt='' className='Cprevpic' />
                   {/* <input
                     className='form-control vidAndImg-input'

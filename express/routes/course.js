@@ -209,11 +209,11 @@ router.get('/', async (req, res) => {
   }
   if (order === 'pLowToHigh') {
     console.log('※※※※※※※※※※※※※※※※')
-    coursesOrderStr = `ORDER BY CASE WHEN class.sale_price IS NOT NULL THEN class.sale_price ELSE price END ASC`
+    coursesOrderStr = `ORDER BY CASE WHEN class.sale_price IS NOT NULL AND class.sale_price != 0 THEN class.sale_price ELSE price END ASC`
   }
   if (order === 'pHightToLow') {
     console.log('◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆')
-    coursesOrderStr = `ORDER BY CASE WHEN class.sale_price IS NOT NULL THEN class.sale_price ELSE price END DESC`
+    coursesOrderStr = `ORDER BY CASE WHEN class.sale_price IS NOT NULL AND class.sale_price != 0 THEN class.sale_price ELSE price END DESC`
   }
 
   let courseOriginSQL = `SELECT 
