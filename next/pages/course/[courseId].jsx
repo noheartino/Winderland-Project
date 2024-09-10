@@ -620,21 +620,21 @@ export default function CourseIndex() {
                       <span className="h2 spac-2 text-sec-orange">
                           <strong>
                             NT$
-                            {course.price && course.sale_price === 0
+                            {course.price && (!course.sale_price || parseInt(sale_price)==0)
                               ? course.price.toLocaleString()
-                              : course.sale_price && course.sale_price > 0
+                              : course.sale_price && course.sale_price
                                 ? course.sale_price.toLocaleString()
                                 : 0}
                           </strong>
                       </span>}
                         
                         <p
-                          className={`text-gray-light h5 spac-2 mt-3 ${((!course.sale_price) || (course.sale_price) && myCourses && myCoursesId.length>0) ? "d-none" : "d-block"
+                          className={`text-gray-light h5 spac-2 mt-3 ${((!course.sale_price) || parseInt(sale_price)==0 || (course.sale_price) && myCourses && myCoursesId.length>0) ? "d-none" : "d-block"
                               }`}
                         >
                           <del>
                             NT$
-                            {course.sale_price > 0
+                            {course.sale_price && parseInt(sale_price)!=0
                               ? course.price.toLocaleString()
                               : 0}
                           </del>
@@ -870,12 +870,12 @@ export default function CourseIndex() {
 
                     <span className="col-auto h6 d-flex align-items-center">
                       <span
-                        className={`text-gray-light h5 spac-2 mt-3 me-4 ${((!course.sale_price) || (course.sale_price) && myCourses && myCoursesId.length>0) ? "d-none" : "d-block"
+                        className={`text-gray-light h5 spac-2 mt-3 me-4 ${((!course.sale_price) || parseInt(sale_price)==0 || (course.sale_price) && myCourses && myCoursesId.length>0) ? "d-none" : "d-block"
                               }`}
                       >
                         <del>
                           NT$
-                          {course.sale_price > 0
+                          {course.sale_price && parseInt(sale_price)!=0
                             ? course.price.toLocaleString()
                             : 0}
                         </del>
@@ -890,9 +890,9 @@ export default function CourseIndex() {
                       <span className="h2 spac-2 text-sec-orange">
                           <strong>
                             NT$
-                            {course.price && course.sale_price === 0
+                            {course.price && (!course.sale_price || parseInt(sale_price)==0)
                               ? course.price.toLocaleString()
-                              : course.sale_price > 0
+                              : course.sale_price
                                 ? course.sale_price.toLocaleString()
                                 : 0}
                           </strong>
