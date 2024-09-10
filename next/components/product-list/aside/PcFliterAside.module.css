@@ -1,4 +1,4 @@
-@media (max-width: 1920px) {
+
     .shop-flite-p {
         color: var(--primary);
         font-weight: 700;
@@ -185,7 +185,7 @@
         background-color: transparent;
         color: rgb(181, 124, 124);
     }
-}
+
 
 @media screen and (max-width: 992px) {
     .product-pc-aside {

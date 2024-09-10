@@ -1,4 +1,4 @@
-@media (max-width: 1920px) {
+
     
     .path {
         padding: 0;
@@ -14,7 +14,7 @@
         text-decoration: none;
         color: var(--text_primary);
     }
-}
+
 
 @media screen and (max-width: 992px) {}
 

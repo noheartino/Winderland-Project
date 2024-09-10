@@ -1,23 +1,24 @@
-@media screen and (max-width: 1920px) {
-    .product-info2 {
+.product-info2 {
+    display: none;
+
+    & .product-detail-md-title {
         display: none;
+    }
 
-        & .product-detail-md-title {
-            display: none;
-        }
-
-        /* 右邊區塊 */
-        & .product-introduce {
-            padding-top: 1%;
-            padding-inline: 3%;
-        }
+    /* 右邊區塊 */
+    & .product-introduce {
+        padding-top: 1%;
+        padding-inline: 3%;
     }
 }
+
 @media screen and (max-width: 992px) {
+
     /* 標題 */
     .product-detail-title {
         display: none;
     }
+
     /* 商品詳細 */
     .product-info2 {
         display: block;
@@ -62,12 +63,14 @@
         }
     }
 }
+
 @media screen and (max-width: 767px) {
+
     /* 商品資訊 */
-    .product-info2{
+    .product-info2 {
         font-size: 15px;
 
-        & .product-detail-md-title{
+        & .product-detail-md-title {
             font-size: 20px;
         }
     }
