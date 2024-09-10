@@ -1,9 +1,7 @@
-@media (max-width: 1920px) {
+
     .shop-aside-m {
         display: none;
     }
-
-}
 
 @media screen and (max-width: 992px) {
 

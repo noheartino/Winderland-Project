@@ -1,4 +1,4 @@
-@media screen and (max-width: 1920px) {
+
 
     /* 收藏icon */
     & .product-fav-icon {
@@ -30,7 +30,7 @@
     & .product-add-cart-button:hover {
         box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
     }
-}
+
 
 @media screen and (max-width: 992px) {
     & .product-add-cart-button {

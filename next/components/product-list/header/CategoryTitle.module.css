@@ -1,4 +1,4 @@
-@media (max-width: 1920px) {
+
     .shop-header-img {
         position: relative;
         height: 30vh;
@@ -58,7 +58,7 @@
         margin-left: 0.5rem;
         letter-spacing: 0.4rem;
     }
-}
+
 
 @media screen and (max-width: 992px) {
     .shop-header-img {

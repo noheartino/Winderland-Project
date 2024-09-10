@@ -1,8 +1,8 @@
-@media screen and (max-width: 1920px) {
+
     .product-sm-form {
         display: none;
     }
-}
+
 
 @media screen and (max-width: 992px) {}
 
