@@ -37,7 +37,7 @@ export default function DashboardFavorite() {
     }
 
     try {
-      const response = await fetch(`http://winderland.shop/api/favorites/search?term=${encodeURIComponent(term)}`, {
+      const response = await fetch(`https://winderland.shop/api/favorites/search?term=${encodeURIComponent(term)}`, {
         method: 'GET',
         credentials: 'include',
       });

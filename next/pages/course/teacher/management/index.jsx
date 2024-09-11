@@ -43,7 +43,7 @@ export default function Applyevent() {
     if (userId && isAdmin) {
       console.log("登入者確認為admin有權限者");
 
-      fetch(`http://winderland.shop/api/course/teacher/management`)
+      fetch(`https://winderland.shop/api/course/teacher/management`)
         .then((response) => response.json())
         .then((data) => {
           const { courses } = data;
@@ -190,7 +190,7 @@ export default function Applyevent() {
                   <div className={`CMDetailistBox d-flex`}>
                     <div className="CMDetailistBoxPic">
                       <img
-                        src={`http://winderland.shop/uploads/course_and_tarot/${!course.class_path ? 'classImgDefault.png' : course?.class_path}`}
+                        src={`https://winderland.shop/uploads/course_and_tarot/${!course.class_path ? 'classImgDefault.png' : course?.class_path}`}
                         alt=""
                         className=""
                       />
@@ -200,18 +200,18 @@ export default function Applyevent() {
                       <div className="CMDetailistBoxTitle row flex-wrap row-gap-3 gap-2 px-3">
                         <span
                           className={`CMonlineTag col-auto ${course.online === 1
-                              ? "CMonlineTag-online"
-                              : "CMonlineTag-underline"
+                            ? "CMonlineTag-online"
+                            : "CMonlineTag-underline"
                             }`}
                         >
                           {course.online === 1 ? "線上" : "實體"}
                         </span>
                         <span
                           className={`CMstatus col-auto ${course.class_status === 0
-                              ? "past"
-                              : course.class_status === 2
-                                ? "future"
-                                : ""
+                            ? "past"
+                            : course.class_status === 2
+                              ? "future"
+                              : ""
                             }`}
                         >
                           {course.class_status === 0
@@ -308,10 +308,10 @@ export default function Applyevent() {
                               className="classMLimitLinedata"
                               style={{
                                 width: `${course.assigned > 0 &&
-                                    course.student_limit > 0
-                                    ? (course.assigned / course.student_limit) *
-                                    100
-                                    : 0
+                                  course.student_limit > 0
+                                  ? (course.assigned / course.student_limit) *
+                                  100
+                                  : 0
                                   }%`,
                               }}
                             />

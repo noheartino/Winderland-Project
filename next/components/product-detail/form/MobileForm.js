@@ -66,7 +66,7 @@ export default function MobileForm() {
       }
 
       const response = await axios.post(
-        "http://winderland.shop/api/product/addCart",
+        "https://winderland.shop/api/product/addCart",
         {
           user_id: parseInt(auth.userData.id),
           product_detail_id: parseInt(currentDetail.id),

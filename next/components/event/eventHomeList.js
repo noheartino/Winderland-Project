@@ -137,7 +137,7 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
                                 <div className="col-12 col-lg-4 mb-4" key={i}>
                                     <div className="eventHomeBox_able">
                                         <div className="apply_able">報名期間內</div>
-                                        <img src={`http://winderland.shop/uploads/event/${t.event_cover_image}`} alt="" className="eventHomeBoxImg" />
+                                        <img src={`https://winderland.shop/uploads/event/${t.event_cover_image}`} alt="" className="eventHomeBoxImg" />
                                         <div className="eventHomeBox_text">
                                             <div className="title">{t.event_name}</div>
                                             <div className="info">

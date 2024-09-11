@@ -46,7 +46,7 @@ export default function DashboardOrder() {
   const fetchOrders = async () => {
     try {
       setIsLoading(true);
-      let url = "http://winderland.shop/api/orders/history";
+      let url = "https://winderland.shop/api/orders/history";
       const params = new URLSearchParams();
 
       if (filters.status.length > 0) {

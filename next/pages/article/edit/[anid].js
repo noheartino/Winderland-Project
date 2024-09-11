@@ -48,7 +48,7 @@ export default function New() {
   useEffect(() => {
     const { anid } = router.query; // 取得路由中的 id 參數
     if (router.isReady) {
-      fetch(`http://winderland.shop/api/article/${anid}`)
+      fetch(`https://winderland.shop/api/article/${anid}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response not ok");
@@ -65,7 +65,7 @@ export default function New() {
           setTitle(processedArticle.title);
           setCategory(processedArticle.category);
           setMainImagePreview(
-            `http://winderland.shop/uploads/article/${processedArticle.images[0]}`
+            `https://winderland.shop/uploads/article/${processedArticle.images[0]}`
           );
           setMainImage(processedArticle.images[0]);
           // setContent(processedArticle.content);
@@ -86,7 +86,7 @@ export default function New() {
 
                 if (index < images.length - 1) {
                   const imageHTML = `
-                    <img src="http://winderland.shop/uploads/article/${images[index + 1]}" 
+                    <img src="https://winderland.shop/uploads/article/${images[index + 1]}" 
                           class="editInlineImage"
                           alt="${images[index + 1]}" <img/>
                     `;
@@ -269,7 +269,7 @@ export default function New() {
 
       // 发送更新请求到后端
       const response = await axios.put(
-        `http://winderland.shop/api/article/update/${article.id}`,
+        `https://winderland.shop/api/article/update/${article.id}`,
         formData,
         {
           headers: {

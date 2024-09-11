@@ -311,7 +311,7 @@ export default function Homepage() {
             </Link>
           </div>
           <div className="col-4">
-            <Link href={'http://winderland.shop/product?page=1&sort=id_asc&category=3'}>
+            <Link href={'https://winderland.shop/product?page=1&sort=id_asc&category=3'}>
               <div className="homeArea02_type_text">
                 <p>其他類別 (Other Types)</p>
               </div>
@@ -468,7 +468,7 @@ export default function Homepage() {
           <div className="col-10">
             <div className="row CourseList">
               <div className="col-4 d-flex flex-column" onClick={() => { router.push('/course/37') }}>
-                <img src="http://winderland.shop/uploads/course_and_tarot/class_id37.jpeg" alt="" className="CourseListPic" />
+                <img src="https://winderland.shop/uploads/course_and_tarot/class_id37.jpeg" alt="" className="CourseListPic" />
                 <div className="CourseListText">
                   <div className="Courseon">線上</div>
                   迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解
@@ -479,7 +479,7 @@ export default function Homepage() {
                 </div>
               </div>
               <div className="col-4 d-flex flex-column" onClick={() => { router.push('/course/31') }}>
-                <img src="http://winderland.shop/uploads/course_and_tarot/class_id31.jpg" alt="" className="CourseListPic" />
+                <img src="https://winderland.shop/uploads/course_and_tarot/class_id31.jpg" alt="" className="CourseListPic" />
                 <div className="CourseListText">
                   <div className="Courseon">線上</div>
                   我的第一堂品酒課：侍酒師的老師帶你輕鬆進入葡萄酒世界
@@ -491,7 +491,7 @@ export default function Homepage() {
               </div>
               <div className="col-4 d-flex flex-column" onClick={() => { router.push('/course/26') }}>
                 <img
-                  src="http://winderland.shop/uploads/course_and_tarot/class_id26.jpg"
+                  src="https://winderland.shop/uploads/course_and_tarot/class_id26.jpg"
                   alt=""
                   className="CourseListPic"
                 />
@@ -507,7 +507,7 @@ export default function Homepage() {
             </div>
           </div>
           <div className="col-2 article_circlebtn">
-            <a href="http://winderland.shop/course">
+            <a href="https://winderland.shop/course">
               <div className="all_circlebtn_blue">
                 <div className="btn_arrow_line_blue" />
                 <div className="btn_arrow_head_blue" />
@@ -682,7 +682,7 @@ export default function Homepage() {
         </div>
         <div className="course_area_rwd">
           <div className="coursebox_rwd" onClick={() => { router.push('/course/37') }}>
-            <img src="http://winderland.shop/uploads/course_and_tarot/class_id37.jpeg" alt="" />
+            <img src="https://winderland.shop/uploads/course_and_tarot/class_id37.jpeg" alt="" />
             <div className="coursebox_rwd_text">
               <h5>迷人的葡萄酒探索之旅-5小時從挑選到品飲一次了解</h5>
               <div className="coursebox_rwd_type">
@@ -698,7 +698,7 @@ export default function Homepage() {
 
 
           <div className="coursebox_rwd" onClick={() => { router.push('/course/31') }}>
-            <img src="http://winderland.shop/uploads/course_and_tarot/class_id31.jpg" alt="" />
+            <img src="https://winderland.shop/uploads/course_and_tarot/class_id31.jpg" alt="" />
             <div className="coursebox_rwd_text">
               <h5>我的第一堂品酒課：侍酒師的老師帶你輕鬆進入葡萄酒世界</h5>
               <div className="coursebox_rwd_type">
@@ -714,7 +714,7 @@ export default function Homepage() {
 
 
           <div className="coursebox_rwd" onClick={() => { router.push('/course/26') }}>
-            <img src="http://winderland.shop/uploads/course_and_tarot/class_id26.jpg" alt="" />
+            <img src="https://winderland.shop/uploads/course_and_tarot/class_id26.jpg" alt="" />
             <div className="coursebox_rwd_text">
               <h5>SFM南法產區大師級認證課程</h5>
               <div className="coursebox_rwd_type">

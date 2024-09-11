@@ -183,7 +183,7 @@ export default function RegisterForm() {
       return;
     }
     try {
-      const response = await fetch('http://winderland.shop/api/member/register', {
+      const response = await fetch('https://winderland.shop/api/member/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

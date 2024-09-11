@@ -4,7 +4,7 @@ import { useShip711StoreOpener } from '@/hooks/use-ship-711-store';
 
 export default function CartTransport({ addressLabel = "*門市選擇", hideSelectButton = false, handleTransportDataChange }) {
     const { store711, openWindow } = useShip711StoreOpener(
-        'http://winderland.shop/api/shipment/711',
+        'https://winderland.shop/api/shipment/711',
         { autoCloseMins: 3 }
     );
 

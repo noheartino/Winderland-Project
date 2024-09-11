@@ -31,18 +31,18 @@ export default function Nav() {
 
   useEffect(() => {
     if (userId) {
-      fetch(`http://winderland.shop/api/header/${userId}`)
+      fetch(`https://winderland.shop/api/header/${userId}`)
         .then((response) => response.json())
         .then((infodata) => setInfo(infodata))
         .catch((error) => console.error("Error:", error));
     }
 
     // 抓取頭像 URL
-    fetch(`http://winderland.shop/api/dashboard/profile/avatar/${userId}`)
+    fetch(`https://winderland.shop/api/dashboard/profile/avatar/${userId}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success" && data.data.avatar_url) {
-          setAvatarUrl(`http://winderland.shop${data.data.avatar_url}`);
+          setAvatarUrl(`https://winderland.shop${data.data.avatar_url}`);
         } else {
           setAvatarUrl("/nav-footer/default_user.jpg"); // 使用預設頭像
         }
@@ -79,15 +79,15 @@ export default function Nav() {
   };
 
   const redwine = () => {
-    router.push("http://winderland.shop/product?page=1&sort=id_asc&category=1");
+    router.push("https://winderland.shop/product?page=1&sort=id_asc&category=1");
   };
 
   const whitewine = () => {
-    router.push("http://winderland.shop/product?page=1&sort=id_asc&category=2");
+    router.push("https://winderland.shop/product?page=1&sort=id_asc&category=2");
   };
 
   const otherwine = () => {
-    router.push("http://winderland.shop/product?page=1&sort=id_asc&category=3");
+    router.push("https://winderland.shop/product?page=1&sort=id_asc&category=3");
   };
 
   const goHome = () => {

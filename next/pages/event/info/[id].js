@@ -14,13 +14,13 @@ export default function Einfo() {
   const { id } = router.query;
   const [infodata, setInfo] = useState(null);
 
-  // const [ownerimg, setOwnerimg] = useState("http://winderland.shop/images/member/avatar/4.png");
+  // const [ownerimg, setOwnerimg] = useState("https://winderland.shop/images/member/avatar/4.png");
 
-  // setOwnerimg("http://winderland.shop/images/member/avatar/4.png")
+  // setOwnerimg("https://winderland.shop/images/member/avatar/4.png")
 
   useEffect(() => {
     if (id) {
-      fetch(`http://winderland.shop/api/event/info/${id}`)
+      fetch(`https://winderland.shop/api/event/info/${id}`)
         .then((response) => response.json())
         .then((infodata) => setInfo(infodata))
         .catch((error) => console.error("Error:", error));
@@ -99,7 +99,7 @@ export default function Einfo() {
           <div className="row g-5">
             <div className="col-12 col-lg-5">
               <img
-                src={`http://winderland.shop/uploads/event/${eventinfo.event_cover_image}`}
+                src={`https://winderland.shop/uploads/event/${eventinfo.event_cover_image}`}
                 alt=""
                 className="eventPageimg"
               />
@@ -196,7 +196,7 @@ export default function Einfo() {
               <div className="eventOwner">
                 <div className="eventOwnerT">開團人</div>
                 <div className="eventOwnerInfo">
-                  <img src={`http://winderland.shop/images/member/avatar/${Nowid}.png`} alt="" className="eventOwnerPic" onError={(e) => e.target.src = `http://winderland.shop/images/member/avatar/cat.png`} />
+                  <img src={`https://winderland.shop/images/member/avatar/${Nowid}.png`} alt="" className="eventOwnerPic" onError={(e) => e.target.src = `https://winderland.shop/images/member/avatar/cat.png`} />
                   <div className="eventOwnerInfoT">
                     {applyinfo[0].neckname} <br />
                     {applyinfo[0].gender === 0 ? "男" : "女"} /{" "}

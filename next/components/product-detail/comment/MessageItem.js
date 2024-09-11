@@ -20,7 +20,7 @@ export default function MessageItem({ sortedComments }) {
               <div className={`${styles["user-photo"]}`}>
                 <img
                   className={`${styles["photo"]}`}
-                  src={`http://winderland.shop/images/member/avatar/${comment.user_img}`}
+                  src={`https://winderland.shop/images/member/avatar/${comment.user_img}`}
                   alt=""
                 />
               </div>

@@ -34,7 +34,7 @@ export default function Applyevent() {
   // };
 
   useEffect(() => {
-    fetch(`http://winderland.shop/api/event-edit/${id}`)
+    fetch(`https://winderland.shop/api/event-edit/${id}`)
       .then((response) => response.json())
       .then((infodata) => setInfo(infodata))
       .catch((error) => console.error("Error:", error));
@@ -48,7 +48,7 @@ export default function Applyevent() {
 
   const [file, setFile] = useState(null);
   const [image, setImage] = useState(
-    `http://winderland.shop/uploads/event/${myevent.event_cover_image}`
+    `https://winderland.shop/uploads/event/${myevent.event_cover_image}`
   );
   const [formData, setFormData] = useState({
     event_name: "",
@@ -66,7 +66,7 @@ export default function Applyevent() {
 
   useEffect(() => {
     if (infodata) {
-      setImage(`http://winderland.shop/uploads/event/${myevent.event_cover_image}`);
+      setImage(`https://winderland.shop/uploads/event/${myevent.event_cover_image}`);
       setFormData({
         event_name: myevent.event_name || "",
         event_date: myevent.event_date || "",
@@ -104,7 +104,7 @@ export default function Applyevent() {
       // 發送 PUT 請求
       const response = await axios({
         method: "PUT",
-        url: `http://winderland.shop/api/event-edit/edit/${id}`,
+        url: `https://winderland.shop/api/event-edit/edit/${id}`,
         data: formDataToSend,
         headers: {
           "Content-Type": "multipart/form-data", // 設置 Content-Type 為 multipart/form-data
@@ -128,7 +128,7 @@ export default function Applyevent() {
     try {
       const response = await axios({
         method: "PUT",
-        url: `http://winderland.shop/api/event-edit/delete/${id}`,
+        url: `https://winderland.shop/api/event-edit/delete/${id}`,
       });
 
       console.log("Success:", response.data);
@@ -175,7 +175,7 @@ export default function Applyevent() {
   //             data.append(key, formData[key]);
   //         }
 
-  //         const response = await axios.put(`http://winderland.shop/api/event-edit/edit/${id}`, data, {
+  //         const response = await axios.put(`https://winderland.shop/api/event-edit/edit/${id}`, data, {
   //             headers: {
   //                 'Content-Type': 'multipart/form-data', // 設置 Content-Type 為 multipart/form-data
   //             },
@@ -191,7 +191,7 @@ export default function Applyevent() {
 
   //   const handleUpdateQuantity = async (itemId, newQuantity) => {
   //     try {
-  //       const response = await fetch(`http://winderland.shop/api/cart/${itemId}`, {
+  //       const response = await fetch(`https://winderland.shop/api/cart/${itemId}`, {
   //         method: "PUT",
   //         headers: {
   //           "Content-Type": "application/json",
@@ -233,7 +233,7 @@ export default function Applyevent() {
   // const handleSubmit = async (e) => {
   //     e.preventDefault();
   //     try {
-  //         const response = await fetch(`http://winderland.shop/api/event-edit/${id}`, {
+  //         const response = await fetch(`https://winderland.shop/api/event-edit/${id}`, {
   //             method: 'POST',
   //             headers: { 'Content-Type': 'application/json' },
   //             body: JSON.stringify(formDataConverted),

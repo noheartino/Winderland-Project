@@ -8,7 +8,7 @@ export default function CartWpoint({ userId, isChecked, onPointsChange, onPoints
 
   useEffect(() => {
     if (userId) {
-      fetch(`http://winderland.shop/api/cart/${userId}`)
+      fetch(`https://winderland.shop/api/cart/${userId}`)
         .then((response) => response.json())
         .then((data) => {
           const userPoints = data.user_have_points || 0;

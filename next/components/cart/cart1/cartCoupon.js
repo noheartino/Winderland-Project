@@ -17,7 +17,7 @@ export default function CartCoupon({ userId, onCouponChange, totalAmount }) {
   // 獲取用戶的優惠券
   const fetchCoupons = async () => {
     try {
-      const response = await fetch(`http://winderland.shop/api/cart/${userId}`);
+      const response = await fetch(`https://winderland.shop/api/cart/${userId}`);
       if (response.ok) {
         const data = await response.json();
         // 過濾出狀態為 'get' 的優惠券

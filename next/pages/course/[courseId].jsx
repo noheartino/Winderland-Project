@@ -39,7 +39,7 @@ export default function CourseIndex() {
 
   // 獲取課程總數，避免網址輸入不存在的課程導致顯示錯誤
   useEffect(() => {
-    fetch(`http://winderland.shop/api/course?userId=${userId}`)
+    fetch(`https://winderland.shop/api/course?userId=${userId}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response not ok");
@@ -59,7 +59,7 @@ export default function CourseIndex() {
 
   const seriesDefaultBtn = useRef(null);
 
-  let apiUrl = `http://winderland.shop/api/course/${courseId}?userId=${userId}`;
+  let apiUrl = `https://winderland.shop/api/course/${courseId}?userId=${userId}`;
 
   // 顯示影片
   const [showVideo, setShowVideo] = useState(false);
@@ -141,13 +141,13 @@ export default function CourseIndex() {
 
   useEffect(() => {
     if (series === "timeOldToNew") {
-      apiUrl = `http://winderland.shop/api/course/${courseId}?userId=${userId}&series=timeOldToNew`;
+      apiUrl = `https://winderland.shop/api/course/${courseId}?userId=${userId}&series=timeOldToNew`;
     } else if (series === "scoreHtoL") {
-      apiUrl = `http://winderland.shop/api/course/${courseId}?userId=${userId}&series=scoreHtoL`;
+      apiUrl = `https://winderland.shop/api/course/${courseId}?userId=${userId}&series=scoreHtoL`;
     } else if (series === "scoreLtoH") {
-      apiUrl = `http://winderland.shop/api/course/${courseId}?userId=${userId}&series=scoreLtoH`;
+      apiUrl = `https://winderland.shop/api/course/${courseId}?userId=${userId}&series=scoreLtoH`;
     } else {
-      apiUrl = `http://winderland.shop/api/course/${courseId}?userId=${userId}`;
+      apiUrl = `https://winderland.shop/api/course/${courseId}?userId=${userId}`;
     }
   }, [series, userId]);
 
@@ -155,9 +155,9 @@ export default function CourseIndex() {
   useEffect(() => {
     console.log("偵測到 courseId 或 userId 有變動: " + courseId + " / " + userId);
     if (userId && classSum.length > 0) {
-      fetch(`http://winderland.shop/api/course/mycourses/${userId}`)
+      fetch(`https://winderland.shop/api/course/mycourses/${userId}`)
         .then((response) => {
-          console.log("送出fetch，URL=" + `http://winderland.shop/api/course/mycourses/${userId}`);
+          console.log("送出fetch，URL=" + `https://winderland.shop/api/course/mycourses/${userId}`);
           if (!response.ok) {
             throw new Error("Network response not ok");
           }
@@ -194,7 +194,7 @@ export default function CourseIndex() {
           pathname: "/course/1",
           query: {},
         });
-        apiUrl = `http://winderland.shop/api/course/1?userId=${userId}`;
+        apiUrl = `https://winderland.shop/api/course/1?userId=${userId}`;
       }
 
       fetch(apiUrl)
@@ -235,7 +235,7 @@ export default function CourseIndex() {
         if (result.isConfirmed) {
           // 用戶確認後執行POST請求
           fetch(
-            `http://winderland.shop/api/course/${courseId}?userId=${userId}`,
+            `https://winderland.shop/api/course/${courseId}?userId=${userId}`,
             {
               method: "POST",
               headers: {
@@ -246,7 +246,7 @@ export default function CourseIndex() {
           )
             .then((response) => {
               console.log(
-                `送出POST fetch，URL=http://winderland.shop/api/course/${courseId}?userId=${userId}`
+                `送出POST fetch，URL=https://winderland.shop/api/course/${courseId}?userId=${userId}`
               );
               if (!response.ok) {
                 throw new Error("Network response not ok");
@@ -326,7 +326,7 @@ export default function CourseIndex() {
     const checkBookmarkStatus = async () => {
       if (userId && courseId) {
         try {
-          const response = await fetch(`http://winderland.shop/api/favorites/courses`, {
+          const response = await fetch(`https://winderland.shop/api/favorites/courses`, {
             method: 'GET',
             credentials: 'include',
           });
@@ -355,7 +355,7 @@ export default function CourseIndex() {
     }
 
     try {
-      const url = `http://winderland.shop/api/favorites/courses/${courseId}`;
+      const url = `https://winderland.shop/api/favorites/courses/${courseId}`;
       const method = isBookmarked ? 'DELETE' : 'POST';
 
       const response = await fetch(url, {
@@ -455,14 +455,14 @@ export default function CourseIndex() {
                           {showVideo ?
                             <div className={`course-img21 video-radius bg-black`}>
                               <video className={`media-contain`} controls width="300" height="200" id={`courseVideo`} ref={videoRefs} autoPlay>
-                                <source src={`http://winderland.shop/uploads/course_and_tarot/${course?.video_path}`} type="video/mp4" />
+                                <source src={`https://winderland.shop/uploads/course_and_tarot/${course?.video_path}`} type="video/mp4" />
                                 Your browser does not support the video tag.
                               </video>
                             </div>
                             :
                             <img
                               className="course-img21"
-                              src={course.class_path ? `http://winderland.shop/uploads/course_and_tarot/${course?.class_path}` : `http://winderland.shop/uploads/course_and_tarot/classImgDefault.png`}
+                              src={course.class_path ? `https://winderland.shop/uploads/course_and_tarot/${course?.class_path}` : `https://winderland.shop/uploads/course_and_tarot/classImgDefault.png`}
                               alt=""
                             />
                           }
@@ -713,7 +713,7 @@ export default function CourseIndex() {
                           <div className="teacher-head col-auto me-3 px-0">
                             <img
                               className="course-img21"
-                              src={`http://winderland.shop/uploads/course_and_tarot/${course?.teacher_path}`}
+                              src={`https://winderland.shop/uploads/course_and_tarot/${course?.teacher_path}`}
                               alt=""
                             />
 
@@ -781,13 +781,13 @@ export default function CourseIndex() {
                     {showVideo ?
                       <div className={`course-img21 video-radius bg-black`}>
                         <video className={`media-contain`} controls width="300" height="200" id={`courseVideo`} ref={videoRefs} autoPlay>
-                          <source src={`http://winderland.shop/uploads/course_and_tarot/${course?.video_path}`} type="video/mp4" />
+                          <source src={`https://winderland.shop/uploads/course_and_tarot/${course?.video_path}`} type="video/mp4" />
                           Your browser does not support the video tag.
                         </video>
                       </div>
                       :
                       <img className="course-img21"
-                        src={`http://winderland.shop/uploads/course_and_tarot/${course?.class_path}`} alt="" />
+                        src={`https://winderland.shop/uploads/course_and_tarot/${course?.class_path}`} alt="" />
                     }
 
 
@@ -971,7 +971,7 @@ export default function CourseIndex() {
                   <div className="row teacher-sm-introduce my-5 mx-0 px-0">
                     <div className="teacher-head col-auto px-0">
                       <img
-                        src={`http://winderland.shop/uploads/course_and_tarot/${course?.teacher_path}`}
+                        src={`https://winderland.shop/uploads/course_and_tarot/${course?.teacher_path}`}
                         alt=""
                       />
                     </div>
@@ -1335,7 +1335,7 @@ export default function CourseIndex() {
                     }}
                   >
                     <Image
-                      src={`http://winderland.shop/uploads/course_and_tarot/comments-no-result.png`}
+                      src={`https://winderland.shop/uploads/course_and_tarot/comments-no-result.png`}
                       alt="course list no result"
                       layout="responsive"
                       width={370}

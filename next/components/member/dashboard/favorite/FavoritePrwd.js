@@ -14,7 +14,7 @@ export default function FavoritePrwd({ searchResults, searchTerm }) {
 
   const fetchFavoriteProducts = async () => {
     try {
-      const response = await fetch('http://winderland.shop/api/favorites/products', {
+      const response = await fetch('https://winderland.shop/api/favorites/products', {
         method: 'GET',
         credentials: 'include',
       });
@@ -29,7 +29,7 @@ export default function FavoritePrwd({ searchResults, searchTerm }) {
 
   const removeFavorite = async (productId) => {
     try {
-      const response = await fetch(`http://winderland.shop/api/favorites/products/${productId}`, {
+      const response = await fetch(`https://winderland.shop/api/favorites/products/${productId}`, {
         method: 'DELETE',
         credentials: 'include',
       });
@@ -110,7 +110,7 @@ export default function FavoritePrwd({ searchResults, searchTerm }) {
 
 //   const fetchFavoriteProducts = async () => {
 //     try {
-//       const response = await fetch('http://winderland.shop/api/favorites/products', {
+//       const response = await fetch('https://winderland.shop/api/favorites/products', {
 //         method: 'GET',
 //         credentials: 'include',
 //       });

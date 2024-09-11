@@ -21,7 +21,7 @@ export default function Applyevent() {
 
   useEffect(() => {
     // if (useridis) {
-    fetch(`http://winderland.shop/api/article/all`)
+    fetch(`https://winderland.shop/api/article/all`)
       .then((response) => response.json())
       .then((data) => {
         // 處理 articles 資料，將 images 字段轉換為數組
@@ -115,7 +115,7 @@ export default function Applyevent() {
                   <div className={`DetailistBox `}>
                     {/* 照片 */}
                     <img
-                      src={`http://winderland.shop/uploads/article/${art.images[0]}`}
+                      src={`https://winderland.shop/uploads/article/${art.images[0]}`}
                       alt=""
                       className="DetailistBoxPic"
                     />
@@ -169,7 +169,7 @@ export default function Applyevent() {
                             <div className="eventAge">
                               <div className="eventAgeText">
                                 <img
-                                  src={`http://winderland.shop/uploads/article/${image}`}
+                                  src={`https://winderland.shop/uploads/article/${image}`}
                                   style={{
                                     objectFit: "cover",
                                     width: "100%",

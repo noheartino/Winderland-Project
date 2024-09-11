@@ -9,7 +9,7 @@ export default function ArticleComment({ comment, index }) {
         <div className="col-auto">
           {/* 頭像 */}
           <div className="course-comment-icon d-flex justify-content-center align-items-center">
-            <img className={`${styles['course-comment-avatar']}`} src={`http://winderland.shop/images/member/avatar/${comment.user_img}`} alt="" />
+            <img className={`${styles['course-comment-avatar']}`} src={`https://winderland.shop/images/member/avatar/${comment.user_img}`} alt="" />
           </div>
         </div>
         <div className="course-user-comment-section col">
@@ -29,32 +29,32 @@ export default function ArticleComment({ comment, index }) {
             <div className="col-auto stars mt-2 d-flex align-items-center mb-2">
               <i
                 className={`fa-solid fa-star text-light-wine-border ${comment?.rating > 0.5
-                    ? "star-with-score"
-                    : "star-without-score"
+                  ? "star-with-score"
+                  : "star-without-score"
                   }`}
               />
               <i
                 className={`fa-solid fa-star text-light-wine-border ${comment?.rating > 1.5
-                    ? "star-with-score"
-                    : "star-without-score"
+                  ? "star-with-score"
+                  : "star-without-score"
                   }`}
               />
               <i
                 className={`fa-solid fa-star text-light-wine-border ${comment?.rating > 2.5
-                    ? "star-with-score"
-                    : "star-without-score"
+                  ? "star-with-score"
+                  : "star-without-score"
                   }`}
               />
               <i
                 className={`fa-solid fa-star text-light-wine-border ${comment?.rating > 3.5
-                    ? "star-with-score"
-                    : "star-without-score"
+                  ? "star-with-score"
+                  : "star-without-score"
                   }`}
               />
               <i
                 className={`fa-solid fa-star text-light-wine-border ${comment?.rating > 4.5
-                    ? "star-with-score"
-                    : "star-without-score"
+                  ? "star-with-score"
+                  : "star-without-score"
                   }`}
               />
               {/* <span

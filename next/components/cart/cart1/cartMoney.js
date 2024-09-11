@@ -22,7 +22,7 @@ export default function CartMoney({ totalAmount = 0, selectedCoupon, userId, pro
     setIsStockAvailable(true);
 
     try {
-      const response = await fetch(`http://winderland.shop/api/cart/${userId}`);
+      const response = await fetch(`https://winderland.shop/api/cart/${userId}`);
       if (!response.ok) throw new Error('Failed to fetch cart items');
 
       const { items } = await response.json();

@@ -36,7 +36,7 @@ export default function CartMoneyTotal({ userId }) {
         // 獲取最新訂單編號和優惠券折扣
         const fetchOrderDetails = async () => {
             try {
-                const response = await fetch(`http://winderland.shop/api/cart/${userId}`);
+                const response = await fetch(`https://winderland.shop/api/cart/${userId}`);
                 if (!response.ok) {
                     console.error('Failed to fetch:', response.statusText);
                     return;

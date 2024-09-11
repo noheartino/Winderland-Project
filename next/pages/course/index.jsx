@@ -33,7 +33,7 @@ export default function CourseIndex() {
 
   let pageLimit = 8;
   const { search, view, order } = router.query;
-  let apiUrl = `http://winderland.shop/api/course`;
+  let apiUrl = `https://winderland.shop/api/course`;
   const [courses, setCourses] = useState([]);
   const [courseOrigin, setCourseOrigin] = useState([]);
   const [filterCourses, setFilterCourses] = useState([]);
@@ -69,7 +69,7 @@ export default function CourseIndex() {
   const { query } = router;
   if (!search && !view) {
 
-    apiUrl = `http://winderland.shop/api/course`;
+    apiUrl = `https://winderland.shop/api/course`;
     if (userId) {
       apiUrl += `?userId=${userId}`
       if (order) {
@@ -83,7 +83,7 @@ export default function CourseIndex() {
     console.log(apiUrl);
   }
   if (search) {
-    apiUrl = `http://winderland.shop/api/course?search=${search}`;
+    apiUrl = `https://winderland.shop/api/course?search=${search}`;
 
     if (auth.isAuth) {
       apiUrl += `&userId=${userId}`
@@ -94,12 +94,12 @@ export default function CourseIndex() {
       if (order) {
         apiUrl += `&order=${order}`
       } else {
-        apiUrl = `http://winderland.shop/api/course?search=${search}`;
+        apiUrl = `https://winderland.shop/api/course?search=${search}`;
       }
     }
   }
   if (view) {
-    apiUrl = `http://winderland.shop/api/course?view=${view}`;
+    apiUrl = `https://winderland.shop/api/course?view=${view}`;
     if (auth.isAuth) {
       apiUrl += `&userId=${userId}`
       if (order) {
@@ -109,7 +109,7 @@ export default function CourseIndex() {
       if (order) {
         apiUrl += `&order=${order}`
       } else {
-        apiUrl = `http://winderland.shop/api/course?view=${view}`;
+        apiUrl = `https://winderland.shop/api/course?view=${view}`;
       }
     }
   }
@@ -195,7 +195,7 @@ export default function CourseIndex() {
   }, [courses, districts, courseOrigin, auth])
 
   useEffect(() => {
-    apiUrl = `http://winderland.shop/api/course?userId=${userId}`;
+    apiUrl = `https://winderland.shop/api/course?userId=${userId}`;
     router.push({
       pathname: "/course",
       query: {},
@@ -597,7 +597,7 @@ export default function CourseIndex() {
                     }}
                   >
                     <Image
-                      src={`http://winderland.shop/uploads/course_and_tarot/courses-no-result.png`}
+                      src={`https://winderland.shop/uploads/course_and_tarot/courses-no-result.png`}
                       alt="course list no result"
                       layout="responsive"
                       width={370}

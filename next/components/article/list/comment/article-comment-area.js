@@ -17,7 +17,7 @@ export default function ArticleCommentArea({ articleId }) {
     userData && userData.account ? auth.userData.account : "guest";
   const avatarUrl =
     userData && userData.avatar_url
-      ? `http://winderland.shop${auth.userData.avatar_url}`
+      ? `https://winderland.shop${auth.userData.avatar_url}`
       : "/nav-footer/default_user.jpg";
   // console.log(userData)
   const [comments, setComments] = useState([]);
@@ -26,7 +26,7 @@ export default function ArticleCommentArea({ articleId }) {
     try {
       if (articleId) {
         const response = await axios.get(
-          `http://winderland.shop/api/a-comment/${articleId}`,
+          `https://winderland.shop/api/a-comment/${articleId}`,
           {
             params: {
               entity_type: "article",

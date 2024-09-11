@@ -21,7 +21,7 @@ export default function CouponPlusSm({
   const [usedClaimedCoupons, setUsedClaimedCoupons] = useState([]);
   useEffect(() => {
     // 取得所有優惠券的資料
-    fetch("http://winderland.shop/api/coupon")
+    fetch("https://winderland.shop/api/coupon")
       .then((response) => response.json())
       .then((data) => {
         setplusCoupons(data);
@@ -31,7 +31,7 @@ export default function CouponPlusSm({
       });
 
     // 獲取用戶已經領取的優惠券
-    fetch(`http://winderland.shop/api/coupon/${userId}`)
+    fetch(`https://winderland.shop/api/coupon/${userId}`)
       .then((response) => response.json())
       .then((data) => {
         const userCoupons = data.userCoupons;
@@ -93,7 +93,7 @@ export default function CouponPlusSm({
     };
     try {
       const response = await fetch(
-        "http://winderland.shop/api/coupon/save-coupons",
+        "https://winderland.shop/api/coupon/save-coupons",
         {
           method: "POST",
           headers: {
@@ -132,7 +132,7 @@ export default function CouponPlusSm({
         setSelectedCoupons([]); // 清空選擇列表
 
         // 重新 fetch 用戶已經領取的優惠券
-        fetch(`http://winderland.shop/api/coupon/${userId}`)
+        fetch(`https://winderland.shop/api/coupon/${userId}`)
           .then((response) => response.json())
           .then((data) => {
             const userCoupons = data.userCoupons;

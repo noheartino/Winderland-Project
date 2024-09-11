@@ -20,7 +20,7 @@ export default function Applyevent() {
 
   useEffect(() => {
     if (useridis) {
-      fetch(`http://winderland.shop/api/event/list/${useridis}`)
+      fetch(`https://winderland.shop/api/event/list/${useridis}`)
         .then((response) => response.json())
         .then((infodata) => setInfo(infodata))
         .catch((error) => console.error("Error:", error));
@@ -137,7 +137,7 @@ export default function Applyevent() {
                       }`}
                   >
                     <img
-                      src={`http://winderland.shop/uploads/event/${eventdata.event_cover_image}`}
+                      src={`https://winderland.shop/uploads/event/${eventdata.event_cover_image}`}
                       alt=""
                       className="DetailistBoxPic"
                     />
@@ -312,7 +312,7 @@ export default function Applyevent() {
 
 //     useEffect(() => {
 //         if (useridis) {
-//             fetch(`http://winderland.shop/api/event/list/${useridis}`)
+//             fetch(`https://winderland.shop/api/event/list/${useridis}`)
 //                 .then(response => {
 //                     if (!response.ok) {
 //                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -397,7 +397,7 @@ export default function Applyevent() {
 //                                 return (
 //                                     <div className={`eventDetailist ${eventdata.status === 0 ? 'd-none' : ''}`} key={i}>
 //                                         <div className={`DetailistBox ${eventdata.status === 1 ? 'applyEnd' : ''}`}>
-//                                             <img src={`http://winderland.shop/uploads/${eventdata.event_cover_image}`} alt="" className="DetailistBoxPic" />
+//                                             <img src={`https://winderland.shop/uploads/${eventdata.event_cover_image}`} alt="" className="DetailistBoxPic" />
 //                                             <div className="DetailistBoxT">
 //                                                 <div className="DetailistBoxTitle">
 //                                                     <div className={`Eventstatus`}>{eventdata.status === 1 ? '報名已截止' : '開放報名中'}</div>

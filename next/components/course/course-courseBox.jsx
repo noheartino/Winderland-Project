@@ -38,8 +38,8 @@ export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage
     console.log(myBox);
 
     const imagePath = myBox?.class_path ?
-        `http://winderland.shop/uploads/course_and_tarot/${myBox.class_path}` :
-        `http://winderland.shop/uploads/course_and_tarot/classImgDefault.png`;
+        `https://winderland.shop/uploads/course_and_tarot/${myBox.class_path}` :
+        `https://winderland.shop/uploads/course_and_tarot/classImgDefault.png`;
     return (
         <>
             <div className={`course-leftcontent col-12 col-md-8 h-100 px-0 cursor-pointer ${myBox ? 'd-flex' : 'd-none'} flex-column justify-content-between`} onClick={handleHref} title={`${myBox?.name}`}>

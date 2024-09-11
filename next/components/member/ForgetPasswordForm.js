@@ -39,7 +39,7 @@ export default function ForgetPasswordForm() {
         e.preventDefault()
         setError('') // 清除之前的錯誤信息
         try {
-            const response = await fetch('http://winderland.shop/api/member/forget-password', {
+            const response = await fetch('https://winderland.shop/api/member/forget-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -22,7 +22,7 @@ export function ProductProvider({ children }) {
       const fetchProduct = async () => {
         try {
           setLoading(true);
-          const response = await axios.get(`http://winderland.shop/api/product/${pid}`)
+          const response = await axios.get(`https://winderland.shop/api/product/${pid}`)
           setProduct(response.data);
           if (response.data.details) {
             setDetail(response.data.details[0]);

@@ -152,7 +152,7 @@ export default function CartPay({
 
           if (selectedPayment === "productpay") {
             response = await axios.post(
-              "http://winderland.shop/api/cart/cashOnDelivery",
+              "https://winderland.shop/api/cart/cashOnDelivery",
               {
                 userId,
                 pointsUsed,
@@ -180,12 +180,12 @@ export default function CartPay({
                 cancelButtonText: "取消",
               }).then((result) => {
                 if (result.isConfirmed) {
-                  window.location.href = `http://winderland.shop/api/ecpay-test-only?amount=${discountedAmount}`;
+                  window.location.href = `https://winderland.shop/api/ecpay-test-only?amount=${discountedAmount}`;
                 }
               });
             };
             response = await axios.post(
-              "http://winderland.shop/api/cart/creditCardPayment",
+              "https://winderland.shop/api/cart/creditCardPayment",
               {
                 userId,
                 pointsUsed,

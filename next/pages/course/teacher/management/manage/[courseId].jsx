@@ -31,7 +31,7 @@ export default function ClassManIndex() {
   const [originClassV, setOriginClassV] = useState([])
   const [originClassImg, setriginClassImg] = useState([])
   useEffect(() => {
-    fetch(`http://winderland.shop/api/course/teacher/management/getOriginV/${courseId}`)
+    fetch(`https://winderland.shop/api/course/teacher/management/getOriginV/${courseId}`)
       .then(response => response.json())
       .then((data) => {
         const { originClassV, originClassImg } = data
@@ -59,7 +59,7 @@ export default function ClassManIndex() {
   const [classSalePrice, setClassSalePrice] = useState(null)
   const [classSummary, setClassSummary] = useState(null)
   const [classIntro, setClassIntro] = useState(null)
-  const [Cimage, setCImage] = useState(`http://winderland.shop/uploads/course_and_tarot/classImgDefault.png`)
+  const [Cimage, setCImage] = useState(`https://winderland.shop/uploads/course_and_tarot/classImgDefault.png`)
   const [Cvideo, setCvideo] = useState(null)
 
   // 實體課程欄位的狀態設定為空值
@@ -94,8 +94,8 @@ export default function ClassManIndex() {
     setClassSalePrice(originClassV?.sale_price)// id='classSalePrice' 初始值
     setClassSummary(originClassV?.class_summary)// id='classSummary' 初始值
     setClassIntro(originClassV?.description)// id='classIntro' 初始值
-    setCImage(!originClassImg.imgPath ? `http://winderland.shop/uploads/course_and_tarot/classImgDefault.png` : `http://winderland.shop/uploads/course_and_tarot/${originClassImg?.imgPath}`) // 設定圖片預覽預設值
-    setCvideo(!originClassImg.vdioPath ? null : `http://winderland.shop/uploads/course_and_tarot/${originClassImg?.vdioPath}`) // 設定影片預設值
+    setCImage(!originClassImg.imgPath ? `https://winderland.shop/uploads/course_and_tarot/classImgDefault.png` : `https://winderland.shop/uploads/course_and_tarot/${originClassImg?.imgPath}`) // 設定圖片預覽預設值
+    setCvideo(!originClassImg.vdioPath ? null : `https://winderland.shop/uploads/course_and_tarot/${originClassImg?.vdioPath}`) // 設定影片預設值
 
     // const file = document.getElementById('classPic').files[0]; // 获取第一个文件
     // if (file) {
@@ -216,7 +216,7 @@ export default function ClassManIndex() {
   // 抓取所有教師資料
   const [teachers, setTeachers] = useState([])
   useEffect(() => {
-    fetch(`http://winderland.shop/api/course/teacher/management/getTeacherData`)
+    fetch(`https://winderland.shop/api/course/teacher/management/getTeacherData`)
       .then(response => response.json())
       .then((data) => {
         const { teachers } = data
@@ -438,7 +438,7 @@ export default function ClassManIndex() {
   function handleReset() {
     clearIsEmpty();
     // setOnOrUnderline('')
-    // setCImage('http://winderland.shop/uploads/course_and_tarot/classImgDefault.png')
+    // setCImage('https://winderland.shop/uploads/course_and_tarot/classImgDefault.png')
     // setCvideo('')
     setRemindMsgBox({})
     setErrorMsgBox({})
@@ -646,7 +646,7 @@ export default function ClassManIndex() {
     try {
       const editCourse = async () => {
         try {
-          const response = await fetch(`http://winderland.shop/api/course/teacher/management/${courseId}`, {
+          const response = await fetch(`https://winderland.shop/api/course/teacher/management/${courseId}`, {
             method: 'PUT',
             body: formData,
             credentials: 'include',

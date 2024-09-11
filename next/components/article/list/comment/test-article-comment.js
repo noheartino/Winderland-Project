@@ -14,11 +14,11 @@ export default function TestArticleComment({ articleId, userId, account, onComme
   // 頭像
   useEffect(() => {
     // 抓取頭像 URL
-    fetch(`http://winderland.shop/api/dashboard/profile/avatar/${userId}`)
+    fetch(`https://winderland.shop/api/dashboard/profile/avatar/${userId}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success" && data.data.avatar_url) {
-          setAvatarUrl(`http://winderland.shop${data.data.avatar_url}`);
+          setAvatarUrl(`https://winderland.shop${data.data.avatar_url}`);
         } else {
           setAvatarUrl("/nav-footer/default_user.jpg"); // 使用預設頭像
         }
@@ -44,7 +44,7 @@ export default function TestArticleComment({ articleId, userId, account, onComme
     try {
       const entityType = "article";
       const response = await fetch(
-        `http://winderland.shop/api/a-comment/${articleId}`,
+        `https://winderland.shop/api/a-comment/${articleId}`,
         {
           method: "POST",
           headers: {

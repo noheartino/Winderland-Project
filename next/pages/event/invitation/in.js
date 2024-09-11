@@ -18,7 +18,7 @@ export default function Applyevent() {
 
   useEffect(() => {
     if (useridis) {
-      fetch(`http://winderland.shop/api/event/invitation/${useridis}`)
+      fetch(`https://winderland.shop/api/event/invitation/${useridis}`)
         .then((response) => response.json())
         .then((infodata) => setInfo(infodata))
         .catch((error) => console.error("Error:", error));
@@ -51,7 +51,7 @@ export default function Applyevent() {
           <div className="eventCardOuter">
             <img
               className="eventCardPic"
-              src={`http://winderland.shop/uploads/event/${allinvitation.event_cover_image}`}
+              src={`https://winderland.shop/uploads/event/${allinvitation.event_cover_image}`}
               alt=""
             ></img>
             <div className="eventCardInfo">

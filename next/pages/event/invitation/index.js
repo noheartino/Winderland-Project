@@ -41,7 +41,7 @@ export default function Applyevent() {
   const handleSendEmail = async () => {
     try {
       // 發送請求到 Express API
-      const url = new URL('http://winderland.shop/api/invitation/send');
+      const url = new URL('https://winderland.shop/api/invitation/send');
       url.searchParams.append('event_name', allinvitation.event_name);
       url.searchParams.append('event_date', allinvitation.event_date);
       url.searchParams.append('name', allinvitation.neckname);
@@ -68,7 +68,7 @@ export default function Applyevent() {
 
   useEffect(() => {
     if (useridis) {
-      fetch(`http://winderland.shop/api/event/invitation/${useridis}`)
+      fetch(`https://winderland.shop/api/event/invitation/${useridis}`)
         .then((response) => response.json())
         .then((infodata) => setInfo(infodata))
         .catch((error) => console.error("Error:", error));
@@ -117,7 +117,7 @@ export default function Applyevent() {
           <div className="eventCardOuter">
             <img
               className="eventCardPic"
-              src={`http://winderland.shop/uploads/event/${allinvitation.event_cover_image}`}
+              src={`https://winderland.shop/uploads/event/${allinvitation.event_cover_image}`}
               alt=""
             ></img>
             <div className="eventCardInfo">
@@ -185,7 +185,7 @@ export default function Applyevent() {
           <div className="eventCardOuterR">
             <img
               className="eventCardPicR"
-              src={`http://winderland.shop/uploads/event/${allinvitation.event_cover_image}`}
+              src={`https://winderland.shop/uploads/event/${allinvitation.event_cover_image}`}
               alt=""
             />
             <div className="eventCardInfoR">

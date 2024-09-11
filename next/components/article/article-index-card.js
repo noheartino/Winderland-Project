@@ -18,7 +18,7 @@ export default function ArticleIndexCard({ article }) {
           <div className="a-box-img">
             {article.images.length > 0 ? (
               <img
-                src={`http://winderland.shop/uploads/article/${article.images[0]}`}
+                src={`https://winderland.shop/uploads/article/${article.images[0]}`}
                 alt="Article Image"
               />
             ) : (

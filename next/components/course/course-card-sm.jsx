@@ -24,9 +24,9 @@ export default function CourseCardSm({ userId, course, averageRating, classAssig
   const [myCoursesId, setMyCoursesId] = useState([])
   useEffect(() => {
     if (userId) {
-      fetch(`http://winderland.shop/api/course/mycourses/${userId}`)
+      fetch(`https://winderland.shop/api/course/mycourses/${userId}`)
         .then((response) => {
-          console.log("送出fetch，URL=" + `http://winderland.shop/api/course/mycourses/${userId}`);
+          console.log("送出fetch，URL=" + `https://winderland.shop/api/course/mycourses/${userId}`);
           if (!response.ok) {
             throw new Error("Network response not ok");
           }
@@ -53,8 +53,8 @@ export default function CourseCardSm({ userId, course, averageRating, classAssig
   }, [myCourses])
 
   const imagePath = class_path ?
-    `http://winderland.shop/uploads/course_and_tarot/${class_path}` :
-    `http://winderland.shop/uploads/course_and_tarot/classImgDefault.png`;
+    `https://winderland.shop/uploads/course_and_tarot/${class_path}` :
+    `https://winderland.shop/uploads/course_and_tarot/classImgDefault.png`;
   return (
     <>
       <div className="d-flex flex-column align-items-center justify-content-between cursor-pointer">
@@ -128,32 +128,32 @@ export default function CourseCardSm({ userId, course, averageRating, classAssig
               >
                 <i
                   className={`fa-solid fa-star ${averageRating > 0.5
-                      ? "star-with-score"
-                      : "star-without-score"
+                    ? "star-with-score"
+                    : "star-without-score"
                     }`}
                 />
                 <i
                   className={`fa-solid fa-star ${averageRating > 1.5
-                      ? "star-with-score"
-                      : "star-without-score"
+                    ? "star-with-score"
+                    : "star-without-score"
                     }`}
                 />
                 <i
                   className={`fa-solid fa-star ${averageRating > 2.5
-                      ? "star-with-score"
-                      : "star-without-score"
+                    ? "star-with-score"
+                    : "star-without-score"
                     }`}
                 />
                 <i
                   className={`fa-solid fa-star ${averageRating > 3.5
-                      ? "star-with-score"
-                      : "star-without-score"
+                    ? "star-with-score"
+                    : "star-without-score"
                     }`}
                 />
                 <i
                   className={`fa-solid fa-star ${averageRating > 4.5
-                      ? "star-with-score"
-                      : "star-without-score"
+                    ? "star-with-score"
+                    : "star-without-score"
                     }`}
                 />
                 <span

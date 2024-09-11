@@ -80,7 +80,7 @@ export default function DashboardCoupon() {
 
         // 然後使用 memberLevelId 來獲取會員等級信息
         const response = await axios.get(
-          `http://winderland.shop/api/member/membership-info/${memberLevelId}`
+          `https://winderland.shop/api/member/membership-info/${memberLevelId}`
         );
 
         if (response.data.status === "success") {
@@ -113,7 +113,7 @@ export default function DashboardCoupon() {
   // 獲取全部優惠券(領取優惠券使用)
   useEffect(() => {
     // 使用 fetch 從後端 API 獲取資料
-    fetch("http://winderland.shop/api/coupon")
+    fetch("https://winderland.shop/api/coupon")
       .then((response) => response.json())
       .then((data) => {
         setCoupons(data); // 將資料儲存在狀態中
@@ -125,7 +125,7 @@ export default function DashboardCoupon() {
 
   // 會員擁有的資料取用
   useEffect(() => {
-    fetch(`http://winderland.shop/api/coupon/${userData.userId}`)
+    fetch(`https://winderland.shop/api/coupon/${userData.userId}`)
       .then((response) => response.json())
       .then((data) => {
         // 全部
@@ -186,7 +186,7 @@ export default function DashboardCoupon() {
     const fetchMemberLevel = async () => {
       try {
         const response = await fetch(
-          "http://winderland.shop/api/coupon/member-level",
+          "https://winderland.shop/api/coupon/member-level",
           {
             method: "POST",
             headers: {

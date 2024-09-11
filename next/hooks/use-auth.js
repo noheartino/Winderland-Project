@@ -45,7 +45,7 @@ export function AuthProvider({ children }) {
   const checkAuth = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('http://winderland.shop/api/member/auth-status', {
+      const response = await fetch('https://winderland.shop/api/member/auth-status', {
         method: 'GET',
         credentials: 'include',
       })
@@ -94,7 +94,7 @@ export function AuthProvider({ children }) {
   // @ 登入
   const login = async (account, password, rememberMe) => {
     try {
-      const response = await fetch('http://winderland.shop/api/member/login', {
+      const response = await fetch('https://winderland.shop/api/member/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ export function AuthProvider({ children }) {
 
       if (response.ok && data.status === 'success' && data.data && data.data.user) {
         // 登錄成功後，立即獲取完整的用戶資料
-        const profileResponse = await fetch('http://winderland.shop/api/dashboard/profile', {
+        const profileResponse = await fetch('https://winderland.shop/api/dashboard/profile', {
           method: 'GET',
           credentials: 'include',
         });
@@ -146,7 +146,7 @@ export function AuthProvider({ children }) {
   // @ 登出
   const logout = async () => {
     try {
-      const response = await fetch('http://winderland.shop/api/member/logout', {
+      const response = await fetch('https://winderland.shop/api/member/logout', {
         method: 'POST',
         credentials: 'include',
       })
@@ -184,7 +184,7 @@ export function AuthProvider({ children }) {
   const updateUserInfo = async (updatedData) => {
     try {
       // console.log('Sending update request with data:', updatedData);
-      const response = await fetch('http://winderland.shop/api/dashboard/profile/update', {
+      const response = await fetch('https://winderland.shop/api/dashboard/profile/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -226,7 +226,7 @@ export function AuthProvider({ children }) {
       const user = providerData
 
       // 向後端發送 Google 用戶資訊
-      const response = await fetch('http://winderland.shop/api/google-login', {
+      const response = await fetch('https://winderland.shop/api/google-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

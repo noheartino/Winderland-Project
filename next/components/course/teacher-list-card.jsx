@@ -6,7 +6,7 @@ export default function TeacherListCard({ teacher, teacherScore }) {
     <>
       <div className="row flex-row flex-md-column align-items-center justify-content-center bg-light-gray shadow rounded-4 py-4 px-10px mx-0 flex-nowrap">
         <div className="teacher-head col-auto px-0 mb-2">
-          <img src={`http://winderland.shop/uploads/course_and_tarot/${teacher?.teacher_path}`} alt="" />
+          <img src={`https://winderland.shop/uploads/course_and_tarot/${teacher?.teacher_path}`} alt="" />
         </div>
         <div className="teacher-text-box col px-10px d-flex flex-column justify-content-center align-items-center">
           <div className="d-flex flex-column justify-content-center align-items-center my-1" style={{ minHeight: "52px" }}>

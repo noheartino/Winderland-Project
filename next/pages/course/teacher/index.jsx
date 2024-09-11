@@ -11,7 +11,7 @@ import { useAuth } from "@/hooks/use-auth";
 
 export default function TeacherIndex() {
   const router = useRouter()
-  let apiUrl = `http://winderland.shop/api/course/teacher`
+  let apiUrl = `https://winderland.shop/api/course/teacher`
   const { searchT } = router.query
   const [comments, setComments] = useState([])
   const [teachers, setTeachers] = useState([])
@@ -87,9 +87,9 @@ export default function TeacherIndex() {
 
   useEffect(() => {
     if (searchT) {
-      apiUrl = `http://winderland.shop/api/course/teacher?searchT=${searchTerm}`
+      apiUrl = `https://winderland.shop/api/course/teacher?searchT=${searchTerm}`
     } else {
-      apiUrl = `http://winderland.shop/api/course/teacher`
+      apiUrl = `https://winderland.shop/api/course/teacher`
     }
     fetch(apiUrl)
       .then((response) => {
@@ -194,7 +194,7 @@ export default function TeacherIndex() {
                           })
                           : <div className="row justify-content-center my-3">
                             <div className="col-auto" style={{ maxWidth: '370px', maxHeight: '350px', width: '100%' }}>
-                              <Image src={`http://winderland.shop/uploads/course_and_tarot/courses-no-result.png`} alt="course list no result" layout="responsive" width={370} height={350} style={{ width: '100%', height: 'auto', maxWidth: '100%', maxHeight: '100%' }} />
+                              <Image src={`https://winderland.shop/uploads/course_and_tarot/courses-no-result.png`} alt="course list no result" layout="responsive" width={370} height={350} style={{ width: '100%', height: 'auto', maxWidth: '100%', maxHeight: '100%' }} />
                             </div>
                           </div>}
                         {/* teacher-list-card end */}

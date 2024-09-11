@@ -50,7 +50,7 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
 
     try {
       const response = await fetch(
-        `http://winderland.shop/api/a-comment/${commentId}?entity_type=${encodeURIComponent(
+        `https://winderland.shop/api/a-comment/${commentId}?entity_type=${encodeURIComponent(
           entityType
         )}`,
         {
@@ -129,7 +129,7 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
 
     try {
       const response = await fetch(
-        `http://winderland.shop/api/a-comment/${commentId}?entity_type=${encodeURIComponent(
+        `https://winderland.shop/api/a-comment/${commentId}?entity_type=${encodeURIComponent(
           entityType
         )}`,
         {
@@ -174,11 +174,11 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
           <div className="col-auto">
             {/* 桌機icon */}
             <div className="au-icon d-none d-lg-flex">
-              <img className="m-0" src={`http://winderland.shop/images/member/avatar/${comment.user_avatar}`} />
+              <img className="m-0" src={`https://winderland.shop/images/member/avatar/${comment.user_avatar}`} />
             </div>
             {/* 手機icon */}
             <div className="au-icon-sm d-lg-none">
-              <img className="m-0" src={`http://winderland.shop/images/member/avatar/${comment.user_avatar}`} />
+              <img className="m-0" src={`https://winderland.shop/images/member/avatar/${comment.user_avatar}`} />
             </div>
           </div>
           <div className="aucomment-section col">

@@ -19,7 +19,7 @@ export default function OrderCardDetail({ orderUuid }) {
       try {
         setIsLoading(true)
         const token = localStorage.getItem('token')
-        const response = await fetch(`http://winderland.shop/api/orders/history/${orderUuid}`, {
+        const response = await fetch(`https://winderland.shop/api/orders/history/${orderUuid}`, {
           credentials: 'include',
           headers: {
             'Authorization': `Bearer ${token}`

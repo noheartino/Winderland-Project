@@ -21,7 +21,7 @@ export default function FavoriteC() {
   // @ 獲取收藏課程
   const fetchFavoriteCourses = async () => {
     try {
-      const response = await fetch('http://winderland.shop/api/favorites/courses', {
+      const response = await fetch('https://winderland.shop/api/favorites/courses', {
         method: 'GET',
         credentials: 'include',
       });
@@ -37,7 +37,7 @@ export default function FavoriteC() {
   // @ 移除收藏課程
   const removeFavorite = async (classId) => {
     try {
-      const response = await fetch(`http://winderland.shop/api/favorites/courses/${classId}`, {
+      const response = await fetch(`https://winderland.shop/api/favorites/courses/${classId}`, {
         method: 'DELETE',
         credentials: 'include',
       })
@@ -64,7 +64,7 @@ export default function FavoriteC() {
 
               <div className="favorite-c-img">
                 <Image
-                  src={course.image_path ? `http://winderland.shop/uploads/course_and_tarot/${course.image_path}` : "/images/member/fav-c1.jpg"}
+                  src={course.image_path ? `https://winderland.shop/uploads/course_and_tarot/${course.image_path}` : "/images/member/fav-c1.jpg"}
                   alt={course.class_name}
                   width={265}
                   height={165}

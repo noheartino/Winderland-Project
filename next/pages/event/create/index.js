@@ -31,7 +31,7 @@
 //     };
 
 //     useEffect(() => {
-//         fetch(`http://winderland.shop/api/event-cin`)
+//         fetch(`https://winderland.shop/api/event-cin`)
 //             .then(response => response.json())
 //             .then(infodata => setInfo(infodata))
 //             .catch(error => console.error('Error:', error));
@@ -76,7 +76,7 @@
 
 //                 <div className="eventCreateWrite">
 //                     <div className="container">
-//                         <form action="http://winderland.shop/api/event-cin" method="post" encType="multipart/form-data">
+//                         <form action="https://winderland.shop/api/event-cin" method="post" encType="multipart/form-data">
 //                             <div className="row">
 //                                 <div className="col-12 col-lg-8">
 //                                     <div className="row gx-2 gx-lg-4">
@@ -354,7 +354,7 @@ export default function Applyevent() {
   };
 
   useEffect(() => {
-    fetch("http://winderland.shop/api/event-create")
+    fetch("https://winderland.shop/api/event-create")
       .then((response) => response.json())
       .then((infodata) => setInfo(infodata))
       .catch((error) => console.error("Error:", error));
@@ -382,13 +382,13 @@ export default function Applyevent() {
     }
 
     try {
-      const response = await fetch("http://winderland.shop/api/event-create", {
+      const response = await fetch("https://winderland.shop/api/event-create", {
         method: "POST",
         body: data,
       });
       if (response.ok) {
-        router.push("http://winderland.shop/event/list");
-        // window.location.href = 'http://winderland.shop/event/list'
+        router.push("https://winderland.shop/event/list");
+        // window.location.href = 'https://winderland.shop/event/list'
         console.log("Redirecting to /event/list");
       } else {
         throw new Error("Failed to create event");

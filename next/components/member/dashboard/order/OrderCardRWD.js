@@ -34,7 +34,7 @@ export default function OrderCardRWD({ order }) {
   const imagePath = order.firstItemImage
     ? (order.firstItemType === 'product'
       ? `/images/product/${order.firstItemImage}`
-      : `http://winderland.shop/uploads/course_and_tarot/${order.firstItemImage}`)
+      : `https://winderland.shop/uploads/course_and_tarot/${order.firstItemImage}`)
     : '/images/default-order-image.png';
 
   return (

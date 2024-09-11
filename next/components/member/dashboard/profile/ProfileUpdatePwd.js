@@ -37,7 +37,7 @@ export default function ProfileUpdatePwd() {
     }
 
     try {
-      const response = await fetch('http://winderland.shop/api/dashboard/profile/password', {
+      const response = await fetch('https://winderland.shop/api/dashboard/profile/password', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

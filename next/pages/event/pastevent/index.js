@@ -20,7 +20,7 @@ export default function Applyevent() {
 
   useEffect(() => {
     if (useridis) {
-      fetch(`http://winderland.shop/api/event/list/${useridis}`)
+      fetch(`https://winderland.shop/api/event/list/${useridis}`)
         .then((response) => response.json())
         .then((infodata) => setInfo(infodata))
         .catch((error) => console.error("Error:", error));
@@ -152,7 +152,7 @@ export default function Applyevent() {
                       }`}
                   >
                     <img
-                      src={`http://winderland.shop/uploads/event/${eventdata.event_cover_image}`}
+                      src={`https://winderland.shop/uploads/event/${eventdata.event_cover_image}`}
                       alt=""
                       className="DetailistBoxPic"
                     />

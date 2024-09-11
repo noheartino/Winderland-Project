@@ -12,7 +12,7 @@ export default function ArticleListNav({ article }) {
 
   const checkBookmarkStatus = async () => {
     try {
-      const response = await fetch('http://winderland.shop/api/favorites/articles', {
+      const response = await fetch('https://winderland.shop/api/favorites/articles', {
         method: 'GET',
         credentials: 'include',
       });
@@ -27,7 +27,7 @@ export default function ArticleListNav({ article }) {
 
   const toggleBookmark = async () => {
     try {
-      const url = `http://winderland.shop/api/favorites/articles/${article.id}`;
+      const url = `https://winderland.shop/api/favorites/articles/${article.id}`;
       const method = isBookmarked ? 'DELETE' : 'POST';
 
       const response = await fetch(url, {
@@ -102,7 +102,7 @@ export default function ArticleListNav({ article }) {
       <h1 className="aid-title d-lg-none">{article.title}</h1>
       <div className="aid-pic d-lg-none my-4">
         <Image
-          src={`http://winderland.shop/uploads/article/${article.images[0]}`}
+          src={`https://winderland.shop/uploads/article/${article.images[0]}`}
           alt={`${article.images[0]}`}
           width={100}
           height={100}

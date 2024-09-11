@@ -142,7 +142,7 @@ export default function CartCheckout2() {
   };
 
   const goTo1 = () => {
-    router.push("http://winderland.shop/cart/cartCheckout1");
+    router.push("https://winderland.shop/cart/cartCheckout1");
   };
 
   return (

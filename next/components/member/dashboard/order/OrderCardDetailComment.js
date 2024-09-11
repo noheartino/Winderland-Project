@@ -20,7 +20,7 @@ export default function OrderCardDetailComment({ orderUuid, orderStatus }) {
     // const fetchCommentableItems = async () => {
     //     try {
     //         setIsLoading(true);
-    //         const response = await fetch(`http://winderland.shop/api/orders/commentable-items/${orderUuid}`, {
+    //         const response = await fetch(`https://winderland.shop/api/orders/commentable-items/${orderUuid}`, {
     //             credentials: 'include',
     //         });
 
@@ -66,7 +66,7 @@ export default function OrderCardDetailComment({ orderUuid, orderStatus }) {
     const fetchCommentableItems = async () => {
         try {
             setIsLoading(true);
-            const response = await fetch(`http://winderland.shop/api/orders/commentable-items/${orderUuid}`, {
+            const response = await fetch(`https://winderland.shop/api/orders/commentable-items/${orderUuid}`, {
                 credentials: 'include',
             });
 
@@ -142,7 +142,7 @@ export default function OrderCardDetailComment({ orderUuid, orderStatus }) {
         if (submittedComments[itemId]) return;
 
         try {
-            const response = await fetch('http://winderland.shop/api/orders/submit-comment', {
+            const response = await fetch('https://winderland.shop/api/orders/submit-comment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

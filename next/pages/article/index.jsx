@@ -32,7 +32,7 @@ export default function Index() {
   console.log(category)
   useEffect(() => {
     const fetchArticles = () => {
-      fetch(`http://winderland.shop/api/article?sortOrder=${sortOrder}`)
+      fetch(`https://winderland.shop/api/article?sortOrder=${sortOrder}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response not ok");

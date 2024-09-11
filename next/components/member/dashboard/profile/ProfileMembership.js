@@ -9,7 +9,7 @@ export default function ProfileMembership() {
   useEffect(() => {
     const fetchMembershipInfo = async () => {
       try {
-        const response = await fetch(`http://winderland.shop/api/member/membership-info/${auth.userData.member_level_id}`, {
+        const response = await fetch(`https://winderland.shop/api/member/membership-info/${auth.userData.member_level_id}`, {
           method: 'GET',
           credentials: 'include',
         });

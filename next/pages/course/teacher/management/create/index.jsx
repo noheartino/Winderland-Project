@@ -30,7 +30,7 @@ export default function ClassManIndex() {
   // 抓取所有教師資料
   const [teachers, setTeachers] = useState([])
   useEffect(() => {
-    fetch(`http://winderland.shop/api/course/teacher/management/getTeacherData`)
+    fetch(`https://winderland.shop/api/course/teacher/management/getTeacherData`)
       .then(response => response.json())
       .then((data) => {
         const { teachers } = data
@@ -42,7 +42,7 @@ export default function ClassManIndex() {
 
 
   // 選擇上傳圖片
-  const [Cimage, setCImage] = useState('http://winderland.shop/uploads/course_and_tarot/classImgDefault.png');
+  const [Cimage, setCImage] = useState('https://winderland.shop/uploads/course_and_tarot/classImgDefault.png');
   const handleImageUpload = (event) => {
     const file = event.target.files[0]; // 獲取選中的文件
     if (file) {
@@ -306,7 +306,7 @@ export default function ClassManIndex() {
     document.querySelector('#classIntroWordNum').textContent = 0;
     clearIsEmpty();
     setOnOrUnderline('')
-    setCImage('http://winderland.shop/uploads/course_and_tarot/classImgDefault.png')
+    setCImage('https://winderland.shop/uploads/course_and_tarot/classImgDefault.png')
     setCvideo('')
     setRemindMsgBox({})
     setErrorMsgBox({})
@@ -512,7 +512,7 @@ export default function ClassManIndex() {
     try {
       const createCourse = async () => {
         try {
-          const response = await fetch('http://winderland.shop/api/course/teacher/management/create', {
+          const response = await fetch('https://winderland.shop/api/course/teacher/management/create', {
             method: 'POST',
             body: formData,
             credentials: 'include',
@@ -810,7 +810,7 @@ export default function ClassManIndex() {
                     </div>
                     <div className={`col-auto spac-1 d-flex cursor-pointer emmit2 px-0 mx-0`} style={{ color: 'transparent' }} onClick={handleQuickFill}>快速填入</div>
                   </div>
-                  <img src={Cimage.trim().length > 0 ? Cimage : 'http://winderland.shop/uploads/course_and_tarot/classImgDefault.png'} alt='' className='Cprevpic' />
+                  <img src={Cimage.trim().length > 0 ? Cimage : 'https://winderland.shop/uploads/course_and_tarot/classImgDefault.png'} alt='' className='Cprevpic' />
                   {/* <input
                     className='form-control vidAndImg-input'
                     type='file'

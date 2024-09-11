@@ -104,7 +104,7 @@ export default function ResetPasswordForm() {
 
 
     try {
-      const response = await fetch('http://winderland.shop/api/member/reset-password', {
+      const response = await fetch('https://winderland.shop/api/member/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -37,7 +37,7 @@ export default function ArticleListHeader({ article }) {
         <h1 className="aid-title my-5">{article.title}</h1>
         <div className="aid-pic my-4">
           <Image
-            src={`http://winderland.shop/uploads/article/${article.images[0]}`} // 必須是public資料夾裡的相對路徑
+            src={`https://winderland.shop/uploads/article/${article.images[0]}`} // 必須是public資料夾裡的相對路徑
             alt="Description of image"
             width={100} // 圖像寬度（必需）
             height={100} // 圖像高度（必需）

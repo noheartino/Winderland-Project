@@ -25,7 +25,7 @@ export default function ArticleIndexList({ Article, sortOrder, categorySM, dateF
   const [totalPages, setTotalPages] = useState(0); // 新增 totalPages 的 state
 
   useEffect(() => {
-    const apiUrl = new URL("http://winderland.shop/api/article");
+    const apiUrl = new URL("https://winderland.shop/api/article");
 
     if (search) {
       apiUrl.searchParams.append("search", search);
@@ -78,7 +78,7 @@ export default function ArticleIndexList({ Article, sortOrder, categorySM, dateF
   const [isHovered, setIsHovered] = useState(false);
   const backgroundImage =
     Article?.images.length > 0
-      ? `url(http://winderland.shop/uploads/article/${Article.images[0]})`
+      ? `url(https://winderland.shop/uploads/article/${Article.images[0]})`
       : `url(/images/article/titlePic.jpeg)`;
   // 導向某篇文章
   const handleLink = () => {
