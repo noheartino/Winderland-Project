@@ -22,17 +22,17 @@ export default function Index() {
   const myname = UserData ? UserData.account : "";
   const [articles, setArticles] = useState([]);
   const [articleHead, setArticleHead] = useState(null);
-  
+
   const [sortOrder, setSortOrder] = useState("");
   const [category, setCategory] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-console.log(category)
+  console.log(category)
   useEffect(() => {
     const fetchArticles = () => {
-      fetch(`http://localhost:3005/api/article?sortOrder=${sortOrder}`)
+      fetch(`http://winderland.shop/api/article?sortOrder=${sortOrder}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response not ok");
@@ -134,7 +134,7 @@ console.log(category)
               setStartDate={setStartDate}
               setEndDate={setEndDate}
             />
-            
+
             {/* 管理文章按鈕 */}
             {/* 只在 myname 為 'Admin' 時顯示按鈕 */}
             {myname === "Admin" && (

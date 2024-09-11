@@ -45,9 +45,9 @@ export function AuthProvider({ children }) {
   const checkAuth = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('http://localhost:3005/api/member/auth-status', {
+      const response = await fetch('http://winderland.shop/api/member/auth-status', {
         method: 'GET',
-        credentials: 'include', 
+        credentials: 'include',
       })
       if (response.ok) {
         const { status, data } = await response.json();
@@ -61,8 +61,8 @@ export function AuthProvider({ children }) {
               gender: data.user.gender || '',
               birthday: data.user.birthday || '',
               member_level_id: data.user.member_level_id || '',
-              phone: data.user.phone || '',  
-              address: data.user.address || '',  
+              phone: data.user.phone || '',
+              address: data.user.address || '',
               // 頭像維持修正
               avatar_url: data.user.avatar_url ? `${data.user.avatar_url}?t=${new Date().getTime()}` : '/images/member/avatar/default-avatar.jpg',
             },
@@ -94,7 +94,7 @@ export function AuthProvider({ children }) {
   // @ 登入
   const login = async (account, password, rememberMe) => {
     try {
-      const response = await fetch('http://localhost:3005/api/member/login', {
+      const response = await fetch('http://winderland.shop/api/member/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ export function AuthProvider({ children }) {
 
       if (response.ok && data.status === 'success' && data.data && data.data.user) {
         // 登錄成功後，立即獲取完整的用戶資料
-        const profileResponse = await fetch('http://localhost:3005/api/dashboard/profile', {
+        const profileResponse = await fetch('http://winderland.shop/api/dashboard/profile', {
           method: 'GET',
           credentials: 'include',
         });
@@ -146,7 +146,7 @@ export function AuthProvider({ children }) {
   // @ 登出
   const logout = async () => {
     try {
-      const response = await fetch('http://localhost:3005/api/member/logout', {
+      const response = await fetch('http://winderland.shop/api/member/logout', {
         method: 'POST',
         credentials: 'include',
       })
@@ -184,7 +184,7 @@ export function AuthProvider({ children }) {
   const updateUserInfo = async (updatedData) => {
     try {
       // console.log('Sending update request with data:', updatedData);
-      const response = await fetch('http://localhost:3005/api/dashboard/profile/update', {
+      const response = await fetch('http://winderland.shop/api/dashboard/profile/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -226,13 +226,13 @@ export function AuthProvider({ children }) {
       const user = providerData
 
       // 向後端發送 Google 用戶資訊
-      const response = await fetch('http://localhost:3005/api/google-login', {
+      const response = await fetch('http://winderland.shop/api/google-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          providerId:"google.com",
+          providerId: "google.com",
           displayName: user.displayName,
           email: user.email,
           uid: user.uid,
@@ -255,7 +255,7 @@ export function AuthProvider({ children }) {
         });
         router.push('/');
         return { success: true, message: 'Google 登入成功！' };
-    
+
       } else {
         await Swal.fire({
           icon: 'error',
@@ -276,8 +276,8 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider 
-    value={{ auth, login, logout, checkAuth, updateUserInfo, googleLogin: () => loginGoogle(cbGoogleLogin), isLoading }}>
+    <AuthContext.Provider
+      value={{ auth, login, logout, checkAuth, updateUserInfo, googleLogin: () => loginGoogle(cbGoogleLogin), isLoading }}>
       {children}
     </AuthContext.Provider>
   )

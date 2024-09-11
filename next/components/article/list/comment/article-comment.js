@@ -50,7 +50,7 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
 
     try {
       const response = await fetch(
-        `http://localhost:3005/api/a-comment/${commentId}?entity_type=${encodeURIComponent(
+        `http://winderland.shop/api/a-comment/${commentId}?entity_type=${encodeURIComponent(
           entityType
         )}`,
         {
@@ -89,7 +89,7 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
         });
         setCommentText("");
         setIsEditing(false);
-        
+
         if (onCommentChange) {
           onCommentChange();
         }
@@ -115,7 +115,7 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
     // if (!confirmDelete) {
     //   return; // 如果用戶取消，則退出函數
     // }
-    
+
 
     if (commentUser !== userId) {
       Swal.fire({
@@ -129,7 +129,7 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
 
     try {
       const response = await fetch(
-        `http://localhost:3005/api/a-comment/${commentId}?entity_type=${encodeURIComponent(
+        `http://winderland.shop/api/a-comment/${commentId}?entity_type=${encodeURIComponent(
           entityType
         )}`,
         {
@@ -165,7 +165,7 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
       });
     }
   };
-// console.log(avatarUrl)
+  // console.log(avatarUrl)
   return (
     <>
       <div className="col-12 my-4">
@@ -174,11 +174,11 @@ export default function ArticleComment({ comment, index, userId, avatarUrl, onCo
           <div className="col-auto">
             {/* 桌機icon */}
             <div className="au-icon d-none d-lg-flex">
-              <img className="m-0" src={`http://localhost:3005/images/member/avatar/${comment.user_avatar}`} />
+              <img className="m-0" src={`http://winderland.shop/images/member/avatar/${comment.user_avatar}`} />
             </div>
             {/* 手機icon */}
             <div className="au-icon-sm d-lg-none">
-            <img className="m-0" src={`http://localhost:3005/images/member/avatar/${comment.user_avatar}`} />
+              <img className="m-0" src={`http://winderland.shop/images/member/avatar/${comment.user_avatar}`} />
             </div>
           </div>
           <div className="aucomment-section col">

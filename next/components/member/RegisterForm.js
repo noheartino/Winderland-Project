@@ -183,7 +183,7 @@ export default function RegisterForm() {
       return;
     }
     try {
-      const response = await fetch('http://localhost:3005/api/member/register', {
+      const response = await fetch('http://winderland.shop/api/member/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -368,7 +368,7 @@ export default function RegisterForm() {
                 type="checkbox"
                 checked={formData.agreeTerms}
                 onChange={handleChange}
-                 id="agreeTerms"
+                id="agreeTerms"
               />
               <label className={styles.formCheckLabel} htmlFor="agreeTerms">
                 已閱讀並同意
@@ -376,10 +376,10 @@ export default function RegisterForm() {
                 與
                 <Link href="/privacy" className={styles.red}>隱私權政策</Link>
               </label>
-          
+
             </div>
 
-         
+
             {/* 按鈕 */}
             <button type="submit" className={styles.button}>註冊</button>
             <br />
@@ -509,23 +509,23 @@ export default function RegisterForm() {
                 </div>
               </div>
 
-    {/* 同意政策 */}
-<div className={`${styles.formCheck} ${styles.checkRead} align-items-center d-flex`}>
-  <input
-    name="agreeTerms"
-    className={styles.formCheckInput}
-    type="checkbox"
-    checked={formData.agreeTerms}
-    onChange={handleChange}
-    id="agreeTermsRwd"
-  />
-  <label className={styles.formCheckLabelrwd} htmlFor="agreeTermsRwd">
-    已閱讀並同意
-    <Link href="/terms" className={styles.red}>會員服務條款</Link>
-    與
-    <Link href="/privacy" className={styles.red}>隱私權政策</Link>
-  </label>
-</div>
+              {/* 同意政策 */}
+              <div className={`${styles.formCheck} ${styles.checkRead} align-items-center d-flex`}>
+                <input
+                  name="agreeTerms"
+                  className={styles.formCheckInput}
+                  type="checkbox"
+                  checked={formData.agreeTerms}
+                  onChange={handleChange}
+                  id="agreeTermsRwd"
+                />
+                <label className={styles.formCheckLabelrwd} htmlFor="agreeTermsRwd">
+                  已閱讀並同意
+                  <Link href="/terms" className={styles.red}>會員服務條款</Link>
+                  與
+                  <Link href="/privacy" className={styles.red}>隱私權政策</Link>
+                </label>
+              </div>
 
               {/* 按鈕 */}
               <button type="submit" className={styles.button}>註冊</button>

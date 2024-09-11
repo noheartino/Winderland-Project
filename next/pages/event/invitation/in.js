@@ -18,7 +18,7 @@ export default function Applyevent() {
 
   useEffect(() => {
     if (useridis) {
-      fetch(`http://localhost:3005/api/event/invitation/${useridis}`)
+      fetch(`http://winderland.shop/api/event/invitation/${useridis}`)
         .then((response) => response.json())
         .then((infodata) => setInfo(infodata))
         .catch((error) => console.error("Error:", error));
@@ -51,7 +51,7 @@ export default function Applyevent() {
           <div className="eventCardOuter">
             <img
               className="eventCardPic"
-              src={`http://localhost:3005/uploads/event/${allinvitation.event_cover_image}`}
+              src={`http://winderland.shop/uploads/event/${allinvitation.event_cover_image}`}
               alt=""
             ></img>
             <div className="eventCardInfo">
@@ -68,8 +68,8 @@ export default function Applyevent() {
                 {allinvitation.gender === 1
                   ? "女"
                   : allinvitation.gender === 0
-                  ? "男"
-                  : "性別不詳"}
+                    ? "男"
+                    : "性別不詳"}
               </div>
             </div>
           </div>

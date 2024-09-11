@@ -7,8 +7,8 @@ export default function CartClass({ classItems, onRemove }) {
     classItems.forEach((item) => {
       if (
         item.class_id !== null &&
-        item.student_limits > 0 && 
-        item.assigned >= item.student_limits 
+        item.student_limits > 0 &&
+        item.assigned >= item.student_limits
       ) {
         Swal.fire({
           title: '課程已滿',
@@ -16,7 +16,7 @@ export default function CartClass({ classItems, onRemove }) {
           icon: 'warning',
           confirmButtonText: '確定'
         });
-        onRemove(item.cart_item_id); 
+        onRemove(item.cart_item_id);
       }
     });
   }, [classItems, onRemove]);
@@ -31,7 +31,7 @@ export default function CartClass({ classItems, onRemove }) {
             <div key={item.cart_item_id} className={`d-flex ${css.cartClassBox}`}>
               <div className={css.cartClassImg}>
                 <img
-                  src={`http://localhost:3005/uploads/course_and_tarot/${item.class_image}`}
+                  src={`http://winderland.shop/uploads/course_and_tarot/${item.class_image}`}
                   alt="Class Image"
                 />
               </div>
@@ -53,7 +53,7 @@ export default function CartClass({ classItems, onRemove }) {
                   </div>
                 </div>
                 <div className={css.cartClassContentMoney}>
-                <div></div>
+                  <div></div>
                   <div>
                     <div className={css.cartMoney}>
                       NT$ {item.class_sale_price > 0 ? item.class_sale_price.toLocaleString() : item.class_price.toLocaleString()}

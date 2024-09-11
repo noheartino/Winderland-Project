@@ -86,7 +86,7 @@ export default function CartCheckout2() {
         text: '單買課程只能使用信用卡付款', // 警告框的文本
         confirmButtonText: '確定'       // 確認按鈕的文本
       });
-      
+
     } else {
       setSelectedPayment(value);
     }
@@ -142,7 +142,7 @@ export default function CartCheckout2() {
   };
 
   const goTo1 = () => {
-    router.push("http://localhost:3000/cart/cartCheckout1");
+    router.push("http://winderland.shop/cart/cartCheckout1");
   };
 
   return (

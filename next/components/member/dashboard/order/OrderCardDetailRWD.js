@@ -19,7 +19,7 @@ export default function OrderCardDetail({ orderUuid }) {
             try {
                 setIsLoading(true)
                 const token = localStorage.getItem('token')
-                const response = await fetch(`http://localhost:3005/api/orders/history/${orderUuid}`, {
+                const response = await fetch(`http://winderland.shop/api/orders/history/${orderUuid}`, {
                     credentials: 'include',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -43,21 +43,21 @@ export default function OrderCardDetail({ orderUuid }) {
 
     if (isLoading) {
         return (
-          <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <ClipLoader
-              color="#851931"
-              loading={isLoading}
-              cssOverride={{
-                display: "block",
-                margin: "0 auto",
-              }}
-              size={30}
-              aria-label="Loading Spinner"
-              data-testid="loader"
-            />
-          </div>
+            <div style={{ height: "50vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <ClipLoader
+                    color="#851931"
+                    loading={isLoading}
+                    cssOverride={{
+                        display: "block",
+                        margin: "0 auto",
+                    }}
+                    size={30}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                />
+            </div>
         );
-      }
+    }
     if (error) return <div>Error: {error}</div>
     if (!orderData) return <div>No order data available</div>
 
@@ -88,7 +88,7 @@ export default function OrderCardDetail({ orderUuid }) {
                 <hr className={styles.hrRWD} />
                 <OrderCardDetailPickup orderInfo={orderData.orderInfo} />
                 <hr className={styles.hrRWD} />
-                <OrderCardDetailComment orderUuid={orderUuid}    orderStatus={orderData.orderInfo.status} />
+                <OrderCardDetailComment orderUuid={orderUuid} orderStatus={orderData.orderInfo.status} />
             </div>
 
 

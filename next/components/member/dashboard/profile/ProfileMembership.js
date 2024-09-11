@@ -9,7 +9,7 @@ export default function ProfileMembership() {
   useEffect(() => {
     const fetchMembershipInfo = async () => {
       try {
-        const response = await fetch(`http://localhost:3005/api/member/membership-info/${auth.userData.member_level_id}`, {
+        const response = await fetch(`http://winderland.shop/api/member/membership-info/${auth.userData.member_level_id}`, {
           method: 'GET',
           credentials: 'include',
         });
@@ -59,16 +59,16 @@ export default function ProfileMembership() {
         <span className="span-p">{membershipInfo.name}會員優惠</span>
 
         <ul className='levelGift'>
-          <li>生日回饋   
+          <li>生日回饋
             <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>{membershipInfo.birthday_points}</span>WPoints
           </li>
-          <li>WPoints 
+          <li>WPoints
             <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>
-            {formatPointsReward(membershipInfo.points_reward_percentage)}
+              {formatPointsReward(membershipInfo.points_reward_percentage)}
             </span>倍回饋
           </li>
           <li>每月
-          <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>{membershipInfo.free_coupon}</span>張自選優惠券</li>
+            <span className={`${styles.emphasis} ${styles.birthdayPoints}`}>{membershipInfo.free_coupon}</span>張自選優惠券</li>
 
 
         </ul>

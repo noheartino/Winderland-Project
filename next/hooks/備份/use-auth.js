@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
   // @ 檢查狀態
   const checkAuth = async () => {
     try {
-      const response = await fetch('http://localhost:3005/api/member/auth-status', {
+      const response = await fetch('http://winderland.shop/api/member/auth-status', {
         method: 'GET',
         credentials: 'include', // 確保發送 cookies
       })
@@ -78,12 +78,12 @@ export function AuthProvider({ children }) {
   // @ 登入
   const login = async (account, password, rememberMe) => {
     try {
-      const response = await fetch('http://localhost:3005/api/member/login', {
+      const response = await fetch('http://winderland.shop/api/member/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ account, password, rememberMe }), 
+        body: JSON.stringify({ account, password, rememberMe }),
         credentials: 'include',
       })
       const data = await response.json()
@@ -91,13 +91,13 @@ export function AuthProvider({ children }) {
 
       if (response.ok && data.status === 'success' && data.data && data.data.user) {
         // 登錄成功後，立即獲取完整的用戶資料
-        const profileResponse = await fetch('http://localhost:3005/api/dashboard/profile', {
+        const profileResponse = await fetch('http://winderland.shop/api/dashboard/profile', {
           method: 'GET',
           credentials: 'include',
         });
         const profileData = await profileResponse.json();
         console.log('Profile data:', profileData);
-  
+
         if (profileResponse.ok && profileData.status === 'success') {
           const userData = {
             ...profileData.data.user,
@@ -130,7 +130,7 @@ export function AuthProvider({ children }) {
   // @ 登出
   const logout = async () => {
     try {
-      const response = await fetch('http://localhost:3005/api/member/logout', {
+      const response = await fetch('http://winderland.shop/api/member/logout', {
         method: 'POST',
         credentials: 'include',
       })
@@ -166,7 +166,7 @@ export function AuthProvider({ children }) {
   const updateUserInfo = async (updatedData) => {
     try {
       // console.log('Sending update request with data:', updatedData);
-      const response = await fetch('http://localhost:3005/api/dashboard/profile/update', {
+      const response = await fetch('http://winderland.shop/api/dashboard/profile/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

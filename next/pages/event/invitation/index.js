@@ -41,7 +41,7 @@ export default function Applyevent() {
   const handleSendEmail = async () => {
     try {
       // 發送請求到 Express API
-      const url = new URL('http://localhost:3005/api/invitation/send');
+      const url = new URL('http://winderland.shop/api/invitation/send');
       url.searchParams.append('event_name', allinvitation.event_name);
       url.searchParams.append('event_date', allinvitation.event_date);
       url.searchParams.append('name', allinvitation.neckname);
@@ -51,8 +51,8 @@ export default function Applyevent() {
       url.searchParams.append('address', allinvitation.event_address);
       url.searchParams.append('email', email);
 
-    // 發送請求到 Express API
-    const response = await fetch(url.toString());
+      // 發送請求到 Express API
+      const response = await fetch(url.toString());
 
       if (data.status === 'success') {
         success()
@@ -68,7 +68,7 @@ export default function Applyevent() {
 
   useEffect(() => {
     if (useridis) {
-      fetch(`http://localhost:3005/api/event/invitation/${useridis}`)
+      fetch(`http://winderland.shop/api/event/invitation/${useridis}`)
         .then((response) => response.json())
         .then((infodata) => setInfo(infodata))
         .catch((error) => console.error("Error:", error));
@@ -117,7 +117,7 @@ export default function Applyevent() {
           <div className="eventCardOuter">
             <img
               className="eventCardPic"
-              src={`http://localhost:3005/uploads/event/${allinvitation.event_cover_image}`}
+              src={`http://winderland.shop/uploads/event/${allinvitation.event_cover_image}`}
               alt=""
             ></img>
             <div className="eventCardInfo">
@@ -134,8 +134,8 @@ export default function Applyevent() {
                 {allinvitation.gender === 1
                   ? "女"
                   : allinvitation.gender === 0
-                  ? "男"
-                  : "性別不詳"}
+                    ? "男"
+                    : "性別不詳"}
               </div>
             </div>
           </div>
@@ -168,24 +168,24 @@ export default function Applyevent() {
           </div>
           <Link className={first ? 'd-none' : ''} href={'/'}><button className="eventGoHome">回首頁</button></Link>
           <div className="d-flex align-items-center">
-            <input 
-            type="email" 
-            value={email} 
-            onChange={handleEmailChange} 
-            placeholder="輸入接收信箱"
-            className={`emailinput ${first ? '' : 'd-none'}`}
+            <input
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+              placeholder="輸入接收信箱"
+              className={`emailinput ${first ? '' : 'd-none'}`}
             />
             {/* <p>Current email: {email}</p> */}
-            <button className={`eventGoHome ${first ? '' : 'd-none'}`} onClick={ () => {success(); handleSendEmail(); firstis();}}>傳送活動資訊至信箱</button>
+            <button className={`eventGoHome ${first ? '' : 'd-none'}`} onClick={() => { success(); handleSendEmail(); firstis(); }}>傳送活動資訊至信箱</button>
           </div>
-          
+
         </div>
         <div className="eventpageCardRwd d-block d-lg-none">
           <div className="eventCardTitleR">您已成功送出申請，請收取邀請函</div>
           <div className="eventCardOuterR">
             <img
               className="eventCardPicR"
-              src={`http://localhost:3005/uploads/event/${allinvitation.event_cover_image}`}
+              src={`http://winderland.shop/uploads/event/${allinvitation.event_cover_image}`}
               alt=""
             />
             <div className="eventCardInfoR">
@@ -233,7 +233,7 @@ export default function Applyevent() {
           <Link className="A-rmpre" href="/event">
             <button className="eventGoHomeR">回活動首頁</button>
           </Link>
-          
+
         </div>
       </div>
 

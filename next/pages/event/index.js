@@ -20,7 +20,7 @@ export default function Eventindex() {
 
   useEffect(() => {
     fetch(
-      `http://localhost:3005/api/event?sort=${sort}&currentPage=${currentPage}`
+      `http://winderland.shop/api/event?sort=${sort}&currentPage=${currentPage}`
     )
       .then((response) => response.json())
       .then((eventData) => setData(eventData))

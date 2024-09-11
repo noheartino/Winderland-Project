@@ -16,7 +16,7 @@ export default function ArticleCommentCreate({ articleId }) {
 
     try {
       const response = await fetch(
-        `http://localhost:3005/api/a-comment/${articleId}`,
+        `http://winderland.shop/api/a-comment/${articleId}`,
         {
           method: "POST",
           headers: {

@@ -34,45 +34,45 @@ export default function CourseIndex() {
   const [existing, setExisting] = useState([]);
   const [myCourses, setMyCourses] = useState([]);
   const [myCoursesId, setMyCoursesId] = useState([])
-  
+
   let averageRating = 0;
 
   // 獲取課程總數，避免網址輸入不存在的課程導致顯示錯誤
   useEffect(() => {
-      fetch(`http://localhost:3005/api/course?userId=${userId}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          const { classSum } = data;
-          setClassSum(classSum);
-          console.log("userId= " + userId);
-          console.log("classSum numbers= " + classSum.length);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    fetch(`http://winderland.shop/api/course?userId=${userId}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const { classSum } = data;
+        setClassSum(classSum);
+        console.log("userId= " + userId);
+        console.log("classSum numbers= " + classSum.length);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [userId, courseId]);
 
   const seriesDefaultBtn = useRef(null);
 
-  let apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}`;
+  let apiUrl = `http://winderland.shop/api/course/${courseId}?userId=${userId}`;
 
   // 顯示影片
   const [showVideo, setShowVideo] = useState(false);
   const videoRefs = useRef(null);
-  const handleClickPlayerBtn = ()=>{
+  const handleClickPlayerBtn = () => {
     console.log("觸發play btn");
     setShowVideo(true)
     handlePlay()
     // videoRefs.current.currentTime = 0;
     // videoRefs.current.play();
   }
-  const handlePlay = ()=>{
-    setTimeout(()=>{
+  const handlePlay = () => {
+    setTimeout(() => {
       document.getElementById('courseVideo').currentTime = 0;
       document.getElementById('courseVideo').play();
     }, 10)
@@ -141,23 +141,23 @@ export default function CourseIndex() {
 
   useEffect(() => {
     if (series === "timeOldToNew") {
-      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}&series=timeOldToNew`;
+      apiUrl = `http://winderland.shop/api/course/${courseId}?userId=${userId}&series=timeOldToNew`;
     } else if (series === "scoreHtoL") {
-      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}&series=scoreHtoL`;
+      apiUrl = `http://winderland.shop/api/course/${courseId}?userId=${userId}&series=scoreHtoL`;
     } else if (series === "scoreLtoH") {
-      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}&series=scoreLtoH`;
+      apiUrl = `http://winderland.shop/api/course/${courseId}?userId=${userId}&series=scoreLtoH`;
     } else {
-      apiUrl = `http://localhost:3005/api/course/${courseId}?userId=${userId}`;
+      apiUrl = `http://winderland.shop/api/course/${courseId}?userId=${userId}`;
     }
   }, [series, userId]);
 
   // 獲取當前使用者報名的課程
   useEffect(() => {
-    console.log("偵測到 courseId 或 userId 有變動: "+courseId+" / "+userId);
+    console.log("偵測到 courseId 或 userId 有變動: " + courseId + " / " + userId);
     if (userId && classSum.length > 0) {
-      fetch(`http://localhost:3005/api/course/mycourses/${userId}`)
+      fetch(`http://winderland.shop/api/course/mycourses/${userId}`)
         .then((response) => {
-          console.log("送出fetch，URL=" + `http://localhost:3005/api/course/mycourses/${userId}`);
+          console.log("送出fetch，URL=" + `http://winderland.shop/api/course/mycourses/${userId}`);
           if (!response.ok) {
             throw new Error("Network response not ok");
           }
@@ -175,25 +175,26 @@ export default function CourseIndex() {
   }, [courseId, userId, classSum]);
 
   // myCoursesId.length 若 >0，代表這堂課有在目前登入的 user 的報名項目中
-  useEffect(()=>{
+  useEffect(() => {
     console.log(myCourses.length);
-    if(myCourses.length>0){
-     setMyCoursesId(
-        myCourses.filter((mycourseItem)=>
-        parseInt(mycourseItem.class_id)===parseInt(courseId))
-        )}
+    if (myCourses.length > 0) {
+      setMyCoursesId(
+        myCourses.filter((mycourseItem) =>
+          parseInt(mycourseItem.class_id) === parseInt(courseId))
+      )
+    }
   }, [myCourses])
   // 獲取當前課程資訊
   useEffect(() => {
     if (courseId && classSum.length > 0) {
       // console.log(courseId+"+"+classSum.length);
-      if (!(classSum.length+1 > parseInt(courseId) && parseInt(courseId) > 0)) {
-        
+      if (!(classSum.length + 1 > parseInt(courseId) && parseInt(courseId) > 0)) {
+
         router.push({
           pathname: "/course/1",
           query: {},
         });
-        apiUrl = `http://localhost:3005/api/course/1?userId=${userId}`;
+        apiUrl = `http://winderland.shop/api/course/1?userId=${userId}`;
       }
 
       fetch(apiUrl)
@@ -234,7 +235,7 @@ export default function CourseIndex() {
         if (result.isConfirmed) {
           // 用戶確認後執行POST請求
           fetch(
-            `http://localhost:3005/api/course/${courseId}?userId=${userId}`,
+            `http://winderland.shop/api/course/${courseId}?userId=${userId}`,
             {
               method: "POST",
               headers: {
@@ -245,7 +246,7 @@ export default function CourseIndex() {
           )
             .then((response) => {
               console.log(
-                `送出POST fetch，URL=http://localhost:3005/api/course/${courseId}?userId=${userId}`
+                `送出POST fetch，URL=http://winderland.shop/api/course/${courseId}?userId=${userId}`
               );
               if (!response.ok) {
                 throw new Error("Network response not ok");
@@ -325,7 +326,7 @@ export default function CourseIndex() {
     const checkBookmarkStatus = async () => {
       if (userId && courseId) {
         try {
-          const response = await fetch(`http://localhost:3005/api/favorites/courses`, {
+          const response = await fetch(`http://winderland.shop/api/favorites/courses`, {
             method: 'GET',
             credentials: 'include',
           });
@@ -354,7 +355,7 @@ export default function CourseIndex() {
     }
 
     try {
-      const url = `http://localhost:3005/api/favorites/courses/${courseId}`;
+      const url = `http://winderland.shop/api/favorites/courses/${courseId}`;
       const method = isBookmarked ? 'DELETE' : 'POST';
 
       const response = await fetch(url, {
@@ -444,32 +445,32 @@ export default function CourseIndex() {
                   className="row px-0 m-0 md-screen-show d-none d-md-flex"
                   style={{ paddingBottom: "280px" }}
                 >
-                  <div className="col-8 px-10px">{console.log(myCourses?myCourses:"no mycourses")}
+                  <div className="col-8 px-10px">{console.log(myCourses ? myCourses : "no mycourses")}
                     <div className="course-body d-flex align-items-center w-100">
                       <div className="course-leftcontent w-100 course-mycourse-box">
                         <div
                           className="course-video-video overflow-hidden w-100 position-relative"
                           href=""
                         >
-                        {showVideo?
-                          <div className={`course-img21 video-radius bg-black`}>
-                            <video className={`media-contain`} controls width="300" height="200" id={`courseVideo`} ref={videoRefs} autoPlay>
-                              <source src={`http://localhost:3005/uploads/course_and_tarot/${course?.video_path}`} type="video/mp4" />
-                              Your browser does not support the video tag.
-                            </video>
-                          </div>
-                        :
-                          <img
-                            className="course-img21"
-                            src={course.class_path?`http://localhost:3005/uploads/course_and_tarot/${course?.class_path}`:`http://localhost:3005/uploads/course_and_tarot/classImgDefault.png`}
-                            alt=""
-                          />
-                        }
+                          {showVideo ?
+                            <div className={`course-img21 video-radius bg-black`}>
+                              <video className={`media-contain`} controls width="300" height="200" id={`courseVideo`} ref={videoRefs} autoPlay>
+                                <source src={`http://winderland.shop/uploads/course_and_tarot/${course?.video_path}`} type="video/mp4" />
+                                Your browser does not support the video tag.
+                              </video>
+                            </div>
+                            :
+                            <img
+                              className="course-img21"
+                              src={course.class_path ? `http://winderland.shop/uploads/course_and_tarot/${course?.class_path}` : `http://winderland.shop/uploads/course_and_tarot/classImgDefault.png`}
+                              alt=""
+                            />
+                          }
                           <div
-                            className={`absolute-t0-l0 w-100 h-100 justify-content-center align-items-center ${(showVideo) || (course?.online === 0) || !myCourses || myCoursesId.length===0 ? "d-none" : "d-flex"
+                            className={`absolute-t0-l0 w-100 h-100 justify-content-center align-items-center ${(showVideo) || (course?.online === 0) || !myCourses || myCoursesId.length === 0 ? "d-none" : "d-flex"
                               }`} onClick={handleClickPlayerBtn}
                           >
-                              <i className="fa-solid fa-circle-play text-white opacity-50 course-detail-player-btn cursor-pointer" />
+                            <i className="fa-solid fa-circle-play text-white opacity-50 course-detail-player-btn cursor-pointer" />
                           </div>
                         </div>
                         <div
@@ -610,31 +611,31 @@ export default function CourseIndex() {
 
                     <div className="row mt-5 justify-content-between align-items-center px-0 mx-0 row-gap-3">
                       <div className="col-auto">
-                      {(myCourses && myCoursesId.length>0) ?
+                        {(myCourses && myCoursesId.length > 0) ?
                           <span className="h5 spac-2 text-gray-light">
                             <strong>
-                              <i className="fa-regular fa-circle-check me-2"></i>課程已報名 
+                              <i className="fa-regular fa-circle-check me-2"></i>課程已報名
                             </strong>
                           </span>
-                      :
-                      <span className="h2 spac-2 text-sec-orange">
-                          <strong>
-                            NT$
-                            {course.price && (!course.sale_price || parseInt(course.sale_price)==0)
-                              ? course.price.toLocaleString()
-                              : course.sale_price && course.sale_price
-                                ? course.sale_price.toLocaleString()
-                                : 0}
-                          </strong>
-                      </span>}
-                        
+                          :
+                          <span className="h2 spac-2 text-sec-orange">
+                            <strong>
+                              NT$
+                              {course.price && (!course.sale_price || parseInt(course.sale_price) == 0)
+                                ? course.price.toLocaleString()
+                                : course.sale_price && course.sale_price
+                                  ? course.sale_price.toLocaleString()
+                                  : 0}
+                            </strong>
+                          </span>}
+
                         <p
-                          className={`text-gray-light h5 spac-2 mt-3 ${((!course.sale_price) || parseInt(course.sale_price)==0 || (course.sale_price) && myCourses && myCoursesId.length>0) ? "d-none" : "d-block"
-                              }`}
+                          className={`text-gray-light h5 spac-2 mt-3 ${((!course.sale_price) || parseInt(course.sale_price) == 0 || (course.sale_price) && myCourses && myCoursesId.length > 0) ? "d-none" : "d-block"
+                            }`}
                         >
                           <del>
                             NT$
-                            {course.sale_price && parseInt(course.sale_price)!=0
+                            {course.sale_price && parseInt(course.sale_price) != 0
                               ? course.price.toLocaleString()
                               : 0}
                           </del>
@@ -672,31 +673,31 @@ export default function CourseIndex() {
                         )} */}
                       </a>
                     </div>
-                    {(myCourses && myCoursesId.length>0) ?
-                        <div className={`row h-100 ${course?.online === 0 ?'d-none':'d-block'}`}>
-                          <div className="col-12 d-flex align-items-end">
-                            <button
-                              type="button"
-                              className="btn spac-3 btn-sec-orange w-100 mt-3 py-4"
-                              onClick={handleClickPlayerBtn}
-                            >
-                              播放影片<i className="fa-solid fa-play ms-2"></i>
-                            </button>
-                          </div>
+                    {(myCourses && myCoursesId.length > 0) ?
+                      <div className={`row h-100 ${course?.online === 0 ? 'd-none' : 'd-block'}`}>
+                        <div className="col-12 d-flex align-items-end">
+                          <button
+                            type="button"
+                            className="btn spac-3 btn-sec-orange w-100 mt-3 py-4"
+                            onClick={handleClickPlayerBtn}
+                          >
+                            播放影片<i className="fa-solid fa-play ms-2"></i>
+                          </button>
                         </div>
+                      </div>
                       :
-                        <div className="row h-100">
-                          <div className="col-12 d-flex align-items-end">
-                            <button
-                              type="button"
-                              className="btn spac-3 btn-sec-orange w-100 mt-3 py-4"
-                              onClick={handleCourseWriteInCart}
-                            >
-                              加入購物車
-                            </button>
-                          </div>
-                        </div>}
-                    
+                      <div className="row h-100">
+                        <div className="col-12 d-flex align-items-end">
+                          <button
+                            type="button"
+                            className="btn spac-3 btn-sec-orange w-100 mt-3 py-4"
+                            onClick={handleCourseWriteInCart}
+                          >
+                            加入購物車
+                          </button>
+                        </div>
+                      </div>}
+
                   </div>
                 </div>
 
@@ -712,28 +713,28 @@ export default function CourseIndex() {
                           <div className="teacher-head col-auto me-3 px-0">
                             <img
                               className="course-img21"
-                              src={`http://localhost:3005/uploads/course_and_tarot/${course?.teacher_path}`}
+                              src={`http://winderland.shop/uploads/course_and_tarot/${course?.teacher_path}`}
                               alt=""
                             />
-                            
+
                           </div>
                           <div className="teacher-text-box col col-md-4 col-lg-7 ms-3">
-                          <Link className="row align-items-center justify-content-between d-flex flex-row" href={`/course/teacher/${course?.teacher_id}`}>
+                            <Link className="row align-items-center justify-content-between d-flex flex-row" href={`/course/teacher/${course?.teacher_id}`}>
                               <div className="teacher-card-name col">
 
-                                  <h2 className="spac-2 text-prim-dark lh-15">
-                                    {course?.name}
-                                  </h2>
-                                  <h5 className="spac-2 text-prim-dark lh-15">
-                                    {course?.name_en}
-                                  </h5>
+                                <h2 className="spac-2 text-prim-dark lh-15">
+                                  {course?.name}
+                                </h2>
+                                <h5 className="spac-2 text-prim-dark lh-15">
+                                  {course?.name_en}
+                                </h5>
                               </div>
-                              
+
                               <div className="col-auto teacher-more d-flex align-items-center">
-                                  <h5 className="spac-2 text-prim-dark lh-15 me-2">
-                                    講師詳情
-                                  </h5>
-                                  <i className="fa-solid fa-chevron-right text-prim-dark mt-1" />
+                                <h5 className="spac-2 text-prim-dark lh-15 me-2">
+                                  講師詳情
+                                </h5>
+                                <i className="fa-solid fa-chevron-right text-prim-dark mt-1" />
                               </div>
                             </Link>
                             <hr className="my-4" />
@@ -777,21 +778,21 @@ export default function CourseIndex() {
                     className="course-video-video position-relative mb-3"
                     href=""
                   >
-                  {showVideo?
-                    <div className={`course-img21 video-radius bg-black`}>
-                      <video className={`media-contain`} controls width="300" height="200" id={`courseVideo`} ref={videoRefs} autoPlay>
-                        <source src={`http://localhost:3005/uploads/course_and_tarot/${course?.video_path}`} type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
-                    </div>
-                  :
-                  <img className="course-img21"
-                      src={`http://localhost:3005/uploads/course_and_tarot/${course?.class_path}`} alt=""/>
-                  }
-                    
-                            
-                    <div className={`absolute-t0-l0 w-100 h-100 justify-content-center align-items-center ${(showVideo) || (course?.online === 0) || !myCourses || myCoursesId.length===0 ? "d-none" : "d-flex"
-                              }`} onClick={handleClickPlayerBtn}>
+                    {showVideo ?
+                      <div className={`course-img21 video-radius bg-black`}>
+                        <video className={`media-contain`} controls width="300" height="200" id={`courseVideo`} ref={videoRefs} autoPlay>
+                          <source src={`http://winderland.shop/uploads/course_and_tarot/${course?.video_path}`} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                      :
+                      <img className="course-img21"
+                        src={`http://winderland.shop/uploads/course_and_tarot/${course?.class_path}`} alt="" />
+                    }
+
+
+                    <div className={`absolute-t0-l0 w-100 h-100 justify-content-center align-items-center ${(showVideo) || (course?.online === 0) || !myCourses || myCoursesId.length === 0 ? "d-none" : "d-flex"
+                      }`} onClick={handleClickPlayerBtn}>
                       <a href="">
                         <i className="fa-solid fa-circle-play text-white opacity-50 course-detail-player-btn cursor-pointer" />
                       </a>
@@ -870,41 +871,41 @@ export default function CourseIndex() {
 
                     <span className="col-auto h6 d-flex align-items-center">
                       <span
-                        className={`text-gray-light h5 spac-2 mt-3 me-4 ${((!course.sale_price) || parseInt(course.sale_price)==0 || (course.sale_price) && myCourses && myCoursesId.length>0) ? "d-none" : "d-block"
-                              }`}
+                        className={`text-gray-light h5 spac-2 mt-3 me-4 ${((!course.sale_price) || parseInt(course.sale_price) == 0 || (course.sale_price) && myCourses && myCoursesId.length > 0) ? "d-none" : "d-block"
+                          }`}
                       >
                         <del>
                           NT$
-                          {course.sale_price && parseInt(course.sale_price)!=0
+                          {course.sale_price && parseInt(course.sale_price) != 0
                             ? course.price.toLocaleString()
                             : 0}
                         </del>
                       </span>
-                      {(myCourses && myCoursesId.length>0) ?
+                      {(myCourses && myCoursesId.length > 0) ?
                         <span className="h5 spac-2 text-gray-light">
                           <strong>
-                            <i className="fa-regular fa-circle-check me-2"></i>課程已報名 
+                            <i className="fa-regular fa-circle-check me-2"></i>課程已報名
                           </strong>
                         </span>
-                      :
-                      <span className="h2 spac-2 text-sec-orange">
+                        :
+                        <span className="h2 spac-2 text-sec-orange">
                           <strong>
                             NT$
-                            {course.price && (!course.sale_price || parseInt(course.sale_price)==0)
+                            {course.price && (!course.sale_price || parseInt(course.sale_price) == 0)
                               ? course.price.toLocaleString()
                               : course.sale_price
                                 ? course.sale_price.toLocaleString()
                                 : 0}
                           </strong>
-                      </span>}
-                      {course?.online === 0 && myCourses && myCoursesId.length>0
+                        </span>}
+                      {course?.online === 0 && myCourses && myCoursesId.length > 0
                         ?
                         <a
-                        className="p-2 ms-2"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toggleBookmark();
-                        }}>
+                          className="p-2 ms-2"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            toggleBookmark();
+                          }}>
                           <i
                             className={`fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark text-prim-text-prim`}
                             style={{ fontSize: "2rem" }}
@@ -913,7 +914,7 @@ export default function CourseIndex() {
                         :
                         ""
                       }
-                      
+
                     </span>
                   </div>
 
@@ -970,7 +971,7 @@ export default function CourseIndex() {
                   <div className="row teacher-sm-introduce my-5 mx-0 px-0">
                     <div className="teacher-head col-auto px-0">
                       <img
-                        src={`http://localhost:3005/uploads/course_and_tarot/${course?.teacher_path}`}
+                        src={`http://winderland.shop/uploads/course_and_tarot/${course?.teacher_path}`}
                         alt=""
                       />
                     </div>
@@ -991,25 +992,25 @@ export default function CourseIndex() {
                     </div>
                   </div>
                   <div className="row justify-content-between align-items-center my-3 px-0 mx-0">
-                  {course?.online === 0 && myCourses && myCoursesId.length>0 ?
-                    ""
-                  :
-                    <a
-                      href="#"
-                      className="col-auto p-2"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleBookmark();
-                      }}>
-                      <i
-                        className={` fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark text-prim-text-prim`}
-                        style={{ fontSize: "2rem" }}
-                      />
-                    </a>
-                  }
-                    
-                    {(myCourses && myCoursesId.length>0) ?
-                      <div className={`col pe-0 ${course?.online === 0 ?'d-none':'d-block'}`}>
+                    {course?.online === 0 && myCourses && myCoursesId.length > 0 ?
+                      ""
+                      :
+                      <a
+                        href="#"
+                        className="col-auto p-2"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleBookmark();
+                        }}>
+                        <i
+                          className={` fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark text-prim-text-prim`}
+                          style={{ fontSize: "2rem" }}
+                        />
+                      </a>
+                    }
+
+                    {(myCourses && myCoursesId.length > 0) ?
+                      <div className={`col pe-0 ${course?.online === 0 ? 'd-none' : 'd-block'}`}>
                         <button className="btn w-100 spac-3 btn-sec-orange py-2" onClick={handleClickPlayerBtn}>
                           播放影片<i className="fa-solid fa-play ms-2"></i>
                         </button>
@@ -1020,7 +1021,7 @@ export default function CourseIndex() {
                           <h6 className="text-white">加入購物車</h6>
                         </button>
                       </div>}
-                    
+
                   </div>
                 </div>
               </div>
@@ -1334,7 +1335,7 @@ export default function CourseIndex() {
                     }}
                   >
                     <Image
-                      src={`http://localhost:3005/uploads/course_and_tarot/comments-no-result.png`}
+                      src={`http://winderland.shop/uploads/course_and_tarot/comments-no-result.png`}
                       alt="course list no result"
                       layout="responsive"
                       width={370}
@@ -1359,7 +1360,7 @@ export default function CourseIndex() {
         <div className="container-fluid py-3 my-5">
           <div className="container-sm px-0">
             <div className="row justify-content-between px-0 mx-0">
-            
+
               <Link className="col-auto px-0 mx-0" href="/course/teacher">
                 <div
                   type="button"

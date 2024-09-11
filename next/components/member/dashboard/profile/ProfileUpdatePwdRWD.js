@@ -15,11 +15,11 @@ export default function ProfileUpdatePwd() {
 
     const handlePasswordChange = (e) => {
         setPasswordData({
-          ...passwordData,
-          [e.target.name]: e.target.value
+            ...passwordData,
+            [e.target.name]: e.target.value
         })
-      }
-    
+    }
+
     const handlePasswordSubmit = async (e) => {
         e.preventDefault()
         // setError(null)
@@ -28,16 +28,16 @@ export default function ProfileUpdatePwd() {
         // 先檢查新密碼和確認密碼是否一致
         if (passwordData.newPassword !== passwordData.confirmPassword) {
             Swal.fire({
-              icon: 'error',
-              title: '密碼不一致',
-              text: '新密碼與確認密碼不一致 .ᐟ.ᐟ.ᐟ',
-              confirmButtonText: '確定'
+                icon: 'error',
+                title: '密碼不一致',
+                text: '新密碼與確認密碼不一致 .ᐟ.ᐟ.ᐟ',
+                confirmButtonText: '確定'
             })
             return
-          }
+        }
 
         try {
-            const response = await fetch('http://localhost:3005/api/dashboard/profile/password', {
+            const response = await fetch('http://winderland.shop/api/dashboard/profile/password', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,24 +52,24 @@ export default function ProfileUpdatePwd() {
 
             if (response.ok) {
                 Swal.fire({
-                  icon: 'success',
-                  title: '密碼更新成功',
-                  text: '密碼更新成功 .ᐟ.ᐟ.ᐟ',
-                  confirmButtonText: '確定'
+                    icon: 'success',
+                    title: '密碼更新成功',
+                    text: '密碼更新成功 .ᐟ.ᐟ.ᐟ',
+                    confirmButtonText: '確定'
                 })
                 setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' })
-              } else {
+            } else {
                 throw new Error(data.message || '密碼更新失敗')
-              }
-            } catch (err) {
-              Swal.fire({
+            }
+        } catch (err) {
+            Swal.fire({
                 icon: 'error',
                 title: '密碼更新失敗',
                 text: err.message,
                 confirmButtonText: '確定'
-              })
-            }
-          
+            })
+        }
+
     }
 
     if (!auth.isAuth) {
@@ -119,16 +119,16 @@ export default function ProfileUpdatePwd() {
                         maxLength="12"
                         required
                     />
-                     {/* {error && <div className="error-message-pwd-rwd">{error}</div>}
+                    {/* {error && <div className="error-message-pwd-rwd">{error}</div>}
                      {success && <div className="success-message-pwd-rwd">{success}</div>} */}
                     <div className="btn-group d-flex justify-content-end mb-5">
                         <button type="submit" className="button-send-rwd">
                             修改密碼
                         </button>
                     </div>
-              
+
                 </section>
-           
+
             </form>
         </>
     )

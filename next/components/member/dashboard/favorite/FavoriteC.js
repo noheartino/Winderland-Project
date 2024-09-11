@@ -21,7 +21,7 @@ export default function FavoriteC() {
   // @ 獲取收藏課程
   const fetchFavoriteCourses = async () => {
     try {
-      const response = await fetch('http://localhost:3005/api/favorites/courses', {
+      const response = await fetch('http://winderland.shop/api/favorites/courses', {
         method: 'GET',
         credentials: 'include',
       });
@@ -37,7 +37,7 @@ export default function FavoriteC() {
   // @ 移除收藏課程
   const removeFavorite = async (classId) => {
     try {
-      const response = await fetch(`http://localhost:3005/api/favorites/courses/${classId}`, {
+      const response = await fetch(`http://winderland.shop/api/favorites/courses/${classId}`, {
         method: 'DELETE',
         credentials: 'include',
       })
@@ -64,11 +64,11 @@ export default function FavoriteC() {
 
               <div className="favorite-c-img">
                 <Image
-                  src={course.image_path ? `http://localhost:3005/uploads/course_and_tarot/${course.image_path}` : "/images/member/fav-c1.jpg"}
+                  src={course.image_path ? `http://winderland.shop/uploads/course_and_tarot/${course.image_path}` : "/images/member/fav-c1.jpg"}
                   alt={course.class_name}
                   width={265}
                   height={165}
-                  // className="favorite-c-img-rwd"
+                // className="favorite-c-img-rwd"
                 />
                 <svg
                   className="svg-bookmark"
@@ -102,17 +102,17 @@ export default function FavoriteC() {
                   </span>
                 </div>
                 <div className="d-flex justify-content-between align-items-center">
-                <p className="byTeacher">by {course.teacher_name}</p>
-                <div className="stars">
-                  <i className="fa-solid fa-star" />
-                  <i className="fa-solid fa-star" />
-                  <i className="fa-solid fa-star" />
-                  <i className="fa-solid fa-star" />
-                  <i className="fa-solid fa-star" />
-                  4.8
+                  <p className="byTeacher">by {course.teacher_name}</p>
+                  <div className="stars">
+                    <i className="fa-solid fa-star" />
+                    <i className="fa-solid fa-star" />
+                    <i className="fa-solid fa-star" />
+                    <i className="fa-solid fa-star" />
+                    <i className="fa-solid fa-star" />
+                    4.8
+                  </div>
                 </div>
-                </div>
-                
+
                 {/* 進度條 */}
                 {/* <div className="progress-detail d-flex justify-content-between ">
                   <p>課程時長-5小時</p>

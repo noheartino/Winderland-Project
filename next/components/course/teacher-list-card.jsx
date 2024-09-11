@@ -6,11 +6,11 @@ export default function TeacherListCard({ teacher, teacherScore }) {
     <>
       <div className="row flex-row flex-md-column align-items-center justify-content-center bg-light-gray shadow rounded-4 py-4 px-10px mx-0 flex-nowrap">
         <div className="teacher-head col-auto px-0 mb-2">
-          <img src={`http://localhost:3005/uploads/course_and_tarot/${teacher?.teacher_path}`} alt="" />
+          <img src={`http://winderland.shop/uploads/course_and_tarot/${teacher?.teacher_path}`} alt="" />
         </div>
         <div className="teacher-text-box col px-10px d-flex flex-column justify-content-center align-items-center">
-          <div className="d-flex flex-column justify-content-center align-items-center my-1" style={{minHeight: "52px"}}>
-            <div className="row teacher-card-name justify-content-center align-items-center gap-3 row-gap-1 mx-0" style={{width: '85%'}}>
+          <div className="d-flex flex-column justify-content-center align-items-center my-1" style={{ minHeight: "52px" }}>
+            <div className="row teacher-card-name justify-content-center align-items-center gap-3 row-gap-1 mx-0" style={{ width: '85%' }}>
               <h5 className="col-auto spac-1 text-prim-dark lh-15 px-0 elipes01">
                 {teacher?.name}
               </h5>
@@ -22,36 +22,30 @@ export default function TeacherListCard({ teacher, teacherScore }) {
           <div className="row flex-column justify-content-center align-items-center">
             <div className="col-auto stars mt-2 d-flex align-items-center">
               <i
-                className={`fa-solid fa-star ${
-                  teacherScore > 0.5 ? "star-with-score" : "star-without-score"
-                }`}
+                className={`fa-solid fa-star ${teacherScore > 0.5 ? "star-with-score" : "star-without-score"
+                  }`}
               />
               <i
-                className={`fa-solid fa-star ${
-                  teacherScore > 1.5 ? "star-with-score" : "star-without-score"
-                }`}
+                className={`fa-solid fa-star ${teacherScore > 1.5 ? "star-with-score" : "star-without-score"
+                  }`}
               />
               <i
-                className={`fa-solid fa-star ${
-                  teacherScore > 2.5 ? "star-with-score" : "star-without-score"
-                }`}
+                className={`fa-solid fa-star ${teacherScore > 2.5 ? "star-with-score" : "star-without-score"
+                  }`}
               />
               <i
-                className={`fa-solid fa-star ${
-                  teacherScore > 3.5 ? "star-with-score" : "star-without-score"
-                }`}
+                className={`fa-solid fa-star ${teacherScore > 3.5 ? "star-with-score" : "star-without-score"
+                  }`}
               />
               <i
-                className={`fa-solid fa-star ${
-                  teacherScore > 4.5 ? "star-with-score" : "star-without-score"
-                }`}
+                className={`fa-solid fa-star ${teacherScore > 4.5 ? "star-with-score" : "star-without-score"
+                  }`}
               />
               <span
-                className={`ms-2 spac-1 text-sec-dark-blue emmit1 ${
-                  teacherScore > 0 ? "d-inline-block" : "d-none"
-                }`}
+                className={`ms-2 spac-1 text-sec-dark-blue emmit1 ${teacherScore > 0 ? "d-inline-block" : "d-none"
+                  }`}
               >
-                {teacherScore>0 ? teacherScore : '未有評分'}
+                {teacherScore > 0 ? teacherScore : '未有評分'}
               </span>
             </div>
             <Link href={`/course/teacher/${teacher?.id}`}>
@@ -61,7 +55,7 @@ export default function TeacherListCard({ teacher, teacherScore }) {
                 <i className="fa-solid fa-chevron-right" />
               </div>
             </Link>
-            
+
           </div>
         </div>
       </div>

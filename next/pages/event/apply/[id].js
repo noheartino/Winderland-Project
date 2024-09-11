@@ -36,7 +36,7 @@ export default function Applyevent() {
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:3005/api/event/apply/${id}`)
+      fetch(`http://winderland.shop/api/event/apply/${id}`)
         .then((response) => response.json())
         .then((infodata) => setInfo(infodata))
         .catch((error) => console.error("Error:", error));
@@ -83,7 +83,7 @@ export default function Applyevent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3005/api/event/app", {
+      const response = await fetch("http://winderland.shop/api/event/app", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formDataConverted),
@@ -119,7 +119,7 @@ export default function Applyevent() {
           <div className="row g-5">
             <div className="col-12 col-lg-5">
               <img
-                src={`http://localhost:3005/uploads/event/${eventinfo.event_cover_image}`}
+                src={`http://winderland.shop/uploads/event/${eventinfo.event_cover_image}`}
                 alt=""
                 className="eventPageimg"
               />

@@ -33,7 +33,7 @@ export default function CourseIndex() {
 
   let pageLimit = 8;
   const { search, view, order } = router.query;
-  let apiUrl = `http://localhost:3005/api/course`;
+  let apiUrl = `http://winderland.shop/api/course`;
   const [courses, setCourses] = useState([]);
   const [courseOrigin, setCourseOrigin] = useState([]);
   const [filterCourses, setFilterCourses] = useState([]);
@@ -65,51 +65,51 @@ export default function CourseIndex() {
   //   router.push({pathname: '/course', query: {}}, undefined, {scroll: false})
   // }
 
-    // 篩選要傳遞的 QUERY
-   const { query} = router;
+  // 篩選要傳遞的 QUERY
+  const { query } = router;
   if (!search && !view) {
-    
-    apiUrl = `http://localhost:3005/api/course`;
-    if(userId){
+
+    apiUrl = `http://winderland.shop/api/course`;
+    if (userId) {
       apiUrl += `?userId=${userId}`
-      if(order){
+      if (order) {
         apiUrl += `&order=${order}`
       }
-    }else{
-      if(!order){
-        delete {...query}.order;
+    } else {
+      if (!order) {
+        delete { ...query }.order;
       }
     }
     console.log(apiUrl);
   }
   if (search) {
-    apiUrl = `http://localhost:3005/api/course?search=${search}`;
-    
-    if(auth.isAuth){
+    apiUrl = `http://winderland.shop/api/course?search=${search}`;
+
+    if (auth.isAuth) {
       apiUrl += `&userId=${userId}`
-      if(order){
+      if (order) {
         apiUrl += `&order=${order}`
       }
-    }else{
-      if(order){
+    } else {
+      if (order) {
         apiUrl += `&order=${order}`
-      }else{
-        apiUrl = `http://localhost:3005/api/course?search=${search}`;
+      } else {
+        apiUrl = `http://winderland.shop/api/course?search=${search}`;
       }
     }
   }
   if (view) {
-    apiUrl = `http://localhost:3005/api/course?view=${view}`;
-    if(auth.isAuth){
+    apiUrl = `http://winderland.shop/api/course?view=${view}`;
+    if (auth.isAuth) {
       apiUrl += `&userId=${userId}`
-      if(order){
+      if (order) {
         apiUrl += `&order=${order}`
       }
-    }else{
-      if(order){
+    } else {
+      if (order) {
         apiUrl += `&order=${order}`
-      }else{
-        apiUrl = `http://localhost:3005/api/course?view=${view}`;
+      } else {
+        apiUrl = `http://winderland.shop/api/course?view=${view}`;
       }
     }
   }
@@ -118,44 +118,44 @@ export default function CourseIndex() {
 
     // const includeImages = false;
     console.log("search 或 view 偵測到變動");
-    console.log("course首頁送出Fetch: "+apiUrl);
+    console.log("course首頁送出Fetch: " + apiUrl);
 
     // 當組件掛載時執行 fetch 請求
-      fetch(apiUrl)
-        .then((response) => {
-          console.log("送出fetch URL: " + apiUrl);
-          if (!response.ok) {
-            throw new Error("Network response not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          const {
-            courses,
-            comments,
-            classAssigns,
-            myFavoriteCourse,
-            myCourse,
-            teachers,
-            courseOrigin,
-          } = data;
-          // 處理 courses 資料，將 images 字段轉換為數組
-          setComments(comments);
-          setCourses(courses);
-          setCourseOrigin(courseOrigin);
-          setClassAssigns(classAssigns);
-          setMyFavoriteCourse(myFavoriteCourse);
-          setMyCourse(myCourse);
-          setmyFirstFavoriteCourse(myFavoriteCourse[0]);
-          setFirstMyCourse(myCourse[0]);
-          setTeachers(teachers);
-          // console.log("myCourse----------");
-          // console.log(myCourse);
-          // if(isHomePage){clearBtnHref()}
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    fetch(apiUrl)
+      .then((response) => {
+        console.log("送出fetch URL: " + apiUrl);
+        if (!response.ok) {
+          throw new Error("Network response not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const {
+          courses,
+          comments,
+          classAssigns,
+          myFavoriteCourse,
+          myCourse,
+          teachers,
+          courseOrigin,
+        } = data;
+        // 處理 courses 資料，將 images 字段轉換為數組
+        setComments(comments);
+        setCourses(courses);
+        setCourseOrigin(courseOrigin);
+        setClassAssigns(classAssigns);
+        setMyFavoriteCourse(myFavoriteCourse);
+        setMyCourse(myCourse);
+        setmyFirstFavoriteCourse(myFavoriteCourse[0]);
+        setFirstMyCourse(myCourse[0]);
+        setTeachers(teachers);
+        // console.log("myCourse----------");
+        // console.log(myCourse);
+        // if(isHomePage){clearBtnHref()}
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [view, search, userId, apiUrl, auth]);
   // console.log(myFirstFavoriteCourse[0]);
 
@@ -172,14 +172,14 @@ export default function CourseIndex() {
   const [priceStart, setPriceStart] = useState("");
   const [priceEnd, setPriceEnd] = useState("");
   const [districts, setDistricts] = useState([])
-  
+
   console.log("地區列表製做:");
   console.log(districts);
 
   const [districtArr, setDistrictArr] = useState([])
 
-  useEffect(()=>{
-    if(districts.length>0){
+  useEffect(() => {
+    if (districts.length > 0) {
       setDistrictArr(
         districts.map((district) => {
           return district.districtStr;
@@ -195,7 +195,7 @@ export default function CourseIndex() {
   }, [courses, districts, courseOrigin, auth])
 
   useEffect(() => {
-    apiUrl = `http://localhost:3005/api/course?userId=${userId}`;
+    apiUrl = `http://winderland.shop/api/course?userId=${userId}`;
     router.push({
       pathname: "/course",
       query: {},
@@ -213,16 +213,16 @@ export default function CourseIndex() {
   }, [courses, courseOrigin]);
 
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(courseOrigin);
     console.log(courses);
-    if(courseOrigin.length>0){
-        console.log(courseOrigin);
-        const newArr = []
-        const allAddressV = courseOrigin.map((course)=>{if(course.address){return course.address.slice(0,3)}})
-        const onlyVaddressArr = Array.from(new Set(allAddressV))
-        onlyVaddressArr.map((eachCity, index)=>{
-        const districtsObj = {'dId': index+1, 'districtStr': eachCity?eachCity:""}
+    if (courseOrigin.length > 0) {
+      console.log(courseOrigin);
+      const newArr = []
+      const allAddressV = courseOrigin.map((course) => { if (course.address) { return course.address.slice(0, 3) } })
+      const onlyVaddressArr = Array.from(new Set(allAddressV))
+      onlyVaddressArr.map((eachCity, index) => {
+        const districtsObj = { 'dId': index + 1, 'districtStr': eachCity ? eachCity : "" }
         newArr.push(districtsObj)
         setDistricts(newArr)
       })
@@ -232,17 +232,17 @@ export default function CourseIndex() {
   // 篩選
   useEffect(() => {
     const newCoursesArray = courses.filter(
-        (course) => 
-        
-        (!course.address ?true: districtArr.includes(course.address.slice(0, 3))) &&
+      (course) =>
+
+        (!course.address ? true : districtArr.includes(course.address.slice(0, 3))) &&
         course.average_rating >= score &&
         (onlineFilter === "全部"
           ? true
           : onlineFilter === "實體"
-          ? parseInt(course.online) == 0
-          : onlineFilter === "線上"
-          ? parseInt(course.online) == 1
-          : true) &&
+            ? parseInt(course.online) == 0
+            : onlineFilter === "線上"
+              ? parseInt(course.online) == 1
+              : true) &&
         (teacherSelect === "全部"
           ? true
           : course.teacher_name === teacherSelect) &&
@@ -253,13 +253,13 @@ export default function CourseIndex() {
         (!priceStart
           ? true
           : !course.sale_price
-          ? course.price > priceStart
-          : course.sale_price > priceStart) &&
+            ? course.price > priceStart
+            : course.sale_price > priceStart) &&
         (!priceEnd
           ? true
           : !course.sale_price
-          ? course.price < priceEnd
-          : course.sale_price < priceEnd)
+            ? course.price < priceEnd
+            : course.sale_price < priceEnd)
     );
     setFilterCourses(newCoursesArray);
   }, [
@@ -304,11 +304,11 @@ export default function CourseIndex() {
     );
     console.log(
       "推一個路由: /course?view=" +
-        buttonText +
-        "，courseBtn=" +
-        courseBtn +
-        "，buttonText=" +
-        buttonText
+      buttonText +
+      "，courseBtn=" +
+      courseBtn +
+      "，buttonText=" +
+      buttonText
     );
   }
   function clearQuery() {
@@ -333,19 +333,19 @@ export default function CourseIndex() {
     });
   }
   // 清除搜尋結果
-  const handleClear=(e)=>{
+  const handleClear = (e) => {
     setSearchTerm("")
     router.push({
       pathname: '/course',
       query: {},
-    }, undefined, {scroll: false});
+    }, undefined, { scroll: false });
     setIsHomePage(true)
     setCurrentPage(1)
   }
   return (
     <>
       <Head>
-      <title>醺迷仙園｜課程首頁</title>
+        <title>醺迷仙園｜課程首頁</title>
         <meta charSet="utf-8" />
         <meta
           name="viewport"
@@ -365,13 +365,12 @@ export default function CourseIndex() {
         <Nav />
         <Arrtotop />
 
-        <CourseNav setIsHomePage={setIsHomePage} isHomePage={isHomePage} setCurrentPage={setCurrentPage}/>
+        <CourseNav setIsHomePage={setIsHomePage} isHomePage={isHomePage} setCurrentPage={setCurrentPage} />
 
         {/* first page start */}
         <div
-          className={`container-fluid course-first-page ${
-            isHomePage ? "d-block" : "d-none"
-          }`}
+          className={`container-fluid course-first-page ${isHomePage ? "d-block" : "d-none"
+            }`}
         >
           {/* page one 我的課程&收藏課程 start */}
           <div className="container-fluid favorite-and-mycourse-area">
@@ -451,7 +450,7 @@ export default function CourseIndex() {
             </div>
           </div>
           {/* page one 我的課程&收藏課程 end */}
-         
+
           <CourseList
             userId={userId}
             courses={filterCourses}
@@ -485,9 +484,8 @@ export default function CourseIndex() {
 
         {/* page two 我的課程 start */}
         <div
-          className={`container-fluid px-0 ${
-            isHomePage ? "d-none" : "d-block"
-          }`}
+          className={`container-fluid px-0 ${isHomePage ? "d-none" : "d-block"
+            }`}
         >
           <div className="container-sm px-0 my-5">
             <div className="px-10px">
@@ -599,7 +597,7 @@ export default function CourseIndex() {
                     }}
                   >
                     <Image
-                      src={`http://localhost:3005/uploads/course_and_tarot/courses-no-result.png`}
+                      src={`http://winderland.shop/uploads/course_and_tarot/courses-no-result.png`}
                       alt="course list no result"
                       layout="responsive"
                       width={370}
@@ -622,9 +620,8 @@ export default function CourseIndex() {
 
         {/* page-nav-bar start */}
         <div
-          className={`container-fluid py-3 ${
-            isHomePage ? "d-block" : "d-none"
-          }`}
+          className={`container-fluid py-3 ${isHomePage ? "d-block" : "d-none"
+            }`}
         >
           <div className="container-sm">
             <div className="row justify-content-between">

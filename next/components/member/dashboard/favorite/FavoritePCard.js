@@ -19,7 +19,7 @@ export default function FavoritePCard({ product }) {
     // @ 獲取收藏商品
     const fetchFavorites = async () => {
         try {
-            const response = await fetch('http://localhost:3005/api/favorites/products', {
+            const response = await fetch('http://winderland.shop/api/favorites/products', {
                 credentials: 'include',
             });
             // console.log('Response status:', response.status);
@@ -57,7 +57,7 @@ export default function FavoritePCard({ product }) {
     // @ 從商品收藏中移除
     const removeFavorite = async (productId) => {
         try {
-            const response = await fetch(`http://localhost:3005/api/favorites/products/${productId}`, {
+            const response = await fetch(`http://winderland.shop/api/favorites/products/${productId}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
@@ -106,7 +106,7 @@ export default function FavoritePCard({ product }) {
 
                                     <Link href={`/product/${favorite.product_id}`} className={styles.productTitleLink} >
                                         <p className={styles.favoriteProductName}>
-                                        {favorite.product_name}&nbsp;・&nbsp;{favorite.years}
+                                            {favorite.product_name}&nbsp;・&nbsp;{favorite.years}
                                         </p>
                                     </Link>
 

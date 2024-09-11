@@ -17,7 +17,7 @@ export default function CartCoupon({ userId, onCouponChange, totalAmount }) {
   // 獲取用戶的優惠券
   const fetchCoupons = async () => {
     try {
-      const response = await fetch(`http://localhost:3005/api/cart/${userId}`);
+      const response = await fetch(`http://winderland.shop/api/cart/${userId}`);
       if (response.ok) {
         const data = await response.json();
         // 過濾出狀態為 'get' 的優惠券
@@ -41,7 +41,7 @@ export default function CartCoupon({ userId, onCouponChange, totalAmount }) {
   // 使用優惠券
   const handleUseCoupon = (coupon) => {
     const minSpend = parseFloat(coupon.min_spend) || 0; // 確保 min_spend 是數值
-    
+
     if (totalAmount >= minSpend) {
       setSelectedCoupon(coupon); // 設置選中的優惠券
       toggleModal(); // 根據需求關閉彈窗

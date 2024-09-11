@@ -43,8 +43,7 @@ export default function DashboardProfile() {
   const updateAvatarUrl = useCallback(() => {
     if (auth.userData && auth.userData.avatar_url) {
       setAvatarUrl(
-        `http://localhost:3005${
-          auth.userData.avatar_url
+        `http://winderland.shop${auth.userData.avatar_url
         }?t=${new Date().getTime()}`
       );
     } else {
@@ -87,11 +86,11 @@ export default function DashboardProfile() {
       const fetchAvatarUrl = async () => {
         try {
           const response = await fetch(
-            `http://localhost:3005/api/dashboard/profile/avatar/${auth.userData.id}`
+            `http://winderland.shop/api/dashboard/profile/avatar/${auth.userData.id}`
           );
           const data = await response.json();
           if (data.status === "success" && data.data.avatar_url) {
-            setAvatarUrl(`http://localhost:3005${data.data.avatar_url}?t=${new Date().getTime()}`);
+            setAvatarUrl(`http://winderland.shop${data.data.avatar_url}?t=${new Date().getTime()}`);
           } else {
             setAvatarUrl("/images/member/avatar/default-avatar.jpg");
           }
@@ -137,7 +136,7 @@ export default function DashboardProfile() {
 
     try {
       const response = await fetch(
-        "http://localhost:3005/api/dashboard/profile/upload-avatar",
+        "http://winderland.shop/api/dashboard/profile/upload-avatar",
         {
           method: "POST",
           body: formData,
@@ -152,7 +151,7 @@ export default function DashboardProfile() {
       const result = await response.json();
       if (result.status === "success") {
         // 更新頭像 URL
-        const newAvatarUrl = `http://localhost:3005${result.data.avatar_url}`;
+        const newAvatarUrl = `http://winderland.shop${result.data.avatar_url}`;
         setAvatarUrl(newAvatarUrl);
 
         // 發送自定義事件
@@ -317,7 +316,7 @@ export default function DashboardProfile() {
                   width={130}
                   height={130}
                   className="profileAvatar"
-                  style={{ borderRadius: '50%' }} 
+                  style={{ borderRadius: '50%' }}
                   key={avatarUrl} // 使用 avatarUrl 作為 key
                   loader={({ src }) => src} // 自定義 loader 以避免 Next.js 的圖片優化
                   unoptimized // 禁用 Next.js 的圖片優化
@@ -415,7 +414,7 @@ export default function DashboardProfile() {
                   width={130}
                   height={130}
                   className="profileAvatar"
-                  style={{ borderRadius: '50%' }} 
+                  style={{ borderRadius: '50%' }}
                   key={avatarUrl} // 使用 avatarUrl 作為 key
                   loader={({ src }) => src} // 自定義 loader 以避免 Next.js 的圖片優化
                   unoptimized // 禁用 Next.js 的圖片優化

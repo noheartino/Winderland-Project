@@ -158,7 +158,7 @@ export default function New() {
     try {
       // 步驟 1: 提交文章基本資料
       const response = await axios.post(
-        "http://localhost:3005/api/article/new",
+        "http://winderland.shop/api/article/new",
         {
           title,
           category,
@@ -176,7 +176,7 @@ export default function New() {
         const formData = new FormData();
         formData.append("image", mainImage);
         await axios.post(
-          `http://localhost:3005/api/article/upload-main-image/${articleId}`,
+          `http://winderland.shop/api/article/upload-main-image/${articleId}`,
           formData
         );
       }
@@ -187,7 +187,7 @@ export default function New() {
         formData.append("image", image);
         console.log(formData);
         await axios.post(
-          `http://localhost:3005/api/article/upload-inline-image/${articleId}`,
+          `http://winderland.shop/api/article/upload-inline-image/${articleId}`,
           formData
         );
       }

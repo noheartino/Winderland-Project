@@ -25,7 +25,7 @@ export default function OrderCardDetailItem({ item, type }) {
     const imagePath = item?.image_path
         ? (isProduct
             ? `/images/product/${item.image_path}`
-            : `http://localhost:3005/uploads/course_and_tarot/${item.image_path}`)
+            : `http://winderland.shop/uploads/course_and_tarot/${item.image_path}`)
         : '/images/default-order-image.png' // 請確保您有一個默認圖片
 
     return (
@@ -88,8 +88,8 @@ export default function OrderCardDetailItem({ item, type }) {
 
             {/* rwd */}
             <div className="d-block d-lg-none">
-            <div className={`${styles.cardBody} d-flex`}>
-                 
+                <div className={`${styles.cardBody} d-flex`}>
+
                     <div className={`${styles.orderDetail} d-flex justify-content-between align-items-center`}>
 
                         <div className={styles.orderDetailP}>

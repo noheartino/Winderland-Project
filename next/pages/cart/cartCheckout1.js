@@ -33,7 +33,7 @@ export default function CartCheckout1() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3005/api/cart/${userId}`
+          `http://winderland.shop/api/cart/${userId}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -138,7 +138,7 @@ export default function CartCheckout1() {
 
   const handleRemoveItem = async (itemId) => {
     try {
-      const response = await fetch(`http://localhost:3005/api/cart/${itemId}`, {
+      const response = await fetch(`http://winderland.shop/api/cart/${itemId}`, {
         method: "DELETE",
       });
       if (response.ok) {
@@ -162,7 +162,7 @@ export default function CartCheckout1() {
 
   const handleUpdateQuantity = async (itemId, newQuantity) => {
     try {
-      const response = await fetch(`http://localhost:3005/api/cart/${itemId}`, {
+      const response = await fetch(`http://winderland.shop/api/cart/${itemId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

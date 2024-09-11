@@ -1,5 +1,5 @@
 // # 重設密碼
-import React, { useState, useEffect , useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import styles from '@/components/member/resetPassword.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -94,17 +94,17 @@ export default function ResetPasswordForm() {
       setPasswordError('密碼長度必須至少為6-12個字符')
       return
     }
- 
+
     if (password !== confirmPassword) {
       setConfirmPasswordError('密碼不一致')
       return
     }
 
-   
- 
+
+
 
     try {
-      const response = await fetch('http://localhost:3005/api/member/reset-password', {
+      const response = await fetch('http://winderland.shop/api/member/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ export default function ResetPasswordForm() {
                     <p className={`${styles.resetNotice} me-5`}>請重新設定您的密碼，並以新密碼登入。</p>
 
                     <br />
-                   <FloatingLabelInput
+                    <FloatingLabelInput
                       label="新密碼 (6-12字符，不區分大小寫)"
                       type="password"
                       name="newPassword"
@@ -205,28 +205,28 @@ export default function ResetPasswordForm() {
 
                 <br />
                 <div className="ms-3">
-                <FloatingLabelInput
-                      label="新密碼 (6-12字符，不區分大小寫)"
-                      type="password"
-                      name="newPassword"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      error={passwordError}
-                      isPassword={true}
-                      togglePasswordVisibility={togglePasswordVisibility}
-                      showPassword={showPassword}
-                    />
-                    <FloatingLabelInput
-                      label="確認新密碼"
-                      type="password"
-                      name="confirmPassword"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      error={confirmPasswordError}
-                      isPassword={true}
-                      togglePasswordVisibility={toggleConfirmPasswordVisibility}
-                      showPassword={showConfirmPassword}
-                    />
+                  <FloatingLabelInput
+                    label="新密碼 (6-12字符，不區分大小寫)"
+                    type="password"
+                    name="newPassword"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    error={passwordError}
+                    isPassword={true}
+                    togglePasswordVisibility={togglePasswordVisibility}
+                    showPassword={showPassword}
+                  />
+                  <FloatingLabelInput
+                    label="確認新密碼"
+                    type="password"
+                    name="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    error={confirmPasswordError}
+                    isPassword={true}
+                    togglePasswordVisibility={toggleConfirmPasswordVisibility}
+                    showPassword={showConfirmPassword}
+                  />
                 </div>
 
                 <br />

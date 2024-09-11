@@ -18,7 +18,7 @@ export default function MobileForm() {
   const { auth } = useAuth();
   const { isFav, isCheckingFav, toggleFavorite, checkFavoriteStatus } =
     useFavorite(product?.[0]?.id);
-    
+
 
   useEffect(() => {
     if (product && product[0] && product[0].details) {
@@ -66,7 +66,7 @@ export default function MobileForm() {
       }
 
       const response = await axios.post(
-        "http://localhost:3005/api/product/addCart",
+        "http://winderland.shop/api/product/addCart",
         {
           user_id: parseInt(auth.userData.id),
           product_detail_id: parseInt(currentDetail.id),

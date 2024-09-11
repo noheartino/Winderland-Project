@@ -34,18 +34,18 @@ export default function HomeNav() {
 
   useEffect(() => {
     if (userId) {
-      fetch(`http://localhost:3005/api/header/${userId}`)
+      fetch(`http://winderland.shop/api/header/${userId}`)
         .then((response) => response.json())
         .then((infodata) => setInfo(infodata))
         .catch((error) => console.error("Error:", error));
     }
 
     // 抓取頭像 URL
-    fetch(`http://localhost:3005/api/dashboard/profile/avatar/${userId}`)
+    fetch(`http://winderland.shop/api/dashboard/profile/avatar/${userId}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success" && data.data.avatar_url) {
-          setAvatarUrl(`http://localhost:3005${data.data.avatar_url}`);
+          setAvatarUrl(`http://winderland.shop${data.data.avatar_url}`);
         } else {
           setAvatarUrl("/nav-footer/default_user.jpg"); // 使用預設頭像
         }
@@ -85,15 +85,15 @@ export default function HomeNav() {
   };
 
   const redwine = () => {
-    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=1");
+    router.push("http://winderland.shop/product?page=1&sort=id_asc&category=1");
   };
 
   const whitewine = () => {
-    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=2");
+    router.push("http://winderland.shop/product?page=1&sort=id_asc&category=2");
   };
 
   const otherwine = () => {
-    router.push("http://localhost:3000/product?page=1&sort=id_asc&category=3");
+    router.push("http://winderland.shop/product?page=1&sort=id_asc&category=3");
   };
 
   const hamburgerHook = () => {
@@ -323,9 +323,8 @@ export default function HomeNav() {
                 <i className="fa-solid fa-cart-shopping" />
 
                 <div
-                  className={`dot ${cartQuantity === 0 ? "nonedot" : ""} ${
-                    scrolled ? "" : "scroll"
-                  }`}
+                  className={`dot ${cartQuantity === 0 ? "nonedot" : ""} ${scrolled ? "" : "scroll"
+                    }`}
                 >
                   {cartQuantity}
                 </div>
@@ -395,19 +394,16 @@ export default function HomeNav() {
             }}
           >
             <div
-              className={`line ${isOpen ? "rotate_l" : ""} ${
-                scrolled ? "" : "scroll"
-              }`}
+              className={`line ${isOpen ? "rotate_l" : ""} ${scrolled ? "" : "scroll"
+                }`}
             ></div>
             <div
-              className={`line ${isOpen ? "d-none" : ""} ${
-                scrolled ? "" : "scroll"
-              }`}
+              className={`line ${isOpen ? "d-none" : ""} ${scrolled ? "" : "scroll"
+                }`}
             ></div>
             <div
-              className={`line ${isOpen ? "rotate_r" : ""} ${
-                scrolled ? "" : "scroll"
-              }`}
+              className={`line ${isOpen ? "rotate_r" : ""} ${scrolled ? "" : "scroll"
+                }`}
             ></div>
           </div>
           <img
@@ -423,14 +419,12 @@ export default function HomeNav() {
           <div className="HeaderCart">
             <button onClick={GoCart}>
               <i
-                className={`fa-solid fa-cart-shopping ${
-                  scrolled ? "" : "scroll"
-                }`}
+                className={`fa-solid fa-cart-shopping ${scrolled ? "" : "scroll"
+                  }`}
               />
               <div
-                className={`dot ${cartQuantity === 0 ? "nonedot" : ""} ${
-                  scrolled ? "" : "scroll"
-                }`}
+                className={`dot ${cartQuantity === 0 ? "nonedot" : ""} ${scrolled ? "" : "scroll"
+                  }`}
               >
                 {cartQuantity}
               </div>

@@ -17,7 +17,7 @@ export default function FavoriteArwd({ searchResults, searchTerm }) {
   // @ 獲取收藏文章
   const fetchFavorites = async () => {
     try {
-      const response = await fetch('http://localhost:3005/api/favorites/articles', {
+      const response = await fetch('http://winderland.shop/api/favorites/articles', {
         method: 'GET',
         credentials: 'include',
       })
@@ -33,7 +33,7 @@ export default function FavoriteArwd({ searchResults, searchTerm }) {
   // @ 移除收藏文章
   const removeFavorite = async (articleId) => {
     try {
-      const response = await fetch(`http://localhost:3005/api/favorites/articles/${articleId}`, {
+      const response = await fetch(`http://winderland.shop/api/favorites/articles/${articleId}`, {
         method: 'DELETE',
         credentials: 'include',
       })
@@ -64,7 +64,7 @@ export default function FavoriteArwd({ searchResults, searchTerm }) {
 
             <div key={article.id} className="favorite-a-card d-flex">
               <Image
-                src={article.image_path ? `http://localhost:3005/uploads/article/${article.image_path}` : "/images/member/fav-a1.jpeg"}
+                src={article.image_path ? `http://winderland.shop/uploads/article/${article.image_path}` : "/images/member/fav-a1.jpeg"}
                 alt={article.title || article.name}
                 width={90}
                 height={90}

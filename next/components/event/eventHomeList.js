@@ -19,10 +19,10 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
 
     // const clickpage = (e) => {
     //     currentpage = setnewp(e.target.value);
-        
+
     //     onpage(newPage);
     //     console.log(newPage);
-        
+
     // }
 
     const clickpage = (e) => {
@@ -33,14 +33,14 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
     }
 
     const clickarrprev = () => {
-        const previousPage = newPage>1 ? newPage - 1 : 1;
+        const previousPage = newPage > 1 ? newPage - 1 : 1;
         console.log(previousPage)
         setnewp(previousPage);
         onpage(previousPage);
     }
 
     const clickarrnext = () => {
-        const nextiousPage = newPage + 1 ;
+        const nextiousPage = newPage + 1;
         console.log(nextiousPage)
         setnewp(nextiousPage);
         onpage(nextiousPage);
@@ -48,7 +48,7 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
 
     return (
         <>
-        {/* {alldatais ? <pre>{JSON.stringify(alldatais, null, 2)}</pre> : 'Loading...'} */}
+            {/* {alldatais ? <pre>{JSON.stringify(alldatais, null, 2)}</pre> : 'Loading...'} */}
             <div className="eventHomeBoxArea">
                 <div className="container">
                     <div className="eventHomeBoxAreaTitle d-none d-lg-flex">
@@ -61,26 +61,26 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
 
                         <div className='AreaTitleRArea'>
 
-                        <button className='ascto' onClick={toggleSort}>
-                            {currentSort === 'asc' ? '最早▴' : '最新▾'}
-                        </button>
+                            <button className='ascto' onClick={toggleSort}>
+                                {currentSort === 'asc' ? '最早▴' : '最新▾'}
+                            </button>
 
-                        {userlv < 3 ? <button
-                            type="button"
-                            className="eventHomeBoxAreaTitleB"
-                            data-bs-toggle="modal"
-                            data-bs-target="#eventCreateModal"
-                        >
-                            開團管理
-                        </button> : <Link href='/event/create'><button
-                            type="button"
-                            className="eventHomeBoxAreaTitleB"
-                        >
-                            開團管理
-                        </button></Link>}
+                            {userlv < 3 ? <button
+                                type="button"
+                                className="eventHomeBoxAreaTitleB"
+                                data-bs-toggle="modal"
+                                data-bs-target="#eventCreateModal"
+                            >
+                                開團管理
+                            </button> : <Link href='/event/create'><button
+                                type="button"
+                                className="eventHomeBoxAreaTitleB"
+                            >
+                                開團管理
+                            </button></Link>}
 
                         </div>
-                       
+
                         <div
                             className="modal fade"
                             id="eventCreateModal"
@@ -123,13 +123,13 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
                             <br />
                             就像英文的potluck，一人帶一道菜去聚會，一支會就是一人帶一支酒來聚會，您可以帶來您珍藏的好酒與酒友們一同分享喜悅。
                         </div>
-                        
+
                         {userlv >= 3 && <Link href='/event/create' className='BRwdA'><button className="eventHomeBoxAreaTitleBRwd">開團管理</button></Link>}
                         <button className='ascto' onClick={toggleSort}>
                             {currentSort === 'asc' ? '最早▴' : '最新▾'}
                         </button>
-                        
-                        
+
+
                     </div>
                     <div className="eventHomeBoxAreaBox row">
                         {
@@ -137,7 +137,7 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
                                 <div className="col-12 col-lg-4 mb-4" key={i}>
                                     <div className="eventHomeBox_able">
                                         <div className="apply_able">報名期間內</div>
-                                        <img src={`http://localhost:3005/uploads/event/${t.event_cover_image}`} alt="" className="eventHomeBoxImg" />
+                                        <img src={`http://winderland.shop/uploads/event/${t.event_cover_image}`} alt="" className="eventHomeBoxImg" />
                                         <div className="eventHomeBox_text">
                                             <div className="title">{t.event_name}</div>
                                             <div className="info">
@@ -196,7 +196,7 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
 
                     </div>
 
-                
+
                     <div className="eventPagearea">
 
                         <button className='EventPage-toarr' onClick={clickarrprev}>
@@ -210,19 +210,19 @@ export default function EventHomeList({ events, userlv, onSortChange, currentSor
                         <button className='EventPage-to' value={2} onClick={clickpage}>
                             2
                         </button>
-                
-                        <button className='EventPage-toarr'  onClick={clickarrnext} disabled={alldatais < 6}>
+
+                        <button className='EventPage-toarr' onClick={clickarrnext} disabled={alldatais < 6}>
                             <i className="fa-solid fa-chevron-right px-1 emmit1-pageNav"></i>
                         </button>
 
                     </div>
-            
+
 
 
                 </div>
             </div>
 
-            
+
 
         </>
     )

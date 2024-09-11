@@ -20,7 +20,7 @@ export default function CartClassDetail() {
         <div key={index} className={css.cartProductDetailList}>
           <div className={css.cartProductDetailImg}>
             <img
-              src={`http://localhost:3005/uploads/course_and_tarot/${item.class_image}`}
+              src={`http://winderland.shop/uploads/course_and_tarot/${item.class_image}`}
               alt="Class Image"
             />
           </div>
