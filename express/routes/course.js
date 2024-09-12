@@ -45,7 +45,7 @@ router.use(async (req, res, next) => {
 //   }),
 // })
 const storage = multer.diskStorage({
-  // http://localhost:3005/uploads/course_and_tarot
+  // https://winderland.shop/uploads/course_and_tarot
   destination: (req, file, cb) => {
     const uploadDir = path.join(
       process.cwd(),
@@ -811,9 +811,9 @@ router.put(
         !req.files['classPic'] && !req.files['classVdio']
           ? '不執行上傳'
           : await connection.execute(
-              updateImgAndVdioSQL,
-              updateImgAndVdioParams
-            )
+            updateImgAndVdioSQL,
+            updateImgAndVdioParams
+          )
 
       // 抓取課程原本的資料
 

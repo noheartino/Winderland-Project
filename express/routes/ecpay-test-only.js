@@ -21,7 +21,7 @@ router.get('/', function (req, res, next) {
   const TradeDesc = '商店線上付款'
   const ItemName = '購買商品結帳'
   const ReturnURL = 'https://www.ecpay.com.tw'
-  const OrderResultURL = 'http://localhost:3000/cart/cartCheckout3' //前端成功頁面
+  const OrderResultURL = 'https://winderland.shop/cart/cartCheckout3' //前端成功頁面
   const ChoosePayment = 'ALL'
 
   ////////////////////////以下參數不用改////////////////////////
@@ -34,18 +34,18 @@ router.get('/', function (req, res, next) {
   )
     .toString()
     .padStart(2, '0')}${new Date()
-    .getDate()
-    .toString()
-    .padStart(2, '0')}${new Date()
-    .getHours()
-    .toString()
-    .padStart(2, '0')}${new Date()
-    .getMinutes()
-    .toString()
-    .padStart(2, '0')}${new Date()
-    .getSeconds()
-    .toString()
-    .padStart(2, '0')}${new Date().getMilliseconds().toString().padStart(2)}`
+      .getDate()
+      .toString()
+      .padStart(2, '0')}${new Date()
+        .getHours()
+        .toString()
+        .padStart(2, '0')}${new Date()
+          .getMinutes()
+          .toString()
+          .padStart(2, '0')}${new Date()
+            .getSeconds()
+            .toString()
+            .padStart(2, '0')}${new Date().getMilliseconds().toString().padStart(2)}`
 
   const MerchantTradeDate = new Date().toLocaleDateString('zh-TW', {
     year: 'numeric',
@@ -143,7 +143,7 @@ router.get('/', function (req, res, next) {
 
   // res.send(htmlContent)
 
-    const htmlContent = `
+  const htmlContent = `
     <!DOCTYPE html>
     <html>
     <head>
@@ -161,7 +161,7 @@ router.get('/', function (req, res, next) {
     </html>
     `
 
-    res.send(htmlContent)
+  res.send(htmlContent)
 
   叫react送form的作法
   res.json({ htmlContent })

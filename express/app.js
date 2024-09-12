@@ -27,7 +27,7 @@ const app = express()
 // cors設定，參數為必要，注意不要只寫`app.use(cors())`
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://localhost:9000'],
+    origin: ['https://winderland.shop', 'https://localhost:9000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })
@@ -53,7 +53,7 @@ app.use(
 )
 
 // fileStore的選項 session-cookie使用
-const fileStoreOptions = { logFn: function () {} }
+const fileStoreOptions = { logFn: function () { } }
 app.use(
   session({
     store: new FileStore(fileStoreOptions), // 使用檔案記錄session
