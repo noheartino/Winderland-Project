@@ -19,8 +19,12 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'localhost',
       },
+      {
+        protocol: 'https',
+        hostname: 'winderland.shop',
+      },
     ],
-    unoptimized: true,
+    unoptimized: false,
   },
   // output: 'export', // don't use with `next start` or api route
   // distDir: 'dist',
