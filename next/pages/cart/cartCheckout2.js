@@ -93,22 +93,33 @@ export default function CartCheckout2() {
   };
 
   const handleTransportChange = (event) => {
-    if (classData.length > 0 && productData.length === 0) {
+    const value = event.target.value;
+    
+    // 判斷是否為手機設備
+    const isMobile = window.innerWidth < 992;
+  
+    if (isMobile && value === "transprot711") {
+      // 如果是手機並且選擇了 7-11，顯示提醒並阻止選擇
       Swal.fire({
-        icon: 'info',                // 信息框的圖標類型
-        title: '提醒',              // 警告框的標題
-        text: '購買課程不需運送',  // 警告框的文本
-        confirmButtonText: '確定'   // 確認按鈕的文本
+        icon: 'info',
+        title: '提醒',
+        text: '手機版只能使用黑貓宅急便運送',
+        confirmButtonText: '確定',
+      });
+    } else if (classData.length > 0 && productData.length === 0) {
+      // 購買課程時不需要選擇運送方式
+      Swal.fire({
+        icon: 'info',
+        title: '提醒',
+        text: '購買課程不需運送',
+        confirmButtonText: '確定',
       });
     } else {
-      const value = event.target.value;
       setSelectedTransport(value);
-
-      if (value === "blackCat") {
+  
+      // 根據選擇的運送方式清除或儲存相關的運送資料
+      if (value === "blackcat") {
         setTransportData({});
-        localStorage.removeItem("store711");
-      } else if (value === "other") {
-        setTransportBlackCatData({});
         localStorage.removeItem("store711");
       } else {
         setTransportBlackCatData({});
@@ -116,6 +127,7 @@ export default function CartCheckout2() {
       }
     }
   };
+  
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
