@@ -98,6 +98,7 @@ router.post('/', async function (req, res) {
       // sameSite: 'strict',
       sameSite: 'lax', // 改為 'lax' 以允許跨站點請求
       maxAge: 3 * 24 * 60 * 60 * 1000, // 3 天
+      domain: '.winderland.shop' // 增加新網域
     })
 
     // 傳送access token回應
