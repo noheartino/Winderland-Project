@@ -1,4 +1,4 @@
-@media screen and (max-width: 1920px) {
+
     .message-item {
         color: var(--text_primary);
 
@@ -149,7 +149,7 @@
         font-size: 23px;
         text-align: center;
     }
-}
+
 
 @media screen and (max-width: 992px) {
     .more-content {

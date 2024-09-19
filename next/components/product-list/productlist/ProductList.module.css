@@ -1,4 +1,4 @@
-@media (max-width: 1920px) {
+
     .shop-product-list {
         font-size: 14px;
         color: var(--text_primary);
@@ -14,7 +14,7 @@
         max-width: 50%;
         height: auto;
     }
-}
+
 
 @media screen and (max-width: 992px) {
     .shop-product-list {

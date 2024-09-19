@@ -1,14 +1,14 @@
-@media screen and (max-width: 1920px) {
-    & .product-part {
-        margin-bottom: 3%;
-        letter-spacing: 4px;
-        line-height: 1.9rem;
-    }
-    
+& .product-part {
+    margin-bottom: 3%;
+    letter-spacing: 4px;
+    line-height: 1.9rem;
 }
+
+
 @media screen and (max-width: 992px) {
     & .product-part {
         margin-bottom: 5%;
     }
 }
+
 @media screen and (max-width: 767px) {}

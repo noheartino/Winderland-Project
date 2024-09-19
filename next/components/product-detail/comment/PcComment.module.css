@@ -1,18 +1,17 @@
-@media screen and (max-width: 1920px) {
-    .product-comment-content{
-        margin-top: 6%;
-        height: auto;
-        width: 85%;
-    }
-    
-    .product-comment-message{
-        height: 100%;
-        width: 100%;
-        margin-top: 5%;
-    }
+.product-comment-content {
+    margin-top: 6%;
+    height: auto;
+    width: 85%;
 }
+
+.product-comment-message {
+    height: 100%;
+    width: 100%;
+    margin-top: 5%;
+}
+
 @media screen and (max-width: 992px) {
-    .product-comment-content{
+    .product-comment-content {
         display: none;
     }
 }

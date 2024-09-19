@@ -1,15 +1,14 @@
-@media screen and (max-width: 1920px) {
-    .product-comment-content{
-        display: none;
-    }
+.product-comment-content {
+    display: none;
 }
+
 @media screen and (max-width: 992px) {
-    .product-comment-content{
+    .product-comment-content {
         display: block;
     }
-    
-    .product-comment-star{
-        margin-inline:5%;
+
+    .product-comment-star {
+        margin-inline: 5%;
         margin-bottom: 7%;
     }
 }

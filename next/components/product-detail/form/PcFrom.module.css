@@ -1,4 +1,4 @@
-@media screen and (max-width: 1920px) {
+
 
     /* 商品數量選擇 */
     & .product-amount {
@@ -45,7 +45,7 @@
         align-items: center;
         text-wrap: nowrap;
     }
-}
+
 
 @media screen and (max-width: 1440px) {
     & .product-amount {

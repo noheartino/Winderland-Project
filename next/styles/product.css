@@ -13,8 +13,6 @@
 
 /* 桌機size */
 
-@media (max-width: 1920px) {
-
 
     /* header start*/
     .main-content {
@@ -24,7 +22,6 @@
     }
 
 
-}
 
 
 /* RWD 平版size */
