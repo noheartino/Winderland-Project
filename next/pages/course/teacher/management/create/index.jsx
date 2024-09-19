@@ -581,7 +581,7 @@ export default function ClassManIndex() {
           <div className='container'>
           <form method='post' onSubmit={handleSubmit} encType='multipart/form-data'>
               <div className='row row-gap-3'>
-                <div className='col-12 col-lg-8 d-flex flex-column gap-3'>
+                <div className='col-12 col-lg-8 d-flex flex-column gap-0 gap-sm-3'>
                   <div className='row gx-2 gx-lg-4 row-gap-3'>
                     <div className={`col-12 flex-column gap-1 text-danger spac-1 ${Object.values(mustBeValued).some(value => value.trim().length>0) ? 'd-flex' : 'd-none'}`}>* 請檢查必填欄位 !!</div>
                     <div className='col-12 d-flex flex-column gap-1'>
@@ -596,8 +596,8 @@ export default function ClassManIndex() {
                       <div className={`text-gray-light spac-1 emmit1 ${remindMsgBox['className']?'d-block':'d-none'}`}>* {remindMsgBox['className']?remindMsgBox['className']:''}</div>
                     </div>
                   </div>
-                  <div className='row gx-2 gx-lg-4 row-gap-3'>
-                    <div className='col-4 d-flex flex-column gap-1'>
+                  <div className='row gx-2 gx-lg-4 row-gap-1'>
+                    <div className='col-6 col-sm-4 d-flex flex-column gap-1'>
                       <label htmlFor='teacherId' className='CmanageCreateTag'>
                         * 授課教師
                       </label>
@@ -612,7 +612,7 @@ export default function ClassManIndex() {
                       </select>
 
                     </div>
-                    <div className='col-4 d-flex flex-column gap-1'>
+                    <div className='col-6 col-sm-4 d-flex flex-column gap-1'>
                       <label htmlFor='onAndUnderLine' className='CmanageCreateTag'>
                         * 開課性質
                       </label>
@@ -632,7 +632,7 @@ export default function ClassManIndex() {
                       </div>
                     </div>
 
-                    <div className={`col-4 flex-column gap-1 ${onOrUnderline && onOrUnderline === 1 || onOrUnderline===null ? 'd-none' : 'd-flex'}`}>
+                    <div className={`col-6 col-sm-4 flex-column gap-1 ${onOrUnderline && onOrUnderline === 1 || onOrUnderline===null ? 'd-none' : 'd-flex'}`}>
                       <label htmlFor='studentLimit' className='CmanageCreateTag'>
                         * 人數上限
                       </label>
@@ -649,7 +649,7 @@ export default function ClassManIndex() {
                   </div>
                   <div className={`row gx-2 gx-lg-4 row-gap-3 ${onOrUnderline && onOrUnderline === 1 || onOrUnderline===null ? 'd-none' : 'd-flex'}`}>
 
-                    <div className='col-4 d-flex flex-column gap-1'>
+                    <div className='col-6 col-sm-4 d-flex flex-column gap-1'>
                       <label htmlFor='courseStartDate' className='CmanageCreateTag'>
                        * 開始上課日期
                         {/* 實體不可晚於結束日期 */}
@@ -663,7 +663,7 @@ export default function ClassManIndex() {
                       />
                       <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`classStartDate`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`classStartDate`] ? errorMsgBox[`classStartDate`] : ''}</div>
                     </div>
-                    <div className='col-4 d-flex flex-column gap-1'>
+                    <div className='col-6 col-sm-4 d-flex flex-column gap-1'>
                       <label htmlFor='courseEndDate' className='CmanageCreateTag'>
                         * 課程結束日期
                       </label>
@@ -676,7 +676,7 @@ export default function ClassManIndex() {
                       />
                     </div>
 
-                    <div className='col-4 d-flex flex-column gap-1'>
+                    <div className='col-6 col-sm-4 d-flex flex-column gap-1'>
                       <label htmlFor='assignStartDate' className='CmanageCreateTag'>
                         * 報名開始日期
                         {/* 不可晚於結束日期 */}
@@ -691,7 +691,7 @@ export default function ClassManIndex() {
                       <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`assignStartDate`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`assignStartDate`] ? errorMsgBox[`assignStartDate`] : ''}</div>
                     </div>
 
-                    <div className='col-4 d-flex flex-column gap-1'>
+                    <div className='col-6 col-sm-4 d-flex flex-column gap-1'>
                       <label htmlFor='assignEndDate' className='CmanageCreateTag'>
                        * 報名截止日期
                       </label>
@@ -705,7 +705,7 @@ export default function ClassManIndex() {
                       <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`assignEndDate`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`assignEndDate`] ? errorMsgBox[`assignEndDate`] : ''}</div>
                     </div>
 
-                    <div className='col-4 d-flex flex-column gap-1'>
+                    <div className='col-6 col-sm-4 d-flex flex-column gap-1'>
                       <label htmlFor='dailyStartTime' className='CmanageCreateTag'>
                        * 上課時間
                         {/* 不可晚於結束時間 */}
@@ -720,7 +720,7 @@ export default function ClassManIndex() {
                       <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`dailyStartTime`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`dailyStartTime`] ? errorMsgBox[`dailyStartTime`] : ''}</div>
                     </div>
 
-                    <div className='col-4 d-flex flex-column gap-1'>
+                    <div className='col-6 col-sm-4 d-flex flex-column gap-1'>
                       <label htmlFor='dailyEndTime' className='CmanageCreateTag'>
                         * 下課時間
                       </label>
@@ -735,7 +735,7 @@ export default function ClassManIndex() {
 
                   </div>
                   <div className={`row gx-2 gx-lg-4 row-gap-3 ${onOrUnderline && onOrUnderline === 1 || onOrUnderline===null ? 'd-none' : 'd-flex'}`}>
-                    <div className='col-4 d-flex flex-column gap-1'>
+                    <div className='col-6 col-sm-4 d-flex flex-column gap-1'>
                       
                       <label htmlFor='classCity' className='CmanageCreateTag'>
                         * 開課縣市
@@ -750,7 +750,7 @@ export default function ClassManIndex() {
                       </select>
                     </div>
 
-                    <div className='col-8 d-flex flex-column gap-1'>
+                    <div className='col-12 col-sm-8 d-flex flex-column gap-1'>
                       <label htmlFor='classCityDetail' className='CmanageCreateTag'>
                         * 詳細開課地址 (<span id='CmanageCreateTagWordNum'>0</span>/40)
                       </label>
@@ -767,7 +767,7 @@ export default function ClassManIndex() {
                   </div>
                   
                   <div className='row gx-2 gx-lg-4 row-gap-3'>
-                    <div className='col-4 d-flex flex-column gap-1'>
+                    <div className='col-6 col-sm-4 d-flex flex-column gap-1'>
                       <label htmlFor='classPrice' className='CmanageCreateTag'>
                        * 課程金額
                       </label>
@@ -783,7 +783,7 @@ export default function ClassManIndex() {
                       {/* 需要是正整數 */}
                     </div>
 
-                    <div className='col-4 d-flex flex-column gap-1'>
+                    <div className='col-6 col-sm-4 d-flex flex-column gap-1'>
                       <label htmlFor='classSalePrice' className='CmanageCreateTag'>
                         課程優惠金額
                       </label>
@@ -792,7 +792,7 @@ export default function ClassManIndex() {
                         name='class_sale_price'
                         id='classSalePrice'
                         className='CourseCreateInput'
-                        placeholder='--請選擇性輸入折扣後金額'
+                        placeholder='--請輸入折扣後金額'
                         onChange={handlePIntegerCheck}
                       />
                       <div className={`text-danger spac-1 emmit2 ${errorMsgBox[`classSalePrice`] ? 'd-block' : 'd-none'}`}>* {errorMsgBox[`classSalePrice`] ? errorMsgBox[`classSalePrice`] : ''}</div>

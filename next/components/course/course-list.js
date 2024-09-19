@@ -100,11 +100,11 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
                       <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={handleClearOrder}>清除排序<i className="ms-4 fa-solid fa-xmark"></i></button></li>
                     </ul>
                   </div>
-                  <p className="d-inline-flex gap-1">
+                  <button className="d-inline-flex gabutton-1">
                     <button className="btn-light-to-prim btn py-2 px-3 spac-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapes-courseFilter" aria-expanded="false" aria-controls="collapes-courseFilter">
                       課程篩選<i className="fa-solid fa-filter ms-2"></i>
                     </button>
-                  </p>
+                  </button>
                 </div>
                 <div className='col-auto d-flex gap-2 row-gap-2 flex-column flex-md-row'>
                   <Link className={`px-0 mx-0 ${userId === 100 ? 'd-block' : 'd-none'}`} href="/course/teacher/management/create">

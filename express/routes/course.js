@@ -7,7 +7,7 @@ import path from 'path'
 
 const router = express.Router()
 
-// 更新 class 資料表的 status，0:報名已截止；1:可報名；2:報名尚未開始
+// 自動更新 class 資料表的 status，0:報名已截止；1:可報名；2:報名尚未開始
 const updateClassStatus = async () => {
   const query = `UPDATE
                     class
@@ -30,20 +30,6 @@ router.use(async (req, res, next) => {
   next()
 })
 
-// const upload = multer({
-//   storage: multer.diskStorage({
-//     destination: (req, file, cb) => {
-//       const uploadDir = path.join(process.cwd(), 'public/uploads')
-//       if (!fs.existsSync(uploadDir)) {
-//         fs.mkdirSync(uploadDir, { recursive: true })
-//       }
-//       cb(null, uploadDir)
-//     },
-//     filename: (req, file, cb) => {
-//       cb(null, file.originalname)
-//     },
-//   }),
-// })
 const storage = multer.diskStorage({
   // http://localhost:3005/uploads/course_and_tarot
   destination: (req, file, cb) => {
@@ -485,9 +471,7 @@ router.get('/:courseId', async (req, res) => {
   console.log('------' + commentSQLparams + '------')
   console.log('------' + series + '------')
   console.log('courseId=' + courseId)
-  if (series) {
-    console.log(series)
-  }
+
   try {
     const [course] = await connection.execute(courseSQL)
     const [theCourseAssigned] = await connection.execute(theCourseAssignedSQL)

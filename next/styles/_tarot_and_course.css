@@ -584,6 +584,12 @@
         var(--green) 50%,
         var(--green_dark) 100%
       );
+      min-height: 278px;
+    }
+    @media (max-width: 556px) {
+      & .course-no-content {
+        min-height: 150px;
+      }
     }
   }
   & .cursor-pointer{
@@ -606,6 +612,12 @@
         var(--blue) 50%,
         var(--blue_dark) 100%
       );
+      min-height: 278px;
+    }
+    @media (max-width: 556px){
+      & .course-no-content {
+        min-height: 150px;
+      }
     }
   }
   & .card-md-body {
