@@ -84,7 +84,7 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
             </div>
           </div>
           <div className='row px-10px m-0 justify-content-center justify-content-md-between mb-5'>
-            {/* course-list button area start */}
+            {/* course-list buttoon area start */}
             <div className="col-12 mx-0 px-0">
               <div className='row justify-content-between'>
                 <div className='col-auto d-flex gap-2'>
@@ -100,11 +100,11 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
                       <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={handleClearOrder}>清除排序<i className="ms-4 fa-solid fa-xmark"></i></button></li>
                     </ul>
                   </div>
-                  <button className="d-inline-flex gabutton-1">
+                  <div className="d-inline-flex gabutton-1">
                     <button className="btn-light-to-prim btn py-2 px-3 spac-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapes-courseFilter" aria-expanded="false" aria-controls="collapes-courseFilter">
                       課程篩選<i className="fa-solid fa-filter ms-2"></i>
                     </button>
-                  </button>
+                  </div>
                 </div>
                 <div className='col-auto d-flex gap-2 row-gap-2 flex-column flex-md-row'>
                   <Link className={`px-0 mx-0 ${userId === 100 ? 'd-block' : 'd-none'}`} href="/course/teacher/management/create">
@@ -161,7 +161,7 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
               </div>
             </div>
 
-            {/* course-list button area end */}
+            {/* course-list buttoon area end */}
           </div>
           
           <div className="row px-0 m-0 course-mycourse-box row-gap-5">
