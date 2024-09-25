@@ -154,13 +154,13 @@ export default function CourseFilter({teachers, setScore
         <div className='row mx-0 px-10px mb-3 spac-1 text-prim-text-prim fw-bold justify-content-between  d-flex d-md-none'>
           <div className='col-auto cursor-pointer btn-border-wine btn' onClick={handleClearAllSort}>清除篩選<i className="fa-solid fa-xmark ms-2"></i></div>
         </div>
-        <div className='row mx-0 px-10px mb-3 spac-1 text-prim-text-prim fw-bold justify-content-between'>
+        <div className='row mx-0 px-10px spac-1 text-prim-text-prim fw-bold justify-content-between'>
                     
                     <div className='col-auto d-flex flex-row align-items-center list-group'>
                         <span>勾選欲篩選的地區：</span>
                         <span className='list-group-item border-0 p-1'>
                             <input className="form-check-input me-1" type="checkbox" id={`districtAll`} onClick={handleDistrictAll}></input>
-                            <label className="form-check-label stretched-link spac-1 text-gray" htmlFor={`districtAll`}>全部 (包含線上課程)</label>
+                            <label className="form-check-label stretched-link spac-1 text-gray" htmlFor={`districtAll`}>全部</label>
                         </span>
                     </div>
                     <div className='col-auto cursor-pointer btn-border-wine btn d-none d-md-block' onClick={handleClearAllSort}>清除篩選<i className="fa-solid fa-xmark ms-2"></i></div>
@@ -179,14 +179,16 @@ export default function CourseFilter({teachers, setScore
                 )
             })}
         </div>
-        <div className='row mx-0 px-10px mb-3 spac-1 text-prim-text-prim fw-bold mt-4 row-gap-3'>
+        <div className='row mx-0 px-10px mb-3 spac-1 text-prim-text-prim fw-bold mt-4 row-gap-3 row-gap-sm-5'>
             <div className={`col-12 col-xl-6 mx-0 px-0 d-flex align-items-center me-5 gap-3`}>
-                <span className='text-nowrap me-2 my-0 p-0'>請選取實體及線上：</span>
+                <span className='text-nowrap me-2 my-0 p-0'>請選取開課類型：</span>
                 <button className={`btn btn-light-to-prim ${onlineFilter==='全部'?'active':''}`} onClick={handleOnlineRadio}>全部</button>
                 <button className={`btn btn-light-to-prim ${onlineFilter==='實體'?'active':''}`} onClick={handleOnlineRadio}>實體</button>
                 <button className={`btn btn-light-to-prim ${onlineFilter==='線上'?'active':''}`} onClick={handleOnlineRadio}>線上</button>
             </div>
-            <div className={`col-8 col-lg-6 col-xl-4 mx-0 px-0 d-flex align-items-center`}>
+          </div>
+          <div className='row mx-0 px-10px mb-3 spac-1 text-prim-text-prim fw-bold mt-4 row-gap-3 row-gap-sm-5'>
+            <div className={`col-12 col-xl-6 mx-0 px-0 d-flex align-items-center`}>
                 <span className='text-nowrap me-2 my-0 p-0'>依評分篩選：</span>
                 <select className="form-select" aria-label="Default select example" id="starsFilter" value={score} onChange={handelSetScore}>
                     <option value="0">全部</option>
@@ -209,8 +211,7 @@ export default function CourseFilter({teachers, setScore
         
             <div className={`col-12 mx-0 px-0 d-flex align-items-center flex-wrap row-gap-2`}>
                 <span className='d-flex flex-column align-items-center'>
-                    <p className='text-nowrap me-2 my-0 p-0'>選擇開放報名時間：</p>
-                    <p className='text-nowrap me-2 my-0 p-0 emmit1 text-gray'>(包含線上課程)</p>
+                    <span className='text-nowrap me-2 my-0 p-0'>開放報名時間：</span>
                 </span>
                 <span className='d-flex align-items-center'>
                   <input type="date" className="form-control w-50" placeholder="選擇開課時間" aria-label="選擇開課時間" onChange={handleDateStart} value={dateStart}/>
@@ -223,12 +224,12 @@ export default function CourseFilter({teachers, setScore
         </div>
         
         <div className='row mx-0 px-10px mb-3 spac-1 text-prim-text-prim fw-bold mt-4 row-gap-3 gap-3'>
-            <div className={`col-12 mx-0 px-0 d-flex align-items-center flex-wrap row-gap-2`}>
-                <span className='text-nowrap me-2 my-0 p-0'>選擇課程費用區間：</span>
+            <div className={`col-12 mx-0 px-0 d-flex align-items-center flex-nowrap row-gap-2`}>
+                <span className='text-nowrap me-2 my-0 p-0'>課程費用區間：</span>
                 <span className="d-flex align-items-center">
-                  NT$ <input type="text" className="form-control w-35" placeholder="最低金額..." aria-label="最低課程金額" value={priceStart} onChange={handlePriceStart} id={`priceStart`}/>
+                  NT$&nbsp;<input type="number" className="form-control w-35" placeholder="最低金額..." aria-label="最低課程金額" value={priceStart} onChange={handlePriceStart} id={`priceStart`}/>
                   <span className="mx-2">~</span>
-                  NT$ <input type="text" className="form-control w-35" placeholder="最高金額..." aria-label="最高課程金額" value={priceEnd} onChange={handlePriceEnd} id={`priceEnd`}/>
+                  NT$&nbsp;<input type="number" className="form-control w-35" placeholder="最高金額..." aria-label="最高課程金額" value={priceEnd} onChange={handlePriceEnd} id={`priceEnd`}/>
                   <i className="fa-solid fa-xmark mx-2 cursor-pointer" onClick={handleClearPrice}></i>
                 </span>
                 

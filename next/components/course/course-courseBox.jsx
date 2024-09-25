@@ -103,7 +103,7 @@ export default function CourseList({ boxType, myBox, classAssigns, setIsHomePage
                     />
                 </div>
             </div>
-            <div className={`course-no-content col h-100 flex-column flex-md-row px-0 m-0 row-gap-3 justify-content-center align-items-center ${myBox ? 'd-none' : 'd-flex'}`} style={{minHeight: '278px'}}>
+            <div className={`course-no-content col h-100 flex-column flex-md-row px-0 m-0 row-gap-3 justify-content-center align-items-center ${myBox ? 'd-none' : 'd-flex'}`}>
                 <i className="fa-regular fa-face-meh me-2 text-prim-dark h5" />
                 <div className="spac-2 text-prim-dark h6">
                     尚無可顯示的課程內容

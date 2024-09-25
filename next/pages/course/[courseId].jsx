@@ -26,6 +26,7 @@ export default function CourseIndex() {
   }, [auth]);
 
   const router = useRouter();
+  // const { courseId, series } = router.query;
   const { courseId, series } = router.query;
   console.log("本頁courseId抓取為:" + courseId);
   const [course, setCourse] = useState([]);
