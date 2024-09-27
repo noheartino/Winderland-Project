@@ -57,7 +57,7 @@ export default function CartProductTotalM() {
       orderStatus = '已完成'; // 如果只有課程，狀態設為已完成
       transportText = '不需運送'; // 顯示 "不需運送"
       setOrderData({
-        image: `http://localhost:3005/uploads/course_and_tarot/${firstClass.class_image}`, // 課程沒有圖片，假設使用預設圖片
+        image: `https://winderland.shop/uploads/course_and_tarot/${firstClass.class_image}`, // 課程沒有圖片，假設使用預設圖片
         name: firstClass.class_name,
         quantity: classData.length,
         totalAmount: discountedAmount,

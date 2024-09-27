@@ -25,7 +25,7 @@ export default function ArticleIndexList({ Article, sortOrder, categorySM, dateF
   const [totalPages, setTotalPages] = useState(0); // 新增 totalPages 的 state
 
   useEffect(() => {
-    const apiUrl = new URL("http://localhost:3005/api/article");
+    const apiUrl = new URL("https://winderland.shop/api/article");
 
     if (search) {
       apiUrl.searchParams.append("search", search);
@@ -78,7 +78,7 @@ export default function ArticleIndexList({ Article, sortOrder, categorySM, dateF
   const [isHovered, setIsHovered] = useState(false);
   const backgroundImage =
     Article?.images.length > 0
-      ? `url(http://localhost:3005/uploads/article/${Article.images[0]})`
+      ? `url(https://winderland.shop/uploads/article/${Article.images[0]})`
       : `url(/images/article/titlePic.jpeg)`;
   // 導向某篇文章
   const handleLink = () => {
@@ -254,7 +254,7 @@ export default function ArticleIndexList({ Article, sortOrder, categorySM, dateF
               <ArticleIndexCard key={article.id} article={article} />
             ))
           ) : (
-            <h3 className="text-center" style={{ color: "var(--text_gray)"}}>
+            <h3 className="text-center" style={{ color: "var(--text_gray)" }}>
               沒有搜尋到可顯示的文章
             </h3>
           )

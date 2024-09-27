@@ -37,7 +37,7 @@ export default function DashboardFavorite() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3005/api/favorites/search?term=${encodeURIComponent(term)}`, {
+      const response = await fetch(`https://winderland.shop/api/favorites/search?term=${encodeURIComponent(term)}`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -70,8 +70,8 @@ export default function DashboardFavorite() {
         <FavoriteAside onFilterChange={handleFilterChange} />
 
         <div className="favorite-list mb-5">
-        {/* 搜尋 */}
-        {/* <div className="search mt-2 ">
+          {/* 搜尋 */}
+          {/* <div className="search mt-2 ">
             <FontAwesomeIcon icon={faMagnifyingGlass} className="search_icon" />
             <input
               type="text"
@@ -114,20 +114,20 @@ export default function DashboardFavorite() {
         </div>
 
         {/* 收藏區 */}
-  <div className="favorite-list-rwd container-fluid mb-5">
-    {/* 商品收藏 */}
-    <div className="favorite-p-rwd">
-      <FavoritePrwd searchResults={searchResults.filter(item => item.type === 'product')} searchTerm={searchTerm} />
-    </div>
-    {/* 課程收藏 */}
-    <div className="favorite-c-rwd">
-      <FavoriteCrwd searchResults={searchResults.filter(item => item.type === 'course')} searchTerm={searchTerm} />
-    </div>
-    {/* 文章收藏 */}
-    <div className="favorite-a mb-5">
-      <FavoriteArwd searchResults={searchResults.filter(item => item.type === 'article')} searchTerm={searchTerm} />
-    </div>
-  </div>
+        <div className="favorite-list-rwd container-fluid mb-5">
+          {/* 商品收藏 */}
+          <div className="favorite-p-rwd">
+            <FavoritePrwd searchResults={searchResults.filter(item => item.type === 'product')} searchTerm={searchTerm} />
+          </div>
+          {/* 課程收藏 */}
+          <div className="favorite-c-rwd">
+            <FavoriteCrwd searchResults={searchResults.filter(item => item.type === 'course')} searchTerm={searchTerm} />
+          </div>
+          {/* 文章收藏 */}
+          <div className="favorite-a mb-5">
+            <FavoriteArwd searchResults={searchResults.filter(item => item.type === 'article')} searchTerm={searchTerm} />
+          </div>
+        </div>
 
       </div>
     </>

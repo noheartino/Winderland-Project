@@ -55,7 +55,7 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
       pathname,
       query: newQuery,
     };
-    router.push(newUrl, undefined, { shallow: true, scroll: false});
+    router.push(newUrl, undefined, { shallow: true, scroll: false });
   };
 
   const handleClearOrder = () => {
@@ -90,13 +90,13 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
                 <div className='col-auto d-flex gap-2'>
                   <div className="dropdown">
                     <button className="btn-light-to-prim btn py-2 px-3 spac-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        課程排序<i className="fa-solid fa-sort ms-2"></i>
+                      課程排序<i className="fa-solid fa-sort ms-2"></i>
                     </button>
                     <ul className="dropdown-menu">
-                      <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={(e)=>handleCourseOrder(e, 'earlyToLate')}>開課時間(早→晚)<i className="ms-4 fa-solid fa-arrow-down-short-wide"></i></button></li>
-                      <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={(e)=>handleCourseOrder(e, 'lateToEarly')}>開課時間(晚→早)<i className="ms-4 fa-solid fa-arrow-up-wide-short"></i></button></li>
-                      <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={(e)=>handleCourseOrder(e, 'pLowToHigh')}>金額(低→高)<i className="ms-4 fa-solid fa-arrow-up-9-1"></i></button></li>
-                      <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={(e)=>handleCourseOrder(e, 'pHightToLow')}>金額(高→低)<i className="ms-4 fa-solid fa-arrow-down-9-1"></i></button></li>
+                      <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={(e) => handleCourseOrder(e, 'earlyToLate')}>開課時間(早→晚)<i className="ms-4 fa-solid fa-arrow-down-short-wide"></i></button></li>
+                      <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={(e) => handleCourseOrder(e, 'lateToEarly')}>開課時間(晚→早)<i className="ms-4 fa-solid fa-arrow-up-wide-short"></i></button></li>
+                      <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={(e) => handleCourseOrder(e, 'pLowToHigh')}>金額(低→高)<i className="ms-4 fa-solid fa-arrow-up-9-1"></i></button></li>
+                      <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={(e) => handleCourseOrder(e, 'pHightToLow')}>金額(高→低)<i className="ms-4 fa-solid fa-arrow-down-9-1"></i></button></li>
                       <li><button className="dropdown-item w-100 spac-1 text-prim-text-prim d-flex justify-content-between" type="button" onClick={handleClearOrder}>清除排序<i className="ms-4 fa-solid fa-xmark"></i></button></li>
                     </ul>
                   </div>
@@ -122,9 +122,9 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
                   </Link>
                   <div
                     type="button"
-                    className={`btn-border-white-primText btn py-1 px-3 spac-1 justify-content-center align-items-center ${router.query.search?'d-flex':'d-none'}`} onClick={handleNavClear}
+                    className={`btn-border-white-primText btn py-1 px-3 spac-1 justify-content-center align-items-center ${router.query.search ? 'd-flex' : 'd-none'}`} onClick={handleNavClear}
                   >
-                  清除搜尋<i className="fa-solid fa-xmark ms-2"></i>
+                    清除搜尋<i className="fa-solid fa-xmark ms-2"></i>
                   </div>
                 </div>
               </div>
@@ -163,7 +163,7 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
 
             {/* course-list buttoon area end */}
           </div>
-          
+
           <div className="row px-0 m-0 course-mycourse-box row-gap-5">
 
             {courses && courses.length > 0 ?
@@ -196,7 +196,7 @@ export default function CourseList({ userId, courses, comments, classAssigns, cu
               })
               : <div className="row justify-content-center my-3">
                 <div className="col-auto" style={{ maxWidth: '370px', maxHeight: '350px', width: '100%' }}>
-                  <Image src={`http://localhost:3005/uploads/course_and_tarot/courses-no-result.png`} alt="course list no result" layout="responsive" width={370} height={350} style={{ width: '100%', height: 'auto', maxWidth: '100%', maxHeight: '100%' }} />
+                  <Image src={`https://winderland.shop/uploads/course_and_tarot/courses-no-result.png`} alt="course list no result" layout="responsive" width={370} height={350} style={{ width: '100%', height: 'auto', maxWidth: '100%', maxHeight: '100%' }} />
                 </div>
               </div>}
 

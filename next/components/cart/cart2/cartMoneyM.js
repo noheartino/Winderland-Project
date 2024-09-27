@@ -152,7 +152,7 @@ export default function CartPay({
 
           if (selectedPayment === "productpay") {
             response = await axios.post(
-              "http://localhost:3005/api/cart/cashOnDelivery",
+              "https://winderland.shop/api/cart/cashOnDelivery",
               {
                 userId,
                 pointsUsed,
@@ -180,12 +180,12 @@ export default function CartPay({
                 cancelButtonText: "取消",
               }).then((result) => {
                 if (result.isConfirmed) {
-                  window.location.href = `http://localhost:3005/api/ecpay-test-only?amount=${discountedAmount}`;
+                  window.location.href = `https://winderland.shop/api/ecpay-test-only?amount=${discountedAmount}`;
                 }
               });
             };
             response = await axios.post(
-              "http://localhost:3005/api/cart/creditCardPayment",
+              "https://winderland.shop/api/cart/creditCardPayment",
               {
                 userId,
                 pointsUsed,
@@ -232,16 +232,16 @@ export default function CartPay({
             <div className={css.cartTotalML1}>
               <div>付款方式</div>
               <div>
-              {selectedPayment
-                ? selectedPayment === "creditpay"
-                  ? "信用卡"
-                  : "貨到付款"
-                : "請選擇付款方式"}
-              {productData.length > 0 && selectedTransport && selectedTransport === "transprot711"
-                ? "(7-11)"
-                : selectedTransport === "blackcat"
-                ? "(黑貓宅急便)"
-                : ""}
+                {selectedPayment
+                  ? selectedPayment === "creditpay"
+                    ? "信用卡"
+                    : "貨到付款"
+                  : "請選擇付款方式"}
+                {productData.length > 0 && selectedTransport && selectedTransport === "transprot711"
+                  ? "(7-11)"
+                  : selectedTransport === "blackcat"
+                    ? "(黑貓宅急便)"
+                    : ""}
               </div>
             </div>
             <div className={css.cartTotalML2}>

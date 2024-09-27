@@ -412,7 +412,7 @@
   /* ↓ course */
   & .course-homepage-nav {
     background: linear-gradient(to right, #6f444ecc, #6f444ecc),
-      url(http://localhost:3005/uploads/course_and_tarot/slide01.png) center center/cover no-repeat;
+      url(https://winderland.shop/uploads/course_and_tarot/slide01.png) center center/cover no-repeat;
     padding-block: 80px;
     & .nav-tag {
       letter-spacing: 7px;
@@ -710,7 +710,7 @@
         rgba(256, 256, 256, 0.2),
         rgba(256, 256, 256, 0.2)
       ),
-      url(http://localhost:3005/uploads/course_and_tarot/Rectangle\ 115.png) top center/cover
+      url(https://winderland.shop/uploads/course_and_tarot/Rectangle\ 115.png) top center/cover
         no-repeat;
     height: 650px;
     position: relative;
@@ -852,7 +852,7 @@
   .CmanageHeader{
     width: 100%;
     height: 250px;
-    background: url('http://localhost:3005/uploads/course_and_tarot/Rectangle 115.png') no-repeat 50%30%/cover;
+    background: url('https://winderland.shop/uploads/course_and_tarot/Rectangle 115.png') no-repeat 50%30%/cover;
 
     @media screen and (max-width: 992px){
         height: 150px;
@@ -1458,7 +1458,7 @@
         rgba(0, 0, 0, 0) 67%,
         rgba(0, 0, 0, 0.6) 100%
       ),
-      url(http://localhost:3005/uploads/course_and_tarot/tarot.jpg) lightgray 50% / cover no-repeat;
+      url(https://winderland.shop/uploads/course_and_tarot/tarot.jpg) lightgray 50% / cover no-repeat;
     min-height: 75vh;
     overflow-x: hidden;
     overflow-y: hidden;

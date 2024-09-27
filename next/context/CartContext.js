@@ -10,7 +10,7 @@ export const CartProvider = ({ children }) => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['cartQuantity', auth.userData?.id],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:3005/api/cart/${auth.userData.id}`);
+      const response = await fetch(`https://winderland.shop/api/cart/${auth.userData.id}`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

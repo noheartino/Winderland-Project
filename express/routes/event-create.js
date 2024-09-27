@@ -84,7 +84,7 @@ router.post('/', upload.single('myfile'), async (req, res) => {
     //   redirectUrl: '/event/list'
     // });
 
-    // res.redirect('http://localhost:3000/event/list');
+    // res.redirect('https://winderland.shop/event/list');
   } catch (error) {
     console.error('Error processing request:', error)
     res
@@ -163,7 +163,7 @@ router.post('/', upload.single('myfile'), async (req, res) => {
 //     );
 
 //     // 使用環境變數而不是硬編碼 URL
-//     const redirectUrl = process.env.FRONTEND_URL || 'http://localhost:3000/event/list';
+//     const redirectUrl = process.env.FRONTEND_URL || 'https://winderland.shop/event/list';
 //     res.redirect(redirectUrl);
 
 //   } catch (error) {

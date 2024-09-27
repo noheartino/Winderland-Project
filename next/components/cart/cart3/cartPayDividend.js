@@ -8,7 +8,7 @@ export default function CartPayDividend({ userId }) {
     // 獲取回饋點數
     const fetchEarnedPoints = async () => {
       try {
-        const response = await fetch(`http://localhost:3005/api/cart/${userId}`);
+        const response = await fetch(`https://winderland.shop/api/cart/${userId}`);
         if (!response.ok) {
           console.error('Failed to fetch:', response.statusText);
           return;

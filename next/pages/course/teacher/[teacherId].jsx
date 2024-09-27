@@ -13,7 +13,7 @@ export default function TeacherDetail() {
   const router = useRouter();
   const { teacherId } = router.query;
 
-  let apiUrl = `http://localhost:3005/api/course/teacher/${teacherId}`;
+  let apiUrl = `https://winderland.shop/api/course/teacher/${teacherId}`;
   // const [comments, setComments] = useState([])
   const [teacher, setTeacher] = useState([]);
   const [teacherComments, setTeacherComments] = useState([]);
@@ -73,7 +73,7 @@ export default function TeacherDetail() {
             <div className="d-flex flex-column align-items-center gap-4">
               <div className="teacher-detail-head col-auto me-3 px-0">
                 <Image
-                  src={`http://localhost:3005/uploads/course_and_tarot/${teacher?.teacher_path}`}
+                  src={`https://winderland.shop/uploads/course_and_tarot/${teacher?.teacher_path}`}
                   width={100}
                   height={100}
                   alt=""
@@ -88,44 +88,38 @@ export default function TeacherDetail() {
                   className={`stars mt-2 d-flex d-md-none align-items-center`}
                 >
                   <i
-                    className={`fa-solid fa-star ${
-                      averageRating > 0.5
+                    className={`fa-solid fa-star ${averageRating > 0.5
                         ? "star-with-score"
                         : "star-without-score"
-                    }`}
+                      }`}
                   />
                   <i
-                    className={`fa-solid fa-star ${
-                      averageRating > 1.5
+                    className={`fa-solid fa-star ${averageRating > 1.5
                         ? "star-with-score"
                         : "star-without-score"
-                    }`}
+                      }`}
                   />
                   <i
-                    className={`fa-solid fa-star ${
-                      averageRating > 2.5
+                    className={`fa-solid fa-star ${averageRating > 2.5
                         ? "star-with-score"
                         : "star-without-score"
-                    }`}
+                      }`}
                   />
                   <i
-                    className={`fa-solid fa-star ${
-                      averageRating > 3.5
+                    className={`fa-solid fa-star ${averageRating > 3.5
                         ? "star-with-score"
                         : "star-without-score"
-                    }`}
+                      }`}
                   />
                   <i
-                    className={`fa-solid fa-star ${
-                      averageRating > 4.5
+                    className={`fa-solid fa-star ${averageRating > 4.5
                         ? "star-with-score"
                         : "star-without-score"
-                    }`}
+                      }`}
                   />
                   <span
-                    className={`ms-2 spac-1 text-sec-dark-blue emmit1 ${
-                      averageRating > 0 ? "d-inline-block" : "d-none"
-                    }`}
+                    className={`ms-2 spac-1 text-sec-dark-blue emmit1 ${averageRating > 0 ? "d-inline-block" : "d-none"
+                      }`}
                   >
                     {averageRating}
                   </span>
@@ -148,44 +142,38 @@ export default function TeacherDetail() {
                   </div>
                   <div className={`stars mt-2 d-flex align-items-center`}>
                     <i
-                      className={`fa-solid fa-star ${
-                        averageRating > 0.5
+                      className={`fa-solid fa-star ${averageRating > 0.5
                           ? "star-with-score"
                           : "star-without-score"
-                      }`}
+                        }`}
                     />
                     <i
-                      className={`fa-solid fa-star ${
-                        averageRating > 1.5
+                      className={`fa-solid fa-star ${averageRating > 1.5
                           ? "star-with-score"
                           : "star-without-score"
-                      }`}
+                        }`}
                     />
                     <i
-                      className={`fa-solid fa-star ${
-                        averageRating > 2.5
+                      className={`fa-solid fa-star ${averageRating > 2.5
                           ? "star-with-score"
                           : "star-without-score"
-                      }`}
+                        }`}
                     />
                     <i
-                      className={`fa-solid fa-star ${
-                        averageRating > 3.5
+                      className={`fa-solid fa-star ${averageRating > 3.5
                           ? "star-with-score"
                           : "star-without-score"
-                      }`}
+                        }`}
                     />
                     <i
-                      className={`fa-solid fa-star ${
-                        averageRating > 4.5
+                      className={`fa-solid fa-star ${averageRating > 4.5
                           ? "star-with-score"
                           : "star-without-score"
-                      }`}
+                        }`}
                     />
                     <span
-                      className={`ms-2 spac-1 text-sec-dark-blue emmit1 ${
-                        averageRating > 0 ? "d-inline-block" : "d-none"
-                      }`}
+                      className={`ms-2 spac-1 text-sec-dark-blue emmit1 ${averageRating > 0 ? "d-inline-block" : "d-none"
+                        }`}
                     >
                       {averageRating}
                     </span>

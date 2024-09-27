@@ -21,7 +21,7 @@ export default function Applyevent() {
 
   useEffect(() => {
     // if (useridis) {
-    fetch(`http://localhost:3005/api/article/all`)
+    fetch(`https://winderland.shop/api/article/all`)
       .then((response) => response.json())
       .then((data) => {
         // 處理 articles 資料，將 images 字段轉換為數組
@@ -115,7 +115,7 @@ export default function Applyevent() {
                   <div className={`DetailistBox `}>
                     {/* 照片 */}
                     <img
-                      src={`http://localhost:3005/uploads/article/${art.images[0]}`}
+                      src={`https://winderland.shop/uploads/article/${art.images[0]}`}
                       alt=""
                       className="DetailistBoxPic"
                     />
@@ -133,21 +133,18 @@ export default function Applyevent() {
                       onClick={() => handleClick(i)}
                     >
                       <div
-                        className={`lineA ${
-                          activeIndexes.includes(i) ? "" : "active"
-                        }`}
+                        className={`lineA ${activeIndexes.includes(i) ? "" : "active"
+                          }`}
                       />
                       <div
-                        className={`lineB ${
-                          activeIndexes.includes(i) ? "" : "active"
-                        }`}
+                        className={`lineB ${activeIndexes.includes(i) ? "" : "active"
+                          }`}
                       />
                     </div>
                   </div>
                   <div
-                    className={`DetailistToggleBox ${
-                      activeIndexes.includes(i) ? "active" : ""
-                    } ${scaleYIndexes.includes(i) ? "scaleY" : ""}`}
+                    className={`DetailistToggleBox ${activeIndexes.includes(i) ? "active" : ""
+                      } ${scaleYIndexes.includes(i) ? "scaleY" : ""}`}
                   >
                     <div className="row gx-5 mb-3">
                       <div className="col-10">
@@ -172,7 +169,7 @@ export default function Applyevent() {
                             <div className="eventAge">
                               <div className="eventAgeText">
                                 <img
-                                  src={`http://localhost:3005/uploads/article/${image}`}
+                                  src={`https://winderland.shop/uploads/article/${image}`}
                                   style={{
                                     objectFit: "cover",
                                     width: "100%",

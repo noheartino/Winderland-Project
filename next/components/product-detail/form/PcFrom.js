@@ -67,7 +67,7 @@ export default function PcFrom() {
       }
 
       const response = await axios.post(
-        "http://localhost:3005/api/product/addCart",
+        "https://winderland.shop/api/product/addCart",
         {
           user_id: parseInt(auth.userData.id),
           product_detail_id: parseInt(currentDetail.id),
@@ -123,7 +123,7 @@ export default function PcFrom() {
           <div className={`${styles["product-amount"]}`}>
             <div className={`${styles["product-amount-input"]}`}>
               <label htmlFor="">數量</label>
-              <Amount value={currentAmount} changeAmount={changeAmount} currentDetail={currentDetail}  />
+              <Amount value={currentAmount} changeAmount={changeAmount} currentDetail={currentDetail} />
             </div>
             <div className={`col-6 ${styles["product-year"]}`}>
               <label htmlFor="">年份</label>

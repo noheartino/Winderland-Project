@@ -20,7 +20,7 @@ export default function Applyevent() {
 
   useEffect(() => {
     if (useridis) {
-      fetch(`http://localhost:3005/api/event/list/${useridis}`)
+      fetch(`https://winderland.shop/api/event/list/${useridis}`)
         .then((response) => response.json())
         .then((infodata) => setInfo(infodata))
         .catch((error) => console.error("Error:", error));
@@ -143,18 +143,16 @@ export default function Applyevent() {
 
               return (
                 <div
-                  className={`eventDetailist ${
-                    eventdata.status === 0 ? "" : "d-none"
-                  }`}
+                  className={`eventDetailist ${eventdata.status === 0 ? "" : "d-none"
+                    }`}
                   key={i}
                 >
                   <div
-                    className={`DetailistBox ${
-                      eventdata.status === 1 ? "applyEnd" : ""
-                    }`}
+                    className={`DetailistBox ${eventdata.status === 1 ? "applyEnd" : ""
+                      }`}
                   >
                     <img
-                      src={`http://localhost:3005/uploads/event/${eventdata.event_cover_image}`}
+                      src={`https://winderland.shop/uploads/event/${eventdata.event_cover_image}`}
                       alt=""
                       className="DetailistBoxPic"
                     />
@@ -176,21 +174,18 @@ export default function Applyevent() {
                       onClick={() => handleClick(i)}
                     >
                       <div
-                        className={`lineA ${
-                          activeIndexes.includes(i) ? "" : "active"
-                        }`}
+                        className={`lineA ${activeIndexes.includes(i) ? "" : "active"
+                          }`}
                       />
                       <div
-                        className={`lineB ${
-                          activeIndexes.includes(i) ? "" : "active"
-                        }`}
+                        className={`lineB ${activeIndexes.includes(i) ? "" : "active"
+                          }`}
                       />
                     </div>
                   </div>
                   <div
-                    className={`DetailistToggleBox ${
-                      activeIndexes.includes(i) ? "active" : ""
-                    } ${scaleYIndexes.includes(i) ? "scaleY" : ""}`}
+                    className={`DetailistToggleBox ${activeIndexes.includes(i) ? "active" : ""
+                      } ${scaleYIndexes.includes(i) ? "scaleY" : ""}`}
                   >
                     <div className="row gx-5 mb-3">
                       <div className="col-12">
@@ -225,9 +220,8 @@ export default function Applyevent() {
                             <div
                               className="eventLimitLinedata"
                               style={{
-                                width: `${
-                                  (allpeople / eventdata.people_limit) * 100
-                                }%`,
+                                width: `${(allpeople / eventdata.people_limit) * 100
+                                  }%`,
                               }}
                             />
                           </div>

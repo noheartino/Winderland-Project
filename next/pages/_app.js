@@ -22,7 +22,7 @@ import { useEffect } from "react";
 import { AuthProvider } from '@/hooks/use-auth';  // 管理會員狀態
 import { CartProvider } from '@/context/CartContext';
 import NextTopLoader from 'nextjs-toploader'; // 換頁進度條－nextjs-toploader
-import swal from 'sweetalert';   // 美麗彈跳窗
+import swal from 'sweetalert2';   // 美麗彈跳窗
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // 引入 React Query
 import ProtectedRoute from '@/components/member/ProtectedRoute'; 
 
@@ -32,6 +32,12 @@ const queryClient = new QueryClient();
 export default function MyApp({ Component, pageProps }) {
   useEffect(() => {
     require("bootstrap");
+    swal.fire({
+      title: '確認',
+      text: '此為資展國際 MFEE53 前端工程師養成班專題，僅供學術研究，非商業用途',
+      icon: 'warning',
+      confirmButtonText: '確定',
+    })
   }, []);
   
   // 使用自訂在頁面層級的版面(layout)

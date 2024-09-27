@@ -21,7 +21,7 @@ let options = {
     },
   ],
   redirectUrls: {
-    confirmUrl: 'http://localhost:3000/pay-confirm',
-    cancelUrl: 'http://localhost:3000/pay-cancel',
+    confirmUrl: 'https://winderland.shop/pay-confirm',
+    cancelUrl: 'https://winderland.shop/pay-cancel',
   },
 }

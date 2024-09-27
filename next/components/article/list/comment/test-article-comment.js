@@ -14,11 +14,11 @@ export default function TestArticleComment({ articleId, userId, account, onComme
   // 頭像
   useEffect(() => {
     // 抓取頭像 URL
-    fetch(`http://localhost:3005/api/dashboard/profile/avatar/${userId}`)
+    fetch(`https://winderland.shop/api/dashboard/profile/avatar/${userId}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success" && data.data.avatar_url) {
-          setAvatarUrl(`http://localhost:3005${data.data.avatar_url}`);
+          setAvatarUrl(`https://winderland.shop${data.data.avatar_url}`);
         } else {
           setAvatarUrl("/nav-footer/default_user.jpg"); // 使用預設頭像
         }
@@ -44,7 +44,7 @@ export default function TestArticleComment({ articleId, userId, account, onComme
     try {
       const entityType = "article";
       const response = await fetch(
-        `http://localhost:3005/api/a-comment/${articleId}`,
+        `https://winderland.shop/api/a-comment/${articleId}`,
         {
           method: "POST",
           headers: {
@@ -104,7 +104,7 @@ export default function TestArticleComment({ articleId, userId, account, onComme
     // 渲染登入提示和按鈕
     return (
       <div className="text-center mt-2 mb-5">
-        <p className="mb-3" style={{letterSpacing:"1.4px", fontSize:"18px"}}>想分享點什麼嗎</p>
+        <p className="mb-3" style={{ letterSpacing: "1.4px", fontSize: "18px" }}>想分享點什麼嗎</p>
         <Link href="/member/login"
           className="btn btn-primary aLoginButton"
         >

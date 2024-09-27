@@ -21,7 +21,7 @@ export default function CouponPlusSm({
   const [usedClaimedCoupons, setUsedClaimedCoupons] = useState([]);
   useEffect(() => {
     // 取得所有優惠券的資料
-    fetch("http://localhost:3005/api/coupon")
+    fetch("https://winderland.shop/api/coupon")
       .then((response) => response.json())
       .then((data) => {
         setplusCoupons(data);
@@ -31,7 +31,7 @@ export default function CouponPlusSm({
       });
 
     // 獲取用戶已經領取的優惠券
-    fetch(`http://localhost:3005/api/coupon/${userId}`)
+    fetch(`https://winderland.shop/api/coupon/${userId}`)
       .then((response) => response.json())
       .then((data) => {
         const userCoupons = data.userCoupons;
@@ -93,7 +93,7 @@ export default function CouponPlusSm({
     };
     try {
       const response = await fetch(
-        "http://localhost:3005/api/coupon/save-coupons",
+        "https://winderland.shop/api/coupon/save-coupons",
         {
           method: "POST",
           headers: {
@@ -132,7 +132,7 @@ export default function CouponPlusSm({
         setSelectedCoupons([]); // 清空選擇列表
 
         // 重新 fetch 用戶已經領取的優惠券
-        fetch(`http://localhost:3005/api/coupon/${userId}`)
+        fetch(`https://winderland.shop/api/coupon/${userId}`)
           .then((response) => response.json())
           .then((data) => {
             const userCoupons = data.userCoupons;
@@ -195,9 +195,8 @@ export default function CouponPlusSm({
       </div>
       {/* 手機領券區塊 */}
       <div
-        className={`${style.couponZoneSm} row d-lg-none py-4 mx-3 mt-3 ${
-          isAllVisible ? style.showGetCoupon : style.hideGetCoupon
-        }`}
+        className={`${style.couponZoneSm} row d-lg-none py-4 mx-3 mt-3 ${isAllVisible ? style.showGetCoupon : style.hideGetCoupon
+          }`}
       >
         <div className={`${style.couponNav} col-12`}>
           <span className={`${style.CTitle} ${style.CTitleSm} row py-2`}>
@@ -225,10 +224,9 @@ export default function CouponPlusSm({
       <div className="row px-5">
         <button
           type="button"
-          className={`btn btn-primary col py-2 border-0 ${
-            isAllVisible ? style.showGetCoupon : style.hideGetCoupon
-          }`}
-          style={{ fontSize: "18px", background:"var(--primary)" }}
+          className={`btn btn-primary col py-2 border-0 ${isAllVisible ? style.showGetCoupon : style.hideGetCoupon
+            }`}
+          style={{ fontSize: "18px", background: "var(--primary)" }}
           onClick={handleConfirm}
         >
           確認領取

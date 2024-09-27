@@ -86,7 +86,7 @@ export default function CartCheckout2() {
         text: '單買課程只能使用信用卡付款', // 警告框的文本
         confirmButtonText: '確定'       // 確認按鈕的文本
       });
-      
+
     } else {
       setSelectedPayment(value);
     }
@@ -94,10 +94,10 @@ export default function CartCheckout2() {
 
   const handleTransportChange = (event) => {
     const value = event.target.value;
-    
+
     // 判斷是否為手機設備
     const isMobile = window.innerWidth < 992;
-  
+
     if (isMobile && value === "transprot711") {
       // 如果是手機並且選擇了 7-11，顯示提醒並阻止選擇
       Swal.fire({
@@ -116,7 +116,7 @@ export default function CartCheckout2() {
       });
     } else {
       setSelectedTransport(value);
-  
+
       // 根據選擇的運送方式清除或儲存相關的運送資料
       if (value === "blackcat") {
         setTransportData({});
@@ -127,7 +127,7 @@ export default function CartCheckout2() {
       }
     }
   };
-  
+
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
@@ -154,7 +154,7 @@ export default function CartCheckout2() {
   };
 
   const goTo1 = () => {
-    router.push("http://localhost:3000/cart/cartCheckout1");
+    router.push("https://winderland.shop/cart/cartCheckout1");
   };
 
   return (

@@ -29,14 +29,14 @@ export default function CartMoneyTotal({ userId }) {
         const year = formattedParts.find(part => part.type === 'year').value;
         const month = formattedParts.find(part => part.type === 'month').value;
         const day = formattedParts.find(part => part.type === 'day').value;
-        
+
         const formattedDate = `${year}.${month}.${day}`;
         setCurrentDate(formattedDate);
 
         // 獲取最新訂單編號和優惠券折扣
         const fetchOrderDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:3005/api/cart/${userId}`);
+                const response = await fetch(`https://winderland.shop/api/cart/${userId}`);
                 if (!response.ok) {
                     console.error('Failed to fetch:', response.statusText);
                     return;
@@ -63,7 +63,7 @@ export default function CartMoneyTotal({ userId }) {
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
-        
+
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };

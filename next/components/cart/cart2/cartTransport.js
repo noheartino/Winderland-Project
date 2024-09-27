@@ -4,7 +4,7 @@ import { useShip711StoreOpener } from '@/hooks/use-ship-711-store';
 
 export default function CartTransport({ addressLabel = "*門市選擇", hideSelectButton = false, handleTransportDataChange }) {
     const { store711, openWindow } = useShip711StoreOpener(
-        'http://localhost:3005/api/shipment/711',
+        'https://winderland.shop/api/shipment/711',
         { autoCloseMins: 3 }
     );
 
@@ -29,7 +29,7 @@ export default function CartTransport({ addressLabel = "*門市選擇", hideSele
         setPickupName(e.target.value);
         sessionStorage.setItem('pickupName', e.target.value); // 儲存取貨姓名到 sessionStorage
     };
-    
+
     const handlePickupPhoneChange = (e) => {
         const value = e.target.value.replace(/\D/g, ''); // 只保留數字
         setPickupPhone(value.slice(0, 10)); // 最多 10 位數

@@ -27,7 +27,7 @@ const app = express()
 // cors設定，參數為必要，注意不要只寫`app.use(cors())`
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://localhost:9000'],
+    origin: ['http://winderland.shop', 'https://winderland.shop', 'http://www.winderland.shop','https://www.winderland.shop'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })

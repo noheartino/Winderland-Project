@@ -28,7 +28,7 @@ export default function CartProductM() {
       // 如果沒有商品資料但有課程資料
       const firstClass = classData[0];
       setOrderData({
-        image: `http://localhost:3005/uploads/course_and_tarot/${firstClass.class_image}`, // 課程沒有圖片，假設使用預設圖片
+        image: `https://winderland.shop/uploads/course_and_tarot/${firstClass.class_image}`, // 課程沒有圖片，假設使用預設圖片
         name: firstClass.class_name,
         quantity: classData.length,
         totalAmount: finalAmount + 60

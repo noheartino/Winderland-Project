@@ -12,7 +12,7 @@ export default function ArticleListNav({ article }) {
 
   const checkBookmarkStatus = async () => {
     try {
-      const response = await fetch('http://localhost:3005/api/favorites/articles', {
+      const response = await fetch('https://winderland.shop/api/favorites/articles', {
         method: 'GET',
         credentials: 'include',
       });
@@ -27,9 +27,9 @@ export default function ArticleListNav({ article }) {
 
   const toggleBookmark = async () => {
     try {
-      const url = `http://localhost:3005/api/favorites/articles/${article.id}`;
+      const url = `https://winderland.shop/api/favorites/articles/${article.id}`;
       const method = isBookmarked ? 'DELETE' : 'POST';
-      
+
       const response = await fetch(url, {
         method: method,
         credentials: 'include',
@@ -42,31 +42,31 @@ export default function ArticleListNav({ article }) {
       if (data.status === 'success') {
         setIsBookmarked(!isBookmarked);
 
-           // 顯示 Sweet Alert 提示
-           Swal.fire({
-            icon: 'success',
-            title: isBookmarked ? '已取消收藏' : '收藏成功',
-            text: isBookmarked ? '文章已從您的收藏中移除' : '文章已添加到您的收藏',
-            timer: 1500,
-            showConfirmButton: false
-          });
+        // 顯示 Sweet Alert 提示
+        Swal.fire({
+          icon: 'success',
+          title: isBookmarked ? '已取消收藏' : '收藏成功',
+          text: isBookmarked ? '文章已從您的收藏中移除' : '文章已添加到您的收藏',
+          timer: 1500,
+          showConfirmButton: false
+        });
       } else {
         console.error('Error toggling bookmark:', data.message);
 
-               // 顯示錯誤提示
-               Swal.fire({
-                icon: 'error',
-                title: '請先登入',
-                text: '您需要登入才能收藏文章',
-                timer: 1500,
-                showConfirmButton: false
-              });
+        // 顯示錯誤提示
+        Swal.fire({
+          icon: 'error',
+          title: '請先登入',
+          text: '您需要登入才能收藏文章',
+          timer: 1500,
+          showConfirmButton: false
+        });
       }
     } catch (error) {
       console.error('Error toggling bookmark:', error);
 
-       // 顯示錯誤提示
-       Swal.fire({
+      // 顯示錯誤提示
+      Swal.fire({
         icon: 'error',
         title: '操作失敗',
         text: '發生錯誤，請稍後再試',
@@ -91,7 +91,7 @@ export default function ArticleListNav({ article }) {
         </div>
         <div className="aid-bookmark d-none d-lg-block ms-auto col-auto">
           {/* <i className="fa-regular fa-bookmark" /> */}
-          <i 
+          <i
             className={`fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark`}
             onClick={toggleBookmark}
             style={{ cursor: 'pointer' }}
@@ -102,7 +102,7 @@ export default function ArticleListNav({ article }) {
       <h1 className="aid-title d-lg-none">{article.title}</h1>
       <div className="aid-pic d-lg-none my-4">
         <Image
-          src={`http://localhost:3005/uploads/article/${article.images[0]}`}
+          src={`https://winderland.shop/uploads/article/${article.images[0]}`}
           alt={`${article.images[0]}`}
           width={100}
           height={100}

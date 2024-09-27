@@ -8,10 +8,10 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
   const [selectedCoupons, setSelectedCoupons] = useState([]);
   const [claimedCoupons, setClaimedCoupons] = useState([]);
   const [usedClaimedCoupons, setUsedClaimedCoupons] = useState([]);
-// console.log(plusCoupons)
+  // console.log(plusCoupons)
   useEffect(() => {
     // 取得所有優惠券的資料
-    fetch("http://localhost:3005/api/coupon")
+    fetch("https://winderland.shop/api/coupon")
       .then((response) => response.json())
       .then((data) => {
         setplusCoupons(data);
@@ -21,7 +21,7 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
       });
 
     // 獲取用戶已經領取的優惠券
-    fetch(`http://localhost:3005/api/coupon/${userId}`)
+    fetch(`https://winderland.shop/api/coupon/${userId}`)
       .then((response) => response.json())
       .then((data) => {
         const userCoupons = data.userCoupons
@@ -84,7 +84,7 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
     };
     try {
       const response = await fetch(
-        "http://localhost:3005/api/coupon/save-coupons",
+        "https://winderland.shop/api/coupon/save-coupons",
         {
           method: "POST",
           headers: {
@@ -123,24 +123,24 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
         setSelectedCoupons([]); // 清空選擇列表
 
         // 重新 fetch 用戶已經領取的優惠券
-      fetch(`http://localhost:3005/api/coupon/${userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        const userCoupons = data.userCoupons
-        const usedClaimedCouponIds = userCoupons
-          .filter((coupon) => coupon.status === "used") // 只選擇 status 為 'used' 的資料
-          .map((coupon) => coupon.coupon_id); // 提取 coupon_id
-        // 過濾出 status 為 'get' 的優惠券
-        const claimedCouponIds = userCoupons
-          .filter((coupon) => coupon.status === "get") // 只選擇 status 為 'get' 的資料
-          .map((coupon) => coupon.coupon_id); // 提取 coupon_id
-        // console.log(claimedCouponIds)
-        setUsedClaimedCoupons(usedClaimedCouponIds);
-        setClaimedCoupons(claimedCouponIds);
-      })
-      .catch((error) => {
-        console.error("Error fetching user coupons:", error);
-      });
+        fetch(`https://winderland.shop/api/coupon/${userId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            const userCoupons = data.userCoupons
+            const usedClaimedCouponIds = userCoupons
+              .filter((coupon) => coupon.status === "used") // 只選擇 status 為 'used' 的資料
+              .map((coupon) => coupon.coupon_id); // 提取 coupon_id
+            // 過濾出 status 為 'get' 的優惠券
+            const claimedCouponIds = userCoupons
+              .filter((coupon) => coupon.status === "get") // 只選擇 status 為 'get' 的資料
+              .map((coupon) => coupon.coupon_id); // 提取 coupon_id
+            // console.log(claimedCouponIds)
+            setUsedClaimedCoupons(usedClaimedCouponIds);
+            setClaimedCoupons(claimedCouponIds);
+          })
+          .catch((error) => {
+            console.error("Error fetching user coupons:", error);
+          });
 
 
       } else {
@@ -201,9 +201,9 @@ export default function CouponPlusModal({ userId, freeCoupon, setUserGetCoupons 
                 const isChecked = selectedCoupons.some(
                   (c) => c.id === coupon.id
                 );
-                {/* {console.log(coupon);} */}
-                {/* {console.log(selectedCoupons)} */}
-                {/* console.log(`Coupon ID: ${coupon.id}, isChecked: ${isChecked}`); */}
+                {/* {console.log(coupon);} */ }
+                {/* {console.log(selectedCoupons)} */ }
+                {/* console.log(`Coupon ID: ${coupon.id}, isChecked: ${isChecked}`); */ }
 
                 return (
                   <CouponCardModal

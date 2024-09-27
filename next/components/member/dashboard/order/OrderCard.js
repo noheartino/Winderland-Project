@@ -31,8 +31,8 @@ export default function OrderCard({ order }) {
   // 處理圖片路徑
   const imagePath = order.firstItemImage
     ? (order.firstItemType === 'product'
-        ? `/images/product/${order.firstItemImage}`
-        : `http://localhost:3005/uploads/course_and_tarot/${order.firstItemImage}`)
+      ? `/images/product/${order.firstItemImage}`
+      : `https://winderland.shop/uploads/course_and_tarot/${order.firstItemImage}`)
     : '/images/default-order-image.png';
 
   return (

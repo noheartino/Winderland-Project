@@ -33,25 +33,25 @@ export default function OrderCardRWD({ order }) {
   // 處理圖片路徑
   const imagePath = order.firstItemImage
     ? (order.firstItemType === 'product'
-        ? `/images/product/${order.firstItemImage}`
-        : `http://localhost:3005/uploads/course_and_tarot/${order.firstItemImage}`)
+      ? `/images/product/${order.firstItemImage}`
+      : `https://winderland.shop/uploads/course_and_tarot/${order.firstItemImage}`)
     : '/images/default-order-image.png';
 
   return (
     <>
       <div className={`${styles.cardBodyRwd} d-flex `}>
-      <div className="cardImg">
-      <Image
-          src={imagePath}
-          alt="First item"
-          width={80}
-          height={80}
-          className={styles.orderImg}
-          //  layout="fill"
-          objectFit="cover"
-        />
-      </div>
-       
+        <div className="cardImg">
+          <Image
+            src={imagePath}
+            alt="First item"
+            width={80}
+            height={80}
+            className={styles.orderImg}
+            //  layout="fill"
+            objectFit="cover"
+          />
+        </div>
+
 
         <div className={`${styles.orderDetail}`}>
           <ul className={styles.thRwd}>

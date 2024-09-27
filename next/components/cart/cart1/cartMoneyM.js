@@ -22,7 +22,7 @@ export default function CartMoneyM({ totalAmount = 0, selectedCoupon, userId, pr
     setIsStockAvailable(true);
 
     try {
-      const response = await fetch(`http://localhost:3005/api/cart/${userId}`);
+      const response = await fetch(`https://winderland.shop/api/cart/${userId}`);
       if (!response.ok) throw new Error('Failed to fetch cart items');
 
       const { items } = await response.json();
@@ -89,8 +89,8 @@ export default function CartMoneyM({ totalAmount = 0, selectedCoupon, userId, pr
             <b>NT$ {Math.floor(finalAmount).toLocaleString()}</b>
           </div>
           <div>
-            <button 
-              className={css.cartTotalMRBTN} 
+            <button
+              className={css.cartTotalMRBTN}
               onClick={confirmOrder}
               disabled={isChecking || !isStockAvailable || (productData.length === 0 && classData.length === 0)}
             >

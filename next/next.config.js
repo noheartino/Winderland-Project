@@ -19,8 +19,12 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'localhost',
       },
+      {
+        protocol: 'https',
+        hostname: 'winderland.shop',
+      },
     ],
-    unoptimized: true,
+    unoptimized: false,
   },
   // output: 'export', // don't use with `next start` or api route
   // distDir: 'dist',
@@ -29,7 +33,7 @@ const nextConfig = {
   //   return [
   //     {
   //       source: '/api/:path*',
-  //       destination: 'http://localhost:3005/:path*', // Proxy to Backend
+  //       destination: 'https://winderland.shop/:path*', // Proxy to Backend
   //     },
   //   ]
   // },

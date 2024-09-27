@@ -13,7 +13,7 @@ export function useFavorite(productId) {
       setIsCheckingFav(true);
       try {
         const response = await axios.get(
-          `http://localhost:3005/api/favorites/products/check/${productId}`,
+          `https://winderland.shop/api/favorites/products/check/${productId}`,
           {
             withCredentials: true,
           }
@@ -50,7 +50,7 @@ export function useFavorite(productId) {
     try {
       if (isFav) {
         await axios.delete(
-          `http://localhost:3005/api/favorites/products/${productId}`,
+          `https://winderland.shop/api/favorites/products/${productId}`,
           {
             withCredentials: true,
           }
@@ -64,7 +64,7 @@ export function useFavorite(productId) {
         });
       } else {
         await axios.post(
-          "http://localhost:3005/api/favorites/products",
+          "https://winderland.shop/api/favorites/products",
           { productId, productDetailId },
           { withCredentials: true }
         );

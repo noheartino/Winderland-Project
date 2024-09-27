@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./path.module.css";
+import styles from "./Path.module.css";
 import { useProduct } from "@/context/ProductContext";
 import ClipLoader from "react-spinners/ClipLoader";
 

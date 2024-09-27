@@ -14,13 +14,13 @@ export default function Einfo() {
   const { id } = router.query;
   const [infodata, setInfo] = useState(null);
 
-  // const [ownerimg, setOwnerimg] = useState("http://localhost:3005/images/member/avatar/4.png");
+  // const [ownerimg, setOwnerimg] = useState("https://winderland.shop/images/member/avatar/4.png");
 
-  // setOwnerimg("http://localhost:3005/images/member/avatar/4.png")
+  // setOwnerimg("https://winderland.shop/images/member/avatar/4.png")
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:3005/api/event/info/${id}`)
+      fetch(`https://winderland.shop/api/event/info/${id}`)
         .then((response) => response.json())
         .then((infodata) => setInfo(infodata))
         .catch((error) => console.error("Error:", error));
@@ -99,21 +99,20 @@ export default function Einfo() {
           <div className="row g-5">
             <div className="col-12 col-lg-5">
               <img
-                src={`http://localhost:3005/uploads/event/${eventinfo.event_cover_image}`}
+                src={`https://winderland.shop/uploads/event/${eventinfo.event_cover_image}`}
                 alt=""
                 className="eventPageimg"
               />
               <div className="eventduring">
                 <div
-                  className={`eventduring_box ${
-                    eventinfo.status === 1 ? "applyend" : ""
-                  }`}
+                  className={`eventduring_box ${eventinfo.status === 1 ? "applyend" : ""
+                    }`}
                 >
                   {eventinfo.status === 1
                     ? "報名已截止"
                     : applyinfo.length >= eventinfo.people_limit
-                    ? "目前名額已滿"
-                    : "開放報名中"}
+                      ? "目前名額已滿"
+                      : "開放報名中"}
                 </div>
                 {eventinfo.status === 2 && (
                   <div className="eventduring_text">
@@ -197,7 +196,7 @@ export default function Einfo() {
               <div className="eventOwner">
                 <div className="eventOwnerT">開團人</div>
                 <div className="eventOwnerInfo">
-                  <img src={`http://localhost:3005/images/member/avatar/${Nowid}.png`} alt="" className="eventOwnerPic" onError={(e) => e.target.src = `http://localhost:3005/images/member/avatar/cat.png`} />
+                  <img src={`https://winderland.shop/images/member/avatar/${Nowid}.png`} alt="" className="eventOwnerPic" onError={(e) => e.target.src = `https://winderland.shop/images/member/avatar/cat.png`} />
                   <div className="eventOwnerInfoT">
                     {applyinfo[0].neckname} <br />
                     {applyinfo[0].gender === 0 ? "男" : "女"} /{" "}

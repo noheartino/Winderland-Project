@@ -26,7 +26,7 @@ export default function ArticleDetail() {
       調酒知識: "調酒",
     };
     if (router.isReady) {
-      fetch(`http://localhost:3005/api/article/${aid}`)
+      fetch(`https://winderland.shop/api/article/${aid}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response not ok");
@@ -58,7 +58,7 @@ export default function ArticleDetail() {
   const checkBookmarkStatus = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3005/api/favorites/articles",
+        "https://winderland.shop/api/favorites/articles",
         {
           method: "GET",
           credentials: "include",
@@ -77,7 +77,7 @@ export default function ArticleDetail() {
 
   const toggleBookmark = async () => {
     try {
-      const url = `http://localhost:3005/api/favorites/articles/${article.id}`;
+      const url = `https://winderland.shop/api/favorites/articles/${article.id}`;
       const method = isBookmarked ? "DELETE" : "POST";
 
       const response = await fetch(url, {

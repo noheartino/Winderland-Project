@@ -43,7 +43,7 @@ export default function Applyevent() {
     if (userId && isAdmin) {
       console.log("登入者確認為admin有權限者");
 
-      fetch(`http://localhost:3005/api/course/teacher/management`)
+      fetch(`https://winderland.shop/api/course/teacher/management`)
         .then((response) => response.json())
         .then((data) => {
           const { courses } = data;
@@ -83,8 +83,8 @@ export default function Applyevent() {
       </div>
     );
   }
-   
-  if (!isAdmin){
+
+  if (!isAdmin) {
     return (
       <>
         <div className="container-fluid">
@@ -92,14 +92,14 @@ export default function Applyevent() {
           <Link href="/">
             <div
               type="button"
-              className="btn-warning btn my-2" style={{textDecoration: 'none'}}>
+              className="btn-warning btn my-2" style={{ textDecoration: 'none' }}>
               回首頁<i className="fa-solid fa-chevron-right ms-2"></i>
             </div>
           </Link>
         </div>
       </>
     )
-  } 
+  }
 
   return (
     <>
@@ -190,37 +190,35 @@ export default function Applyevent() {
                   <div className={`CMDetailistBox d-flex`}>
                     <div className="CMDetailistBoxPic">
                       <img
-                        src={`http://localhost:3005/uploads/course_and_tarot/${!course.class_path ? 'classImgDefault.png' : course?.class_path}`}
+                        src={`https://winderland.shop/uploads/course_and_tarot/${!course.class_path ? 'classImgDefault.png' : course?.class_path}`}
                         alt=""
                         className=""
                       />
-                      
+
                     </div>
                     <div className="CMDetailistBoxT d-flex flex-column gap-3">
                       <div className="CMDetailistBoxTitle row flex-wrap row-gap-3 gap-2 px-3">
                         <span
-                          className={`CMonlineTag col-auto ${
-                            course.online === 1
+                          className={`CMonlineTag col-auto ${course.online === 1
                               ? "CMonlineTag-online"
                               : "CMonlineTag-underline"
-                          }`}
+                            }`}
                         >
                           {course.online === 1 ? "線上" : "實體"}
                         </span>
                         <span
-                          className={`CMstatus col-auto ${
-                            course.class_status === 0
+                          className={`CMstatus col-auto ${course.class_status === 0
                               ? "past"
                               : course.class_status === 2
-                              ? "future"
-                              : ""
-                          }`}
+                                ? "future"
+                                : ""
+                            }`}
                         >
                           {course.class_status === 0
                             ? "報名已截止"
                             : course.class_status === 2
-                            ? "報名尚未開始"
-                            : "開放報名中"}
+                              ? "報名尚未開始"
+                              : "開放報名中"}
                         </span>
                         <span className="CMclassTitle col-12 col-lg-auto px-0">
                           {course?.class_name}
@@ -256,7 +254,7 @@ export default function Applyevent() {
                             課程名稱 : {course?.class_name}
                           </div>
                           <div className="CMDetailistBoxInfo">
-                            <div className={`${course.online && course.online===1?'d-none':'d-block'}`}>
+                            <div className={`${course.online && course.online === 1 ? 'd-none' : 'd-block'}`}>
                               報名日期 -{" "}
                               {handleDateFormat(course?.appointment_start)}~
                               {handleDateFormat(course?.appointment_end)}
@@ -269,15 +267,15 @@ export default function Applyevent() {
                               上課時間 -{" "}
                               {handleTimeFormat(course?.daily_start_time)}-
                               {handleTimeFormat(course?.daily_end_time)}
-                            <br />
+                              <br />
                             </div>
-                            課程金額 - {course.sale_price && course.sale_price>0 ? 
-                              <p className="text-gray-light d-inline-block"><del>NT$ ${course?.price}</del></p>:
+                            課程金額 - {course.sale_price && course.sale_price > 0 ?
+                              <p className="text-gray-light d-inline-block"><del>NT$ ${course?.price}</del></p> :
                               <p className="text-sec-orange d-inline-block">NT$ ${course?.price}</p>}
                             <br />
-                            {course.sale_price && course.sale_price>0 ? 
-                              <div>課程優惠金額 - <p className="text-sec-orange d-inline-block">NT$ ${course?.sale_price}</p></div>:""}
-                            
+                            {course.sale_price && course.sale_price > 0 ?
+                              <div>課程優惠金額 - <p className="text-sec-orange d-inline-block">NT$ ${course?.sale_price}</p></div> : ""}
+
                           </div>
                         </div>
                       </div>
@@ -295,7 +293,7 @@ export default function Applyevent() {
                         </div>
                       </div>
                     </div>
-                    <div className={`row gx-5 ${course.online && course.online===1?'d-none':'d-flex'}`}>
+                    <div className={`row gx-5 ${course.online && course.online === 1 ? 'd-none' : 'd-flex'}`}>
                       <div className="col-12">
                         <div className="CMListStatisT">報名人數統計</div>
                       </div>
@@ -309,13 +307,12 @@ export default function Applyevent() {
                             <div
                               className="classMLimitLinedata"
                               style={{
-                                width: `${
-                                  course.assigned > 0 &&
-                                  course.student_limit > 0
+                                width: `${course.assigned > 0 &&
+                                    course.student_limit > 0
                                     ? (course.assigned / course.student_limit) *
-                                      100
+                                    100
                                     : 0
-                                }%`,
+                                  }%`,
                               }}
                             />
                           </div>

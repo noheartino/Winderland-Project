@@ -91,7 +91,7 @@ export default function ProductIndex() {
   const fetchProducts = useCallback(
     async (filters) => {
       try {
-        const response = await axios.get(`http://localhost:3005/api/product`, {
+        const response = await axios.get(`https://winderland.shop/api/product`, {
           params: {
             page: currentPage,
             limit: itemsPerPage,
@@ -198,7 +198,7 @@ export default function ProductIndex() {
   const fetchFilters = useCallback(async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3005/api/product/filters",
+        "https://winderland.shop/api/product/filters",
         {
           params: selectFilters,
         }

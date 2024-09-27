@@ -17,19 +17,19 @@ export default function ArticleListContent({ article }) {
   const contentWithImages = contentParts.map((part, index) => {
     // 插入文本部分
     const textElement = <p key={`text-${index}`}>{part}</p>;
-  
+
     // 插入圖片部分，如果不是最後一個段落，則插入對應的圖片
     const imageElement =
       index < article.images.length - 1 ? (
         <div className="aid-pic">
-        <img
-          src={`http://localhost:3005/uploads/article/${article.images[index+1]}`}
-          alt={`Image ${index+1}`}
-          key={`image-${index+1}`}
-        />
+          <img
+            src={`https://winderland.shop/uploads/article/${article.images[index + 1]}`}
+            alt={`Image ${index + 1}`}
+            key={`image-${index + 1}`}
+          />
         </div>
       ) : null; // 確保最後一個段落不插入圖片
-  
+
     // 返回文本段和對應的圖片
     return (
       <React.Fragment key={`fragment-${index}`}>
@@ -38,7 +38,7 @@ export default function ArticleListContent({ article }) {
       </React.Fragment>
     );
   });
-  
+
   return (
     <>
       <div className="aid-content-word">

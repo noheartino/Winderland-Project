@@ -12,22 +12,22 @@ const FloatingLabelInput = ({ label, type, name, value, onChange, error }) => {
     const [isFocused, setIsFocused] = useState(false);
 
     return (
-      <div className={`${styles.floatingLabelInput} position-relative mb-3`}>
-        <input
-          type={type}
-          name={name}
-          value={value}
-          onChange={onChange}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          className={`${styles.forgetPwdInput} ${error ? styles.inputError : ''} ${isFocused || value ? styles.hasContent : ''}`}
-          placeholder=" "
-        />
-        <label className={styles.floatingLabel}>{label}</label>
-        {error && <span className={`${styles.error} ${styles.show}`}>{error}</span>}
-      </div>
+        <div className={`${styles.floatingLabelInput} position-relative mb-3`}>
+            <input
+                type={type}
+                name={name}
+                value={value}
+                onChange={onChange}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                className={`${styles.forgetPwdInput} ${error ? styles.inputError : ''} ${isFocused || value ? styles.hasContent : ''}`}
+                placeholder=" "
+            />
+            <label className={styles.floatingLabel}>{label}</label>
+            {error && <span className={`${styles.error} ${styles.show}`}>{error}</span>}
+        </div>
     );
-  };
+};
 
 // @ 預設導出
 export default function ForgetPasswordForm() {
@@ -39,7 +39,7 @@ export default function ForgetPasswordForm() {
         e.preventDefault()
         setError('') // 清除之前的錯誤信息
         try {
-            const response = await fetch('http://localhost:3005/api/member/forget-password', {
+            const response = await fetch('https://winderland.shop/api/member/forget-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ export default function ForgetPasswordForm() {
                                     <div
                                         className={`${styles.tabPane} ${styles.fade} ${styles.show} ${styles.active} ${styles.loginContent}`}
                                     >
-                                    <h2 className={`${styles.label} mt-5 mb-4`}>忘記密碼</h2>
+                                        <h2 className={`${styles.label} mt-5 mb-4`}>忘記密碼</h2>
                                         <FloatingLabelInput
                                             label="請輸入註冊時Email"
                                             type="email"
@@ -110,9 +110,9 @@ export default function ForgetPasswordForm() {
                                         />
                                         <br />
 
-                                        <div className={` d-flex justify-content-around  `}>   
-                                        <div></div>  
-                                            <Link href="/member/login"  className={`${styles.red} `}>返回登入</Link>
+                                        <div className={` d-flex justify-content-around  `}>
+                                            <div></div>
+                                            <Link href="/member/login" className={`${styles.red} `}>返回登入</Link>
                                         </div>
                                         {/* 按鈕 */}
                                         <button
@@ -146,15 +146,15 @@ export default function ForgetPasswordForm() {
                                 role="tabpanel"
                                 aria-labelledby="login-tab-rwd"
                             >
-                                   <h2 className={`${styles.label} mt-5 mb-4 `}>忘記密碼</h2>
-                            <FloatingLabelInput
-                                label="請輸入註冊時Email"
-                                type="email"
-                                name="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                error={error}
-                            />
+                                <h2 className={`${styles.label} mt-5 mb-4 `}>忘記密碼</h2>
+                                <FloatingLabelInput
+                                    label="請輸入註冊時Email"
+                                    type="email"
+                                    name="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    error={error}
+                                />
                                 <br />
 
 

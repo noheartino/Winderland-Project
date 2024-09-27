@@ -20,7 +20,7 @@ export default function MessageItem({ sortedComments }) {
               <div className={`${styles["user-photo"]}`}>
                 <img
                   className={`${styles["photo"]}`}
-                  src={`http://localhost:3005/images/member/avatar/${comment.user_img}`}
+                  src={`https://winderland.shop/images/member/avatar/${comment.user_img}`}
                   alt=""
                 />
               </div>
@@ -39,9 +39,8 @@ export default function MessageItem({ sortedComments }) {
                     {[1, 2, 3, 4, 5].map((star) => (
                       <i
                         key={star}
-                        className={`fa-solid fa-star ${
-                          star <= comment.rating ? styles["light"] : ""
-                        }`}
+                        className={`fa-solid fa-star ${star <= comment.rating ? styles["light"] : ""
+                          }`}
                       ></i>
                     ))}
                   </div>
